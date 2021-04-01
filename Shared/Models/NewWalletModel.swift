@@ -14,7 +14,7 @@ struct NewWalletModel {
     let addressType: BtcAddressFormat
     let seed: [String]
     
-    private var seedData: Data? {
+    var seedData: Data? {
         seed.joined(separator: ",").data(using: .utf8)
     }
     
