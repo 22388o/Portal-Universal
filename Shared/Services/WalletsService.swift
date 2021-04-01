@@ -24,7 +24,7 @@ final class WalletsService: ObservableObject {
         }
         set {
             guard let value = newValue else { return }
-            self.keychainStorage.save(string: value, for: WalletsService.currentWalletIDKey)
+            keychainStorage.save(string: value, for: WalletsService.currentWalletIDKey)
         }
     }
     
