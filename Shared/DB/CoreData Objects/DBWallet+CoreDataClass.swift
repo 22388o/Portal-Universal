@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
 @objc(DBWallet)
 public class DBWallet: NSManagedObject, IWallet {
