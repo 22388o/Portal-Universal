@@ -69,7 +69,7 @@ extension IPieChartModel {
     
     func assetAllocationChartData() -> PieChartData {
         let pieData = pieChartData()
-        let set = PieChartDataSet(values: pieData.entries, label: "Asset allocation")
+        let set = PieChartDataSet(entries: pieData.entries, label: "Asset allocation")
         set.standardSettings(colors: pieData.colors)
         
         return PieChartData(dataSet: set)
