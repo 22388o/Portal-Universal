@@ -38,6 +38,8 @@ public class DBWallet: NSManagedObject, IWallet {
     }
     
     func setup(data: Data) {
+        assets = WalletMock().assets
+        return
         let sampleCoins = [
             Coin(code: "BTC", name: "Bitcoin", color: UIColor.green, icon: UIImage(imageLiteralResourceName: "iconBtc")),
             Coin(code: "BCH", name: "Bitcoin Cash", color: UIColor.gray, icon: UIImage(imageLiteralResourceName: "iconBch")),
