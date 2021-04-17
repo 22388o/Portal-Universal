@@ -10,12 +10,12 @@ import Foundation
 import SwiftUI
 
 protocol IQRCodeProvider {
-    func qrCode(address: String?) -> UIImage
+    func qrCode(address: String?) -> Image
 }
 
 extension IQRCodeProvider {
-    func qrCode(address: String?) -> UIImage {
-        guard let message = address?.data(using: .utf8) else { return UIImage() }
+    func qrCode(address: String?) -> Image {
+        guard let message = address?.data(using: .utf8) else { return Image(systemName: "cloud") }
         
         let parameters: [String : Any] = [
                     "inputMessage": message,
@@ -23,13 +23,19 @@ extension IQRCodeProvider {
                 ]
         let filter = CIFilter(name: "CIQRCodeGenerator", parameters: parameters)
         
-        guard let outputImage = filter?.outputImage else { return UIImage() }
+        guard let outputImage = filter?.outputImage else { return Image(systemName: "cloud") }
                
         let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 6, y: 6))
         guard let cgImage = CIContext().createCGImage(scaledImage, from: scaledImage.extent) else {
-            return UIImage()
+            return Image(systemName: "cloud")
         }
         
-        return UIImage(cgImage: cgImage)
+        #if os(iOS)
+        let uiImage = UIImage(cgImage: cgImage)
+        return Image(uiImage: uiImage)
+        #elseif os(macOS)
+        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: 150, height: 150))
+        return Image(nsImage: nsImage)
+        #endif
     }
 }

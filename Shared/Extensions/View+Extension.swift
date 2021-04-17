@@ -10,9 +10,9 @@ import Foundation
 import SwiftUI
 
 extension View {
-    public func hideNavigationBar() -> some View {
-        modifier(NavigationBarHider())
-    }
+//    public func hideNavigationBar() -> some View {
+//        modifier(NavigationBarHider())
+//    }
     
     func iPadLandscapePreviews() -> some View {
         Group {

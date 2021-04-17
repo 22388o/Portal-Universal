@@ -28,16 +28,16 @@ public struct PlaceholderStyle: ViewModifier {
     }
 }
 
-public struct NavigationBarHider: ViewModifier {
-    @State var isHidden: Bool = false
-
-    public func body(content: Content) -> some View {
-        content
-            .navigationBarTitle("", displayMode: .inline)
-            .navigationBarHidden(isHidden)
-            .onAppear { self.isHidden = true }
-    }
-}
+//public struct NavigationBarHider: ViewModifier {
+//    @State var isHidden: Bool = false
+//
+//    public func body(content: Content) -> some View {
+//        content
+//            .navigationBarTitle("", displayMode: .inline)
+//            .navigationBarHidden(isHidden)
+//            .onAppear { self.isHidden = true }
+//    }
+//}
 
 struct SmallButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
@@ -74,10 +74,10 @@ struct TextFieldModifier: ViewModifier {
             .padding()
             .background(Color.exchangerFieldBackgroundNew)
             .cornerRadius(26)
-//            .overlay(
-//                RoundedRectangle(cornerRadius: 26)
-//                .stroke(Color.exchangerFieldBackgroundNew, lineWidth: 1)
-//            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 26)
+                .stroke(Color.exchangerFieldBackgroundNew, lineWidth: 1)
+            )
     }
 }
 
@@ -111,21 +111,21 @@ struct KeyboardResponsive: ViewModifier {
                 .padding(.bottom, self.currentHeight)
                 .animation(.easeOut(duration: 0.16))
                 .onAppear(perform: {
-                    NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillShowNotification)
-                        .merge(with: NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillChangeFrameNotification))
-                        .compactMap { notification in
-                            notification.userInfo?["UIKeyboardFrameEndUserInfoKey"] as? CGRect
-                    }
-                    .map { rect in
-                        rect.height - geometry.safeAreaInsets.bottom
-                    }
-                    .subscribe(Subscribers.Assign(object: self, keyPath: \.currentHeight))
-
-                    NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillHideNotification)
-                        .compactMap { notification in
-                            CGFloat.zero
-                    }
-                    .subscribe(Subscribers.Assign(object: self, keyPath: \.currentHeight))
+//                    NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillShowNotification)
+//                        .merge(with: NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillChangeFrameNotification))
+//                        .compactMap { notification in
+//                            notification.userInfo?["UIKeyboardFrameEndUserInfoKey"] as? CGRect
+//                    }
+//                    .map { rect in
+//                        rect.height - geometry.safeAreaInsets.bottom
+//                    }
+//                    .subscribe(Subscribers.Assign(object: self, keyPath: \.currentHeight))
+//
+//                    NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillHideNotification)
+//                        .compactMap { notification in
+//                            CGFloat.zero
+//                    }
+//                    .subscribe(Subscribers.Assign(object: self, keyPath: \.currentHeight))
                 })
         }
     }
