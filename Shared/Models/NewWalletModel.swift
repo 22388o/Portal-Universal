@@ -18,11 +18,11 @@ struct NewWalletModel {
         seed.joined(separator: ",").data(using: .utf8)
     }
     
-    init(name: String, addressType: BtcAddressFormat = .segwit) {
+    init(name: String, addressType: BtcAddressFormat = .segwit, seed: [String]) {
         self.id = UUID()
         self.name = name
         self.addressType = addressType
-        self.seed = NewWalletModel.randomSeed()
+        self.seed = seed
     }
     
     static func randomSeed() -> [String] {

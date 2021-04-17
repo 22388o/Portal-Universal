@@ -72,6 +72,15 @@ enum Currency {
     case btc
     case eth
     
+    var symbol: String {
+        switch self {
+        case .fiat(let currency):
+            return currency.symbol ?? String()
+        default:
+            return String()
+        }
+    }
+    
     func stringValue() -> String {
         switch self {
         case .fiat(let currency):

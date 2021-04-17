@@ -21,4 +21,8 @@ struct Coin {
         self.color = color
         self.icon = icon
     }
+    
+    static func bitcoin() -> Self {
+        Coin(code: "BTC", name: "Bitcoin", color: UIColor.green, icon: UIImage(imageLiteralResourceName: "iconBtc"))
+    }
 }

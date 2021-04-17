@@ -20,6 +20,7 @@ final class TxProvider: ITxProvider {
 protocol ITxProvider {}
 
 final class Asset: IAsset {
+    var id: UUID
     var coin: Coin
     var kit: ICoinKit
     var balanceProvider: IBalanceProvider
@@ -28,11 +29,17 @@ final class Asset: IAsset {
     var qrCodeProvider: IQRCodeProvider
 
     init(coin: Coin, data: Data = Data(), kit: ICoinKit = MockCoinKit()) {
+        self.id = UUID()
         self.coin = coin
         self.kit = kit
+        
         self.balanceProvider = BalanceProvider(coin: coin, kit: kit)
         self.chartDataProvider = ChartDataProvider()
         self.marketChangeProvider = MarketChangeProvider()
         self.qrCodeProvider = QRCodeProvider()
+    }
+    
+    static func bitcoin() -> IAsset {
+        Asset(coin: Coin.bitcoin())
     }
 }
