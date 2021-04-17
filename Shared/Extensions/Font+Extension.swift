@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 extension Font {
-    static func mainFont(size: CGFloat = 12) -> Font {
-        Font.custom("Avenir-Medium", size: size)
+    static func mainFont(size: CGFloat = 12, bold: Bool = false) -> Font {
+        Font.custom(bold ? "Avenir-Black" : "Avenir-Medium", size: size)
     }
 }

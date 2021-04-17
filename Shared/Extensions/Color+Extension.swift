@@ -34,6 +34,9 @@ extension Color {
     static var assetViewButton: Color {
         Color(red: 41.0/255.0, green: 66.0/255.0, blue: 77.0/255.0)
     }
+    static var pButtonEnabledBackground: Color {
+        Color(red: 8.0/255.0, green: 137.0/255.0, blue: 206.0/255.0)
+    }
     static var pButtonDisableBackground: Color {
         Color(red: 204.0/255.0, green: 207.0/255.0, blue: 212.0/255.0)
     }
@@ -41,7 +44,7 @@ extension Color {
         Color(red: 101.0/255.0, green: 106.0/255.0, blue: 114.0/255.0)
     }
     static var coinViewRouteButtonInactive: Color {
-        Color.white
+        Color(red: 171.0/255.0, green: 176.0/255.0, blue: 183.0/255.0)
     }
     static var txListTxType: Color {
         Color(red: 7.0/255.0, green: 123.0/255.0, blue: 184.0/255.0)
@@ -70,11 +73,19 @@ extension Color {
     static var brownishOrange: Color {
         Color(red: 233.0/255.0, green: 134.0/255.0, blue: 49.0/255.0)
     }
-    static var portalBackground: some View {
-        ZStack {
-            LinearGradient(gradient: Gradient(colors: [Color.gradientTop, Color.gradientBottom]), startPoint: .top, endPoint: .bottom)
-            Color.black.opacity(0.58)
-        }
+    static var seedBoxBorder: Color {
+        Color(red: 255.0/255.0, green: 156.0/255.0, blue: 49.0/255.0)
     }
-    
+    static var seedBoxBackground: Color {
+        Color(red: 254.0/255.0, green: 248.0/255.0, blue: 233.0/255.0)
+    }
+    static var walletExchangeSwitchActentLabel: Color {
+        Color(red: 68.0/255.0, green: 73.0/255.0, blue: 82.0/255.0)
+    }
+    static var portalGradientBackground: some View {
+        LinearGradient(gradient: Gradient(colors: [Color.gradientTop, Color.gradientBottom]), startPoint: .top, endPoint: .bottom)
+    }
+    static var pButtonShadowColor: Color {
+        Color(red: 24.0/255.0, green: 22.0/255.0, blue: 40.0/255.0)
+    }
 }
