@@ -24,6 +24,7 @@ final class MockCoinKit: ICoinKit {
 
 class WalletMock: IWallet {
     var walletID: UUID = UUID()
+    var name: String = "Personal"
     
     var assets = [IAsset]()
     
