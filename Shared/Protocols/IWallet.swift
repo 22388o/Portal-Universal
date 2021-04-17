@@ -10,5 +10,6 @@ import Foundation
 
 protocol IWallet {
     var walletID: UUID { get }
+    var name: String { get }
     var assets: [IAsset] { get }
 }

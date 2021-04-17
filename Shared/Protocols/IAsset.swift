@@ -9,6 +9,8 @@
 import Foundation
 
 protocol IAsset {
+    var id: UUID { get }
+//    var viewModel: AssetViewModel { get }
     var coin: Coin { get }
     var kit: ICoinKit { get }
     var chartDataProvider: IChartDataProvider { get }
