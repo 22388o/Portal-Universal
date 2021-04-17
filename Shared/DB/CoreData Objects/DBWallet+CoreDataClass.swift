@@ -41,18 +41,18 @@ public class DBWallet: NSManagedObject, IWallet {
         assets = WalletMock().assets
         return
         let sampleCoins = [
-            Coin(code: "BTC", name: "Bitcoin", color: UIColor.green, icon: UIImage(imageLiteralResourceName: "iconBtc")),
-            Coin(code: "BCH", name: "Bitcoin Cash", color: UIColor.gray, icon: UIImage(imageLiteralResourceName: "iconBch")),
-            Coin(code: "ETH", name: "Ethereum", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconEth")),
-            Coin(code: "XLM", name: "Stellar Lumens", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconXlm")),
-            Coin(code: "XTZ", name: "Stellar Lumens", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz")),
+            Coin(code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc")),
+            Coin(code: "BCH", name: "Bitcoin Cash", color: Color.gray, icon: Image("iconBch")),
+            Coin(code: "ETH", name: "Ethereum", color: Color.yellow, icon: Image("iconEth")),
+            Coin(code: "XLM", name: "Stellar Lumens", color: Color.blue, icon: Image("iconXlm")),
+            Coin(code: "XTZ", name: "Stellar Lumens", color: Color.red, icon: Image("iconXtz")),
             
-            Coin(code: "ERZ", name: "Eeeeee", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconEth")),
-            Coin(code: "MFK", name: "EEEEEE", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconXlm")),
-            Coin(code: "PED", name: "PPPPPPe", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz")),
-            Coin(code: "LAS", name: "LaaaaaaS", color: UIColor.yellow, icon: UIImage(imageLiteralResourceName: "iconBtc")),
-            Coin(code: "NDC", name: "Nnnnnnn D", color: UIColor.blue, icon: UIImage(imageLiteralResourceName: "iconBch")),
-            Coin(code: "NCB", name: "NNNNNNNcf", color: UIColor.brown, icon: UIImage(imageLiteralResourceName: "iconXtz"))
+            Coin(code: "ERZ", name: "Eeeeee", color: Color.yellow, icon: Image("iconEth")),
+            Coin(code: "MFK", name: "EEEEEE", color: Color.blue, icon: Image("iconXlm")),
+            Coin(code: "PED", name: "PPPPPPe", color: Color.red, icon: Image("iconXtz")),
+            Coin(code: "LAS", name: "LaaaaaaS", color: Color.yellow, icon: Image("iconBtc")),
+            Coin(code: "NDC", name: "Nnnnnnn D", color: Color.blue, icon: Image("iconBch")),
+            Coin(code: "NCB", name: "NNNNNNNcf", color: Color.red, icon: Image("iconXtz"))
         ]
         
         self.assets = sampleCoins.prefix(5).map{ Asset(coin: $0, data: data) }

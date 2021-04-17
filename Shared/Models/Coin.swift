@@ -12,10 +12,10 @@ import SwiftUI
 struct Coin {
     let code: String
     let name: String
-    let color: UIColor
-    let icon: UIImage
+    let color: Color
+    let icon: Image
     
-    init(code: String, name: String, color: UIColor = UIColor.clear, icon: UIImage = UIImage()) {
+    init(code: String, name: String, color: Color = .clear, icon: Image = Image("iconBtc")) {
         self.code = code
         self.name = name
         self.color = color
@@ -23,6 +23,6 @@ struct Coin {
     }
     
     static func bitcoin() -> Self {
-        Coin(code: "BTC", name: "Bitcoin", color: UIColor.green, icon: UIImage(imageLiteralResourceName: "iconBtc"))
+        Coin(code: "BTC", name: "Bitcoin", color: Color.green)
     }
 }

@@ -24,7 +24,7 @@ struct AssetItemView: View {
             ZStack {
                 HStack {
                     HStack(spacing: 12) {
-                        Image(uiImage: viewModel.asset.coin.icon)
+                        viewModel.asset.coin.icon
                             .resizable()
                             .frame(width: 24, height: 24)
                         Text(viewModel.asset.coin.code)

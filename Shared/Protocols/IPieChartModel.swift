@@ -23,12 +23,12 @@ extension IPieChartModel {
         assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency) }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
     }
     
-    func pieChartData() -> (entries: [PieChartDataEntry], colors: [UIColor]) {
+    func pieChartData() -> (entries: [PieChartDataEntry], colors: [Color]) {
         let minimumValue: Double = 5 //In %
         
         var assetAllocationValues = [Double]()
         var others = [Double]()
-        var colors = [UIColor]()
+        var colors = [Color]()
         var labels = [String]()
         
         for asset in assets {
@@ -57,7 +57,7 @@ extension IPieChartModel {
         let entry = PieChartDataEntry(value: othersSize, label: othersLabel)
         entries.append(entry)
         
-        colors.append(.lightGray)
+        colors.append(.gray)
         
         return (entries, colors)
     }

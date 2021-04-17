@@ -29,7 +29,7 @@ struct AssetView: View {
                 Spacer().frame(height: 24)
                 
                 HStack {
-                    Image(uiImage: viewModel.asset.coin.icon)
+                    viewModel.asset.coin.icon
                         .resizable()
                         .frame(width: 24, height: 24)
                     Text("\(viewModel.asset.coin.code)")
