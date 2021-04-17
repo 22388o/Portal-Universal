@@ -9,12 +9,16 @@ import SwiftUI
 
 @main
 struct PortalApp: App {
-    let persistenceController = PersistenceController.shared
+    private let walletsService: WalletsService
+    
+    init() {
+        walletsService = WalletsService(context: PersistenceController.shared.container.viewContext)
+    }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            RootView(walletService: walletsService)
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }
