@@ -12,10 +12,10 @@ final class BalanceProvider: IBalanceProvider {
     let coin: Coin
     let coinKit: ICoinKit
     
-    let tempBalance: String
-    let tempTotalValue = "$\(Double.random(in: 255..<5955).rounded(toPlaces: 2))"
-    let tempBalanceForCurrency = Double.random(in: 0.75 ..< 2.795).rounded(toPlaces: 1)
-    let tempPrice = "$\(Double.random(in: 200..<5000).rounded(toPlaces: 1))"
+    private let tempBalance: String
+    private let tempTotalValue = "$\(Double.random(in: 255..<5955).rounded(toPlaces: 1))"
+    private let tempBalanceForCurrency = Double.random(in: 0.75 ..< 2.795).rounded(toPlaces: 2)
+    private let tempPrice = "$\(Double.random(in: 200..<5000).rounded(toPlaces: 1))"
     
     init(coin: Coin, kit: ICoinKit) {
         self.coin = coin
@@ -39,5 +39,9 @@ final class BalanceProvider: IBalanceProvider {
     func balance(currency: Currency) -> Double {
         tempBalanceForCurrency
         //balance * marketData.price(currency: currency)
+    }
+    
+    static func mocked() -> IBalanceProvider {
+        BalanceProvider(coin: Coin.bitcoin(), kit: MockCoinKit())
     }
 }

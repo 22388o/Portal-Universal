@@ -11,7 +11,10 @@ import CoreData
 
 final class WalletsService: ObservableObject {
     @Published var currentWallet: IWallet?
-    var wallets: [IWallet]?
+    var wallets: [IWallet]? {
+        _wallets
+    }
+    private var _wallets: [DBWallet]?
     
     private let keychainStorage: KeychainStorage
     private var context: NSManagedObjectContext?
@@ -34,7 +37,7 @@ final class WalletsService: ObservableObject {
     }
     
     init(context: NSManagedObjectContext? = nil) {
-        //context is optional for tests
+        print("\(#function) init")
         self.keychainStorage = KeychainStorage()
         
         guard context != nil else { return }
@@ -45,12 +48,16 @@ final class WalletsService: ObservableObject {
         setupCurrentWallet()
     }
     
+    deinit {
+        print("\(#function) deinit")
+    }
+    
     private func fetchWallets() {
         let request = DBWallet.fetchRequest() as NSFetchRequest<DBWallet>
                 
         if let wallets = try? self.context?.fetch(request) {
 //            clearWallets(wallets: wallets)
-            self.wallets = wallets
+            self._wallets = wallets
         }
     }
     
@@ -80,14 +87,10 @@ final class WalletsService: ObservableObject {
 
 extension WalletsService: IWalletsService {
     func setupWallet(id: String) {
-        if let current = wallets?.first(where: { $0.walletID.uuidString == id }) {
-            currentWallet = current
-            
-            guard
-                let key = (currentWallet as? DBWallet)?.key,
-                let data = keychainStorage.data(for: key) else { return }
-            
-            (currentWallet as? DBWallet)?.setup(data: data)
+        if let wallet = _wallets?.first(where: { $0.walletID.uuidString == id }) {
+            guard let data = keychainStorage.data(for: wallet.key) else { return }
+            wallet.setup(data: data)
+            currentWallet = wallet
         } else {
             fatalError("Wallet with id \(id) isn't exist")
         }
