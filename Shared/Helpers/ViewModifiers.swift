@@ -72,11 +72,11 @@ struct TextFieldModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding()
-            .background(Color.exchangerFieldBackgroundNew)
+            .background(Color.exchangerFieldBackground)
             .cornerRadius(26)
             .overlay(
                 RoundedRectangle(cornerRadius: 26)
-                .stroke(Color.exchangerFieldBackgroundNew, lineWidth: 1)
+                .stroke(Color.exchangerFieldBorder, lineWidth: 1)
             )
     }
 }

@@ -54,8 +54,9 @@ struct WalletScene: View {
             .blur(radius: viewModel.showReceiveView ? 4 : 0)
             
             if viewModel.showReceiveView {
-                SendAssetView()
+                SendAssetView(asset: viewModel.selectedAsset)
                     .transition(.move(edge: .bottom))
+                    .zIndex(1)
             }
         }
     }
