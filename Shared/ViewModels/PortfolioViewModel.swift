@@ -56,6 +56,7 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
             }
             .store(in: &subscriptions)
         
+        
         updateCharts()
     }
     

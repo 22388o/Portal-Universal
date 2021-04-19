@@ -38,16 +38,19 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
         
         $assetValue
             .removeDuplicates()
-            .compactMap { Double($0) }
+            .map { Double($0) ?? 0 }
             .map { [weak self] in "\(($0 * (self?.price ?? 1.0)).rounded(toPlaces: 2))" }
             .sink { [weak self] in self?.fiatValue = $0 }
             .store(in: &subscriptions)
         
         $fiatValue
             .removeDuplicates()
-            .compactMap { Double($0) }
+            .map { Double($0) ?? 0 }
             .map { [weak self] in "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6))" }
-            .sink { [weak self] in self?.assetValue = $0 }
+            .sink { [weak self] in
+                print($0)
+                self?.assetValue = $0
+            }
             .store(in: &subscriptions)
     }
     

@@ -12,9 +12,6 @@ import Combine
 import Charts
 
 final class AssetViewModel: ObservableObject, IMarketData {
-    enum Route {
-        case value, transactions, alerts
-    }
     
     let asset: IAsset
     
@@ -26,14 +23,13 @@ final class AssetViewModel: ObservableObject, IMarketData {
     @Published var price = String()
     @Published var change = String()
     @Published var selectedTimeframe: Timeframe = .hour
-    @Published var route: Route = .value
     
     @Published var chartDataEntries = [ChartDataEntry]()
     @Published var currency: Currency = .fiat(USD)
     @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
     
     private let queue = DispatchQueue.main
-//    private var cancellable: Cancellable?
+    
     private var subscriptions = Set<AnyCancellable>()
     
     private var marketData: CoinMarketData {
@@ -45,8 +41,6 @@ final class AssetViewModel: ObservableObject, IMarketData {
     }
     
     init(asset: IAsset) {
-//        print("Init - \(coin.code)")
-
         self.asset = asset
         self.balanceProvider = asset.balanceProvider
         self.marketChangeProvider = asset.marketChangeProvider
