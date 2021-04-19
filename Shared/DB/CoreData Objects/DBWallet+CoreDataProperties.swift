@@ -16,7 +16,6 @@ extension DBWallet {
         return NSFetchRequest<DBWallet>(entityName: "DBWallet")
     }
 
-    @NSManaged public var fiatCurrencyCode: String
     @NSManaged public var id: UUID
     @NSManaged public var name: String
 

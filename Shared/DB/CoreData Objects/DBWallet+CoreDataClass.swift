@@ -26,7 +26,6 @@ public class DBWallet: NSManagedObject, IWallet {
         self.init(context: context)
         self.id = model.id
         self.name = model.name
-        self.fiatCurrencyCode = "USD"
         
         context.insert(self)
         

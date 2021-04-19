@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DBStorage" representedClassName="DBStorage" syncable="YES" codeGenerationType="class">
+        <relationship name="wallets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DBWallet" inverseName="wallets" inverseEntity="DBWallet"/>
+    </entity>
+    <entity name="DBTx" representedClassName="DBTx" syncable="YES" codeGenerationType="class">
+        <attribute name="amount" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="coin" optional="YES" attributeType="String"/>
+        <attribute name="confirmations" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="memo" optional="YES" attributeType="String"/>
+        <attribute name="receiverAddress" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="String"/>
+        <attribute name="txID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="tx" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DBWallet" inverseName="txs" inverseEntity="DBWallet"/>
+    </entity>
     <entity name="DBWallet" representedClassName="DBWallet" syncable="YES">
-        <attribute name="fiatCurrencyCode" optional="YES" attributeType="String" defaultValueString="USD"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="txs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DBTx" inverseName="tx" inverseEntity="DBTx"/>
+        <relationship name="wallets" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DBStorage" inverseName="wallets" inverseEntity="DBStorage"/>
     </entity>
     <elements>
-        <element name="DBWallet" positionX="-63" positionY="-18" width="128" height="74"/>
+        <element name="DBWallet" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="103"/>
+        <element name="DBTx" positionX="-447.9609375" positionY="250.73828125" width="128" height="163"/>
+        <element name="DBStorage" positionX="-897.11328125" positionY="448.49609375" width="128" height="58"/>
     </elements>
 </model>
