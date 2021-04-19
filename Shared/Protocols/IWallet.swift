@@ -12,4 +12,5 @@ protocol IWallet {
     var walletID: UUID { get }
     var name: String { get }
     var assets: [IAsset] { get }
+    func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?)
 }

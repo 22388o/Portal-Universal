@@ -45,6 +45,7 @@ class WalletMock: IWallet {
     }
     
     func setup() {}
+    func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {}
 }
 
 //let CoinsMock: [Asset] = [BTC(), BCH(), ETH(), XLM(), XTZ()]
