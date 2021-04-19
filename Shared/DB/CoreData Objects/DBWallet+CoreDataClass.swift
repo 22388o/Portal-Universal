@@ -1,8 +1,8 @@
 //
 //  DBWallet+CoreDataClass.swift
-//  Portal
+//  Portal (iOS)
 //
-//  Created by Farid on 27.03.2021.
+//  Created by Farid on 19.04.2021.
 //
 //
 
@@ -53,7 +53,7 @@ public class DBWallet: NSManagedObject, IWallet {
             Coin(code: "NDC", name: "Nnnnnnn D", color: Color.blue, icon: Image("iconBch")),
             Coin(code: "NCB", name: "NNNNNNNcf", color: Color.red, icon: Image("iconXtz"))
         ]
-        
+                
         self.assets = sampleCoins.prefix(5).map{ Asset(coin: $0, data: data) }
         
         for _ in 0...295 {
@@ -62,5 +62,23 @@ public class DBWallet: NSManagedObject, IWallet {
             let asset = Asset(coin: coin, data: data)
             assets.append(asset)
         }
+    }
+    
+    func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {
+        guard let contex = self.managedObjectContext else { return }
+        
+        let tx = DBTx(context: contex)
+        
+        tx.txID = UUID().uuidString
+        tx.amount = NSDecimalNumber(decimal: amount)
+        tx.receiverAddress = receiverAddress
+        tx.memo = memo
+        tx.confirmations = 3
+        tx.coin = coin.code
+        tx.timestamp = Date()
+        
+        addToTxs(tx)
+        
+        try? contex.save()
     }
 }

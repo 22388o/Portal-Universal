@@ -18,6 +18,7 @@ struct PortalApp: App {
     var body: some Scene {
         WindowGroup {
             RootView(walletService: walletsService)
+                .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .edgesIgnoringSafeArea(.all)
         }
     }
