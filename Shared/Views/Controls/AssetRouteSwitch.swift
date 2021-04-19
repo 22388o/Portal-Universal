@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct AssetRouteSwitch: View {
-    @Binding var route: AssetViewModel.Route
+    @Binding var route: AssetView.Route
     @State var alignment: Alignment = .leading
     
     var body: some View {

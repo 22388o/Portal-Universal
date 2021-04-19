@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ExchangerView: View {
     @ObservedObject var viewModel: ExchangerViewModel
@@ -18,7 +19,8 @@ struct ExchangerView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Amount to send")
                 .font(.mainFont(size: 12))
-//                .foregroundColor(Color.white)
+                .foregroundColor(Color.coinViewRouteButtonInactive)
+
             
             HStack(spacing: 4) {
                 HStack(spacing: 8) {
@@ -27,6 +29,7 @@ struct ExchangerView: View {
                         .frame(width: 24, height: 24)
                     
                     TextField("", text: $viewModel.assetValue)
+                        .foregroundColor(Color.lightActiveLabel)
                         .modifier(
                             PlaceholderStyle(
                                 showPlaceHolder: viewModel.assetValue.isEmpty,
@@ -43,6 +46,7 @@ struct ExchangerView: View {
                 .frame(width: 224)
                 
                 Text("=")
+                    .foregroundColor(Color.coinViewRouteButtonInactive)
                 
                 HStack(spacing: 8) {
                     FiatCurrencyView(
@@ -53,6 +57,7 @@ struct ExchangerView: View {
                     .frame(width: 24, height: 24)
                     
                     TextField("", text: $viewModel.fiatValue)
+                        .foregroundColor(Color.lightActiveLabel)
                         .modifier(
                             PlaceholderStyle(
                                 showPlaceHolder: viewModel.fiatValue.isEmpty,
