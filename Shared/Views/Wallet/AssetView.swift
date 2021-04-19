@@ -9,14 +9,46 @@ import SwiftUI
 import Charts
 
 struct AssetView: View {
-    @Binding var showReceiveView: Bool
+    
+    enum Route {
+        case value, transactions, alerts
+    }
+    
+    @Binding var receiveAsset: Bool
+    @Binding var sendAsset: Bool
+    @Binding var sendAssetToExchange: Bool
+    @Binding var withdrawAssetFromExchange: Bool
+    @Binding var allTxs: Bool
+    @Binding var route: Route
+    
     @ObservedObject private var viewModel: AssetViewModel
     
     init(viewModel: WalletScene.ViewModel) {
         self.viewModel = AssetViewModel(asset: viewModel.selectedAsset)
-        self._showReceiveView = Binding(
-            get: { viewModel.showReceiveView },
-            set: { viewModel.showReceiveView = $0 }
+        
+        self._receiveAsset = Binding(
+            get: { viewModel.receiveAsset },
+            set: { viewModel.receiveAsset = $0 }
+        )
+        self._sendAsset = Binding(
+            get: { viewModel.sendAsset },
+            set: { viewModel.sendAsset = $0 }
+        )
+        self._sendAssetToExchange = Binding(
+            get: { viewModel.sendAssetToExchange },
+            set: { viewModel.sendAssetToExchange = $0 }
+        )
+        self._withdrawAssetFromExchange = Binding(
+            get: { viewModel.withdrawAssetFromExchange },
+            set: { viewModel.withdrawAssetFromExchange = $0 }
+        )
+        self._route = Binding(
+            get: { viewModel.assetViewRoute },
+            set: { viewModel.assetViewRoute = $0 }
+        )
+        self._allTxs = Binding(
+            get: { viewModel.allTransactions },
+            set: { viewModel.allTransactions = $0 }
         )
     }
     
@@ -47,27 +79,33 @@ struct AssetView: View {
                 VStack {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation {
-                                showReceiveView.toggle()
+                            withAnimation(.easeIn(duration: 0.2)) {
+                                receiveAsset.toggle()
                             }
                         }
-                        PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: false) {
-                            
+                        PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: true) {
+                            withAnimation(.easeIn(duration: 0.2)) {
+                                sendAsset.toggle()
+                            }
                         }
                     }
-                    PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
-                        
+                    PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: true) {
+                        withAnimation(.easeIn(duration: 0.2)) {
+                            sendAssetToExchange.toggle()
+                        }
                     }
-                    PButton(label: "Withdraw from exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
-                        
+                    PButton(label: "Withdraw from exchange", width: 256, height: 32, fontSize: 12, enabled: true) {
+                        withAnimation(.easeIn(duration: 0.2)) {
+                            withdrawAssetFromExchange.toggle()
+                        }
                     }
                 }
                 
                 Spacer().frame(height: 10)
                 
-                AssetRouteSwitch(route: $viewModel.route)
+                AssetRouteSwitch(route: $route)
                 
-                switch viewModel.route {
+                switch route {
                 case .value:
                     MarketValueView(
                         timeframe: $viewModel.selectedTimeframe,
@@ -77,15 +115,10 @@ struct AssetView: View {
                         valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
                         type: .asset
                     )
-//                    .transition(.move(edge: .bottom))
+                    .transition(.identity)
                 case .transactions:
-                    VStack {
-                        Spacer()
-                        Text("Transactions")
-                        Spacer()
-                    }
-                    .padding()
-//                    .transition(.move(edge: .bottom))
+                    RecentTxsView(coin: viewModel.asset.coin, showAllTxs: $allTxs)
+                        .transition(.identity)
                 case .alerts:
                     VStack {
                         Spacer()

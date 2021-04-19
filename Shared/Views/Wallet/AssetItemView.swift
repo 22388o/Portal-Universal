@@ -27,7 +27,7 @@ struct AssetItemView: View {
                         viewModel.asset.coin.icon
                             .resizable()
                             .frame(width: 24, height: 24)
-                        Text(viewModel.asset.coin.code)
+                        Text("\(viewModel.asset.balanceProvider.balanceString) \(viewModel.asset.coin.code)")
                     }
                     
                     Spacer()
@@ -37,6 +37,7 @@ struct AssetItemView: View {
                 .padding(.horizontal, 20)
                 
                 Text(viewModel.totalValue)
+                    .transition(.identity)
             }
             .font(.mainFont(size: 18))
             .foregroundColor(selected ? .black : .white)

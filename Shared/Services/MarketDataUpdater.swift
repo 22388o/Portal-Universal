@@ -72,29 +72,37 @@ final class MarketDataUpdater: IHistoricalData {
     }
     
     private func fetchHourData(assets: String,  _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void)) {
-        guard hourDataTask?.state != .running else { return }
-        guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
-            competionHandler(.failure(.networkError))
+        guard let mockResponse = hourDataResponse.data(using: .utf8) else {
             return
         }
-        hourDataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-            switch (data, error) {
-            case (_, .some):
-                competionHandler(.failure(.networkError))
-            case let (.some(data), nil):
-                guard let mockResponse = hourDataResponse.data(using: .utf8) else {
-                    return
-                }
-                guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
-                    competionHandler(.failure(.parsing))
-                    return
-                }
-                competionHandler(.success(response))
-            case (nil, nil):
-                competionHandler(.failure(.inconsistentBehavior))
-            }
+        guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
+            competionHandler(.failure(.parsing))
+            return
         }
-        hourDataTask?.resume()
+        competionHandler(.success(response))
+//        guard hourDataTask?.state != .running else { return }
+//        guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
+//            competionHandler(.failure(.networkError))
+//            return
+//        }
+//        hourDataTask = URLSession.shared.dataTask(with: url) { data, response, error in
+//            switch (data, error) {
+//            case (_, .some):
+//                competionHandler(.failure(.networkError))
+//            case let (.some(data), nil):
+//                guard let mockResponse = hourDataResponse.data(using: .utf8) else {
+//                    return
+//                }
+//                guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
+//                    competionHandler(.failure(.parsing))
+//                    return
+//                }
+//                competionHandler(.success(response))
+//            case (nil, nil):
+//                competionHandler(.failure(.inconsistentBehavior))
+//            }
+//        }
+//        hourDataTask?.resume()
     }
     
     private func fetchDayData(assets: String,  _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void)) {

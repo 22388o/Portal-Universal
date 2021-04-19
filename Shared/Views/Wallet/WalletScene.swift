@@ -9,9 +9,11 @@ import SwiftUI
 
 
 struct WalletScene: View {
+    let wallet: IWallet
     @ObservedObject private var viewModel: ViewModel
             
     init(wallet: IWallet) {
+        self.wallet = wallet
         viewModel = .init(name: wallet.name, assets: wallet.assets)
     }
     
@@ -51,10 +53,20 @@ struct WalletScene: View {
                 .cornerRadius(8)
                 .padding([.leading, .bottom, .trailing], 24)
             }
-            .blur(radius: viewModel.showReceiveView ? 4 : 0)
+            .blur(radius: viewModel.modalViewIsPresented ? 4 : 0)
             
-            if viewModel.showReceiveView {
-                SendAssetView(asset: viewModel.selectedAsset)
+            if viewModel.sendAsset {
+                SendAssetView(wallet: wallet, asset: viewModel.selectedAsset, show: $viewModel.sendAsset)
+                    .transition(.move(edge: .bottom))
+                    .zIndex(1)
+            }
+            if viewModel.receiveAsset {
+                ReceiveAssetsView(asset: viewModel.selectedAsset, show: $viewModel.receiveAsset)
+                    .transition(.move(edge: .bottom))
+                    .zIndex(1)
+            }
+            if viewModel.allTransactions {
+                AssetTxView(asset: viewModel.selectedAsset, show: $viewModel.allTransactions)
                     .transition(.move(edge: .bottom))
                     .zIndex(1)
             }
@@ -62,19 +74,39 @@ struct WalletScene: View {
     }
 }
 
+import Combine
+
 extension WalletScene {
     final class ViewModel: ObservableObject {
         @Published var walletName: String
         @Published var selectedAsset: IAsset
         @Published var assets: [IAsset]
         
-        @Published var showReceiveView: Bool = false
+        @Published var receiveAsset: Bool = false
+        @Published var sendAsset: Bool = false
+        @Published var sendAssetToExchange: Bool = false
+        @Published var withdrawAssetFromExchange: Bool = false
+        @Published var allTransactions: Bool = false
+        @Published var searchRequest = String()
+        
+        @Published var assetViewRoute: AssetView.Route = .value
+        
+        @Published var modalViewIsPresented: Bool = false
+        
+        private var anyCancellable = Set<AnyCancellable>()
             
         init(name: String, assets: [IAsset]) {
             print("WalletViewModel init")
             self.assets = assets
             self.walletName = name
             self.selectedAsset = assets.first ?? Asset.bitcoin()
+            
+            Publishers.MergeMany($receiveAsset, $sendAsset, $sendAssetToExchange, $withdrawAssetFromExchange, $allTransactions)
+                .sink { [weak self] output in
+                    self?.modalViewIsPresented = output
+                }
+                .store(in: &anyCancellable)
+            
         }
     }
 }

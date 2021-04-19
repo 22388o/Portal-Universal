@@ -17,7 +17,7 @@ struct WalletView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 14) {
-                AssetSearchField()
+                AssetSearchField(search: $viewModel.searchRequest)
                 FiatCurrencyButton()
             }
             .padding([.top, .horizontal], 24)
@@ -40,14 +40,28 @@ struct WalletView: View {
             
             ScrollView {
                 LazyVStack(spacing: 8) {
-                    ForEach(viewModel.assets, id: \.id) { asset in
-                        AssetItemView(
-                            viewModel: AssetViewModel(asset: asset),
-                            selected: viewModel.selectedAsset.id == asset.id
-                        )
-                        .onTapGesture {
-                            if asset.coin.code != viewModel.selectedAsset.coin.code {
-                                viewModel.selectedAsset = asset
+                    if viewModel.searchRequest.isEmpty {
+                        ForEach(viewModel.assets, id: \.id) { asset in
+                            AssetItemView(
+                                viewModel: AssetViewModel(asset: asset),
+                                selected: viewModel.selectedAsset.id == asset.id
+                            )
+                            .onTapGesture {
+                                if asset.coin.code != viewModel.selectedAsset.coin.code {
+                                    viewModel.selectedAsset = asset
+                                }
+                            }
+                        }
+                    } else {
+                        ForEach(viewModel.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
+                            AssetItemView(
+                                viewModel: AssetViewModel(asset: asset),
+                                selected: viewModel.selectedAsset.id == asset.id
+                            )
+                            .onTapGesture {
+                                if asset.coin.code != viewModel.selectedAsset.coin.code {
+                                    viewModel.selectedAsset = asset
+                                }
                             }
                         }
                     }
