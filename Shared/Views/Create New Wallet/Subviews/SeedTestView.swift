@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SeedTestView: View {
     @ObservedObject private var viewModel: CreateWalletScene.ViewModel
+    @ObservedObject private var keyboard = KeyboardResponder()
 
     init(viewModel: CreateWalletScene.ViewModel) {
         self.viewModel = viewModel
@@ -27,39 +28,40 @@ struct SeedTestView: View {
                 .font(.mainFont(size: 14))
                 .multilineTextAlignment(.center)
             
-            
-            HStack(spacing: 26) {
-                VStack(alignment: .leading, spacing: 9) {
-                    Text("\(viewModel.test.testIndices[0])) word")
-                        .font(.mainFont(size: 14))
-                    PTextField(text: $viewModel.test.testString1, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
-                    Text("\(viewModel.test.testIndices[1])) word")
-                        .font(.mainFont(size: 14))
-                    PTextField(text: $viewModel.test.testString2, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
+            VStack(spacing: 0) {
+                HStack(spacing: 26) {
+                    VStack(alignment: .leading, spacing: 9) {
+                        Text("\(viewModel.test.testIndices[0])) word")
+                            .font(.mainFont(size: 14))
+                        PTextField(text: $viewModel.test.testString1, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
+                        Text("\(viewModel.test.testIndices[1])) word")
+                            .font(.mainFont(size: 14))
+                        PTextField(text: $viewModel.test.testString2, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
+                    }
+                    VStack(alignment: .leading, spacing: 9) {
+                        Text("\(viewModel.test.testIndices[2])) word")
+                            .font(.mainFont(size: 14))
+                        PTextField(text: $viewModel.test.testString3, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
+                        Text("\(viewModel.test.testIndices[3])) word")
+                            .font(.mainFont(size: 14))
+                        PTextField(text: $viewModel.test.testString4, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
+                    }
                 }
-                VStack(alignment: .leading, spacing: 9) {
-                    Text("\(viewModel.test.testIndices[2])) word")
-                        .font(.mainFont(size: 14))
-                    PTextField(text: $viewModel.test.testString3, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
-                    Text("\(viewModel.test.testIndices[3])) word")
-                        .font(.mainFont(size: 14))
-                    PTextField(text: $viewModel.test.testString4, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
+                .padding(.top, 25)
+                .padding(.bottom, 30)
+                
+                Text("Your wallet will be ready when words are correct.")
+                    .font(.mainFont(size: 14))
+                
+                Spacer().frame(height: 21)
+                
+                PButton(label: "Create my wallet", width: 203, height: 48, fontSize: 15, enabled: viewModel.test.formIsValid) {
+                    withAnimation {
+                        viewModel.creteNewWallet()
+                    }
                 }
             }
-            .padding(.top, 25)
-            .padding(.bottom, 30)
-            
-            Text("Your wallet will be ready when words are correct.")
-                .font(.mainFont(size: 14))
-            
-            Spacer().frame(height: 21)
-            
-            PButton(label: "Create my wallet", width: 203, height: 48, fontSize: 15, enabled: viewModel.test.formIsValid) {
-                withAnimation {
-                    viewModel.creteNewWallet()
-                }
-            }
-            
+            .padding(.bottom, keyboard.currentHeight)
         }
     }
 }
@@ -115,5 +117,30 @@ struct SeedTestView_Previews: PreviewProvider {
             .frame(width: 750, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()
+    }
+}
+
+final class KeyboardResponder: ObservableObject {
+    private var notificationCenter: NotificationCenter
+    @Published private(set) var currentHeight: CGFloat = 0
+
+    init(center: NotificationCenter = .default) {
+        notificationCenter = center
+        notificationCenter.addObserver(self, selector: #selector(keyBoardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyBoardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    deinit {
+        notificationCenter.removeObserver(self)
+    }
+
+    @objc func keyBoardWillShow(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            currentHeight = keyboardSize.height
+        }
+    }
+
+    @objc func keyBoardWillHide(notification: Notification) {
+        currentHeight = 0
     }
 }

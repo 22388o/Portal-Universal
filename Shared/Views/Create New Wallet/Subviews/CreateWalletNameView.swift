@@ -17,28 +17,6 @@ struct CreateWalletNameView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Group {
-                Image("lockedSafeIcon")
-                    .offset(x: 1, y: -2)
-                
-                Spacer().frame(height: 24)
-                
-                Text("Let’s get you a wallet")
-                    .font(.mainFont(size: 30))
-                    .foregroundColor(Color.createWalletLabel)
-                
-                Spacer().frame(height: 17)
-                
-                Text("Create a universal wallet to store and trade all\nyour cryptocurrencies securely. You’ll be able to\ncreate more than one wallet.")
-                    .multilineTextAlignment(.center)
-                    .font(.mainFont(size: 18))
-                    .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
-            }
-            
-            Divider()
-                .frame(width: 410)
-                .padding(.vertical, 30)
-            
             Text("Name your wallet")
                 .font(.mainFont(size: 17))
                 .foregroundColor(Color.createWalletLabel)
@@ -59,6 +37,28 @@ struct CreateWalletNameView: View {
                         viewModel.walletCreationStep = .seed
                     }
                 }
+            }
+            
+            Divider()
+                .frame(width: 410)
+                .padding(.vertical, 30)
+            
+            Group {
+                Image("lockedSafeIcon")
+                    .offset(x: 1, y: -2)
+                
+                Spacer().frame(height: 24)
+                
+                Text("Let’s get you a wallet")
+                    .font(.mainFont(size: 30))
+                    .foregroundColor(Color.createWalletLabel)
+                
+                Spacer().frame(height: 17)
+                
+                Text("Create a universal wallet to store and trade all\nyour cryptocurrencies securely. You’ll be able to\ncreate more than one wallet.")
+                    .multilineTextAlignment(.center)
+                    .font(.mainFont(size: 18))
+                    .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
             }
         }
     }
