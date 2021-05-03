@@ -16,9 +16,7 @@ struct AssetRouteSwitch: View {
         ZStack(alignment: .bottom) {
             HStack(spacing: 2) {
                 Button(action: {
-                    withAnimation {
-                        route = .value
-                    }
+                    route = .value
                 }) {
                     Text("Value")
                         .foregroundColor(route == .value ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
@@ -28,9 +26,7 @@ struct AssetRouteSwitch: View {
                 Spacer()
                 
                 Button(action: {
-                    withAnimation {
-                        route = .transactions
-                    }
+                    route = .transactions
                 }) {
                     Text("Transactions")
                         .foregroundColor(route == .transactions ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
@@ -40,9 +36,7 @@ struct AssetRouteSwitch: View {
                 Spacer()
                 
                 Button(action: {
-                    withAnimation {
-                        route = .alerts
-                    }
+                    route = .alerts
                 }) {
                     Text("Alerts")
                         .foregroundColor(route == .alerts ? Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
@@ -58,15 +52,13 @@ struct AssetRouteSwitch: View {
             }
         }
         .onReceive(Just(route), perform: { route in
-            withAnimation {
-                switch route {
-                case .value:
-                    alignment = .leading
-                case .transactions:
-                    alignment = .center
-                case .alerts:
-                    alignment = .trailing
-                }
+            switch route {
+            case .value:
+                alignment = .leading
+            case .transactions:
+                alignment = .center
+            case .alerts:
+                alignment = .trailing
             }
         })
     }

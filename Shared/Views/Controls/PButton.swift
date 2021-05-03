@@ -31,6 +31,7 @@ struct PButton: View {
             }
         }
         .frame(width: width, height: height)
+        .disabled(!enabled)
     }
 }
 

@@ -39,7 +39,7 @@ struct AssetSearchField_Previews: PreviewProvider {
             .padding()
             .background(
                 ZStack {
-                    Color.portalGradientBackground
+                    Color.portalWalletBackground
                     Color.black.opacity(0.58)
                 }
             )

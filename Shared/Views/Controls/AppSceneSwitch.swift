@@ -1,5 +1,5 @@
 //
-//  WalletExchangeSwitch.swift
+//  AppSceneSwitch.swift
 //  Portal
 //
 //  Created by Farid on 08.04.2021.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct WalletExchangeSwitch: View {
-    enum SwithState {
-        case wallet, exchange
-    }
-    
-    @State private var state: SwithState = .wallet
+struct AppSceneSwitch: View {
+//    enum Scenes {
+//        case wallet, swap
+//    }
+//    
+    @Binding var state: WalletScene.Scenes
     
     var body: some View {
         ZStack {
@@ -29,11 +29,11 @@ struct WalletExchangeSwitch: View {
                 HStack(spacing: 0) {
                     HStack {
                         Spacer()
-                        Image("iconSafeSmall")
-                            .renderingMode(.template)
-                            .accentColor(
-                                state == .wallet ? Color.black : Color.white
-                            )
+//                        Image("iconSafeSmall")
+//                            .renderingMode(.template)
+//                            .accentColor(
+//                                state == .wallet ? Color.black : Color.white
+//                            )
                         Text("My wallet")
                             .font(.mainFont(size: 12))
                             .foregroundColor(
@@ -49,21 +49,21 @@ struct WalletExchangeSwitch: View {
                     
                     HStack {
                         Spacer()
-                        Image("iconSafeSmall")
-                            .renderingMode(.template)
-                            .accentColor(
-                                state == .exchange ? Color.black : Color.white
-                            )
-                        Text("Exchange")
+//                        Image("iconSafeSmall")
+//                            .renderingMode(.template)
+//                            .accentColor(
+//                                state == .swap ? Color.black : Color.white
+//                            )
+                        Text("Atomic swap")
                             .font(.mainFont(size: 12))
                             .foregroundColor(
-                                state == .exchange ? Color.walletExchangeSwitchActentLabel : Color.white.opacity(0.82)
+                                state == .swap ? Color.walletExchangeSwitchActentLabel : Color.white.opacity(0.82)
                             )
                         Spacer()
                     }
                     .onTapGesture {
                         withAnimation {
-                            state = .exchange
+                            state = .swap
                         }
                     }
                 }
@@ -75,9 +75,9 @@ struct WalletExchangeSwitch: View {
 
 struct WalletExchangeSwitch_Previews: PreviewProvider {
     static var previews: some View {
-        WalletExchangeSwitch()
+        AppSceneSwitch(state: .constant(.wallet))
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()
-            .background(Color.portalGradientBackground)
+            .background(Color.portalWalletBackground)
     }
 }

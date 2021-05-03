@@ -44,7 +44,7 @@ struct MarketValueView: View {
                         
                         Text(totalValue)
                             .lineLimit(1)
-                            .font(Font.mainFont(size: 28))
+                            .font(Font.mainFont(size: 26))
                             .foregroundColor(type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
                         
                         Spacer()
@@ -56,7 +56,7 @@ struct MarketValueView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
-                    .padding([.leading, .trailing])
+                    .padding(.horizontal, 6)
                     
                     Text(change)
                         .font(Font.mainFont(size: 15))
