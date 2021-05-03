@@ -14,6 +14,6 @@ protocol IWalletsService: ObservableObject {
     var wallets: [IWallet]? { get }
     
     func createWallet(model: NewWalletModel)
+    func switchWallet(_ wallet: IWallet)
     func restoreWallet()
-    func setupWallet(id: String)
 }
