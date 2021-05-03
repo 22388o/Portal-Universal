@@ -15,10 +15,18 @@ struct RootView: View {
     }
     
     var body: some View {
-        if let wallet = walletService.currentWallet {
-            WalletScene(wallet: wallet)
-        } else {
-            CreateWalletScene(walletService: walletService)
+        ZStack {
+            Color.portalWalletBackground
+            
+            if walletService.currentWallet != nil {
+                WalletScene(walletService: walletService)
+                    .transition(AnyTransition.scale.combined(with: .opacity))
+                    .zIndex(1)
+            } else {
+                CreateWalletScene(walletService: walletService)
+                    .transition(AnyTransition.scale.combined(with: .opacity))
+                    .zIndex(1)
+            }
         }
     }
 }
