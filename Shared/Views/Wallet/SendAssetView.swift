@@ -11,7 +11,7 @@ struct SendAssetView: View {
     private let coin: Coin
 
     @ObservedObject private var viewModel: ViewModel
-    @Binding var show: Bool
+    @Binding var presented: Bool
     
     @FetchRequest(
         entity: DBTx.entity(),
@@ -21,10 +21,10 @@ struct SendAssetView: View {
 //        predicate: NSPredicate(format: "coin == %@", code)
     ) private var allTxs: FetchedResults<DBTx>
         
-    init(wallet: IWallet, asset: IAsset, show: Binding<Bool>) {
+    init(wallet: IWallet, asset: IAsset, presented: Binding<Bool>) {
         self.coin = asset.coin
         self.viewModel = .init(wallet: wallet, asset: asset)
-        self._show = show
+        self._presented = presented
     }
     
     var body: some View {
@@ -35,7 +35,8 @@ struct SendAssetView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.black.opacity(0.7), lineWidth: 8)
                 )
-                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
+
+//                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
             
             viewModel.asset.coin.icon
                 .resizable()
@@ -45,8 +46,8 @@ struct SendAssetView: View {
             HStack {
                 Spacer()
                 PButton(label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
-                    withAnimation(.easeIn(duration: 0.2)) {
-                        show.toggle()
+                    withAnimation {
+                        presented.toggle()
                     }
                 }
             }
@@ -96,6 +97,7 @@ struct SendAssetView: View {
                                 
                 PButton(label: "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.canSend) {
                     viewModel.send()
+                    
                 }
                 .padding(.top, 16)
                 .padding(.bottom, 27)
@@ -195,13 +197,23 @@ extension SendAssetView {
         func send() {
             print("amount = \(amount), address: \(receiverAddress), memo: \(memo)")
             wallet.addTx(coin: asset.coin, amount: amount, receiverAddress: receiverAddress, memo: memo)
+            
+            reset()
+        }
+        
+        private func reset() {
+            amount = 0
+            receiverAddress = String()
+            memo = String()
+            
+            exchangerViewModel.reset()
         }
     }
 }
 
 struct SendAssetView_Previews: PreviewProvider {
     static var previews: some View {
-        SendAssetView(wallet: WalletMock(), asset: Asset.bitcoin(), show: .constant(false))
+        SendAssetView(wallet: WalletMock(), asset: Asset.bitcoin(), presented: .constant(false))
             .frame(width: 576, height: 662)
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)
