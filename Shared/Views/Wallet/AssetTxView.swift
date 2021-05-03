@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AssetTxView: View {
     let asset: IAsset
-    @Binding var show: Bool
+    @Binding var presented: Bool
     @State var selectedTx: DBTx?
     
     @FetchRequest(
@@ -37,15 +37,16 @@ struct AssetTxView: View {
             HStack {
                 if selectedTx != nil {
                     PButton(label: "All Transaction", width: 132, height: 32, fontSize: 12, enabled: true) {
-                        withAnimation(.easeIn(duration: 0.2)) {
+                        withAnimation(.easeInOut(duration: 0.2)) {
                             selectedTx = nil
                         }
                     }
+//                    .transition(.scale)
                 }
                 Spacer()
                 PButton(label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
-                    withAnimation(.easeIn(duration: 0.2)) {
-                        show.toggle()
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        presented.toggle()
                     }
                 }
             }
@@ -108,6 +109,7 @@ struct AssetTxView: View {
                     .padding([.bottom, .horizontal], 4)
                 }
                 .padding(.top, 57)
+                .transition(.identity)
             } else {
                 VStack(spacing: 0) {
                     Text("\(asset.coin.code) Transactions")
@@ -157,7 +159,7 @@ struct AssetTxView: View {
                                     .padding(.vertical, 2)
                                     .frame(maxWidth: .infinity)
                                     .onTapGesture {
-                                        withAnimation {
+                                        withAnimation(.easeInOut(duration: 0.2)) {
                                             selectedTx = tx
                                         }
                                     }
@@ -170,7 +172,7 @@ struct AssetTxView: View {
                     .padding([.bottom, .horizontal], 4)
                 }
                 .padding(.top, 57)
-//                .transition(AnyTransition.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
+                .transition(.identity)
             }
         }
         .frame(width: 576, height: 662)
@@ -179,7 +181,7 @@ struct AssetTxView: View {
 
 struct AssetTxView_Previews: PreviewProvider {
     static var previews: some View {
-        AssetTxView(asset: Asset.bitcoin(), show: .constant(false))
+        AssetTxView(asset: Asset.bitcoin(), presented: .constant(false))
             .frame(width: 576, height: 662)
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)

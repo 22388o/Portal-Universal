@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ReceiveAssetsView: View {
     private let asset: IAsset
-    @Binding var show: Bool
+    @Binding var presented: Bool
     @State private var isCopied: Bool = false
         
-    init(asset: IAsset, show: Binding<Bool>) {
+    init(asset: IAsset, presented: Binding<Bool>) {
         self.asset = asset
-        self._show = show
+        self._presented = presented
     }
     
     var body: some View {
@@ -23,9 +23,9 @@ struct ReceiveAssetsView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black.opacity(0.7), lineWidth: 8)
+                        .stroke(Color.black, lineWidth: 8)
                 )
-                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
+//                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
             
             asset.coin.icon
                 .resizable()
@@ -36,7 +36,7 @@ struct ReceiveAssetsView: View {
                 Spacer()
                 PButton(label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
                     withAnimation(.easeIn(duration: 0.2)) {
-                        show.toggle()
+                        presented.toggle()
                     }
                 }
             }
@@ -92,7 +92,7 @@ struct ReceiveAssetsView: View {
 
 struct ReceiveAssetsView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiveAssetsView(asset: Asset.bitcoin(), show: .constant(false))
+        ReceiveAssetsView(asset: Asset.bitcoin(), presented: .constant(false))
             .frame(width: 576, height: 350)
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)
