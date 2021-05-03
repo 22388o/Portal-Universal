@@ -21,13 +21,16 @@ final class WalletsService: ObservableObject {
 
     static private let currentWalletIDKey = "CURRENT_WALLET_ID"
     
-    private var currentWalletID: String? {
+    private var currentWalletID: UUID? {
         get {
-            return keychainStorage.string(for: WalletsService.currentWalletIDKey)
+            guard let uuidString = keychainStorage.string(for: WalletsService.currentWalletIDKey) else {
+                return nil
+            }
+            return UUID(uuidString: uuidString)
         }
         set {
             guard let value = newValue else { return }
-            keychainStorage.save(string: value, for: WalletsService.currentWalletIDKey)
+            keychainStorage.save(string: value.uuidString, for: WalletsService.currentWalletIDKey)
         }
     }
     
@@ -67,6 +70,16 @@ final class WalletsService: ObservableObject {
         }
     }
     
+    private func setupWallet(id: UUID) {
+        if let wallet = _wallets?.first(where: { $0.walletID == id }) {
+            guard let data = keychainStorage.data(for: wallet.key) else { return }
+            wallet.setup(data: data)
+            currentWallet = wallet
+        } else {
+            fatalError("Wallet with id \(id) isn't exist")
+        }
+    }
+    
     private func saveSeed(data: Data, key: String) {
         if Device.hasSecureEnclave {
             keychainStorage.save(data: data, key: key)
@@ -85,17 +98,7 @@ final class WalletsService: ObservableObject {
     }
 }
 
-extension WalletsService: IWalletsService {
-    func setupWallet(id: String) {
-        if let wallet = _wallets?.first(where: { $0.walletID.uuidString == id }) {
-            guard let data = keychainStorage.data(for: wallet.key) else { return }
-            wallet.setup(data: data)
-            currentWallet = wallet
-        } else {
-            fatalError("Wallet with id \(id) isn't exist")
-        }
-    }
-    
+extension WalletsService: IWalletsService {    
     func createWallet(model: NewWalletModel) {
         guard let context = self.context else {
             fatalError("Cannot get context to create wallet.")
@@ -109,8 +112,13 @@ extension WalletsService: IWalletsService {
         newWallet.setup(data: data)
         saveSeed(data: data, key: newWallet.key)
         
-        currentWalletID = newWallet.id.uuidString
+        currentWalletID = newWallet.id
         currentWallet = newWallet
+    }
+    
+    func switchWallet(_ wallet: IWallet) {
+        currentWalletID = wallet.walletID
+        setupWallet(id: wallet.walletID)
     }
     
     func restoreWallet() {
