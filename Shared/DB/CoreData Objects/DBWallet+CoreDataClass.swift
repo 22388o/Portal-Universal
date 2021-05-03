@@ -37,8 +37,8 @@ public class DBWallet: NSManagedObject, IWallet {
     }
     
     func setup(data: Data) {
-        assets = WalletMock().assets
-        return
+//        assets = WalletMock().assets
+//        return
         let sampleCoins = [
             Coin(code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc")),
             Coin(code: "BCH", name: "Bitcoin Cash", color: Color.gray, icon: Image("iconBch")),
@@ -56,7 +56,7 @@ public class DBWallet: NSManagedObject, IWallet {
                 
         self.assets = sampleCoins.prefix(5).map{ Asset(coin: $0, data: data) }
         
-        for _ in 0...295 {
+        for _ in 5...Int.random(in: 6...10) {
             let randomIndex = Int.random(in: 5...sampleCoins.count - 1)
             let coin = sampleCoins[randomIndex]
             let asset = Asset(coin: coin, data: data)
