@@ -108,7 +108,7 @@ struct TopCoinView: View {
 struct OnboardingPortfolioView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Color.portalGradientBackground
+            Color.portalWalletBackground
             Color.black.opacity(0.58)
             TopCoinView()
         }

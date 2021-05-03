@@ -57,7 +57,7 @@ struct CreateWalletNameView: View {
                 
                 Text("Create a universal wallet to store and trade all\nyour cryptocurrencies securely. You’ll be able to\ncreate more than one wallet.")
                     .multilineTextAlignment(.center)
-                    .font(.mainFont(size: 18))
+                    .font(.mainFont(size: 16))
                     .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
             }
         }

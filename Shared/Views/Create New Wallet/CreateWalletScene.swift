@@ -16,7 +16,7 @@ struct CreateWalletScene: View {
     
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
-            Color.portalGradientBackground
+            Color.portalWalletBackground
             
             HStack(spacing: 12) {
                 Group {
@@ -160,7 +160,7 @@ extension CreateWalletScene {
                         
             bindInputs()
             
-            print(testSolved)
+            print("Test solved: \(testSolved)")
         }
         
         private func bindInputs() {
