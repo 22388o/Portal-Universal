@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PortfolioView: View {
-    @StateObject var viewModel: PortfolioViewModel
+    @ObservedObject var viewModel: PortfolioViewModel
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -56,7 +56,7 @@ struct PortfolioView: View {
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(2)
                     
-                    AssetAllocationView(assets: self.viewModel.assets, showTotalValue: false)
+                    AssetAllocationView(assets: viewModel.assets, showTotalValue: false)
                         .frame(height: 150)
                 }
             }
@@ -71,12 +71,14 @@ struct PortfolioView: View {
     }		
 }
 
-struct AssetAllocationViewModel: IPieChartModel {
+struct AssetAllocationViewModel: IPieChartModel, IBarChartViewModel {
     var assets: [IAsset]
+    let isLineChart: Bool
     
     init(assets: [IAsset] = WalletMock().assets.map{ $0 }) {
         print("Asset allocation view model init")
         self.assets = assets
+        self.isLineChart = UIScreen.main.bounds.height < 1024 ? false : true
     }
 }
 
@@ -99,6 +101,49 @@ struct PieChartUIKitWrapper: UIViewRepresentable {
     func updateUIView(_ uiView: PieChartView, context: Context) {}
 }
 
+struct BarChartUIKitWrapper: UIViewRepresentable {
+    let viewModel: IBarChartViewModel
+
+    init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel()) {
+        self.viewModel = viewModel
+    }
+    
+    func makeUIView(context: Context) -> BarChartView {
+        let barChart = BarChartView()
+//        pieChart.applyStandardSettings()
+        barChart.data = viewModel.assetAllocationBarChartData()
+        barChart.backgroundColor = .clear
+        barChart.drawValueAboveBarEnabled = true
+        barChart.pinchZoomEnabled = false
+        barChart.drawBordersEnabled = false
+        barChart.drawBarShadowEnabled = false
+        barChart.drawGridBackgroundEnabled = false
+        barChart.drawMarkers = false
+        barChart.leftAxis.drawAxisLineEnabled = false
+        barChart.leftAxis.removeAllLimitLines()
+        barChart.rightAxis.drawAxisLineEnabled = false
+        barChart.rightAxis.drawGridLinesEnabled = false
+        barChart.rightAxis.enabled = false
+        barChart.rightAxis.removeAllLimitLines()
+        
+        let xaxis = barChart.xAxis
+//                    xaxis.valueFormatter = axisFormatDelegate
+                    xaxis.drawGridLinesEnabled = false
+                    xaxis.labelPosition = .bottom
+                    xaxis.centerAxisLabelsEnabled = false
+//                    xaxis.valueFormatter = IndexAxisValueFormatter(values:self.months)
+                    xaxis.granularity = 1
+
+        barChart.leftAxis.enabled = false
+        barChart.rightAxis.enabled = false
+        barChart.drawBarShadowEnabled = false
+        
+        return barChart
+    }
+
+    func updateUIView(_ uiView: BarChartView, context: Context) {}
+}
+
 struct AssetAllocationView: View {
     let viewModel: AssetAllocationViewModel
     let showTotalValue: Bool
@@ -114,12 +159,19 @@ struct AssetAllocationView: View {
     
     var body: some View {
         ZStack {
-            if showTotalValue {
-                Text("$" + "\(viewModel.totalPortfolioValue)")
-                    .font(Font.mainFont(size: 16))
-                    .foregroundColor(Color.white)
+//            if showTotalValue {
+//                Text("$" + "\(viewModel.totalPortfolioValue)")
+//                    .font(Font.mainFont(size: 16))
+//                    .foregroundColor(Color.white)
+//            }
+            if viewModel.isLineChart {
+                BarChartUIKitWrapper(viewModel: viewModel)
+                    .frame(height: 350)
+                    .offset(y: 100)
+                    
+            } else {
+                PieChartUIKitWrapper(viewModel: viewModel)
             }
-            PieChartUIKitWrapper(viewModel: viewModel)
         }
     }
 }
@@ -127,7 +179,7 @@ struct AssetAllocationView: View {
 struct PortfolioView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Color.portalGradientBackground
+            Color.portalWalletBackground
             Color.black.opacity(0.58)
             PortfolioView(viewModel: .init(assets: WalletMock().assets))
         }
