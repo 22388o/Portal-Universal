@@ -41,23 +41,30 @@ struct WalletView: View {
             ScrollView {
                 LazyVStack(spacing: 8) {
                     if viewModel.searchRequest.isEmpty {
-                        ForEach(viewModel.assets, id: \.id) { asset in
+                        ForEach(viewModel.wallet.assets, id: \.id) { asset in
                             AssetItemView(
                                 viewModel: AssetViewModel(asset: asset),
                                 selected: viewModel.selectedAsset.id == asset.id
                             )
+                            .padding(.horizontal, 18)
                             .onTapGesture {
                                 if asset.coin.code != viewModel.selectedAsset.coin.code {
                                     viewModel.selectedAsset = asset
+                                    if viewModel.sceneState != .full {
+                                        withAnimation {
+                                            viewModel.sceneState = .walletAsset
+                                        }
+                                    }
                                 }
                             }
                         }
                     } else {
-                        ForEach(viewModel.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
+                        ForEach(viewModel.wallet.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
                             AssetItemView(
                                 viewModel: AssetViewModel(asset: asset),
                                 selected: viewModel.selectedAsset.id == asset.id
                             )
+                            .padding(.horizontal, 18)
                             .onTapGesture {
                                 if asset.coin.code != viewModel.selectedAsset.coin.code {
                                     viewModel.selectedAsset = asset
@@ -67,8 +74,9 @@ struct WalletView: View {
                     }
                 }
                 .offset(y: 20)
+                .padding(.bottom, 40)
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 6)
         }
     }
 }
@@ -76,9 +84,9 @@ struct WalletView: View {
 struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Color.portalGradientBackground
+            Color.portalWalletBackground
             Color.black.opacity(0.58)
-            WalletView(viewModel: WalletScene.ViewModel(name: "Personal", assets: WalletMock().assets))
+            WalletView(viewModel: WalletScene.ViewModel(wallet: WalletMock()))
         }
         .frame(width: .infinity, height: 430)
         .previewLayout(PreviewLayout.sizeThatFits)
