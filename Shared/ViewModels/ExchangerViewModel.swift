@@ -54,6 +54,10 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
             .store(in: &subscriptions)
     }
     
+    func reset() {
+        assetValue = String()
+    }
+    
     deinit {
         print("ExchangerViewModel deinit")
     }

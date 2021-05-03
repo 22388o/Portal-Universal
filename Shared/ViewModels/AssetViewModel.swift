@@ -58,22 +58,22 @@ final class AssetViewModel: ObservableObject, IMarketData {
         $selectedTimeframe
             .removeDuplicates()
             .sink { [weak self] _ in
-//                self?.selectedTimeframe = timeframe
                 self?.updateValues()
             }
             .store(in: &subscriptions)
         
-        $valueCurrencySwitchState.sink { state in
-            switch state {
-            case .fiat:
-                self.totalValue = asset.balanceProvider.totalValueString
-            case .btc:
-                self.totalValue = "0.224 BTC"
-            case .eth:
-                self.totalValue = "1.62 ETH"
+        $valueCurrencySwitchState
+            .sink { state in
+                switch state {
+                case .fiat:
+                    self.totalValue = asset.balanceProvider.totalValueString
+                case .btc:
+                    self.totalValue = "0.224 BTC"
+                case .eth:
+                    self.totalValue = "1.62 ETH"
+                }
             }
-        }
-        .store(in: &subscriptions)
+            .store(in: &subscriptions)
     }
     
     deinit {
@@ -83,7 +83,7 @@ final class AssetViewModel: ObservableObject, IMarketData {
     
     private func updateValues() {
         balance = balanceProvider.balanceString
-        totalValue = balanceProvider.totalValueString + "\(Int.random(in: 1...8))"
+        totalValue = balanceProvider.totalValueString // + "\(Int.random(in: 1...8))"
         price = balanceProvider.price + "\(Int.random(in: 1...8))"
         change = marketChangeProvider.changeString
         chartDataEntries = portfolioChartDataEntries()

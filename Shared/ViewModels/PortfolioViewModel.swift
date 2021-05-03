@@ -45,7 +45,7 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
                     self?.totalValue = "$" + String(assets.map {
                         $0.balanceProvider.balance(currency: currency)
                     }
-                        .reduce(0) { ($0 + $1) * 4 }
+                        .reduce(0) { ($0 + $1) * 3 }
                         .rounded(toPlaces: 2)
                     )
                 case .btc:
@@ -55,7 +55,6 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
                 }
             }
             .store(in: &subscriptions)
-        
         
         updateCharts()
     }
