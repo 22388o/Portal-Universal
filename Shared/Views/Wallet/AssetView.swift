@@ -23,6 +23,7 @@ struct AssetView: View {
 //    @Binding var withdrawAssetFromExchange: Bool
     @Binding var allTxs: Bool
     @Binding var route: Route
+    @Binding var createAlert: Bool
     
     @ObservedObject private var viewModel: AssetViewModel
     
@@ -52,6 +53,10 @@ struct AssetView: View {
         self._allTxs = Binding(
             get: { viewModel.allTransactions },
             set: { viewModel.allTransactions = $0 }
+        )
+        self._createAlert = Binding(
+            get: { viewModel.createAlert },
+            set: { viewModel.createAlert = $0 }
         )
     }
     
@@ -119,13 +124,8 @@ struct AssetView: View {
                     RecentTxsView(coin: viewModel.asset.coin, showAllTxs: $allTxs)
                         .transition(.identity)
                 case .alerts:
-                    VStack {
-                        Spacer()
-                        Text("Alerts")
-                        Spacer()
-                    }
-                    .padding()
-//                    .transition(.move(edge: .bottom))
+                    AlertsView(coin: viewModel.asset.coin, createAlert: $createAlert)
+                        .transition(.identity)
                 }
             }
             .padding(.horizontal, 24)

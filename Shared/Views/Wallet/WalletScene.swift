@@ -125,12 +125,19 @@ struct WalletScene: View {
                 Group {
                     if viewModel.sendAsset {
                         SendAssetView(wallet: viewModel.wallet, asset: viewModel.selectedAsset, presented: $viewModel.sendAsset)
+                            .transition(.scale)
                     }
                     if viewModel.receiveAsset {
                         ReceiveAssetsView(asset: viewModel.selectedAsset, presented: $viewModel.receiveAsset)
+                            .transition(.scale)
                     }
                     if viewModel.allTransactions {
                         AssetTxView(asset: viewModel.selectedAsset, presented: $viewModel.allTransactions)
+                            .transition(.scale)
+                    }
+                    if viewModel.createAlert {
+                        CreateAlertView(asset: viewModel.selectedAsset, presented: $viewModel.createAlert)
+                            .transition(.scale)
                     }
                 }
                 .transition(.scale)
@@ -158,6 +165,7 @@ extension WalletScene {
         @Published var receiveAsset: Bool = false
         @Published var sendAsset: Bool = false
         @Published var switchWallet: Bool = false
+        @Published var createAlert: Bool = false
         @Published var allTransactions: Bool = false
         @Published var searchRequest = String()
         @Published var sceneState: WalletSceneState
@@ -173,7 +181,7 @@ extension WalletScene {
         var scaleEffectRation: CGFloat {
             if switchWallet {
                 return 0.45
-            } else if receiveAsset || sendAsset || allTransactions {
+            } else if receiveAsset || sendAsset || allTransactions || createAlert {
                 return 0.85
             } else {
                 return 1
@@ -188,7 +196,7 @@ extension WalletScene {
             self.portfolioViewModel = .init(assets: wallet.assets)
             self.sceneState = UIScreen.main.bounds.width > 1180 ? .full : .walletAsset
             
-            Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions)
+            Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert)
                 .sink { [weak self] output in
                     self?.modalViewIsPresented = output
                 }

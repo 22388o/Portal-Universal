@@ -76,7 +76,7 @@ struct TextFieldModifier: ViewModifier {
             .cornerRadius(26)
             .overlay(
                 RoundedRectangle(cornerRadius: 26)
-                .stroke(Color.exchangerFieldBorder, lineWidth: 1)
+                    .stroke(Color.exchangerFieldBorder, lineWidth: 1)
             )
     }
 }

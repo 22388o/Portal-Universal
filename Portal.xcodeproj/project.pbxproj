@@ -149,6 +149,10 @@
 		756A66B72624443A00353635 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66B52624443A00353635 /* PortfolioViewModel.swift */; };
 		756A66C12624850A00353635 /* SendAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66C02624850A00353635 /* SendAssetView.swift */; };
 		756A66C22624850A00353635 /* SendAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66C02624850A00353635 /* SendAssetView.swift */; };
+		756C66B42640363500CD22B2 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756C66B32640363500CD22B2 /* AlertsView.swift */; };
+		756C66B52640363500CD22B2 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756C66B32640363500CD22B2 /* AlertsView.swift */; };
+		756C66BB264038E900CD22B2 /* CreateAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756C66BA264038E900CD22B2 /* CreateAlertView.swift */; };
+		756C66BC264038E900CD22B2 /* CreateAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756C66BA264038E900CD22B2 /* CreateAlertView.swift */; };
 		7574C34A2619DCE400299131 /* CreateWalletScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateWalletScene.swift */; };
 		7574C34B2619DCE400299131 /* CreateWalletScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateWalletScene.swift */; };
 		757E08E22614E3EC006ABEC2 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 757E08E12614E3EC006ABEC2 /* Charts */; };
@@ -346,6 +350,8 @@
 		756A66AE262441B500353635 /* PortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
 		756A66B52624443A00353635 /* PortfolioViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
 		756A66C02624850A00353635 /* SendAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetView.swift; sourceTree = "<group>"; };
+		756C66B32640363500CD22B2 /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
+		756C66BA264038E900CD22B2 /* CreateAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertView.swift; sourceTree = "<group>"; };
 		7574C3492619DCE400299131 /* CreateWalletScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletScene.swift; sourceTree = "<group>"; };
 		7592DD452618D18700918ED2 /* TopCoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCoinView.swift; sourceTree = "<group>"; };
 		759E51202618F81700FA737C /* CreateWalletNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletNameView.swift; sourceTree = "<group>"; };
@@ -510,6 +516,8 @@
 				75D476D9262DB81C0006FD91 /* AssetTxView.swift */,
 				75DBD2BC26359D080050AE08 /* SwitchWalletsView.swift */,
 				7546CFCB2636980A00E8A8B7 /* WalletItemView.swift */,
+				756C66B32640363500CD22B2 /* AlertsView.swift */,
+				756C66BA264038E900CD22B2 /* CreateAlertView.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -891,6 +899,7 @@
 				756A66B62624443A00353635 /* PortfolioViewModel.swift in Sources */,
 				750AE8F72614992400C45971 /* MarketDataRepository.swift in Sources */,
 				75C95C5E2614CC0400B0EE10 /* Int+Extension.swift in Sources */,
+				756C66BB264038E900CD22B2 /* CreateAlertView.swift in Sources */,
 				750AE9C926149DD900C45971 /* IAsset.swift in Sources */,
 				750AE9DD26149DD900C45971 /* IChartDataProvider.swift in Sources */,
 				75C95C162614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
@@ -915,6 +924,7 @@
 				759E51212618F81700FA737C /* CreateWalletNameView.swift in Sources */,
 				750AE9A926149DD900C45971 /* IMarketDataMockable.swift in Sources */,
 				75C95C1E2614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
+				756C66B42640363500CD22B2 /* AlertsView.swift in Sources */,
 				75BBC739261C41A200032A90 /* PTextField.swift in Sources */,
 				75C95C522614CC0400B0EE10 /* View+Extension.swift in Sources */,
 				7592DD462618D18700918ED2 /* TopCoinView.swift in Sources */,
@@ -988,9 +998,11 @@
 				75568BF1262D9F810010C7E6 /* ReceiveAssetsView.swift in Sources */,
 				75C95C5B2614CC0400B0EE10 /* Font+Extension.swift in Sources */,
 				75BBC733261C3E2D00032A90 /* SeedTestView.swift in Sources */,
+				756C66BC264038E900CD22B2 /* CreateAlertView.swift in Sources */,
 				755782F726087905000E1686 /* Persistence.swift in Sources */,
 				7527130B261BAAE8008C962C /* StoreSeedView.swift in Sources */,
 				750AE9BE26149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
+				756C66B52640363500CD22B2 /* AlertsView.swift in Sources */,
 				750AE8E82614992400C45971 /* MarketDataUpdater.swift in Sources */,
 				756A66B0262441B500353635 /* PortfolioView.swift in Sources */,
 				750AE9BA26149DD900C45971 /* IKeyChainStorage.swift in Sources */,

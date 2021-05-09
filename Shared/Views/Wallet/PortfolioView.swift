@@ -183,7 +183,7 @@ struct PortfolioView_Previews: PreviewProvider {
             Color.black.opacity(0.58)
             PortfolioView(viewModel: .init(assets: WalletMock().assets))
         }
-        .frame(width: 304, height: 700)
+        .frame(width: 304, height: 900)
         .previewLayout(PreviewLayout.sizeThatFits)
     }
 }
