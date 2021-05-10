@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct RestoreWalletView: View {
-    @ObservedObject var walletService: WalletsService
-    @ObservedObject var viewModel = ViewModel()
+    @ObservedObject var viewModel: ViewModel
+    
+    init(walletService: WalletsService) {
+        viewModel = .init(service: walletService)
+    }
     
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
@@ -29,16 +32,18 @@ struct RestoreWalletView: View {
             }
             .padding(.top, 35)
             
-            HStack {
-                PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
-                    withAnimation {
-                        walletService.state = .currentWallet
+            if viewModel.walletService.currentWallet != nil {
+                HStack {
+                    PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
+                        withAnimation {
+                            viewModel.walletService.state = .currentWallet
+                        }
                     }
+                    Spacer()
                 }
-                Spacer()
+                .padding(.top, 30)
+                .padding(.leading, 30)
             }
-            .padding(.top, 30)
-            .padding(.leading, 30)
             
             ZStack {
                 Color.black.opacity(0.58)
@@ -77,7 +82,7 @@ struct RestoreWalletView: View {
                     HStack {
                         PButton(label: "Restore", width: 203, height: 48, fontSize: 15, enabled: viewModel.restoreReady) {
                             withAnimation {
-                                walletService.createWallet(model: .init(name: viewModel.accountName, addressType: .nativeSegwit, seed: viewModel.seed))
+                                viewModel.walletService.createWallet(model: .init(name: viewModel.accountName, addressType: .nativeSegwit, seed: viewModel.seed))
                             }
                         }
                         
@@ -97,7 +102,7 @@ struct RestoreWalletView: View {
                         
                         PButton(label: "Create new wallet", width: 140, height: 30, fontSize: 12, enabled: true) {
                             withAnimation {
-                                walletService.state = .createWallet
+                                viewModel.walletService.state = .createWallet
                             }
                         }
                     }
@@ -115,6 +120,7 @@ import Combine
 
 extension RestoreWalletView {
     final class ViewModel: ObservableObject {
+        @ObservedObject var walletService: WalletsService
         private let seeedLength = 24
         private var anyCancellable = Set<AnyCancellable>()
 
@@ -133,7 +139,9 @@ extension RestoreWalletView {
             }
         }
         
-        init() {
+        init(service: WalletsService) {
+            walletService = service
+            
             for _ in 1...seeedLength {
                 seed.append(String())
             }

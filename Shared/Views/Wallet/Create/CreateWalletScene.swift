@@ -32,16 +32,18 @@ struct CreateWalletScene: View {
             }
             .padding(.top, 35)
             
-            HStack {
-                PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
-                    withAnimation {
-                        viewModel.goBack()
+            if viewModel.hasWallet {
+                HStack {
+                    PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
+                        withAnimation {
+                            viewModel.goBack()
+                        }
                     }
+                    Spacer()
                 }
-                Spacer()
+                .padding(.top, 30)
+                .padding(.leading, 30)
             }
-            .padding(.top, 30)
-            .padding(.leading, 30)
             
             ZStack {
                 Color.black.opacity(0.58)
@@ -109,6 +111,10 @@ extension CreateWalletScene {
         @Published private(set) var nameIsValid: Bool = false
         
         private var cancalable: AnyCancellable?
+        
+        var hasWallet: Bool {
+            walletService.currentWallet != nil
+        }
         
         init(walletService: WalletsService) {
             self.walletService = walletService
