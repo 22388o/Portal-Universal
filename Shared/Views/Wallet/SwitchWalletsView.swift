@@ -63,12 +63,14 @@ struct SwitchWalletsView: View {
                 
                 PButton(label: "Create new wallet", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
-                        service.currentWallet = nil
+                        service.state = .createWallet
                     }
                 }
                                 
                 PButton(label: "Restore wallet", width: 184, height: 32, fontSize: 12, enabled: true) {
-                    
+                    withAnimation {
+                        service.state = .restoreWallet
+                    }
                 }
                 .padding(.top, 8)
                 .padding(.bottom, 16)

@@ -32,6 +32,17 @@ struct CreateWalletScene: View {
             }
             .padding(.top, 35)
             
+            HStack {
+                PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
+                    withAnimation {
+                        viewModel.goBack()
+                    }
+                }
+                Spacer()
+            }
+            .padding(.top, 30)
+            .padding(.leading, 30)
+            
             ZStack {
                 Color.black.opacity(0.58)
                                 
@@ -119,6 +130,10 @@ extension CreateWalletScene {
                 seed: test.seed
             )
             walletService.createWallet(model: newWalletModel)
+        }
+        
+        func goBack() {
+            walletService.state = .currentWallet
         }
     }
     

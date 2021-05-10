@@ -18,15 +18,18 @@ struct RootView: View {
         ZStack {
             Color.portalWalletBackground
             
-            if walletService.currentWallet != nil {
-                WalletScene(walletService: walletService)
-                    .transition(AnyTransition.scale.combined(with: .opacity))
-                    .zIndex(1)
-            } else {
-                CreateWalletScene(walletService: walletService)
-                    .transition(AnyTransition.scale.combined(with: .opacity))
-                    .zIndex(1)
+            Group {
+                switch walletService.state {
+                case .currentWallet:
+                    WalletScene(walletService: walletService)
+                case .createWallet:
+                    CreateWalletScene(walletService: walletService)
+                case .restoreWallet:
+                    RestoreWalletView(walletService: walletService)
+                }
             }
+            .transition(AnyTransition.scale.combined(with: .opacity))
+            .zIndex(1)
         }
     }
 }

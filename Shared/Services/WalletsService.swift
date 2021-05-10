@@ -10,6 +10,11 @@ import Foundation
 import CoreData
 
 final class WalletsService: ObservableObject {
+    enum State {
+        case currentWallet, createWallet, restoreWallet
+    }
+    
+    @Published var state: State = .createWallet
     @Published var currentWallet: IWallet?
     var wallets: [IWallet]? {
         _wallets
@@ -36,6 +41,7 @@ final class WalletsService: ObservableObject {
     
     convenience init(mockedWallet: IWallet) {
         self.init()
+        state = .currentWallet
         currentWallet = mockedWallet
     }
     
@@ -67,6 +73,8 @@ final class WalletsService: ObservableObject {
     private func setupCurrentWallet() {
         if let fetchedCurrentWalletID = currentWalletID {
             setupWallet(id: fetchedCurrentWalletID)
+        } else {
+            state = .createWallet
         }
     }
     
@@ -75,6 +83,7 @@ final class WalletsService: ObservableObject {
             guard let data = keychainStorage.data(for: wallet.key) else { return }
             wallet.setup(data: data)
             currentWallet = wallet
+            state = .currentWallet
         } else {
             fatalError("Wallet with id \(id) isn't exist")
         }
@@ -114,6 +123,7 @@ extension WalletsService: IWalletsService {
         
         currentWalletID = newWallet.id
         currentWallet = newWallet
+        state = .currentWallet
     }
     
     func switchWallet(_ wallet: IWallet) {
@@ -122,6 +132,6 @@ extension WalletsService: IWalletsService {
     }
     
     func restoreWallet() {
-        
+        state = .restoreWallet
     }
 }
