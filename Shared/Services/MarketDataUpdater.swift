@@ -8,204 +8,97 @@
 
 import Foundation
 import Combine
+import Coinpaprika
 
-final class MarketDataUpdater: IHistoricalData {
-    var onUpdatePublisher = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
+final class MarketDataUpdater {
+    let onUpdateHistoricalPricePublisher = PassthroughSubject<(MarketDataRange, HistoricalTickerPrice), Never>()
+    let onUpdateHistoricalDataPublisher = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
+    let onTickersUpdatePublisher = PassthroughSubject<([Ticker]), Never>()
     
-    private let marketDataQueue = DispatchQueue(label: "com.portal.market.data.queue", attributes: .concurrent)
-    private let jsonDecoder: JSONDecoder
-    
-    private var hourDataTask: URLSessionTask?
-    private var dayDataTask: URLSessionTask?
-    private var weekDataTask: URLSessionTask?
-    private var monthDataTask: URLSessionTask?
-    private var yearDataTask: URLSessionTask?
+    private(set) var tickers: [Ticker]?
 
-    init(jsonDecoder: JSONDecoder = JSONDecoder()) {
-        self.jsonDecoder = jsonDecoder
-        self.fetchHistoricalData(assets: "BTC, BCH, ETH")
+    init() {
+        fetchTickers()
+    }
+        
+    private func fetchTickers() {
+        Coinpaprika.API.tickers(quotes: [.usd, .btc, .eth])
+            .perform { [unowned self] (response) in
+                switch response {
+                case .success(let tickers):
+                    self.tickers = tickers
+                    self.onTickersUpdatePublisher.send(tickers)
+                    self.tickerHistory()
+                case .failure(let error):
+                    print(error)
+                }
+            }
     }
     
-    func fetchHistoricalData(assets: String) {
-        marketDataQueue.async { [weak self] in
-            self?.fetchHourData(assets: assets) { result in
-                switch result {
-                case let .success(data):
-                    self?.onUpdatePublisher.send((.hour, data))
-                case let .failure(error):
-                    print(error.localizedDescription)
-                }
-            }
-            self?.fetchDayData(assets: assets) { result in
-                switch result {
-                case let .success(data):
-                self?.onUpdatePublisher.send((.day, data))
-                case let .failure(error):
-                    print(error.localizedDescription)
-                }
-            }
-            self?.fetchWeekData(assets: assets) { result in
-                switch result {
-                case let .success(data):
-                self?.onUpdatePublisher.send((.week, data))
-                case let .failure(error):
-                    print(error.localizedDescription)
-                }
-            }
-            self?.fetchMonthData(assets: assets) { result in
-                switch result {
-                case let .success(data):
-                self?.onUpdatePublisher.send((.month, data))
-                case let .failure(error):
-                    print(error.localizedDescription)
-                }
-            }
-            self?.fetchYearData(assets: assets) { result in
-                switch result {
-                case let .success(data):
-                self?.onUpdatePublisher.send((.year, data))
-                case let .failure(error):
-                    print(error.localizedDescription)
-                }
-            }
+    private func tickerHistory() {
+        let coins =  [Coin.bitcoin(), Coin.bitcoinCash(), Coin.ethereum()]
+        let coinPaprikaCoinIds = coins.compactMap { (coin) -> String? in
+            tickers?.first(where: { (ticker) -> Bool in
+                coin.name.lowercased() == ticker.name.lowercased()
+            })?.id
         }
-    }
-    
-    private func fetchHourData(assets: String,  _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void)) {
-        guard let mockResponse = hourDataResponse.data(using: .utf8) else {
-            return
-        }
-        guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
-            competionHandler(.failure(.parsing))
-            return
-        }
-        competionHandler(.success(response))
-//        guard hourDataTask?.state != .running else { return }
-//        guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
-//            competionHandler(.failure(.networkError))
-//            return
+        
+        for (index, id) in coinPaprikaCoinIds.enumerated() {
+            Coinpaprika.API.coinLatestOhlcv(id: id, quote: .usd)
+                .perform { (response) in
+                    switch response {
+                    case .success(let response):
+                        self.onUpdateHistoricalDataPublisher.send((.day, [coins[index].code : response.map{ MarketSnapshot.init($0) }]))
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            let today = Date()
+            if let yesteday = Calendar.current.date(byAdding: .day, value: -1, to: today) {
+                Coinpaprika.API.tickerHistory(id: id, start: yesteday, end: today, limit: 60, quote: .usd, interval: .minutes15)
+                    .perform { [unowned self] (response) in
+                        switch response {
+                        case .success(let response):
+                            self.onUpdateHistoricalPricePublisher.send((.day, [coins[index].code : response.map{ $0.price }]))
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+            }
+            if let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: today) {
+                Coinpaprika.API.tickerHistory(id: id, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours2)
+                    .perform { [unowned self] (response) in
+                        switch response {
+                        case .success(let response):
+                            self.onUpdateHistoricalPricePublisher.send((.week, [coins[index].code : response.map{ $0.price }]))
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+            }
 //        }
-//        hourDataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-//            switch (data, error) {
-//            case (_, .some):
-//                competionHandler(.failure(.networkError))
-//            case let (.some(data), nil):
-//                guard let mockResponse = hourDataResponse.data(using: .utf8) else {
-//                    return
-//                }
-//                guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
-//                    competionHandler(.failure(.parsing))
-//                    return
-//                }
-//                competionHandler(.success(response))
-//            case (nil, nil):
-//                competionHandler(.failure(.inconsistentBehavior))
-//            }
-//        }
-//        hourDataTask?.resume()
-    }
-    
-    private func fetchDayData(assets: String,  _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void)) {
-        guard dayDataTask?.state != .running else { return }
-        guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
-            competionHandler(.failure(.networkError))
-            return
-        }
-        dayDataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-            switch (data, error) {
-            case (_, .some):
-                competionHandler(.failure(.networkError))
-            case let (.some(data), nil):
-                guard let mockResponse = dayDataResponse.data(using: .utf8) else {
-                    return
-                }
-                guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
-                    competionHandler(.failure(.parsing))
-                    return
-                }
-                competionHandler(.success(response))
-            case (nil, nil):
-                competionHandler(.failure(.inconsistentBehavior))
+            if let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: today) {
+                Coinpaprika.API.tickerHistory(id: id, start: monthAgo, end: today, limit: 60, quote: .usd, interval: .hours12)
+                    .perform { [unowned self] (response) in
+                        switch response {
+                        case .success(let response):
+                            self.onUpdateHistoricalPricePublisher.send((.month, [coins[index].code : response.map{ $0.price }]))
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+            }
+            if let aYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: today) {
+                Coinpaprika.API.tickerHistory(id: id, start: aYearAgo, end: today, limit: 60, quote: .usd, interval: .days7)
+                    .perform { [unowned self] (response) in
+                        switch response {
+                        case .success(let response):
+                            self.onUpdateHistoricalPricePublisher.send((.year, [coins[index].code : response.map{ $0.price }]))
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
             }
         }
-        dayDataTask?.resume()
-    }
-    
-    private func fetchWeekData(assets: String,  _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void)) {
-        guard weekDataTask?.state != .running else { return }
-        guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
-            competionHandler(.failure(.networkError))
-            return
-        }
-        weekDataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-            switch (data, error) {
-            case (_, .some):
-                competionHandler(.failure(.networkError))
-            case let (.some(data), nil):
-                guard let mockResponse = weekDataResponse.data(using: .utf8) else {
-                    return
-                }
-                guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
-                    competionHandler(.failure(.parsing))
-                    return
-                }
-                competionHandler(.success(response))
-            case (nil, nil):
-                competionHandler(.failure(.inconsistentBehavior))
-            }
-        }
-        weekDataTask?.resume()
-    }
-    
-    private func fetchMonthData(assets: String,  _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void)) {
-        guard monthDataTask?.state != .running else { return }
-        guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
-            competionHandler(.failure(.networkError))
-            return
-        }
-        monthDataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-            switch (data, error) {
-            case (_, .some):
-                competionHandler(.failure(.networkError))
-            case let (.some(data), nil):
-                guard let mockResponse = monthDataResponse.data(using: .utf8) else {
-                    return
-                }
-                guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
-                    competionHandler(.failure(.parsing))
-                    return
-                }
-                competionHandler(.success(response))
-            case (nil, nil):
-                competionHandler(.failure(.inconsistentBehavior))
-            }
-        }
-        monthDataTask?.resume()
-    }
-    
-    private func fetchYearData(assets: String,  _ competionHandler: @escaping ((Result<HistoricalDataResponse, NetworkError>) -> Void)) {
-        guard yearDataTask?.state != .running else { return }
-        guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
-            competionHandler(.failure(.networkError))
-            return
-        }
-        yearDataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-            switch (data, error) {
-            case (_, .some):
-                competionHandler(.failure(.networkError))
-            case let (.some(data), nil):
-                guard let mockResponse = yearDataResponse.data(using: .utf8) else {
-                    return
-                }
-                guard let response = try? self.jsonDecoder.decode(HistoricalDataResponse.self, from: mockResponse) else {
-                    competionHandler(.failure(.parsing))
-                    return
-                }
-                competionHandler(.success(response))
-            case (nil, nil):
-                competionHandler(.failure(.inconsistentBehavior))
-            }
-        }
-        yearDataTask?.resume()
     }
 }
