@@ -52,7 +52,7 @@ struct ExchangerView: View {
                     FiatCurrencyView(
                         size: 24,
                         state: .constant(.fiat),
-                        currency: .constant(.fiat(USD))
+                        currency: .constant(.fiat(viewModel.fiat))
                     )
                     .frame(width: 24, height: 24)
                     
@@ -84,6 +84,7 @@ struct ExchangerView_Previews: PreviewProvider {
             code: "ETH",
             name: "Ethereum",
             icon:  Image("iconEth")),
+            ticker: nil,
             fiat: USD)
         )
         .frame(width: 550, height: 200)

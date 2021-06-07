@@ -10,10 +10,14 @@ import Charts
 
 struct MarketValueView: View {
     @Binding var timeframe: Timeframe
-    @Binding var totalValue: String
-    @Binding var change: String
-    @Binding var chartDataEntries: [ChartDataEntry]
     @Binding var valueCurrencyViewSate: ValueCurrencySwitchState
+
+    let fiatCurrency: FiatCurrency
+    let totalValue: String
+    let change: String
+    let high: String
+    let low: String
+    let chartDataEntries: [ChartDataEntry]
     
     let type: AssetMarketValueViewType
 
@@ -30,7 +34,7 @@ struct MarketValueView: View {
                         .foregroundColor(type == .asset ? Color.coinViewRouteButtonActive : Color.white.opacity(0.5))
                         .padding(.vertical, 6)
                     
-                    ValueCurrencySwitchView(state: $valueCurrencyViewSate)
+                    ValueCurrencySwitchView(state: $valueCurrencyViewSate, fiatCurrency: fiatCurrency, type: type)
                     
                     HStack {
                         Button(action: {
@@ -64,16 +68,16 @@ struct MarketValueView: View {
                 }
             }
             
-            LineChartUIKitWrapper(chartDataEntries: $chartDataEntries)
+            LineChartUIKitWrapper(chartDataEntries: chartDataEntries)
                 .frame(height: 106)
                 .padding(.top, 20)
             
-            HStack(spacing: 80) {
+            HStack(spacing: 40) {
                 VStack(spacing: 10) {
                     Text("High")
                         .font(Font.mainFont())
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
-                    Text("$0.0")
+                    Text(high)
                         .font(Font.mainFont(size: 15))
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
                 }
@@ -82,7 +86,7 @@ struct MarketValueView: View {
                     Text("Low")
                         .font(Font.mainFont())
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
-                    Text("$0.0")
+                    Text(low)
                         .font(Font.mainFont(size: 15))
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
 
@@ -121,21 +125,28 @@ enum ValueCurrencySwitchState: Int {
 
 struct ValueCurrencySwitchView: View {
     @Binding var state: ValueCurrencySwitchState
+    let fiatCurrency: FiatCurrency
+    let type: AssetMarketValueViewType
     
     var body: some View {
         HStack(spacing: 4) {
             FiatCurrencyView(
                 size: 16,
                 state: $state,
-                currency: .constant(.fiat(USD))
+                currency: .constant(.fiat(fiatCurrency))
             )
-            Image(state == .btc ? "btcIconLight" : "btcIcon")
-                .resizable()
-                .frame(width: 16, height: 16)
-            Image(state == .eth ? "ethPortfolioIcon" : "ethIconLight")
-                .resizable()
-                .frame(width: 16, height: 16)
+            Group {
+                Image("btcIconLight")
+                    .resizable()
+                    .opacity(state == .btc ? 0.78 : 0.38)
+                Image("ethIconLight")
+                    .resizable()
+                    .opacity(state == .eth ? 0.78 : 0.38)
+            }
+            .frame(width: 16, height: 16)
+            .foregroundColor(.assetValueLabel)
         }
+        
     }
 }
 
@@ -146,14 +157,14 @@ struct TimeframeButtonsView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            Button(action: {
-                timeframe = .hour
-            }) {
-                Text("Hour")
-                    .modifier(
-                        TimeframeButton(type: type, isSelected: timeframe == .hour)
-                )
-            }
+//            Button(action: {
+//                timeframe = .hour
+//            }) {
+//                Text("Hour")
+//                    .modifier(
+//                        TimeframeButton(type: type, isSelected: timeframe == .hour)
+//                )
+//            }
             
             Button(action: {
                 timeframe = .day
@@ -190,14 +201,14 @@ struct TimeframeButtonsView: View {
                     )
             }
             
-            Button(action: {
-                timeframe = .allTime
-            }) {
-                Text("All time")
-                    .modifier(
-                        TimeframeButton(type: type, isSelected: timeframe == .allTime)
-                    )
-            }
+//            Button(action: {
+//                timeframe = .allTime
+//            }) {
+//                Text("All time")
+//                    .modifier(
+//                        TimeframeButton(type: type, isSelected: timeframe == .allTime)
+//                    )
+//            }
         }
     }
 }
@@ -216,15 +227,15 @@ struct FiatCurrencyView: View {
     var body: some View {
         Text(currency.symbol)
             .font(size > 16 ? Font.mainFont(size: 16) : Font.mainFont(size: 12))
-            .foregroundColor(state == .fiat ? selectedTextColor : textColor)
+            .foregroundColor(state == .fiat ? textColor : selectedTextColor)
             .frame(width: size, height: size)
-            .background(state == .fiat ? selectedBgColor : bgColor)
+            .background(state == .fiat ? bgColor : selectedBgColor)
             .cornerRadius(size/2)
     }
 }
 
 struct LineChartUIKitWrapper: UIViewRepresentable {
-    @Binding var chartDataEntries: [ChartDataEntry]
+    let chartDataEntries: [ChartDataEntry]
     
     func makeUIView(context: Context) -> LineChartView {
         let lineChart = LineChartView()
@@ -259,10 +270,14 @@ struct LineChartUIKitWrapper: UIViewRepresentable {
 struct AssetMarketValueView_Previews: PreviewProvider {
     static var previews: some View {
         MarketValueView(
-            timeframe: .constant(.hour),
-            totalValue: .constant("$2836.211"),
-            change: .constant("-$423 (3.46%)"),
-            chartDataEntries: .constant([
+            timeframe: .constant(.day),
+            valueCurrencyViewSate: .constant(.fiat),
+            fiatCurrency: USD,
+            totalValue: "$2836.211",
+            change: "-$423 (3.46%)",
+            high: "$0.0",
+            low: "$0.0",
+            chartDataEntries: [
                 ChartDataEntry(x: 0.0, y: 7176.99),
                 ChartDataEntry(x: 1.0, y: 7156.99),
                 ChartDataEntry(x: 2.0, y: 7140.92),
@@ -287,8 +302,7 @@ struct AssetMarketValueView_Previews: PreviewProvider {
                 ChartDataEntry(x: 21.0, y: 7229.49),
                 ChartDataEntry(x: 22.0, y: 7233.47),
                 ChartDataEntry(x: 23.0, y: 7234.02)
-            ]),
-            valueCurrencyViewSate: .constant(.fiat),
+            ],
             type: .asset
         )
         .frame(width: 304)

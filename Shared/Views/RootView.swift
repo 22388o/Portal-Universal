@@ -8,35 +8,58 @@
 import SwiftUI
 
 struct RootView: View {
-    @ObservedObject private var walletService: WalletsService
-
-    init(walletService: WalletsService) {
-        self.walletService = walletService
-    }
+    @State private var marketDataLoaded: Bool = false
+    @State private var loadingAnimationStarted = false
     
+    @EnvironmentObject private var walletService: WalletsService
+    @EnvironmentObject private var marketData: MarketDataRepository
+        
     var body: some View {
         ZStack {
             Color.portalWalletBackground
             
-            Group {
-                switch walletService.state {
-                case .currentWallet:
-                    WalletScene(walletService: walletService)
-                case .createWallet:
-                    CreateWalletScene(walletService: walletService)
-                case .restoreWallet:
-                    RestoreWalletView(walletService: walletService)
+            if marketDataLoaded {
+                Group {
+                    switch walletService.state {
+                    case .currentWallet:
+                        if let wallet = walletService.currentWallet {
+                            let fiat = marketData.fiatCurrencies.first(where: { $0.code == wallet.fiatCurrencyCode }) ?? USD
+                            WalletScene(wallet: wallet, fiatCurrency: fiat)
+                        } else {
+                            Text("Something went wrong")
+                        }
+                    case .createWallet:
+                        CreateWalletScene()
+                    case .restoreWallet:
+                        RestoreWalletView()
+                    }
                 }
+                .transition(AnyTransition.scale.combined(with: .opacity))
+                .zIndex(1)
+            } else {
+                Text("LOADING")
+                    .font(.mainFont(size: 18))
+                    .foregroundColor(.white)
+                    .scaleEffect(loadingAnimationStarted ? 1 : 0.5)
+                    .onAppear {
+                        withAnimation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true), {
+                            loadingAnimationStarted.toggle()
+                        })
+                    }
             }
-            .transition(AnyTransition.scale.combined(with: .opacity))
-            .zIndex(1)
         }
+        .onReceive(marketData.$tickers.dropFirst(), perform: { tickers in
+            guard let tickers = tickers, !tickers.isEmpty else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                marketDataLoaded.toggle()
+            }
+        })
     }
 }
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
-        RootView(walletService: WalletsService())
+        RootView()
             .iPadLandscapePreviews()
     }
 }
