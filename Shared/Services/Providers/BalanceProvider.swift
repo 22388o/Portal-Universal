@@ -14,14 +14,17 @@ final class BalanceProvider: IBalanceProvider {
     
     private let tempBalance: String
     private let tempTotalValue = "$\(Double.random(in: 255..<5955).rounded(toPlaces: 1))"
-    private let tempBalanceForCurrency = Double.random(in: 0.75 ..< 2.795).rounded(toPlaces: 2)
+    private let tempBalanceForCurrency: Double
     private let tempPrice = "$\(Double.random(in: 200..<5000).rounded(toPlaces: 1))"
     
     init(coin: Coin, kit: ICoinKit) {
         self.coin = coin
         self.coinKit = kit
         
-        self.tempBalance = "\(coinKit.balance)"
+        let balance = coinKit.balance
+        self.tempBalance = "\(balance)"
+        self.tempBalanceForCurrency = balance
+        
     }
     
     var balanceString: String {
@@ -36,8 +39,8 @@ final class BalanceProvider: IBalanceProvider {
         tempPrice
     }
     
-    func balance(currency: Currency) -> Double {
-        tempBalanceForCurrency
+    func balance(currency: Currency) -> Decimal {
+        Decimal(tempBalanceForCurrency)
         //balance * marketData.price(currency: currency)
     }
     
