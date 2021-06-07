@@ -11,6 +11,8 @@ import Combine
 
 typealias HistoricalDataResponse = Dictionary<String, [MarketSnapshot]>
 
+typealias HistoricalTickerPrice = Dictionary<String, [Decimal]>
+
 protocol IHistoricalData {
     var onUpdatePublisher: PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never> { get }
     func fetchHistoricalData(assets: String)

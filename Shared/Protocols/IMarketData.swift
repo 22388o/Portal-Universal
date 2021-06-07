@@ -7,10 +7,12 @@
 //
 
 import Foundation
+import Coinpaprika
 
-fileprivate let sharedMarketDataRepository = MarketDataRepository()
+//fileprivate let sharedMarketDataRepository = MarketDataRepository()
 
 protocol IMarketData {
+    func ticker(coin: Coin) -> Ticker?
     func marketData(for coin: String) -> CoinMarketData
     func marketRate(for currency: FiatCurrency) -> Double
 }
@@ -19,16 +21,22 @@ extension IMarketData {
     var assetSymbols: [String] {
         ["BTC", "BCH", "ETH"]
     }
+    func ticker(coin: Coin) -> Ticker? {
+        nil
+//        sharedMarketDataRepository.ticker(coin: coin)
+    }
     func marketData(for coin: String) -> CoinMarketData {
-        sharedMarketDataRepository.data(for: coin)
+        CoinMarketData()
+//        sharedMarketDataRepository.data(for: coin)
     }
     func marketRate(for currency: FiatCurrency) -> Double {
-        sharedMarketDataRepository.rate(for: currency)
+        0
+//        sharedMarketDataRepository.rate(for: currency)
     }
     func stopUpdatingMarketData() {
-        sharedMarketDataRepository.pause()
+//        sharedMarketDataRepository.pause()
     }
     func resumeUpdatingMarketData() {
-        sharedMarketDataRepository.resume()
+//        sharedMarketDataRepository.resume()
     }
 }

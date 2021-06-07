@@ -7,6 +7,11 @@
 //
 
 import Foundation
+import Coinpaprika
+
+protocol IMarketDataProvider {
+    var ticker: Ticker? { get }
+}
 
 protocol IMarketChangeProvider {
     var changeString: String { get }

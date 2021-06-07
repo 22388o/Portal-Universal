@@ -9,8 +9,10 @@
 import Foundation
 
 protocol IWallet {
+    var fiatCurrencyCode: String { get }
     var walletID: UUID { get }
     var name: String { get }
     var assets: [IAsset] { get }
     func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?)
+    func updateFiatCurrency(_ fiatCurrency: FiatCurrency)
 }

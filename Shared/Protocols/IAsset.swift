@@ -10,6 +10,7 @@ import Foundation
 
 protocol IAsset {
     var id: UUID { get }
+    var marketDataProvider: IMarketDataProvider { get }
 //    var viewModel: AssetViewModel { get }
     var coin: Coin { get }
     var kit: ICoinKit { get }
