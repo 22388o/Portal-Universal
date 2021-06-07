@@ -9,9 +9,10 @@ import SwiftUI
 
 struct CreateWalletScene: View {
     @ObservedObject private var viewModel: ViewModel
+    @EnvironmentObject private var service: WalletsService
     
-    init(walletService: WalletsService) {
-        self.viewModel = ViewModel(walletService: walletService)
+    init() {
+        self.viewModel = ViewModel()
     }
     
     var body: some View {
@@ -32,11 +33,11 @@ struct CreateWalletScene: View {
             }
             .padding(.top, 35)
             
-            if viewModel.hasWallet {
+            if service.currentWallet != nil {
                 HStack {
                     PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
                         withAnimation {
-                            viewModel.goBack()
+                            service.state = .currentWallet
                         }
                     }
                     Spacer()
@@ -101,7 +102,7 @@ extension CreateWalletScene {
     }
     
     final class ViewModel: ObservableObject {
-        @ObservedObject private var walletService: WalletsService
+//        @ObservedObject private var walletService: WalletsService
         
         @Published var walletCreationStep: WalletCreationSteps = .createWalletName
         @Published var walletName = String()
@@ -112,12 +113,7 @@ extension CreateWalletScene {
         
         private var cancalable: AnyCancellable?
         
-        var hasWallet: Bool {
-            walletService.currentWallet != nil
-        }
-        
-        init(walletService: WalletsService) {
-            self.walletService = walletService
+        init() {
             self.test = SeedTestViewModel()
             
             cancalable = $walletName.sink { [weak self] name in
@@ -129,18 +125,17 @@ extension CreateWalletScene {
             print("\(#function) deinit")
         }
         
-        func creteNewWallet() {
-            let newWalletModel: NewWalletModel = .init(
+        var newWalletViewModel: NewWalletModel {
+            .init(
                 name: walletName,
                 addressType: BtcAddressFormat(rawValue: btcAddresSelectcedFormat) ?? .segwit,
                 seed: test.seed
             )
-            walletService.createWallet(model: newWalletModel)
         }
         
-        func goBack() {
-            walletService.state = .currentWallet
-        }
+//        func goBack() {
+//            walletService.state = .currentWallet
+//        }
     }
     
     final class SeedTestViewModel: ObservableObject {
@@ -195,7 +190,7 @@ extension CreateWalletScene {
 
 struct CreateWalletScene_Previews: PreviewProvider {
     static var previews: some View {
-        CreateWalletScene(walletService: WalletsService())
+        CreateWalletScene()
             .iPadLandscapePreviews()
     }
 }
