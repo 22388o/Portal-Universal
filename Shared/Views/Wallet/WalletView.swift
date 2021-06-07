@@ -9,74 +9,81 @@ import SwiftUI
 
 struct WalletView: View {
     @ObservedObject private var viewModel: WalletScene.ViewModel
+    @EnvironmentObject private var marketData: MarketDataRepository
     
     init(viewModel: WalletScene.ViewModel) {
         self.viewModel = viewModel
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 14) {
-                AssetSearchField(search: $viewModel.searchRequest)
-                FiatCurrencyButton()
-            }
-            .padding([.top, .horizontal], 24)
-            .padding(.bottom, 19)
-            
-            HStack {
-                Text("Asset")
-                Spacer()
-                Text("Value")
-                Spacer()
-                Text("Change")
-            }
-            .font(.mainFont())
-            .foregroundColor(Color.white.opacity(0.5))
-            .padding(.horizontal, 55)
-            
-            Divider()
-                .background(Color.white.opacity(0.11))
-                .padding(.top, 12)
-            
-            ScrollView {
-                LazyVStack(spacing: 8) {
-                    if viewModel.searchRequest.isEmpty {
-                        ForEach(viewModel.wallet.assets, id: \.id) { asset in
-                            AssetItemView(
-                                viewModel: AssetViewModel(asset: asset),
-                                selected: viewModel.selectedAsset.id == asset.id
-                            )
-                            .padding(.horizontal, 18)
-                            .onTapGesture {
-                                if asset.coin.code != viewModel.selectedAsset.coin.code {
-                                    viewModel.selectedAsset = asset
-                                    if viewModel.sceneState != .full {
-                                        withAnimation {
-                                            viewModel.sceneState = .walletAsset
+        ZStack(alignment: .topTrailing) {
+            VStack(spacing: 0) {
+                HStack(spacing: 14) {
+                    AssetSearchField(search: $viewModel.searchRequest)
+                    FiatCurrencyButton(currencies: marketData.fiatCurrencies, selectedCurrrency: $viewModel.fiatCurrency)
+                }
+                .padding([.top, .horizontal], 24)
+                .padding(.bottom, 19)
+                
+                HStack {
+                    Text("Asset")
+                    Spacer()
+                    Text("Value")
+                    Spacer()
+                    Text("Change")
+                }
+                .font(.mainFont())
+                .foregroundColor(Color.white.opacity(0.5))
+                .padding(.horizontal, 55)
+                
+                Divider()
+                    .background(Color.white.opacity(0.11))
+                    .padding(.top, 12)
+                
+                ScrollView {
+                    LazyVStack(spacing: 8) {
+                        if viewModel.searchRequest.isEmpty {
+                            ForEach(viewModel.wallet.assets, id: \.id) { asset in
+                                AssetItemView(
+                                    asset: asset,
+                                    marketData: marketData,
+                                    selected: viewModel.selectedAsset.id == asset.id,
+                                    fiatCurrency: viewModel.fiatCurrency,
+                                    onTap: {
+                                        if asset.coin.code != viewModel.selectedAsset.coin.code {
+                                            viewModel.selectedAsset = asset
+                                            print("selected asset changed")
+                                            guard viewModel.sceneState != .full, viewModel.sceneState == .walletPortfolio  else { return }
+                                            withAnimation {
+                                                viewModel.sceneState = .walletAsset
+                                            }
                                         }
                                     }
-                                }
+                                )
+                                .padding(.horizontal, 18)
                             }
-                        }
-                    } else {
-                        ForEach(viewModel.wallet.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
-                            AssetItemView(
-                                viewModel: AssetViewModel(asset: asset),
-                                selected: viewModel.selectedAsset.id == asset.id
-                            )
-                            .padding(.horizontal, 18)
-                            .onTapGesture {
-                                if asset.coin.code != viewModel.selectedAsset.coin.code {
-                                    viewModel.selectedAsset = asset
-                                }
+                        } else {
+                            ForEach(viewModel.wallet.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
+                                AssetItemView(
+                                    asset: asset,
+                                    marketData: marketData,
+                                    selected: viewModel.selectedAsset.id == asset.id,
+                                    fiatCurrency: viewModel.fiatCurrency,
+                                    onTap: {
+                                        if asset.coin.code != viewModel.selectedAsset.coin.code {
+                                            viewModel.selectedAsset = asset
+                                        }
+                                    }
+                                )
+                                .padding(.horizontal, 18)
                             }
                         }
                     }
+                    .offset(y: 20)
+                    .padding(.bottom, 40)
                 }
-                .offset(y: 20)
-                .padding(.bottom, 40)
+                .padding(.horizontal, 6)
             }
-            .padding(.horizontal, 6)
         }
     }
 }
@@ -86,7 +93,7 @@ struct WalletView_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            WalletView(viewModel: WalletScene.ViewModel(wallet: WalletMock()))
+            WalletView(viewModel: WalletScene.ViewModel(wallet: WalletMock(), fiatCurrency: USD))
         }
         .frame(width: .infinity, height: 430)
         .previewLayout(PreviewLayout.sizeThatFits)

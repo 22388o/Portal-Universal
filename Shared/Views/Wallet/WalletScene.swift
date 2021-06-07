@@ -12,32 +12,25 @@ enum WalletSceneState {
 }
 
 struct WalletScene: View {
-    let service: WalletsService
-    @ObservedObject private var viewModel: ViewModel
-    
     enum Scenes {
         case wallet, swap
     }
     
+    @EnvironmentObject private var marketData: MarketDataRepository
+    @ObservedObject private var viewModel: ViewModel
     @State private var state: Scenes = .wallet
             
-    init(walletService: WalletsService) {
-        self.service = walletService
-        
-        guard let wallet = walletService.currentWallet else {
-            fatalError("There is no current wallet")
-        }
-        
-        viewModel = .init(wallet: wallet)
+    init(wallet: IWallet, fiatCurrency: FiatCurrency) {
+        viewModel = .init(wallet: wallet, fiatCurrency: fiatCurrency)
     }
     
     var body: some View {
         ZStack(alignment: viewModel.switchWallet ? .topLeading : .center) {
             switch state {
             case .wallet:
-                Color.portalWalletBackground//.transition(AnyTransition.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+                Color.portalWalletBackground
             case .swap:
-                Color.portalSwapBackground//.transition(AnyTransition.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
+                Color.portalSwapBackground
             }
             
             VStack(spacing: 0) {
@@ -90,19 +83,20 @@ struct WalletScene: View {
                     switch state {
                     case .wallet:
                         HStack(spacing: 0) {
-                            if viewModel.sceneState == .full {
+                            switch viewModel.sceneState {
+                            case .full:
                                 PortfolioView(viewModel: viewModel.portfolioViewModel)
                                 WalletView(viewModel: viewModel)
-                                AssetView(viewModel: viewModel)
+                                AssetView(sceneViewModel: viewModel, marketData: marketData, fiatCurrency: viewModel.fiatCurrency)
                                     .padding([.top, .trailing, .bottom], 8)
-                            } else {
+                            default:
                                 if viewModel.sceneState == .walletPortfolio {
                                     PortfolioView(viewModel: viewModel.portfolioViewModel)
                                         .transition(.move(edge: .leading))
                                 }
                                 WalletView(viewModel: viewModel)
                                 if viewModel.sceneState == .walletAsset {
-                                    AssetView(viewModel: viewModel)
+                                    AssetView(sceneViewModel: viewModel, marketData: marketData, fiatCurrency: viewModel.fiatCurrency)
                                         .padding([.top, .trailing, .bottom], 8)
                                         .transition(.move(edge: .trailing))
                                 }
@@ -124,8 +118,14 @@ struct WalletScene: View {
             Group {
                 Group {
                     if viewModel.sendAsset {
-                        SendAssetView(wallet: viewModel.wallet, asset: viewModel.selectedAsset, presented: $viewModel.sendAsset)
-                            .transition(.scale)
+                        SendAssetView(
+                            wallet: viewModel.wallet,
+                            asset: viewModel.selectedAsset,
+                            marketData: marketData,
+                            fiatCurrency: viewModel.fiatCurrency,
+                            presented: $viewModel.sendAsset
+                        )
+                        .transition(.scale)
                     }
                     if viewModel.receiveAsset {
                         ReceiveAssetsView(asset: viewModel.selectedAsset, presented: $viewModel.receiveAsset)
@@ -143,14 +143,25 @@ struct WalletScene: View {
                 .transition(.scale)
                 
                 if viewModel.switchWallet {
-                    SwitchWalletsView(walletService: service, presented: $viewModel.switchWallet)
+                    SwitchWalletsView(presented: $viewModel.switchWallet)
                         .padding(.top, 78)
                         .padding(.leading, 24)
                 }
             }
             .zIndex(1)
+            
+//            if showFiatCurrencyPicker {
+//                Picker(String(), selection: $fiatCurrencyPickerSelection) {
+//                    ForEach(marketData.rates().sorted(by: >), id: \.key) { key, value in
+//                        Text("\(key)")
+//                            .font(.mainFont(size: 12))
+//                            .foregroundColor(.white)
+//                    }
+//                }
+//                .pickerStyle(InlinePickerStyle())
+//                .frame(width: 100, height: 100)
+//            }
         }
-//        .preferredColorScheme(.dark)
     }
 }
 
@@ -169,10 +180,9 @@ extension WalletScene {
         @Published var allTransactions: Bool = false
         @Published var searchRequest = String()
         @Published var sceneState: WalletSceneState
-        
-        @Published var assetViewRoute: AssetView.Route = .value
-        
+                
         @Published var modalViewIsPresented: Bool = false
+        @Published var fiatCurrency: FiatCurrency
         
         @ObservedObject var portfolioViewModel: PortfolioViewModel
         
@@ -188,8 +198,10 @@ extension WalletScene {
             }
         }
         
-        init(wallet: IWallet) {
+        init(wallet: IWallet, fiatCurrency: FiatCurrency) {
             print("WalletViewModel init")
+            self.fiatCurrency = fiatCurrency
+            
             self.wallet = wallet
             self.walletName = wallet.name
             self.selectedAsset = wallet.assets.first ?? Asset.bitcoin()
@@ -203,6 +215,14 @@ extension WalletScene {
                 .store(in: &anyCancellable)
             
             print("wallet name: \(wallet.name)")
+                                    
+            $fiatCurrency.sink { (currency) in
+                let walletCurrencyCode = wallet.fiatCurrencyCode
+                if currency.code != walletCurrencyCode {
+                    wallet.updateFiatCurrency(currency)
+                }
+            }
+            .store(in: &anyCancellable)
         }
         
         deinit {
@@ -213,7 +233,7 @@ extension WalletScene {
 
 struct MainScene_Previews: PreviewProvider {
     static var previews: some View {
-        WalletScene(walletService: .init(mockedWallet: WalletMock()))
+        WalletScene(wallet: WalletMock(), fiatCurrency: USD)
             .iPadLandscapePreviews()
     }
 }

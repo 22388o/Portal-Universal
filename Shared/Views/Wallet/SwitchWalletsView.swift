@@ -10,7 +10,7 @@ import SwiftUI
 struct SwitchWalletsView: View {
     @Binding var presented: Bool
     
-    @ObservedObject private var service: WalletsService
+    @EnvironmentObject private var service: WalletsService
     
     @FetchRequest(
         entity: DBWallet.entity(),
@@ -19,8 +19,7 @@ struct SwitchWalletsView: View {
         ]
     ) private var allWallets: FetchedResults<DBWallet>
     
-    init(walletService: WalletsService, presented: Binding<Bool>) {
-        self.service = walletService
+    init(presented: Binding<Bool>) {
         self._presented = presented
     }
     
@@ -83,7 +82,7 @@ struct SwitchWalletsView: View {
 
 struct SwitchWalletsView_Previews: PreviewProvider {
     static var previews: some View {
-        SwitchWalletsView(walletService: .init(mockedWallet: WalletMock()), presented: .constant(true))
+        SwitchWalletsView(presented: .constant(true))
 //            .background(Color.yellow)
 //            .frame(width: 280, height: 400)
             .padding()

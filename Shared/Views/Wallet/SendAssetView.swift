@@ -21,9 +21,9 @@ struct SendAssetView: View {
 //        predicate: NSPredicate(format: "coin == %@", code)
     ) private var allTxs: FetchedResults<DBTx>
         
-    init(wallet: IWallet, asset: IAsset, presented: Binding<Bool>) {
+    init(wallet: IWallet, asset: IAsset, marketData: MarketDataRepository, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
         self.coin = asset.coin
-        self.viewModel = .init(wallet: wallet, asset: asset)
+        self.viewModel = .init(wallet: wallet, asset: asset, marketData: marketData, fiatCurrency: fiatCurrency)
         self._presented = presented
     }
     
@@ -64,11 +64,11 @@ struct SendAssetView: View {
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                     }
                     VStack {
-                        Text("You have \(viewModel.asset.balanceProvider.balance(currency: .fiat(USD))) \(viewModel.asset.coin.code)")
+                        Text(viewModel.balance)
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
 
-                        Text("0.0000012 \(viewModel.asset.coin.code) tx fee - Normal Speed")
+                        Text(viewModel.txFee)
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
 
@@ -170,14 +170,26 @@ extension SendAssetView {
         
         let asset: IAsset
         let wallet: IWallet
+        private let fiatCurrency: FiatCurrency
+        private let marketData: MarketDataRepository
         
         private var cancellable = Set<AnyCancellable>()
         
-        init(wallet: IWallet, asset: IAsset) {
+        var balance: String {
+            "You have \(asset.balanceProvider.balance(currency: .fiat(USD)).string) \(asset.coin.code)"
+        }
+        
+        var txFee: String {
+            "0.0000012 \(asset.coin.code) tx fee - Normal Speed"
+        }
+        
+        init(wallet: IWallet, asset: IAsset, marketData: MarketDataRepository, fiatCurrency: FiatCurrency) {
             print("send asset view model inited")
             self.wallet = wallet
             self.asset = asset
-            self.exchangerViewModel = .init(asset: asset.coin, fiat: USD)
+            self.exchangerViewModel = .init(asset: asset.coin, ticker: marketData.ticker(coin: asset.coin), fiat: fiatCurrency)
+            self.fiatCurrency = fiatCurrency
+            self.marketData = marketData
             
             exchangerViewModel.$assetValue
                 .compactMap { Decimal(string: $0) }
@@ -213,7 +225,13 @@ extension SendAssetView {
 
 struct SendAssetView_Previews: PreviewProvider {
     static var previews: some View {
-        SendAssetView(wallet: WalletMock(), asset: Asset.bitcoin(), presented: .constant(false))
+        SendAssetView(
+            wallet: WalletMock(),
+            asset: Asset.bitcoin(),
+            marketData: MarketDataRepository(),
+            fiatCurrency: USD,
+            presented: .constant(false)
+        )
             .frame(width: 576, height: 662)
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)

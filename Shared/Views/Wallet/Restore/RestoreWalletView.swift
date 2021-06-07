@@ -9,9 +9,10 @@ import SwiftUI
 
 struct RestoreWalletView: View {
     @ObservedObject var viewModel: ViewModel
+    @EnvironmentObject private var service: WalletsService
     
-    init(walletService: WalletsService) {
-        viewModel = .init(service: walletService)
+    init() {
+        viewModel = .init()
     }
     
     var body: some View {
@@ -32,11 +33,11 @@ struct RestoreWalletView: View {
             }
             .padding(.top, 35)
             
-            if viewModel.walletService.currentWallet != nil {
+            if service.currentWallet != nil {
                 HStack {
                     PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
                         withAnimation {
-                            viewModel.walletService.state = .currentWallet
+                            service.state = .currentWallet
                         }
                     }
                     Spacer()
@@ -82,7 +83,7 @@ struct RestoreWalletView: View {
                     HStack {
                         PButton(label: "Restore", width: 203, height: 48, fontSize: 15, enabled: viewModel.restoreReady) {
                             withAnimation {
-                                viewModel.walletService.createWallet(model: .init(name: viewModel.accountName, addressType: .nativeSegwit, seed: viewModel.seed))
+                                service.createWallet(model: .init(name: viewModel.accountName, addressType: .nativeSegwit, seed: viewModel.seed))
                             }
                         }
                         
@@ -102,7 +103,7 @@ struct RestoreWalletView: View {
                         
                         PButton(label: "Create new wallet", width: 140, height: 30, fontSize: 12, enabled: true) {
                             withAnimation {
-                                viewModel.walletService.state = .createWallet
+                                service.state = .createWallet
                             }
                         }
                     }
@@ -120,7 +121,6 @@ import Combine
 
 extension RestoreWalletView {
     final class ViewModel: ObservableObject {
-        @ObservedObject var walletService: WalletsService
         private let seeedLength = 24
         private var anyCancellable = Set<AnyCancellable>()
 
@@ -139,9 +139,7 @@ extension RestoreWalletView {
             }
         }
         
-        init(service: WalletsService) {
-            walletService = service
-            
+        init() {
             for _ in 1...seeedLength {
                 seed.append(String())
             }
@@ -166,7 +164,7 @@ extension RestoreWalletView {
 
 struct RestoreWalletView_Previews: PreviewProvider {
     static var previews: some View {
-        RestoreWalletView(walletService: WalletsService())
+        RestoreWalletView()
             .iPadLandscapePreviews()
     }
 }
