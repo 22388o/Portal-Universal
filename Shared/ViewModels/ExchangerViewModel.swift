@@ -8,10 +8,12 @@
 
 import Foundation
 import Combine
+import Coinpaprika
 
 final class ExchangerViewModel: ObservableObject, IMarketData {
     let asset: Coin
     let fiat: FiatCurrency
+    let ticker: Ticker?
     
     @Published var assetValue = String()
     @Published var fiatValue = String()
@@ -21,7 +23,7 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
     }
     
     private var price: Double {
-        9320.24//marketData.priceData?.price ?? 9320.24
+        ((ticker?[.usd].price ?? 0) * Decimal(fiat.rate)).double
     }
     
     private var rate: Double {
@@ -30,11 +32,12 @@ final class ExchangerViewModel: ObservableObject, IMarketData {
     
     private var subscriptions = Set<AnyCancellable>()
     
-    init(asset: Coin, fiat: FiatCurrency) {
+    init(asset: Coin, ticker: Ticker?, fiat: FiatCurrency) {
         print("ExchangerViewModel init")
 
         self.asset = asset
         self.fiat = fiat
+        self.ticker = ticker
         
         $assetValue
             .removeDuplicates()
