@@ -15,10 +15,13 @@ struct PortfolioView: View {
             VStack(spacing: 0) {
                 MarketValueView(
                     timeframe: $viewModel.selectedTimeframe,
-                    totalValue: $viewModel.totalValue,
-                    change: $viewModel.change,
-                    chartDataEntries: $viewModel.chartDataEntries,
                     valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
+                    fiatCurrency: USD,
+                    totalValue: viewModel.totalValue,
+                    change: viewModel.change,
+                    high: "$0.0",
+                    low: "$0.0",
+                    chartDataEntries: viewModel.chartDataEntries,
                     type: .portfolio
                 )
                 .padding(.top, 12)

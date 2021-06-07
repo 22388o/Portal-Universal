@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SeedTestView: View {
     @ObservedObject private var viewModel: CreateWalletScene.ViewModel
-    @ObservedObject private var keyboard = KeyboardResponder()
+    @EnvironmentObject private var service: WalletsService
+    @StateObject private var keyboard = KeyboardResponder()
 
     init(viewModel: CreateWalletScene.ViewModel) {
         self.viewModel = viewModel
@@ -57,7 +58,7 @@ struct SeedTestView: View {
                 
                 PButton(label: "Create my wallet", width: 203, height: 48, fontSize: 15, enabled: viewModel.test.formIsValid) {
                     withAnimation {
-                        viewModel.creteNewWallet()
+                        service.createWallet(model: viewModel.newWalletViewModel)
                     }
                 }
             }
@@ -113,7 +114,7 @@ extension SeedTestView {
 
 struct SeedTestView_Previews: PreviewProvider {
     static var previews: some View {
-        SeedTestView(viewModel: CreateWalletScene.ViewModel(walletService: WalletsService()))
+        SeedTestView(viewModel: CreateWalletScene.ViewModel())
             .frame(width: 750, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

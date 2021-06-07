@@ -84,7 +84,7 @@ struct StoreSeedView: View {
 
 struct StoreSeedView_Previews: PreviewProvider {
     static var previews: some View {
-        StoreSeedView(viewModel: CreateWalletScene.ViewModel(walletService: WalletsService()))
+        StoreSeedView(viewModel: CreateWalletScene.ViewModel())
             .frame(width: 750, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

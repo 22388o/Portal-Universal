@@ -66,7 +66,7 @@ struct CreateWalletNameView: View {
 
 struct CreateWalletNameView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateWalletNameView(viewModel: CreateWalletScene.ViewModel(walletService: WalletsService()))
+        CreateWalletNameView(viewModel: CreateWalletScene.ViewModel())
             .frame(width: 656, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()
