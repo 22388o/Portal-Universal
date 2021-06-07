@@ -60,7 +60,7 @@ enum TxSpeed: Int, CustomStringConvertible, CaseIterable {
 }
 
 enum MarketDataRange {
-    case hour, day, week, month, year
+    case day, week, month, year
 }
 
 enum AssetMarketValueViewType {
@@ -75,16 +75,7 @@ enum Currency {
     var symbol: String {
         switch self {
         case .fiat(let currency):
-            return currency.symbol ?? String()
-        default:
-            return String()
-        }
-    }
-    
-    func stringValue() -> String {
-        switch self {
-        case .fiat(let currency):
-            return currency.code
+            return currency.symbol
         case .btc:
             return "BTC"
         case .eth:
@@ -94,12 +85,10 @@ enum Currency {
 }
 
 enum Timeframe: Int {
-    case hour = 0, day, week, month, year, allTime
+    case day, week, month, year
     
     func intervalString() -> String {
         switch self {
-        case .hour:
-            return "1h"
         case .day:
             return "1d"
         case .week:
@@ -108,8 +97,6 @@ enum Timeframe: Int {
             return "1M"
         case .year:
             return "1y"
-        case .allTime:
-            return "All"
         }
     }
     
@@ -117,8 +104,6 @@ enum Timeframe: Int {
         let intervalString: String
         
         switch self {
-        case .hour:
-            intervalString = "Hour"
         case .day:
             intervalString = "Day"
         case .week:
@@ -127,8 +112,6 @@ enum Timeframe: Int {
             intervalString = "Month"
         case .year:
             intervalString = "Year"
-        case .allTime:
-            intervalString = "All time"
         }
         return intervalString + " change"
     }

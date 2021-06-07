@@ -23,6 +23,7 @@ final class Asset: IAsset {
     var id: UUID
     var coin: Coin
     var kit: ICoinKit
+    var marketDataProvider: IMarketDataProvider
     var balanceProvider: IBalanceProvider
     var chartDataProvider: IChartDataProvider
     var marketChangeProvider: IMarketChangeProvider
@@ -33,6 +34,7 @@ final class Asset: IAsset {
         self.coin = coin
         self.kit = kit
         
+        self.marketDataProvider = MarketDataProvider(coin: coin)
         self.balanceProvider = BalanceProvider(coin: coin, kit: kit)
         self.chartDataProvider = ChartDataProvider()
         self.marketChangeProvider = MarketChangeProvider()
@@ -41,5 +43,15 @@ final class Asset: IAsset {
     
     static func bitcoin() -> IAsset {
         Asset(coin: Coin.bitcoin())
+    }
+}
+
+import Coinpaprika
+
+final class MarketDataProvider: IMarketDataProvider {
+    var ticker: Ticker?
+    
+    init(coin: Coin) {
+        
     }
 }

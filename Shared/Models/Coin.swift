@@ -25,4 +25,12 @@ struct Coin {
     static func bitcoin() -> Self {
         Coin(code: "BTC", name: "Bitcoin", color: Color.green)
     }
+    
+    static func bitcoinCash() -> Self {
+        Coin(code: "BCH", name: "Bitcoin cash", color: Color.green)
+    }
+    
+    static func ethereum() -> Self {
+        Coin(code: "ETH", name: "Ethereum", color: Color.blue)
+    }
 }
