@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+import Coinpaprika
 
 struct AssetItemView: View {
-    @ObservedObject var viewModel: AssetViewModel
+    private var viewModel: AssetItemViewModel
     let selected: Bool
+    let onTap: () -> ()
             
-    init(viewModel: AssetViewModel, selected: Bool) {
-        self.viewModel = viewModel
+    init(asset: IAsset, marketData: MarketDataRepository?, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
+        self.viewModel = .init(asset: asset, marketData: marketData, selectedTimeFrame: .day, fiatCurrency: fiatCurrency)
         self.selected = selected
+        self.onTap = onTap
     }
         
     var body: some View {
@@ -33,6 +36,7 @@ struct AssetItemView: View {
                     Spacer()
                     
                     Text(viewModel.change)
+                        .foregroundColor(viewModel.changeLabelColor)
                 }
                 .padding(.horizontal, 20)
                 
@@ -40,10 +44,13 @@ struct AssetItemView: View {
                     .transition(.identity)
             }
             .font(.mainFont(size: 18))
-            .foregroundColor(selected ? .black : .white)
+            .foregroundColor(selected ? .black : Color(red: 160/255, green: 190/255, blue: 186/255, opacity: 1))
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onTap()
+            }
         }
         .frame(height: 64)
-        .contentShape(Rectangle())
     }
 }
 
@@ -51,13 +58,19 @@ struct AssetItemView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             AssetItemView(
-                viewModel: AssetViewModel(asset: Asset.bitcoin()),
-                selected: true
+                asset: Asset.bitcoin(),
+                marketData: nil,
+                selected: true,
+                fiatCurrency: USD,
+                onTap: {}
             )
             
             AssetItemView(
-                viewModel: AssetViewModel(asset: Asset.bitcoin()),
-                selected: false
+                asset: Asset.bitcoin(),
+                marketData: nil,
+                selected: false,
+                fiatCurrency: USD,
+                onTap: {}
             )
         }
         .frame(width: 600, height: 64)

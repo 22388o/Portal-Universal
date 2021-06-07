@@ -7,56 +7,45 @@
 
 import SwiftUI
 import Charts
+import Coinpaprika
 
 struct AssetView: View {
-    
     @Namespace private var animation
-
     
     enum Route {
         case value, transactions, alerts
     }
     
+    @State private var route: Route = .value
+    
     @Binding var receiveAsset: Bool
     @Binding var sendAsset: Bool
-//    @Binding var sendAssetToExchange: Bool
-//    @Binding var withdrawAssetFromExchange: Bool
     @Binding var allTxs: Bool
-    @Binding var route: Route
     @Binding var createAlert: Bool
     
     @ObservedObject private var viewModel: AssetViewModel
     
-    init(viewModel: WalletScene.ViewModel) {
-        self.viewModel = AssetViewModel(asset: viewModel.selectedAsset)
+    let fiatCurrency: FiatCurrency
+    
+    init(sceneViewModel: WalletScene.ViewModel, marketData: MarketDataRepository?, fiatCurrency: FiatCurrency) {
+        self.fiatCurrency = fiatCurrency
+        self.viewModel = AssetViewModel(asset: sceneViewModel.selectedAsset, marketData: marketData, fiatCurrency: fiatCurrency)
         
         self._receiveAsset = Binding(
-            get: { viewModel.receiveAsset },
-            set: { viewModel.receiveAsset = $0 }
+            get: { sceneViewModel.receiveAsset },
+            set: { sceneViewModel.receiveAsset = $0 }
         )
         self._sendAsset = Binding(
-            get: { viewModel.sendAsset },
-            set: { viewModel.sendAsset = $0 }
-        )
-//        self._sendAssetToExchange = Binding(
-//            get: { viewModel.sendAssetToExchange },
-//            set: { viewModel.sendAssetToExchange = $0 }
-//        )
-//        self._withdrawAssetFromExchange = Binding(
-//            get: { viewModel.withdrawAssetFromExchange },
-//            set: { viewModel.withdrawAssetFromExchange = $0 }
-//        )
-        self._route = Binding(
-            get: { viewModel.assetViewRoute },
-            set: { viewModel.assetViewRoute = $0 }
+            get: { sceneViewModel.sendAsset },
+            set: { sceneViewModel.sendAsset = $0 }
         )
         self._allTxs = Binding(
-            get: { viewModel.allTransactions },
-            set: { viewModel.allTransactions = $0 }
+            get: { sceneViewModel.allTransactions },
+            set: { sceneViewModel.allTransactions = $0 }
         )
         self._createAlert = Binding(
-            get: { viewModel.createAlert },
-            set: { viewModel.createAlert = $0 }
+            get: { sceneViewModel.createAlert },
+            set: { sceneViewModel.createAlert = $0 }
         )
     }
     
@@ -74,6 +63,7 @@ struct AssetView: View {
                         .frame(width: 24, height: 24)
                     Text("\(viewModel.asset.coin.name)")
                         .font(.mainFont(size: 15))
+                        .foregroundColor(Color.assetValueLabel)
                     Spacer()
                 }
                 
@@ -81,6 +71,7 @@ struct AssetView: View {
                     Text("\(viewModel.balance) \(viewModel.asset.coin.code)")
                         .font(.mainFont(size: 28))
                         .padding(.bottom, 15)
+                        .foregroundColor(Color.assetValueLabel)
                     Spacer()
                 }
                 
@@ -113,10 +104,13 @@ struct AssetView: View {
                 case .value:
                     MarketValueView(
                         timeframe: $viewModel.selectedTimeframe,
-                        totalValue: $viewModel.totalValue,
-                        change: $viewModel.change,
-                        chartDataEntries: $viewModel.chartDataEntries,
                         valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
+                        fiatCurrency: fiatCurrency,
+                        totalValue: viewModel.totalValue,
+                        change: viewModel.change,
+                        high: viewModel.dayHigh,
+                        low: viewModel.dayLow,
+                        chartDataEntries: viewModel.chartDataEntries,
                         type: .asset
                     )
                     .transition(.identity)
@@ -139,10 +133,13 @@ struct AssetView_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            AssetView(viewModel: .init(wallet: WalletMock()))
+            AssetView(
+                sceneViewModel: .init(wallet: WalletMock(), fiatCurrency: USD),
+                marketData: nil,
+                fiatCurrency: USD
+            )
         }
         .frame(width: 304, height: 656)
         .previewLayout(PreviewLayout.sizeThatFits)
-//        .padding()
     }
 }
