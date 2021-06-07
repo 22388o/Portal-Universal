@@ -11,7 +11,7 @@ import SwiftUI
 
 let btcMockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
 
-let USD = FiatCurrency(code: "USD", name: "American Dollar")
+let USD = FiatCurrency(code: "USD", name: "American Dollar", rate: 1)
 
 final class MockCoinKit: ICoinKit {
     var balance: Double {
@@ -25,6 +25,7 @@ final class MockCoinKit: ICoinKit {
 class WalletMock: IWallet {
     var walletID: UUID = UUID()
     var name: String = "Personal"
+    var fiatCurrencyCode: String = "USD"
     
     var assets = [IAsset]()
     
@@ -46,6 +47,7 @@ class WalletMock: IWallet {
     
     func setup() {}
     func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {}
+    func updateFiatCurrency(_ fiatCurrency: FiatCurrency) {}
 }
 
 //let CoinsMock: [Asset] = [BTC(), BCH(), ETH(), XLM(), XTZ()]
