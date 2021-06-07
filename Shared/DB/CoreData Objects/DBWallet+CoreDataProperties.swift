@@ -2,7 +2,7 @@
 //  DBWallet+CoreDataProperties.swift
 //  Portal (iOS)
 //
-//  Created by Farid on 19.04.2021.
+//  Created by Farid on 30.05.2021.
 //
 //
 
@@ -18,6 +18,7 @@ extension DBWallet {
 
     @NSManaged public var id: UUID
     @NSManaged public var name: String
+    @NSManaged public var fiatCurrency: String
     @NSManaged public var txs: NSSet?
     @NSManaged public var wallets: DBStorage?
 

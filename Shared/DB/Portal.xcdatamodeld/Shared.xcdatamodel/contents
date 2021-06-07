@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="DBStorage" representedClassName="DBStorage" syncable="YES" codeGenerationType="class">
         <relationship name="wallets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DBWallet" inverseName="wallets" inverseEntity="DBWallet"/>
     </entity>
@@ -14,6 +14,7 @@
         <relationship name="tx" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DBWallet" inverseName="txs" inverseEntity="DBWallet"/>
     </entity>
     <entity name="DBWallet" representedClassName="DBWallet" syncable="YES">
+        <attribute name="fiatCurrency" optional="YES" attributeType="String" defaultValueString="USD"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="txs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DBTx" inverseName="tx" inverseEntity="DBTx"/>
@@ -22,6 +23,6 @@
     <elements>
         <element name="DBStorage" positionX="-897.11328125" positionY="448.49609375" width="128" height="58"/>
         <element name="DBTx" positionX="-447.9609375" positionY="250.73828125" width="128" height="149"/>
-        <element name="DBWallet" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="103"/>
+        <element name="DBWallet" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="104"/>
     </elements>
 </model>

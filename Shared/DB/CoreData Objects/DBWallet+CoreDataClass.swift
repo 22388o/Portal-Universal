@@ -12,6 +12,10 @@ import SwiftUI
 
 @objc(DBWallet)
 public class DBWallet: NSManagedObject, IWallet {
+    var fiatCurrencyCode: String {
+        fiatCurrency
+    }
+    
     var walletID: UUID {
         id
     }
@@ -43,25 +47,16 @@ public class DBWallet: NSManagedObject, IWallet {
             Coin(code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc")),
             Coin(code: "BCH", name: "Bitcoin Cash", color: Color.gray, icon: Image("iconBch")),
             Coin(code: "ETH", name: "Ethereum", color: Color.yellow, icon: Image("iconEth")),
-            Coin(code: "XLM", name: "Stellar Lumens", color: Color.blue, icon: Image("iconXlm")),
-            Coin(code: "XTZ", name: "Stellar Lumens", color: Color.red, icon: Image("iconXtz")),
-            
-            Coin(code: "ERZ", name: "Eeeeee", color: Color.yellow, icon: Image("iconEth")),
-            Coin(code: "MFK", name: "EEEEEE", color: Color.blue, icon: Image("iconXlm")),
-            Coin(code: "PED", name: "PPPPPPe", color: Color.red, icon: Image("iconXtz")),
-            Coin(code: "LAS", name: "LaaaaaaS", color: Color.yellow, icon: Image("iconBtc")),
-            Coin(code: "NDC", name: "Nnnnnnn D", color: Color.blue, icon: Image("iconBch")),
-            Coin(code: "NCB", name: "NNNNNNNcf", color: Color.red, icon: Image("iconXtz"))
         ]
                 
         self.assets = sampleCoins.prefix(5).map{ Asset(coin: $0, data: data) }
         
-        for _ in 5...Int.random(in: 6...10) {
-            let randomIndex = Int.random(in: 5...sampleCoins.count - 1)
-            let coin = sampleCoins[randomIndex]
-            let asset = Asset(coin: coin, data: data)
-            assets.append(asset)
-        }
+//        for _ in 5...Int.random(in: 6...10) {
+//            let randomIndex = Int.random(in: 5...sampleCoins.count - 1)
+//            let coin = sampleCoins[randomIndex]
+//            let asset = Asset(coin: coin, data: data)
+//            assets.append(asset)
+//        }
     }
     
     func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {
@@ -79,6 +74,13 @@ public class DBWallet: NSManagedObject, IWallet {
         
         addToTxs(tx)
         
+        try? contex.save()
+    }
+    
+    func updateFiatCurrency(_ currency: FiatCurrency) {
+        guard let contex = self.managedObjectContext else { return }
+        let code = currency.code
+        fiatCurrency = code
         try? contex.save()
     }
 }
