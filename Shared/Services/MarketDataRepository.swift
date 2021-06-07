@@ -9,70 +9,98 @@
 import Foundation
 import SwiftUI
 import Combine
+import Coinpaprika
 
-final class MarketDataRepository  {    
+final class MarketDataRepository: ObservableObject {
     typealias CoinCode = String
     typealias CurrencyCode = String
     typealias Rate = Double
     
+    private let supportedFiatCurrenciesSymbols = "JPY USD KRW EUR INR CAD RUB GBP CNY NZD SGD"
+
+    
     private var marketDataUpdater = MarketDataUpdater()
-    private var ratesUpdater = RatesDataUpdater(interval: 60)
-    private var priceUpdater = PricesDataUpdater(interval: 60)
+    private var currenciesUpdater = FiatCurrenciesUpdater(interval: 3600)
+//    private var priceUpdater = PricesDataUpdater(interval: 60)
     
     private var cancellables: Set<AnyCancellable> = []
-    
-    private var currencyRates = Synchronized([CurrencyCode : Rate]())
+//    private var currencyRates = Synchronized([CurrencyCode : Rate]())
     private var marketData = Synchronized([CoinCode : CoinMarketData]())
+    
+    @Published private(set) var tickers: [Ticker]?
+    @Published private(set) var fiatCurrencies: [FiatCurrency] = []
         
     init() {
         bindServices()
     }
     
     private func bindServices() {
-        marketDataUpdater.onUpdatePublisher
+        marketDataUpdater.onUpdateHistoricalPricePublisher
             .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
                 self.update(range, data)
             })
             .store(in: &cancellables)
         
-        ratesUpdater.onUpdatePublisher
-            .sink(receiveValue: { [weak self] rates in
+        marketDataUpdater.onUpdateHistoricalDataPublisher
+            .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
-                self.update(rates)
+                self.update(range, data)
             })
             .store(in: &cancellables)
         
-        priceUpdater.onUpdatePublisher
-            .sink(receiveValue: { [weak self] prices in
+        marketDataUpdater.onTickersUpdatePublisher
+            .sink(receiveValue: { [weak self] tickers in
                 guard let self = self else { return }
-                self.update(prices)
+                self.tickers = tickers
             })
             .store(in: &cancellables)
+        
+        currenciesUpdater.onUpdatePublisher
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] currencies in
+                guard let self = self else { return }
+                self.fiatCurrencies = currencies.filter{ self.supportedFiatCurrenciesSymbols.contains($0.code)}.sorted(by: {$0.code < $1.code} )
+            })
+            .store(in: &cancellables)
+
+//        priceUpdater.onUpdatePublisher
+//            .sink(receiveValue: { [weak self] prices in
+//                guard let self = self else { return }
+//                self.update(prices)
+//            })
+//            .store(in: &cancellables)
     }
     
-    func data(for coin: String) -> CoinMarketData {
-        marketData.value[coin] ?? CoinMarketData()
+    func ticker(coin: Coin) -> Ticker? {
+        tickers?.first(where: { $0.symbol == coin.code })
+    }
+    
+    func data(coin: Coin) -> CoinMarketData {
+        marketData.value[coin.code] ?? CoinMarketData()
     }
 
     func rate(for currency: FiatCurrency) -> Double {
-        let code = currency.code
-        return currencyRates.value[code] ?? 1.0
+        1.0
     }
     
-    func pause() {
-        ratesUpdater.pause()
-        priceUpdater.pause()
+    func rates() -> [String: Rate] {
+        return [:]
     }
     
-    func resume() {
-        ratesUpdater.resume()
-        priceUpdater.resume()
-    }
+//    func pause() {
+//        ratesUpdater.pause()
+//        priceUpdater.pause()
+//    }
+//    
+//    func resume() {
+//        ratesUpdater.resume()
+//        priceUpdater.resume()
+//    }
 }
 
 extension MarketDataRepository {
-    private func update(_ range: MarketDataRange, _ data: HistoricalDataResponse) {
+    private func update(_ range: MarketDataRange, _ data: HistoricalTickerPrice) {
         for points in data {
             if self.marketData.value[points.key] == nil {
                 self.marketData.writer({ (data) in
@@ -81,8 +109,6 @@ extension MarketDataRepository {
             }
             self.marketData.writer({ (data) in
                 switch range {
-                case .hour:
-                    data[points.key]?.hourPoints = points.value
                 case .day:
                     data[points.key]?.dayPoints = points.value
                 case .week:
@@ -96,10 +122,34 @@ extension MarketDataRepository {
         }
     }
     
+    private func update(_ range: MarketDataRange, _ data: HistoricalDataResponse) {
+        for snap in data {
+            if self.marketData.value[snap.key] == nil {
+                self.marketData.writer({ (data) in
+                    data[snap.key] = CoinMarketData()
+                })
+            }
+            self.marketData.writer({ (data) in
+                switch range {
+                case .day:
+                    data[snap.key]?.dayOhlc = snap.value
+                case .week:
+                    break
+//                    data[snap.key]?.weekPoints = points.value
+                case .month:
+                    break
+//                    data[snap.key]?.monthPoints = points.value
+                case .year:
+                    break
+                }
+            })
+        }
+    }
+    
     private func update(_ rates: Rates) {
-        currencyRates.writer({ (data) in
-            data = rates.filter{$0.key != "BTC"}
-        })
+//        currencyRates.writer({ (data) in
+//            data = rates.filter{$0.key != "BTC"}
+//        })
     }
     
     private func update(_ prices: PriceResponse) {
