@@ -8,6 +8,22 @@
 
 import Foundation
 
+extension Decimal {
+    var string: String {
+        String("\(self)")
+    }
+    var double: Double {
+        Double(truncating: self as NSNumber)
+    }
+    func rounded(toPlaces places: Int) -> Double {
+        self.double.rounded(toPlaces: places)
+    }
+    
+    func dollarFormatted() -> String {
+        StringFormatter.localizedValueString(value: self, symbol: "$")
+    }
+}
+
 extension Double {
     func dollarFormatted() -> String {
         StringFormatter.localizedValueString(value: self, symbol: "$")
