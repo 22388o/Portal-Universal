@@ -14,7 +14,7 @@ import Combine
 final class PortfolioViewModel: ObservableObject, IMarketData {
     var assets: [IAsset]
     
-    @Published var selectedTimeframe: Timeframe = .hour
+    @Published var selectedTimeframe: Timeframe = .day
     @Published var totalValue = String()
     @Published var change: String = "-$423 (3.46%)"
     @Published var chartDataEntries = [ChartDataEntry]()
@@ -43,7 +43,7 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
                 switch state {
                 case .fiat:
                     self?.totalValue = "$" + String(assets.map {
-                        $0.balanceProvider.balance(currency: currency)
+                        $0.balanceProvider.balance(currency: currency).double
                     }
                         .reduce(0) { ($0 + $1) * 3 }
                         .rounded(toPlaces: 2)
@@ -69,10 +69,6 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
         var valuesArray: [[Double]]
 
         switch selectedTimeframe {
-        case .hour:
-            valuesArray = assets.map {
-                $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).hourPoints)
-            }
         case .day:
             valuesArray = assets.map {
                 $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).dayPoints)
@@ -89,9 +85,6 @@ final class PortfolioViewModel: ObservableObject, IMarketData {
             valuesArray = assets.map {
                 $0.chartDataProvider.values(timeframe: selectedTimeframe, points: marketData(for: $0.coin.code).yearPoints)
             }
-        case .allTime:
-            self.chartDataEntries = [ChartDataEntry]()
-            return
         }
 
         guard var count = valuesArray.first?.count else {
