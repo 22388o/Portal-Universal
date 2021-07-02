@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import Coinpaprika
 
 struct AssetItemView: View {
-    private var viewModel: AssetItemViewModel
+    @ObservedObject private var viewModel: AssetItemViewModel
     let selected: Bool
     let onTap: () -> ()
             
@@ -27,10 +26,18 @@ struct AssetItemView: View {
             ZStack {
                 HStack {
                     HStack(spacing: 12) {
-                        viewModel.asset.coin.icon
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                        Text("\(viewModel.asset.balanceProvider.balanceString) \(viewModel.asset.coin.code)")
+                        ZStack {
+                            if viewModel.kitBalanceUpdateState != .synced && viewModel.syncProgress > 0 {
+                                CircularProgressBar(progress: $viewModel.syncProgress)
+                                    .frame(width: 26, height: 26)
+                            }
+                            viewModel.asset.coin.icon
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                        }
+                        .frame(width: 26, height: 26)
+                        
+                        Text("\(viewModel.balance) \(viewModel.asset.coin.code)")
                     }
                     
                     Spacer()
