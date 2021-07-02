@@ -11,17 +11,13 @@ struct StoreSeedView: View {
     private let description = """
     See the 24 words on the right? It’s called a seed, and you’ll need it to access your wallet. If you lose it, you’ll lose the wallet and all the money in it. And we can’t restore it.
 
-    Write the seed on paper (in that same order!), or save it to your 1Password or LastPass.
-
-
-
-
+    
     Make 100% sure you have all the words, in that same order, and continue when you’re ready.
     """
         
-    @ObservedObject private var viewModel: CreateWalletScene.ViewModel
+    @ObservedObject private var viewModel: CreateWalletSceneViewModel
     
-    init(viewModel: CreateWalletScene.ViewModel) {
+    init(viewModel: CreateWalletSceneViewModel) {
         self.viewModel = viewModel
     }
     
@@ -34,8 +30,10 @@ struct StoreSeedView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Secure your wallet")
                             .font(.mainFont(size: 23))
+                            .foregroundColor(.createWalletLabel)
                         Text("Store the seed")
                             .font(.mainFont(size: 15))
+                            .foregroundColor(.coinViewRouteButtonInactive)
                     }
                 }
                 
@@ -43,9 +41,10 @@ struct StoreSeedView: View {
                 
                 Text(description)
                     .font(.mainFont(size: 14))
+                    .foregroundColor(.coinViewRouteButtonActive)
                     .frame(width: 298)
                 
-                Spacer().frame(height: 10)
+                Spacer().frame(height: 60)
                 
                 PButton(label: "Next", width: 180, height: 48, fontSize: 15, enabled: true) {
                     withAnimation {
@@ -64,15 +63,25 @@ struct StoreSeedView: View {
                     )
                 HStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 12) {
-                        ForEach((1...viewModel.test.seed.count/2), id: \.self) {
-                            Text("\($0)) \(viewModel.test.seed[$0 - 1])")
+                        ForEach((1...viewModel.test.seed.count/2), id: \.self) { index in
+                            HStack {
+                                Text("\(index))")
+                                    .foregroundColor(.blush)
+                                Text("\(viewModel.test.seed[index - 1])")
+                                    .foregroundColor(.brownishOrange)
+                            }
                         }
                     }
                     .frame(width: 150)
                     
                     VStack(alignment: .leading, spacing: 12) {
-                        ForEach((viewModel.test.seed.count/2 + 1...viewModel.test.seed.count), id: \.self) {
-                            Text("\($0)) \(viewModel.test.seed[$0 - 1])")
+                        ForEach((viewModel.test.seed.count/2 + 1...viewModel.test.seed.count), id: \.self) { index in
+                            HStack {
+                                Text("\(index))")
+                                    .foregroundColor(.blush)
+                                Text("\(viewModel.test.seed[index - 1])")
+                                    .foregroundColor(.brownishOrange)
+                            }
                         }
                     }
                     .frame(width: 150)
@@ -84,7 +93,7 @@ struct StoreSeedView: View {
 
 struct StoreSeedView_Previews: PreviewProvider {
     static var previews: some View {
-        StoreSeedView(viewModel: CreateWalletScene.ViewModel())
+        StoreSeedView(viewModel: CreateWalletSceneViewModel())
             .frame(width: 750, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

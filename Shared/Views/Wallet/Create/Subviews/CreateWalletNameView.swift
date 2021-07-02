@@ -9,9 +9,9 @@ import SwiftUI
 import Combine
 
 struct CreateWalletNameView: View {
-    @ObservedObject private var viewModel: CreateWalletScene.ViewModel
+    @ObservedObject private var viewModel: CreateWalletSceneViewModel
     
-    init(viewModel: CreateWalletScene.ViewModel) {
+    init(viewModel: CreateWalletSceneViewModel) {
         self.viewModel = viewModel
     }
     
@@ -46,12 +46,11 @@ struct CreateWalletNameView: View {
             Group {
                 Image("lockedSafeIcon")
                     .offset(x: 1, y: -2)
-                
-                Spacer().frame(height: 24)
-                
+                                
                 Text("Let’s get you a wallet")
                     .font(.mainFont(size: 30))
                     .foregroundColor(Color.createWalletLabel)
+                    .padding(.top, 24)
                 
                 Spacer().frame(height: 17)
                 
@@ -59,6 +58,29 @@ struct CreateWalletNameView: View {
                     .multilineTextAlignment(.center)
                     .font(.mainFont(size: 16))
                     .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
+                
+                Spacer().frame(height: 24)
+                
+                Text("Bitcoin address format")
+                    .font(.mainFont(size: 14))
+                
+                Spacer().frame(height: 14)
+                
+                Picker("", selection: $viewModel.btcAddressFormat) {
+                    ForEach(0 ..< BtcAddressFormat.allCases.count) { index in
+                        Text(BtcAddressFormat.allCases[index].description).tag(index)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .frame(width: 360)
+                
+                Spacer().frame(height: 14)
+                
+                Text("With SegWit addresses the network can process more transactions per block and the sender pays lower transaction fees.")
+                    .multilineTextAlignment(.center)
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
+                    .frame(width: 500)
             }
         }
     }
@@ -66,7 +88,7 @@ struct CreateWalletNameView: View {
 
 struct CreateWalletNameView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateWalletNameView(viewModel: CreateWalletScene.ViewModel())
+        CreateWalletNameView(viewModel: CreateWalletSceneViewModel())
             .frame(width: 656, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()
