@@ -12,11 +12,7 @@ import Coinpaprika
 struct AssetView: View {
     @Namespace private var animation
     
-    enum Route {
-        case value, transactions, alerts
-    }
-    
-    @State private var route: Route = .value
+    @State private var route: AssetViewRoute = .value
     
     @Binding var receiveAsset: Bool
     @Binding var sendAsset: Bool
@@ -27,7 +23,7 @@ struct AssetView: View {
     
     let fiatCurrency: FiatCurrency
     
-    init(sceneViewModel: WalletScene.ViewModel, marketData: MarketDataRepository?, fiatCurrency: FiatCurrency) {
+    init(sceneViewModel: WalletSceneViewModel, marketData: MarketDataRepository?, fiatCurrency: FiatCurrency) {
         self.fiatCurrency = fiatCurrency
         self.viewModel = AssetViewModel(asset: sceneViewModel.selectedAsset, marketData: marketData, fiatCurrency: fiatCurrency)
         
@@ -113,9 +109,8 @@ struct AssetView: View {
                         chartDataEntries: viewModel.chartDataEntries,
                         type: .asset
                     )
-                    .transition(.identity)
                 case .transactions:
-                    RecentTxsView(coin: viewModel.asset.coin, showAllTxs: $allTxs)
+                    RecentTxsView(asset: viewModel.asset, showAllTxs: $allTxs)
                         .transition(.identity)
                 case .alerts:
                     AlertsView(coin: viewModel.asset.coin, createAlert: $createAlert)
