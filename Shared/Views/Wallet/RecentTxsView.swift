@@ -8,19 +8,18 @@
 import SwiftUI
 
 struct RecentTxsView: View {
-    let coin: Coin
+    let asset: IAsset
     @Binding var showAllTxs: Bool
+    private var viewModel: TxsViewModel
     
-    @FetchRequest(
-        entity: DBTx.entity(),
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \DBTx.timestamp, ascending: false),
-        ]
-//        predicate: NSPredicate(format: "coin == %@", code)
-    ) private var allTxs: FetchedResults<DBTx>
+    init(asset: IAsset, showAllTxs: Binding<Bool>) {
+        self.asset = asset
+        self._showAllTxs = showAllTxs
+        self.viewModel = .init(asset: asset)
+    }
     
     var body: some View {
-        if allTxs.filter({$0.coin == coin.code}).isEmpty {
+        if viewModel.txs.isEmpty {
             VStack {
                 Spacer()
                 Text("There is no transactions yet")
@@ -29,32 +28,53 @@ struct RecentTxsView: View {
                 Spacer()
             }
         } else {
-            VStack {
-                HStack {
-                    Text("Recent activity")
-                        .font(.mainFont(size: 14))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
-                }
-                .padding(.top)
+            VStack(spacing: 0) {
+                Text("Recent activity")
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.coinViewRouteButtonActive)
+                    .padding(.vertical)
                 
                 ScrollView {
-                    LazyVStack(alignment: .leading) {
-                        ForEach(allTxs.filter {$0.coin == coin.code}) { tx in
-                            HStack(spacing: 8) {
-                                Text("Sent \(tx.amount ?? 0) \(tx.coin ?? "?")")
-                                    .frame(width: 120)
+                    LazyVStack(alignment: .leading, spacing: 0) {
+                        Rectangle()
+                            .fill(Color.exchangerFieldBorder)
+                            .frame(height: 1)
+                        
+                        ForEach(viewModel.txs, id: \.uid) { tx in
+                            VStack(spacing: 4) {
+                                HStack(spacing: 8) {
+                                    VStack {
+                                        switch tx.destination {
+                                        case .incoming:
+                                            Text("Received \(tx.amount.double) \(asset.coin.code)")
+                                        case .outgoing:
+                                            Text("Sent \(tx.amount.double) \(asset.coin.code)")
+                                        case .sentToSelf:
+                                            Text("Send to self \(tx.amount.double) \(asset.coin.code)")
+                                        }
+                                    }
                                     .font(.mainFont(size: 12))
                                     .foregroundColor(Color.coinViewRouteButtonActive)
-                                Spacer()
-                                Text("\(tx.timestamp ?? Date())")
-                                    .lineLimit(1)
-                                    .font(.mainFont(size: 12))
-                                    .foregroundColor(Color.coinViewRouteButtonInactive)
-                                Spacer()
+                                    Spacer()
+                                    Text(tx.date.timeAgoSinceDate(shortFormat: true))
+                                        .lineLimit(1)
+                                        .font(.mainFont(size: 12))
+                                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                                }
+                                
+                                HStack {
+                                    Text("\(tx.confirmations) confirmations")
+                                        .font(.mainFont(size: 12))
+                                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                                    Spacer()
+                                }
                             }
-                            .frame(height: 40)
+                            .frame(height: 56)
+                            
+                            Rectangle()
+                                .fill(Color.exchangerFieldBorder)
+                                .frame(height: 1)
                         }
-                        .font(.mainFont(size: 12))
                     }
                 }
                 .frame(width: 256)
@@ -70,8 +90,38 @@ struct RecentTxsView: View {
     }
 }
 
+struct RecentTxView {
+    let transaction: PortalTx
+    let coinCode: String
+    
+    var body: some View {
+        VStack {
+            HStack(spacing: 8) {
+                VStack {
+                    switch transaction.destination {
+                    case .incoming:
+                        Text("Received \(transaction.amount.double) \(coinCode)")
+                    case .outgoing:
+                        Text("Sent \(transaction.amount.double) \(coinCode)")
+                    case .sentToSelf:
+                        Text("Send to self \(transaction.amount.double) \(coinCode)")
+                    }
+                }
+                .foregroundColor(Color.coinViewRouteButtonActive)
+                Spacer()
+                Text(transaction.date.timeAgoSinceDate(shortFormat: true))
+                    .lineLimit(1)
+                    .foregroundColor(Color.coinViewRouteButtonInactive)
+            }
+            .font(.mainFont(size: 12))
+            Divider()
+        }
+        .frame(height: 48)
+    }
+}
+
 struct RecentTxsView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentTxsView(coin: Coin.bitcoin(), showAllTxs: .constant(false))
+        RecentTxsView(asset: Asset.bitcoin(), showAllTxs: .constant(false))
     }
 }
