@@ -23,26 +23,3 @@ struct MarketSnapshot {
     }
 }
 
-//extension MarketSnapshot: Decodable {
-//    enum Keys: String, CodingKey {
-//        case high
-//        case low
-//        case close
-//        case open
-//    }
-//
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: Keys.self)
-//
-//        let h = try container.decode(Double.self, forKey: .high)
-//        let l = try container.decode(Double.self, forKey: .low)
-//        let o = try container.decode(Double.self, forKey: .open)
-//        let c = try container.decode(Double.self, forKey: .close)
-//
-//        high = h
-//        low = l
-//        open = o
-//        close = c
-//    }
-//}
-

@@ -165,5 +165,86 @@ enum Device {
         }
         return isValidPolicy
     }
+}
 
+enum PError: Error {
+    case unknow
+}
+
+enum KitSyncState {
+    case synced
+    case syncing(progress: Int, lastBlockDate: Date?)
+    case searchingTxs(count: Int)
+    case notSynced(error: Error)
+}
+
+extension KitSyncState: Equatable {
+    public static func ==(lhs: KitSyncState, rhs: KitSyncState) -> Bool {
+        switch (lhs, rhs) {
+        case (.synced, .synced): return true
+        case (.syncing(let lProgress, let lLastBlockDate), .syncing(let rProgress, let rLastBlockDate)): return lProgress == rProgress && lLastBlockDate == rLastBlockDate
+        case (.notSynced, .notSynced): return true
+        default: return false
+        }
+    }
+}
+
+enum TransactionDataSortMode: String, CaseIterable {
+    case shuffle
+    case bip69
+
+    var title: String {
+        "settings_privacy.sorting_\(self)"
+    }
+
+    var description: String {
+        "settings_privacy.sorting_\(self).description"
+    }
+}
+
+enum WalletCreationSteps {
+    case createWalletName, seed, test, confirmation
+}
+
+enum WalletSceneState {
+    case full, walletPortfolio, walletAsset
+}
+
+enum Scenes {
+    case wallet, swap
+}
+
+enum AssetViewRoute {
+    case value, transactions, alerts
+}
+
+enum ValueCurrencySwitchState: Int {
+    case fiat, btc, eth
+}
+
+enum TxSortState {
+    case all, sent, received, swapped
+    
+    var description: String {
+        switch self {
+        case .all:
+            return "All transactions"
+        case .sent:
+            return "Sent"
+        case .received:
+            return "Received"
+        case .swapped:
+            return "Swapped"
+        }
+    }
+}
+
+enum NetworkError: Error, LocalizedError {
+    case parsing
+    case inconsistentBehavior
+    case networkError
+    
+    var errorDescription: String? {
+        return "Something went wrong, we will fix it!"
+    }
 }

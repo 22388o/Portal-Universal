@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HdWalletKit
 
 struct NewWalletModel {
     let id: UUID
@@ -15,7 +16,7 @@ struct NewWalletModel {
     let seed: [String]
     
     var seedData: Data? {
-        seed.joined(separator: ",").data(using: .utf8)
+        return try? JSONSerialization.data(withJSONObject: seed, options: [])
     }
     
     init(name: String, addressType: BtcAddressFormat = .segwit, seed: [String]) {
@@ -25,7 +26,11 @@ struct NewWalletModel {
         self.seed = seed
     }
     
-    static func randomSeed() -> [String] {
-        ["merge", "symptom", "old", "tail", "earth", "metal", "identify", "lonely", "bottom", "other", "local", "trophy", "mom", "wide", "multiply", "earn", "embrace", "fly", "tube", "hammer", "pet", "gun", "cake", "laundry"]
+    private func tesmpSeed() -> [String] {
+        ["fruit", "seat", "assault", "fit", "daughter", "minute", "outer", "boy", "illness", "make", "genius", "confirm", "describe", "fox", "furnace", "meadow", "used", "goat", "mom", "deliver", "traffic", "much", "deer", "silver"]
+    }
+    
+    static func generateWords() throws -> [String] {
+        try Mnemonic.generate(strength: .veryHigh, language: .english)
     }
 }
