@@ -16,11 +16,10 @@ final class WalletsService: ObservableObject {
     
     @Published var state: State = .createWallet
     @Published var currentWallet: IWallet?
-    var wallets: [IWallet]? {
-        _wallets
-    }
-    private var _wallets: [DBWallet]?
     
+    var wallets: [IWallet]? { _wallets }
+    
+    private var _wallets: [DBWallet]?
     private let keychainStorage: KeychainStorage
     private var context: NSManagedObjectContext?
 
@@ -80,9 +79,8 @@ final class WalletsService: ObservableObject {
     
     private func setupWallet(id: UUID) {
         if let wallet = _wallets?.first(where: { $0.walletID == id }) {
-            guard let data = keychainStorage.data(for: wallet.key) else { return }
-            wallet.setup(data: data)
-            currentWallet = wallet
+            guard let data = keychainStorage.data(for: wallet.key), let seed = data.toStringArray else { return }
+            currentWallet = wallet.setup(seed: seed, isNewWallet: false)
             state = .currentWallet
         } else {
             fatalError("Wallet with id \(id) isn't exist")
@@ -117,16 +115,48 @@ extension WalletsService: IWalletsService {
             fatalError("Cannot get seed data")
         }
         
+        if let currentWallet = currentWallet {
+            for asset in currentWallet.assets {
+                asset.kit?.stop()
+            }
+        }
+        
         let newWallet = DBWallet(model: model, context: context)
-        newWallet.setup(data: data)
+        currentWallet = newWallet.setup(seed: model.seed, isNewWallet: true)
+        saveSeed(data: data, key: newWallet.key)
+        currentWalletID = newWallet.id
+        state = .currentWallet
+    }
+    
+    func restoreWallet(model: NewWalletModel) {
+        guard let context = self.context else {
+            fatalError("Cannot get context to create wallet.")
+        }
+                    
+        guard let data = model.seedData else {
+            fatalError("Cannot get seed data")
+        }
+        
+        if let currentWallet = currentWallet {
+            for asset in currentWallet.assets {
+                asset.kit?.stop()
+            }
+        }
+        
+        let newWallet = DBWallet(model: model, context: context)
+        currentWallet = newWallet.setup(seed: model.seed, isNewWallet: false)
         saveSeed(data: data, key: newWallet.key)
         
         currentWalletID = newWallet.id
-        currentWallet = newWallet
         state = .currentWallet
     }
     
     func switchWallet(_ wallet: IWallet) {
+        if let currentWallet = currentWallet {
+            for asset in currentWallet.assets {
+                asset.kit?.stop()
+            }
+        }
         currentWalletID = wallet.walletID
         setupWallet(id: wallet.walletID)
     }
