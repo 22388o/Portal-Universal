@@ -12,7 +12,7 @@ import SwiftUI
 
 extension Array where Element: ChartDataEntry {
     func dataSet() -> LineChartDataSet {
-        let ds = LineChartDataSet(entries: self, label: String())
+        let ds = LineChartDataSet(values: self, label: String())
         #if os(iOS)
         ds.colors = [
             UIColor(red: 19.0/255.0, green: 143.0/255.0, blue: 199.0/255.0, alpha: 1),
@@ -51,11 +51,9 @@ extension Array where Element: ChartDataEntry {
             locations: colorLocations
         )!
                 
-        ds.fill = LinearGradientFill(gradient: gradiendFillColor, angle: 90.0)
+        ds.fill = Fill.fillWithLinearGradient(gradiendFillColor, angle: 90.0)
         ds.drawFilledEnabled = true
-        
-        ds.isDrawLineWithGradientEnabled = true
-                
+                        
         return ds
     }
 }

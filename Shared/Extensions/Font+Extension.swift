@@ -13,4 +13,7 @@ extension Font {
     static func mainFont(size: CGFloat = 12, bold: Bool = false) -> Font {
         Font.custom(bold ? "Avenir-Black" : "Avenir-Medium", size: size)
     }
+    static func mainFontHeavy(size: CGFloat = 12) -> Font {
+        Font.custom("Avenir-Heavy", size: size)
+    }
 }

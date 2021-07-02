@@ -17,7 +17,7 @@ extension Color {
         Color(red: 147.0/255.0, green: 162.0/255.0, blue: 170.0/255.0)
     }
     static var lightInactiveLabel: Color {
-        Color(red: 171.0/255.0, green: 186.0/255.0, blue: 173.0/255.0)
+        Color(red: 171.0/255.0, green: 176.0/255.0, blue: 173.0/255.0)
     }
     static var darkInactiveLabel: Color {
         Color.white.opacity(0.6)
@@ -73,12 +73,6 @@ extension Color {
     static var mango: Color {
         Color(red: 253.0/255.0, green: 179.0/255.0, blue: 64.0/255.0)
     }
-    static var blush: Color {
-        Color(red: 238.0/255.0, green: 198.0/255.0, blue: 169.0/255.0)
-    }
-    static var brownishOrange: Color {
-        Color(red: 233.0/255.0, green: 134.0/255.0, blue: 49.0/255.0)
-    }
     static var seedBoxBorder: Color {
         Color(red: 255.0/255.0, green: 156.0/255.0, blue: 49.0/255.0)
     }
@@ -93,6 +87,15 @@ extension Color {
     }
     static var selectedWallet: Color {
         Color(red: 101.0/255.0, green: 153.0/255.0, blue: 231.0/255.0)
+    }
+    static var brownishOrange: Color {
+        Color(red: 228.0/255.0, green: 114.0/255.0, blue: 27.0/255.0)
+    }
+    static var blush: Color {
+        Color(red: 234.0/255.0, green: 186.0/255.0, blue: 149.0/255.0)
+    }
+    static var doneButtonBg: Color {
+        Color(red: 50.0/255.0, green: 65.0/255.0, blue: 72.0/255.0)
     }
     static var portalWalletBackground: some View {
         LinearGradient(gradient: Gradient(colors: [Color.walletGradientTop, Color.wallerGradientBottom]), startPoint: .top, endPoint: .bottom)
