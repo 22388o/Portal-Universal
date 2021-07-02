@@ -40,41 +40,16 @@ public class DBWallet: NSManagedObject, IWallet {
         }
     }
     
-    func setup(data: Data) {
-//        assets = WalletMock().assets
-//        return
+    func setup(seed: [String], isNewWallet: Bool) -> Self {
         let sampleCoins = [
-            Coin(code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc")),
-            Coin(code: "BCH", name: "Bitcoin Cash", color: Color.gray, icon: Image("iconBch")),
-            Coin(code: "ETH", name: "Ethereum", color: Color.yellow, icon: Image("iconEth")),
+            Coin(code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc"))
+//            Coin(code: "BCH", name: "Bitcoin Cash", color: Color.gray, icon: Image("iconBch")),
+//            Coin(code: "ETH", name: "Ethereum", color: Color.yellow, icon: Image("iconEth")),
         ]
                 
-        self.assets = sampleCoins.prefix(5).map{ Asset(coin: $0, data: data) }
+        self.assets = sampleCoins.map{ Asset(coin: $0, walletID: walletID, seed: seed, isNew: isNewWallet) }
         
-//        for _ in 5...Int.random(in: 6...10) {
-//            let randomIndex = Int.random(in: 5...sampleCoins.count - 1)
-//            let coin = sampleCoins[randomIndex]
-//            let asset = Asset(coin: coin, data: data)
-//            assets.append(asset)
-//        }
-    }
-    
-    func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {
-        guard let contex = self.managedObjectContext else { return }
-        
-        let tx = DBTx(context: contex)
-        
-        tx.txID = UUID().uuidString
-        tx.amount = NSDecimalNumber(decimal: amount)
-        tx.receiverAddress = receiverAddress
-        tx.memo = memo
-        tx.confirmations = 3
-        tx.coin = coin.code
-        tx.timestamp = Date()
-        
-        addToTxs(tx)
-        
-        try? contex.save()
+        return self
     }
     
     func updateFiatCurrency(_ currency: FiatCurrency) {

@@ -24,23 +24,6 @@ extension DBWallet {
 
 }
 
-// MARK: Generated accessors for txs
-extension DBWallet {
-
-    @objc(addTxsObject:)
-    @NSManaged public func addToTxs(_ value: DBTx)
-
-    @objc(removeTxsObject:)
-    @NSManaged public func removeFromTxs(_ value: DBTx)
-
-    @objc(addTxs:)
-    @NSManaged public func addToTxs(_ values: NSSet)
-
-    @objc(removeTxs:)
-    @NSManaged public func removeFromTxs(_ values: NSSet)
-
-}
-
 extension DBWallet : Identifiable {
 
 }
