@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CreateWalletScene: View {
-    @ObservedObject private var viewModel: ViewModel
+    @ObservedObject private var viewModel: CreateWalletSceneViewModel
     @EnvironmentObject private var service: WalletsService
     
     init() {
-        self.viewModel = ViewModel()
+        self.viewModel = CreateWalletSceneViewModel()
     }
     
     var body: some View {
@@ -90,100 +90,6 @@ struct CreateWalletScene: View {
             }
             .cornerRadius(8)
             .padding(EdgeInsets(top: 88, leading: 24, bottom: 24, trailing: 24))
-        }
-    }
-}
-
-import Combine
-
-extension CreateWalletScene {
-    enum WalletCreationSteps {
-        case createWalletName, seed, test, confirmation
-    }
-    
-    final class ViewModel: ObservableObject {
-//        @ObservedObject private var walletService: WalletsService
-        
-        @Published var walletCreationStep: WalletCreationSteps = .createWalletName
-        @Published var walletName = String()
-        @Published var btcAddresSelectcedFormat = BtcAddressFormat.segwit.rawValue
-        @Published var test: SeedTestViewModel
-        
-        @Published private(set) var nameIsValid: Bool = false
-        
-        private var cancalable: AnyCancellable?
-        
-        init() {
-            self.test = SeedTestViewModel()
-            
-            cancalable = $walletName.sink { [weak self] name in
-                self?.nameIsValid = name.count >= 3
-            }
-        }
-        
-        deinit {
-            print("\(#function) deinit")
-        }
-        
-        var newWalletViewModel: NewWalletModel {
-            .init(
-                name: walletName,
-                addressType: BtcAddressFormat(rawValue: btcAddresSelectcedFormat) ?? .segwit,
-                seed: test.seed
-            )
-        }
-        
-//        func goBack() {
-//            walletService.state = .currentWallet
-//        }
-    }
-    
-    final class SeedTestViewModel: ObservableObject {
-        @Published var testString1 = String()
-        @Published var testString2 = String()
-        @Published var testString3 = String()
-        @Published var testString4 = String()
-        
-        private(set) var formIsValid = false
-        private(set) var testIndices = [Int]()
-        
-        private var testSolved = [String]()
-        
-        let seed: [String]
-    
-        private var cancalable: AnyCancellable?
-
-        init(seed: [String] = NewWalletModel.randomSeed()) {
-            self.seed = seed
-            setup()
-        }
-        
-        deinit {
-            print("\(#function) deinit")
-        }
-        
-        func setup() {
-            while testIndices.count <= 3 {
-                let 🎲 = Int.random(in: 1..<seed.count)
-                if !testIndices.contains(🎲) {
-                    testIndices.append(🎲)
-                }
-            }
-                                           
-            for index in testIndices {
-                testSolved.append(seed[index - 1])
-            }
-                        
-            bindInputs()
-            
-            print("Test solved: \(testSolved)")
-        }
-        
-        private func bindInputs() {
-            cancalable = $testString1.combineLatest($testString2, $testString3, $testString4)
-                .sink(receiveValue: { [weak self] output in
-                    self?.formIsValid = self?.testSolved == [output.0, output.1, output.2, output.3]
-                })
         }
     }
 }
