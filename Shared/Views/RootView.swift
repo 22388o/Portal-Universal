@@ -15,7 +15,7 @@ struct RootView: View {
     @EnvironmentObject private var marketData: MarketDataRepository
         
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             Color.portalWalletBackground
             
             if marketDataLoaded {
@@ -35,17 +35,20 @@ struct RootView: View {
                     }
                 }
                 .transition(AnyTransition.scale.combined(with: .opacity))
-                .zIndex(1)
             } else {
-                Text("LOADING")
-                    .font(.mainFont(size: 18))
-                    .foregroundColor(.white)
-                    .scaleEffect(loadingAnimationStarted ? 1 : 0.5)
-                    .onAppear {
-                        withAnimation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true), {
-                            loadingAnimationStarted.toggle()
-                        })
-                    }
+                VStack {
+                    Spacer()
+                    Text("LOADING")
+                        .font(.mainFont(size: 18))
+                        .foregroundColor(.white)
+                        .scaleEffect(loadingAnimationStarted ? 1 : 0.5)
+                        .onAppear {
+                            withAnimation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true), {
+                                loadingAnimationStarted.toggle()
+                            })
+                        }
+                    Spacer()
+                }
             }
         }
         .onReceive(marketData.$tickers.dropFirst(), perform: { tickers in
