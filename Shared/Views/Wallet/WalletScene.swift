@@ -7,30 +7,24 @@
 
 import SwiftUI
 
-enum WalletSceneState {
-    case full, walletPortfolio, walletAsset
-}
-
 struct WalletScene: View {
-    enum Scenes {
-        case wallet, swap
-    }
-    
     @EnvironmentObject private var marketData: MarketDataRepository
-    @ObservedObject private var viewModel: ViewModel
+    @ObservedObject private var viewModel: WalletSceneViewModel
+    @ObservedObject private var notificationService: NotificationService
     @State private var state: Scenes = .wallet
             
     init(wallet: IWallet, fiatCurrency: FiatCurrency) {
+        notificationService = NotificationService.shared
         viewModel = .init(wallet: wallet, fiatCurrency: fiatCurrency)
     }
     
     var body: some View {
-        ZStack(alignment: viewModel.switchWallet ? .topLeading : .center) {
+        ZStack(alignment: viewModel.switchWallet || viewModel.allNotifications ? .topLeading : .center) {
             switch state {
             case .wallet:
-                Color.portalWalletBackground
+                Color.portalWalletBackground.allowsHitTesting(false)
             case .swap:
-                Color.portalSwapBackground
+                Color.portalSwapBackground.allowsHitTesting(false)
             }
             
             VStack(spacing: 0) {
@@ -42,34 +36,71 @@ struct WalletScene: View {
                             }
                         }, label: {
                             HStack {
+                                Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
                                 Text("\(viewModel.walletName)")
                                     .font(.mainFont(size: 14))
-                                Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle.fill")
                             }
                             .foregroundColor(Color.white.opacity(0.82))
                         })
                         
-                        if state != .swap && viewModel.sceneState != .full {
-                            Button(action: {
-                                withAnimation {
-                                    if viewModel.sceneState == .walletPortfolio {
-                                        viewModel.sceneState = .walletAsset
-                                    } else {
-                                        viewModel.sceneState = .walletPortfolio
-                                    }
+                        Text("|")
+                            .font(.mainFont(size: 12))
+                            .foregroundColor(Color.white.opacity(0.6))
+                        
+//                        if state != .swap && viewModel.sceneState != .full {
+//                            Button(action: {
+//                                withAnimation {
+//                                    if viewModel.sceneState == .walletPortfolio {
+//                                        viewModel.sceneState = .walletAsset
+//                                    } else {
+//                                        viewModel.sceneState = .walletPortfolio
+//                                    }
+//                                }
+//                            }, label: {
+//                                HStack {
+//                                    Image(systemName: "aqi.medium")
+//                                    Text("Portfolio")
+//                                        .font(.mainFont(size: 14))
+//                                }
+//                                .foregroundColor(Color.white.opacity(0.82))
+//                            })
+//                        }
+//
+//                        Text("|")
+//                            .font(.mainFont(size: 12))
+//                            .foregroundColor(Color.white.opacity(0.6))
+                        
+                        Button(action: {
+                            notificationService.markAllAlertsViewed()
+                            viewModel.allNotifications.toggle()
+                        }, label: {
+                            ZStack(alignment: .topTrailing) {
+                                Image(systemName: "bell")
+                                if !notificationService.alertsBeenSeen && notificationService.newAlerts > 0 {
+                                    Text("\(notificationService.newAlerts)")
+                                        .lineLimit(1)
+                                        .padding(.horizontal, 3)
+                                        .frame(minWidth: 16)
+                                        .frame(height: 16)
+                                        .font(.mainFont(size: 8))
+                                        .foregroundColor(Color.walletGradientTop)
+                                        .background(Color.white)
+                                        .cornerRadius(8)
+                                        .offset(x: 3, y: -5)
                                 }
-                            }, label: {
-                                Image(systemName: "aqi.medium")
-                                    .foregroundColor(Color.white.opacity(0.82))
-                            })
-                        }
+                            }
+                            .foregroundColor(Color.white.opacity(0.82))
+                            .frame(minWidth: 30)
+                        })
                         
                         Spacer()
                         
-                        Text("Your wallet is stored locally")
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.white.opacity(0.6))
-                            
+                        HStack(spacing: 2) {
+                            Image("securityOn")
+                            Text("Your wallet is stored locally")
+                                .font(.mainFont(size: 12))
+                                .foregroundColor(Color.white.opacity(0.6))
+                        }
                     }
                     
                     AppSceneSwitch(state: $state)
@@ -78,7 +109,7 @@ struct WalletScene: View {
                 .padding(.vertical, 24)
                 
                 ZStack {
-                    Color.black.opacity(0.58)
+                    Color.black.opacity(0.58).allowsHitTesting(false)
                     
                     switch state {
                     case .wallet:
@@ -125,19 +156,15 @@ struct WalletScene: View {
                             fiatCurrency: viewModel.fiatCurrency,
                             presented: $viewModel.sendAsset
                         )
-                        .transition(.scale)
                     }
                     if viewModel.receiveAsset {
                         ReceiveAssetsView(asset: viewModel.selectedAsset, presented: $viewModel.receiveAsset)
-                            .transition(.scale)
                     }
                     if viewModel.allTransactions {
                         AssetTxView(asset: viewModel.selectedAsset, presented: $viewModel.allTransactions)
-                            .transition(.scale)
                     }
                     if viewModel.createAlert {
                         CreateAlertView(asset: viewModel.selectedAsset, presented: $viewModel.createAlert)
-                            .transition(.scale)
                     }
                 }
                 .transition(.scale)
@@ -147,86 +174,13 @@ struct WalletScene: View {
                         .padding(.top, 78)
                         .padding(.leading, 24)
                 }
-            }
-            .zIndex(1)
-            
-//            if showFiatCurrencyPicker {
-//                Picker(String(), selection: $fiatCurrencyPickerSelection) {
-//                    ForEach(marketData.rates().sorted(by: >), id: \.key) { key, value in
-//                        Text("\(key)")
-//                            .font(.mainFont(size: 12))
-//                            .foregroundColor(.white)
-//                    }
-//                }
-//                .pickerStyle(InlinePickerStyle())
-//                .frame(width: 100, height: 100)
-//            }
-        }
-    }
-}
-
-import Combine
-
-extension WalletScene {
-    final class ViewModel: ObservableObject {
-        @Published var walletName: String
-        @Published var selectedAsset: IAsset
-        @Published var wallet: IWallet
-        
-        @Published var receiveAsset: Bool = false
-        @Published var sendAsset: Bool = false
-        @Published var switchWallet: Bool = false
-        @Published var createAlert: Bool = false
-        @Published var allTransactions: Bool = false
-        @Published var searchRequest = String()
-        @Published var sceneState: WalletSceneState
                 
-        @Published var modalViewIsPresented: Bool = false
-        @Published var fiatCurrency: FiatCurrency
-        
-        @ObservedObject var portfolioViewModel: PortfolioViewModel
-        
-        private var anyCancellable = Set<AnyCancellable>()
-            
-        var scaleEffectRation: CGFloat {
-            if switchWallet {
-                return 0.45
-            } else if receiveAsset || sendAsset || allTransactions || createAlert {
-                return 0.85
-            } else {
-                return 1
-            }
-        }
-        
-        init(wallet: IWallet, fiatCurrency: FiatCurrency) {
-            print("WalletViewModel init")
-            self.fiatCurrency = fiatCurrency
-            
-            self.wallet = wallet
-            self.walletName = wallet.name
-            self.selectedAsset = wallet.assets.first ?? Asset.bitcoin()
-            self.portfolioViewModel = .init(assets: wallet.assets)
-            self.sceneState = UIScreen.main.bounds.width > 1180 ? .full : .walletAsset
-            
-            Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert)
-                .sink { [weak self] output in
-                    self?.modalViewIsPresented = output
-                }
-                .store(in: &anyCancellable)
-            
-            print("wallet name: \(wallet.name)")
-                                    
-            $fiatCurrency.sink { (currency) in
-                let walletCurrencyCode = wallet.fiatCurrencyCode
-                if currency.code != walletCurrencyCode {
-                    wallet.updateFiatCurrency(currency)
+                if viewModel.allNotifications {
+                    NotificationsView(presented: $viewModel.allNotifications)
+                        .padding(.top, 70)
+                        .padding(.leading, 20)
                 }
             }
-            .store(in: &anyCancellable)
-        }
-        
-        deinit {
-            print("WalletScene view model deinit")
         }
     }
 }
