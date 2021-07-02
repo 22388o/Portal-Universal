@@ -8,16 +8,17 @@
 import SwiftUI
 
 struct AssetTxView: View {
-    let asset: IAsset
+    private let asset: IAsset
     @Binding var presented: Bool
-    @State var selectedTx: DBTx?
+    @State private var selectedTx: PortalTx?
     
-    @FetchRequest(
-        entity: DBTx.entity(),
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \DBTx.timestamp, ascending: false),
-        ]
-    ) private var allTxs: FetchedResults<DBTx>
+    @ObservedObject private var viewModel: TxsViewModel
+    
+    init(asset: IAsset, presented: Binding<Bool>) {
+        self.asset = asset
+        self.viewModel = .init(asset: asset)
+        self._presented = presented
+    }
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -36,15 +37,14 @@ struct AssetTxView: View {
             
             HStack {
                 if selectedTx != nil {
-                    PButton(label: "All Transaction", width: 132, height: 32, fontSize: 12, enabled: true) {
+                    PButton(bgColor: Color.doneButtonBg, label: "All Transaction", width: 132, height: 32, fontSize: 12, enabled: true) {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             selectedTx = nil
                         }
                     }
-//                    .transition(.scale)
                 }
                 Spacer()
-                PButton(label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
+                PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         presented.toggle()
                     }
@@ -53,118 +53,43 @@ struct AssetTxView: View {
             .padding([.top, .horizontal], 16)
             
             if let tx = selectedTx {
-                VStack(spacing: 0) {
-                    Text("Transaction Details")
-                        .font(.mainFont(size: 14))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
-                        .padding(.bottom, 8)
-                    
-                    Text("Sent \(tx.amount ?? 0) \(asset.coin.code)")
-                        .font(.mainFont(size: 23))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
-                        .padding(.bottom, 8)
-                    
-                    Text("\(tx.timestamp ?? Date())")
-                        .font(.mainFont(size: 12))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
-                        .padding(.bottom, 13)
-                    
-                    PButton(label: "View transaction in block explorer", width: 230, height: 32, fontSize: 12, enabled: true, action: {
-            
-                    })
-                    .padding(.bottom, 34)
-                    
-                    ZStack(alignment: .topLeading) {
-                        Rectangle()
-                            .fill(Color.exchangerFieldBorder)
-                        
-                        VStack(alignment: .leading, spacing: 15) {
-                            VStack(alignment: .leading) {
-                                Text("From")
-                                Text("1245acUTDKGirRLA4Zv9Q5KNAmDBYmoibM")
-                            }
-                            VStack(alignment: .leading) {
-                                Text("To")
-                                Text("\(tx.receiverAddress ?? "Unknown")")
-                            }
-                            VStack(alignment: .leading) {
-                                Text("Hash")
-                                Text("26b4c6139f66d03ae0fcc8c357a176c22dcefb6626d6a123f2d94a279c057d35")
-                            }
-                            VStack(alignment: .leading) {
-                                Text("Status")
-                                Text("• Done")
-                            }
-                            
-                            VStack(alignment: .leading) {
-                                Text("Memo")
-                                Text("\(tx.memo ?? String())")
-                            }
-                        }
-                        .font(.mainFont(size: 12))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical)
-                    }
-                    .padding([.bottom, .horizontal], 4)
-                }
-                .padding(.top, 57)
-                .transition(.identity)
+                TxDetailsView(transaction: tx, coinCode: asset.coin.code)
+                    .padding(.top, 57)
+                    .transition(.identity)
             } else {
                 VStack(spacing: 0) {
                     Text("\(asset.coin.code) Transactions")
                         .font(.mainFont(size: 23))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                         .padding(.bottom, 8)
-                    Text("You have \(asset.balanceProvider.balanceString) \(asset.coin.code) (\(asset.balanceProvider.totalValueString))")
-                        .font(.mainFont(size: 12))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
-                        .padding(.bottom, 34)
-                    
-                    HStack(spacing: 30) {
-                        Text("All")
-                        Text("Sent")
-                        Text("Received")
-                        Spacer()
+                    HStack(spacing: 4) {
+                        Text("You have")
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+                        Text(viewModel.balanceString)
+                            .foregroundColor(Color.orange)
                     }
-                    .font(.mainFont(size: 13))
-                    .foregroundColor(Color.coinViewRouteButtonActive)
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 8)
+                    .font(.mainFont(size: 12))
+                    .padding(.bottom, 34)
+                    
+                    TxSortSwitch(state: $viewModel.txSortState)
+                    Divider()
+                    TxHeaderView()
                     
                     ZStack {
                         Rectangle()
                             .fill(Color.exchangerFieldBorder)
                         
                         ScrollView {
-                            LazyVStack(alignment: .leading) {
-                                Spacer().frame(height: 8)
-                                
-                                ForEach(allTxs.filter {$0.coin == asset.coin.code}) { tx in
-                                    HStack(spacing: 0) {
-                                        Text("• Done")
-                                        Text("\(tx.amount ?? 0) \(tx.coin ?? "?")")
-                                            .frame(width: 85)
-                                            .padding(.leading, 40)
-                                        Text("\(tx.receiverAddress ?? "unknown address")")
-                                            .lineLimit(1)
-                                            .frame(width: 201)
-                                            .padding(.leading, 32)
-                                        Text("\(tx.timestamp ?? Date())")
-                                            .frame(width: 80)
-                                            .lineLimit(1)
-                                            .padding(.leading, 32)
-                                    }
-                                    .foregroundColor(Color.coinViewRouteButtonActive)
-                                    .padding(.vertical, 2)
-                                    .frame(maxWidth: .infinity)
-                                    .onTapGesture {
+                            LazyVStack(alignment: .leading, spacing: 0) {
+                                Divider()
+                                ForEach(viewModel.txs, id:\.uid) { tx in
+                                    TxPreviewView(transaction: tx, coinCode: asset.coin.code) { tx in
                                         withAnimation(.easeInOut(duration: 0.2)) {
                                             selectedTx = tx
                                         }
                                     }
+                                    Divider()
                                 }
-                                .font(.mainFont(size: 12))
                             }
                         }
                             
@@ -175,14 +100,195 @@ struct AssetTxView: View {
                 .transition(.identity)
             }
         }
-        .frame(width: 576, height: 662)
+        .allowsHitTesting(true)
+        .frame(width: 776, height: 594)
+    }
+}
+
+struct TxHeaderView: View {
+    var body: some View {
+        HStack {
+            Group {
+                Text("ACTION")
+                
+                Spacer().frame(width: 73)
+                
+                Text("ADDRESS")
+                
+                Spacer().frame(width: 173)
+                
+                Text("TYPE")
+                
+                Spacer().frame(width: 57)
+                
+                Text("AMOUNT")
+                
+                Spacer().frame(width: 54)
+                
+                Text("STATUS")
+            }
+            .font(.mainFontHeavy(size: 11))
+            .foregroundColor(Color.coinViewRouteButtonInactive)
+            
+            Spacer()
+        }
+        .padding(.leading, 32)
+        .frame(height: 32)
+        .background(Color.exchangerFieldBorder)
+        .padding(.horizontal, 4)
+    }
+}
+
+struct TxDetailsView: View {
+    let transaction: PortalTx
+    let coinCode: String
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Text("Transaction Details")
+                .font(.mainFont(size: 14))
+                .foregroundColor(Color.coinViewRouteButtonActive.opacity(0.6))
+                .padding(.bottom, 8)
+            
+            Text("\(transaction.destination == .incoming ? "Received" : "Sent") \(transaction.amount.double) \(coinCode)")
+                .font(.mainFont(size: 23))
+                .foregroundColor(Color.coinViewRouteButtonActive)
+                .padding(.bottom, 8)
+            
+            Text("\(transaction.date)")
+                .font(.mainFont(size: 12))
+                .foregroundColor(Color.coinViewRouteButtonActive.opacity(0.6))
+                .padding(.bottom, 13)
+            
+            Button(action: {
+                let urlString = "https://blockstream.info/testnet/tx/\(transaction.transactionHash)"
+                if let url = URL(string: urlString) {
+                    #if os(iOS)
+                    UIApplication.shared.open(url)
+                    #elseif os(macOS)
+                    NSWorkspace.shared.open(url)
+                    #endif
+                }
+            }) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color.exchangerFieldBorder, lineWidth: 1)
+                        .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                    Text("View transaction in block explorer")
+                        .font(.mainFont(size: 12))
+                        .foregroundColor(Color.coinViewRouteButtonActive)
+                }
+            }
+            .frame(width: 230, height: 32)
+            .padding(.bottom, 21)
+            
+            ZStack(alignment: .topLeading) {
+                Rectangle()
+                    .fill(Color.exchangerFieldBorder)
+                
+                VStack(alignment: .leading, spacing: 15) {
+                    VStack(alignment: .leading) {
+                        Text("From")
+                        Text("\(transaction.from ?? "Unknown")")
+                    }
+                    VStack(alignment: .leading) {
+                        Text("To")
+                        Text("\(transaction.to ?? "Unknown")")
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Hash")
+                        Text("\(transaction.transactionHash)")
+                    }
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Status")
+                        HStack {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(transaction.confirmations >= 3 ? Color.orange : Color.gray)
+                                .frame(width: 6, height: 6)
+                            Text(transaction.confirmations >= 3 ? "Complete" : "Pending")
+                        }
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Block height")
+                        Text("\(transaction.blockHeight ?? 0) (\(transaction.confirmations) block confirmations)")
+                    }
+                }
+                .font(.mainFont(size: 12))
+                .foregroundColor(Color.coinViewRouteButtonActive)
+                .padding(.horizontal, 24)
+                .padding(.vertical)
+            }
+            .padding([.bottom, .horizontal], 4)
+        }
+    }
+}
+
+struct TxPreviewView: View {
+    let transaction: PortalTx
+    let coinCode: String
+    let onSelect: (PortalTx) -> ()
+        
+    var body: some View {
+        HStack(spacing: 0) {
+            Group {
+                HStack(spacing: 0) {
+                    Text("\(transaction.destination == .incoming ? "Received from..." : "Sent to...")")
+                    Spacer()
+                }
+                .frame(width: 100)
+                
+                Group {
+                    switch transaction.destination {
+                    case .incoming, .sentToSelf:
+                        Text("\(transaction.from ?? "unknown address")")
+                    case .outgoing:
+                        Text("\(transaction.to ?? "unknown address")")
+                    }
+                }
+                .lineLimit(1)
+                .frame(width: 198)
+                .padding(.leading, 17)
+                
+                Text("No label")
+                    .padding(.leading, 22)
+                    .frame(width: 80)
+                
+                Text("\(transaction.amount.double) \(coinCode)")
+                    .padding(.leading, 16)
+                    .frame(width: 120)
+                
+                HStack {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(transaction.confirmations > 3 ? Color.orange : Color.gray)
+                        .frame(width: 6, height: 6)
+                    Text(transaction.confirmations > 3 ? "Completed" : "Pending")
+                    Spacer()
+                }
+                .frame(width: 90)
+                .padding(.leading)
+                
+                Text(transaction.date.timeAgoSinceDate(shortFormat: true))
+                    .foregroundColor(Color.lightInactiveLabel)
+                    .frame(width: 80)
+                    .lineLimit(1)
+                    .padding(.leading, 22)
+            }
+            .font(.mainFont(size: 12))
+            .foregroundColor(Color.coinViewRouteButtonActive)
+        }
+        .padding(.horizontal, 30)
+        .frame(height: 32)
+        .onTapGesture {
+            onSelect(transaction)
+        }
     }
 }
 
 struct AssetTxView_Previews: PreviewProvider {
     static var previews: some View {
         AssetTxView(asset: Asset.bitcoin(), presented: .constant(false))
-            .frame(width: 576, height: 662)
+            .frame(width: 776, height: 594)
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)
     }
