@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct WalletView: View {
-    @ObservedObject private var viewModel: WalletScene.ViewModel
+    @ObservedObject private var viewModel: WalletSceneViewModel
     @EnvironmentObject private var marketData: MarketDataRepository
     
-    init(viewModel: WalletScene.ViewModel) {
+    init(viewModel: WalletSceneViewModel) {
         self.viewModel = viewModel
     }
     
@@ -30,7 +30,7 @@ struct WalletView: View {
                     Spacer()
                     Text("Value")
                     Spacer()
-                    Text("Change")
+                    Text("24h Change")
                 }
                 .font(.mainFont())
                 .foregroundColor(Color.white.opacity(0.5))
@@ -93,7 +93,7 @@ struct WalletView_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            WalletView(viewModel: WalletScene.ViewModel(wallet: WalletMock(), fiatCurrency: USD))
+            WalletView(viewModel: WalletSceneViewModel(wallet: WalletMock(), fiatCurrency: USD))
         }
         .frame(width: .infinity, height: 430)
         .previewLayout(PreviewLayout.sizeThatFits)

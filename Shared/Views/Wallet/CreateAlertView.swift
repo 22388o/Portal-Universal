@@ -20,7 +20,6 @@ struct CreateAlertView: View {
                         .stroke(Color.black.opacity(0.7), lineWidth: 8)
                 )
 
-//                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
             
             asset.coin.icon
                 .resizable()
@@ -29,7 +28,7 @@ struct CreateAlertView: View {
             
             HStack {
                 Spacer()
-                PButton(label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
+                PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
                         presented.toggle()
                     }

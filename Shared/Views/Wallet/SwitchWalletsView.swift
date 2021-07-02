@@ -49,6 +49,7 @@ struct SwitchWalletsView: View {
                             .onTapGesture {
                                 withAnimation {
                                     if service.currentWallet?.walletID != wallet.walletID {
+                                        NotificationService.shared.clear()
                                         service.switchWallet(wallet)
                                     } else {
                                         presented.toggle()
@@ -83,8 +84,6 @@ struct SwitchWalletsView: View {
 struct SwitchWalletsView_Previews: PreviewProvider {
     static var previews: some View {
         SwitchWalletsView(presented: .constant(true))
-//            .background(Color.yellow)
-//            .frame(width: 280, height: 400)
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)
     }
