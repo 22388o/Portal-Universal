@@ -6,69 +6,10 @@
 //  Copyright © 2020 Tides Network. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
 import Combine
 import Charts
 import Coinpaprika
-
-struct AssetItemViewModel {
-    let asset: IAsset
-    let balance: String
-    let totalValue: String
-    let change: String
-    
-    var changeLabelColor: Color {
-        let priceChange: Decimal?
-        switch selectedTimeframe {
-        case .day:
-            priceChange = ticker?[.usd].percentChange24h
-        case .week:
-            priceChange = ticker?[.usd].percentChange7d
-        case .month:
-            priceChange = ticker?[.usd].percentChange30d
-        case .year:
-            priceChange = ticker?[.usd].percentChange1y
-        }
-        
-        guard let pChange = priceChange else {
-            return .white
-        }
-        
-        return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
-    }
-    
-    private let selectedTimeframe: Timeframe
-    private let ticker: Ticker?
-    private let balanceProvider: IBalanceProvider
-    private let marketChangeProvider: IMarketChangeProvider
-    private let marketData: CoinMarketData?
-    
-    init(asset: IAsset, marketData: MarketDataRepository?, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency) {
-        self.asset = asset
-        self.balanceProvider = asset.balanceProvider
-        self.marketChangeProvider = asset.marketChangeProvider
-        self.marketData = marketData?.data(coin: asset.coin)
-        self.ticker = marketData?.ticker(coin: asset.coin)
-        self.selectedTimeframe = selectedTimeFrame
-        
-        balance = balanceProvider.balanceString
-        
-        if let ticker = marketData?.ticker(coin: asset.coin)  {
-            let currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
-            let changeInPercents = ticker[.usd].percentChange24h
-            change = "\(changeInPercents > 0 ? "+" : "-")\(fiatCurrency.symbol)\(abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)) (\(changeInPercents.double.rounded(toPlaces: 2))%)"
-            totalValue = "\(fiatCurrency.symbol)" + "\((balanceProvider.balance(currency: .fiat(USD)) * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
-        } else {
-            change = String()
-            totalValue = String()
-        }
-    }
-    
-    private func change(currentPrice: Decimal, changeInPercents: Decimal) -> String {
-        "\(changeInPercents > 0 ? "+" : "-")$\(abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)) (\(changeInPercents.double.rounded(toPlaces: 2))%)"
-    }
-}
 
 final class AssetViewModel: ObservableObject {
     let asset: IAsset
@@ -120,7 +61,7 @@ final class AssetViewModel: ObservableObject {
         self.ticker = marketData?.ticker(coin: asset.coin)
         self.fiatCurrency = fiatCurrency
     
-//        updateValues()
+        updateValues()
         
 //        queue.schedule(
 //            after: queue.now,
@@ -176,20 +117,23 @@ final class AssetViewModel: ObservableObject {
     private func updateValues() {
         guard let ticker = ticker else { return }
         self.marketData = marketDataRepository?.data(coin: asset.coin)
-        balance = balanceProvider.balanceString
+        let balanceInSat = asset.kit?.balance.spendable ?? 0
+        let coinRate = asset.coinRate
+        let balance = Decimal(balanceInSat)/coinRate
+        self.balance = "\(balance)"
         price = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
         
         let currentPrice: Decimal
         
         switch valueCurrencySwitchState {
         case .fiat:
-            totalValue = "\(fiatCurrency.symbol)" + "\((balanceProvider.balance(currency: .fiat(USD)) * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
+            totalValue = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
             currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
         case .btc:
-            totalValue = "\((balanceProvider.balance(currency: .btc) * ticker[.btc].price).rounded(toPlaces: 2)) BTC"
+            totalValue = "\((ticker[.btc].price).rounded(toPlaces: 2)) BTC"
             currentPrice = ticker[.btc].price
         case .eth:
-            totalValue = "\((balanceProvider.balance(currency: .eth) * ticker[.eth].price).rounded(toPlaces: 2)) ETH"
+            totalValue = "\((ticker[.eth].price).rounded(toPlaces: 2)) ETH"
             currentPrice = ticker[.eth].price
         }
         let percentChange: Decimal
