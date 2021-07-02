@@ -75,10 +75,8 @@ extension IBarChartViewModel {
     
     func assetAllocationBarChartData() -> BarChartData {
         let barData = barChartData()
-        let set = BarChartDataSet(entries: barData.entries)
+        let set = BarChartDataSet(values: barData.entries, label: String())
         set.colors = barData.colors.map {UIColor($0)}
-//        set.standardSettings(colors: barData.colors)
-        
         return BarChartData(dataSet: set)
     }
 }
@@ -142,7 +140,7 @@ extension IPieChartModel {
     
     func assetAllocationChartData() -> PieChartData {
         let pieData = pieChartData()
-        let set = PieChartDataSet(entries: pieData.entries, label: "Asset allocation")
+        let set = PieChartDataSet(values: pieData.entries, label: "Asset allocation")
         set.standardSettings(colors: pieData.colors)
         
         return PieChartData(dataSet: set)
