@@ -10,16 +10,8 @@ import SwiftUI
 struct SendAssetView: View {
     private let coin: Coin
 
-    @ObservedObject private var viewModel: ViewModel
+    @ObservedObject private var viewModel: SendAssetViewModel
     @Binding var presented: Bool
-    
-    @FetchRequest(
-        entity: DBTx.entity(),
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \DBTx.timestamp, ascending: false),
-        ]
-//        predicate: NSPredicate(format: "coin == %@", code)
-    ) private var allTxs: FetchedResults<DBTx>
         
     init(wallet: IWallet, asset: IAsset, marketData: MarketDataRepository, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
         self.coin = asset.coin
@@ -35,8 +27,6 @@ struct SendAssetView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.black.opacity(0.7), lineWidth: 8)
                 )
-
-//                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
             
             viewModel.asset.coin.icon
                 .resizable()
@@ -45,7 +35,7 @@ struct SendAssetView: View {
             
             HStack {
                 Spacer()
-                PButton(label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
+                PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
                         presented.toggle()
                     }
@@ -64,13 +54,23 @@ struct SendAssetView: View {
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                     }
                     VStack {
-                        Text(viewModel.balance)
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.coinViewRouteButtonInactive)
-
-                        Text(viewModel.txFee)
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.coinViewRouteButtonInactive)
+                        HStack(spacing: 4) {
+                            Text("You have")
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                            Text(viewModel.balanceString)
+                                .foregroundColor(Color.orange)
+                        }
+                        .font(.mainFont(size: 12))
+                        
+                        if !viewModel.txFee.isEmpty {
+                            Text(viewModel.txFee)
+                                .font(.mainFont(size: 12))
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                        } else {
+                            Text("Validate the form to calculate transaction fee")
+                                .font(.mainFont(size: 12))
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                        }
 
                     }
                 }
@@ -78,13 +78,18 @@ struct SendAssetView: View {
                 .padding(.bottom, 16)
                                 
                 VStack(spacing: 23) {
-                    ExchangerView(viewModel: viewModel.exchangerViewModel)
+                    ExchangerView(viewModel: viewModel.exchangerViewModel, isValid: $viewModel.amountIsValid)
+            
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Send to...")
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
 
                         PTextField(text: $viewModel.receiverAddress, placeholder: "Reciever address", upperCase: false, width: 480, height: 48)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 24)
+                                    .stroke(viewModel.addressIsValid ? Color.clear : Color.red, lineWidth: 1)
+                            )
                     }
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Private description / memo (optional)")
@@ -97,7 +102,6 @@ struct SendAssetView: View {
                                 
                 PButton(label: "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.canSend) {
                     viewModel.send()
-                    
                 }
                 .padding(.top, 16)
                 .padding(.bottom, 27)
@@ -124,28 +128,38 @@ struct SendAssetView: View {
                     
                     ScrollView {
                         LazyVStack(alignment: .leading) {
-                            Spacer().frame(height: 8)
-                            
-                            ForEach(allTxs.filter {$0.coin == coin.code}) { tx in
-                                HStack(spacing: 0) {
-                                    Text("• Done")
-                                    Text("\(tx.amount ?? 0) \(tx.coin ?? "?")")
-                                        .frame(width: 85)
-                                        .padding(.leading, 40)
-                                    Text("\(tx.receiverAddress ?? "unknown address")")
-                                        .lineLimit(1)
-                                        .frame(width: 201)
-                                        .padding(.leading, 32)
-                                    Text("\(tx.timestamp ?? Date())")
-                                        .frame(width: 80)
-                                        .lineLimit(1)
-                                        .padding(.leading, 32)
+                            ForEach(viewModel.transactions, id:\.uid) { tx in
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        HStack {
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .fill(tx.confirmations >= 3 ? Color.orange : Color.gray)
+                                                .frame(width: 6, height: 6)
+                                            Text(tx.confirmations >= 3 ? "Complete" : "Pending")
+                                                .foregroundColor(.orange)
+                                        }
+                                        .padding(.leading, 4)
+                                        
+                                        Text("\(tx.amount.double) \(coin.code)")
+                                            .frame(width: 85)
+                                            .padding(.leading, 30)
+                                        Text("\(tx.to ?? "unknown address")")
+                                            .lineLimit(1)
+                                            .frame(width: 201)
+                                            .padding(.leading, 15)
+                                        Text(tx.date.timeAgoSinceDate(shortFormat: true))
+                                            .frame(width: 80)
+                                            .lineLimit(1)
+                                            .padding(.leading, 28)
+                                    }
+                                    .font(.mainFont(size: 12))
+                                    .padding(.vertical, 12)
+                                    
+                                    Divider()
                                 }
-                                .foregroundColor(.coinViewRouteButtonActive)
-                                .padding(.vertical, 2)
+                                .foregroundColor(.coinViewRouteButtonInactive)
                                 .frame(maxWidth: .infinity)
                             }
-                            .font(.mainFont(size: 12))
                         }
                     }
                 }
@@ -153,73 +167,6 @@ struct SendAssetView: View {
             }
         }
         .frame(width: 576, height: 662)
-    }
-}
-
-import Combine
-
-extension SendAssetView {
-    final class ViewModel: ObservableObject {
-        @Published private var amount: Decimal = 0.0
-        @Published private(set) var canSend: Bool = false
-        
-        @Published var receiverAddress = String()
-        @Published var memo = String()
-        
-        @ObservedObject var exchangerViewModel: ExchangerViewModel
-        
-        let asset: IAsset
-        let wallet: IWallet
-        private let fiatCurrency: FiatCurrency
-        private let marketData: MarketDataRepository
-        
-        private var cancellable = Set<AnyCancellable>()
-        
-        var balance: String {
-            "You have \(asset.balanceProvider.balance(currency: .fiat(USD)).string) \(asset.coin.code)"
-        }
-        
-        var txFee: String {
-            "0.0000012 \(asset.coin.code) tx fee - Normal Speed"
-        }
-        
-        init(wallet: IWallet, asset: IAsset, marketData: MarketDataRepository, fiatCurrency: FiatCurrency) {
-            print("send asset view model inited")
-            self.wallet = wallet
-            self.asset = asset
-            self.exchangerViewModel = .init(asset: asset.coin, ticker: marketData.ticker(coin: asset.coin), fiat: fiatCurrency)
-            self.fiatCurrency = fiatCurrency
-            self.marketData = marketData
-            
-            exchangerViewModel.$assetValue
-                .compactMap { Decimal(string: $0) }
-                .assign(to: \.amount, on: self)
-                .store(in: &cancellable)
-            
-            Publishers.CombineLatest($amount, $receiverAddress)
-                .map { $0 > 0 && $1.count > 10 }
-                .assign(to: \.canSend, on: self)
-                .store(in: &cancellable)
-        }
-        
-        deinit {
-            print("send asset view model deinited")
-        }
-        
-        func send() {
-            print("amount = \(amount), address: \(receiverAddress), memo: \(memo)")
-            wallet.addTx(coin: asset.coin, amount: amount, receiverAddress: receiverAddress, memo: memo)
-            
-            reset()
-        }
-        
-        private func reset() {
-            amount = 0
-            receiverAddress = String()
-            memo = String()
-            
-            exchangerViewModel.reset()
-        }
     }
 }
 
