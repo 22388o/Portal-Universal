@@ -76,7 +76,6 @@ final class MarketDataUpdater {
                         }
                     }
             }
-//        }
             if let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: today) {
                 Coinpaprika.API.tickerHistory(id: id, start: monthAgo, end: today, limit: 60, quote: .usd, interval: .hours12)
                     .perform { [unowned self] (response) in

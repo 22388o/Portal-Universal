@@ -7,28 +7,22 @@
 //
 
 import Foundation
+import BitcoinCore
 
 final class BalanceProvider: IBalanceProvider {
     let coin: Coin
-    let coinKit: ICoinKit
+    let coinKit: AbstractKit?
     
-    private let tempBalance: String
     private let tempTotalValue = "$\(Double.random(in: 255..<5955).rounded(toPlaces: 1))"
-    private let tempBalanceForCurrency: Double
     private let tempPrice = "$\(Double.random(in: 200..<5000).rounded(toPlaces: 1))"
     
-    init(coin: Coin, kit: ICoinKit) {
+    init(coin: Coin, kit: AbstractKit? = nil) {
         self.coin = coin
         self.coinKit = kit
-        
-        let balance = coinKit.balance
-        self.tempBalance = "\(balance)"
-        self.tempBalanceForCurrency = balance
-        
     }
     
     var balanceString: String {
-       tempBalance
+        "\(coinKit?.balance.spendable ?? 0)"
     }
     
     var totalValueString: String {
@@ -40,11 +34,10 @@ final class BalanceProvider: IBalanceProvider {
     }
     
     func balance(currency: Currency) -> Decimal {
-        Decimal(tempBalanceForCurrency)
-        //balance * marketData.price(currency: currency)
+        Decimal(string: balanceString) ?? 0
     }
     
     static func mocked() -> IBalanceProvider {
-        BalanceProvider(coin: Coin.bitcoin(), kit: MockCoinKit())
+        BalanceProvider(coin: Coin.bitcoin())
     }
 }
