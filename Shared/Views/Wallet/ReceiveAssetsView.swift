@@ -11,6 +11,7 @@ struct ReceiveAssetsView: View {
     private let asset: IAsset
     @Binding var presented: Bool
     @State private var isCopied: Bool = false
+    @State private var qrCodeImage: Image?
         
     init(asset: IAsset, presented: Binding<Bool>) {
         self.asset = asset
@@ -25,7 +26,6 @@ struct ReceiveAssetsView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.black, lineWidth: 8)
                 )
-//                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
             
             asset.coin.icon
                 .resizable()
@@ -34,7 +34,7 @@ struct ReceiveAssetsView: View {
             
             HStack {
                 Spacer()
-                PButton(label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
+                PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
                     withAnimation(.easeIn(duration: 0.2)) {
                         presented.toggle()
                     }
@@ -55,18 +55,24 @@ struct ReceiveAssetsView: View {
                     .padding(.vertical)
                 
                 HStack {
-                    asset.qrCodeProvider.qrCode(address: "37hE3CUt3E8mLygaPdFYio8wyrWut31eYp")
-                        .resizable()
-                        .frame(width: 128, height: 128)
+                    if let image = qrCodeImage {
+                        image
+                            .resizable()
+                            .frame(width: 128, height: 128)
+                    }
                     VStack(alignment: .leading) {
                         Text("Address")
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.coinViewRouteButtonActive)
-                        Text("37hE3CUt3E8mLygaPdFYio8wyrWut31eYp")
+                        Text(asset.kit?.receiveAddress() ?? "-")
                             .font(.mainFont(size: 16))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                         HStack(spacing: 12) {
                             PButton(label: "Copy to clipboard", width: 140, height: 32, fontSize: 12, enabled: true) {
+                                guard let address = asset.kit?.receiveAddress() else { return }
+                                
+                                UIPasteboard.general.string = address
+                                
                                 withAnimation {
                                     isCopied.toggle()
                                 }
@@ -75,6 +81,7 @@ struct ReceiveAssetsView: View {
                             if isCopied {
                                 Text("Copied to clipboard!")
                                     .font(.mainFont(size: 12))
+                                    .foregroundColor(.orange)
                             }
                         }
                     }
@@ -86,7 +93,11 @@ struct ReceiveAssetsView: View {
             }
             .padding(.horizontal, 40)
         }
+        .allowsHitTesting(true)
         .frame(width: 576, height: 310)
+        .onAppear {
+            qrCodeImage = asset.qrCodeProvider.qrCode(address: asset.kit?.receiveAddress())
+        }
     }
 }
 
