@@ -15,6 +15,11 @@ struct PortalApp: App {
     init() {
         walletsService = WalletsService(context: PersistenceController.shared.container.viewContext)
         marketDataRepository = MarketDataRepository()
+        
+        #if os(iOS)
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.lightActiveLabel)], for: .normal)
+        #endif
     }
 
     var body: some Scene {
