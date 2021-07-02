@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RestoreWalletView: View {
-    @ObservedObject var viewModel: ViewModel
+    @ObservedObject var viewModel: RestoreWalletViewModel
     @EnvironmentObject private var service: WalletsService
     
     init() {
@@ -57,12 +57,27 @@ struct RestoreWalletView: View {
                             .offset(y: -2)
                         Text("Restore Wallet")
                             .font(.mainFont(size: 23))
+                            .foregroundColor(Color.lightActiveLabel)
                     }
-                    VStack(alignment: .leading, spacing: 7) {
-                        Text("Acount name")
-                            .font(.mainFont(size: 18))
-                        PTextField(text: $viewModel.accountName, placeholder: "Enter account name", upperCase: true, width: 360, height: 40)
+                    HStack {
+                        VStack(alignment: .leading, spacing: 7) {
+                            Text("Acount name")
+                                .font(.mainFont(size: 18))
+                            PTextField(text: $viewModel.accountName, placeholder: "Enter account name", upperCase: true, width: 360, height: 40)
+                        }
+                        VStack(alignment: .leading, spacing: 7) {
+                            Text("BTC address format")
+                                .font(.mainFont(size: 18))
+                            Picker("", selection: $viewModel.btcAddressFormat) {
+                                ForEach(0 ..< BtcAddressFormat.allCases.count) { index in
+                                    Text(BtcAddressFormat.allCases[index].description).tag(index)
+                                }
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                        }
+                        .frame(width: 360, height: 40)
                     }
+                    .foregroundColor(Color.lightActiveLabel)
                     .padding(.top, 20)
                     
                     Text("Seed")
@@ -81,9 +96,9 @@ struct RestoreWalletView: View {
                     }
                     
                     HStack {
-                        PButton(label: "Restore", width: 203, height: 48, fontSize: 15, enabled: viewModel.restoreReady) {
+                        PButton(bgColor: Color(red: 250/255, green: 147/255, blue: 36/255), label: "Restore", width: 203, height: 48, fontSize: 15, enabled: viewModel.restoreReady) {
                             withAnimation {
-                                service.createWallet(model: .init(name: viewModel.accountName, addressType: .nativeSegwit, seed: viewModel.seed))
+                                service.restoreWallet(model: NewWalletModel(name: viewModel.accountName, addressType: .segwit, seed: viewModel.seed))
                             }
                         }
                         
@@ -117,54 +132,10 @@ struct RestoreWalletView: View {
     }
 }
 
-import Combine
-
-extension RestoreWalletView {
-    final class ViewModel: ObservableObject {
-        private let seeedLength = 24
-        private var anyCancellable = Set<AnyCancellable>()
-
-        @Published var accountName = String()
-        @Published var seed = [String]()
-        @Published private(set) var restoreReady: Bool = false
-        
-        var errorMessage: String {
-            if accountName.isEmpty {
-                return "Enter account name"
-            } else if accountName.count < 3 {
-                return "Account name must be at least 3 symbols long"
-            } else {
-                let filteredSeedArray = seed.filter { $0.count >= 3 }
-                return filteredSeedArray.count != seeedLength ? "Invalid seed! Please try again." : String()
-            }
-        }
-        
-        init() {
-            for _ in 1...seeedLength {
-                seed.append(String())
-            }
-            
-            $accountName
-                .sink(receiveValue: { [unowned self] name in
-                    let filteredSeedArray = seed.filter { $0.count >= 3 }
-                    self.restoreReady = name.count >= 3 && filteredSeedArray.count == seeedLength
-                })
-                .store(in: &anyCancellable)
-            
-            $seed
-                .sink { [unowned self] seedArray in
-                    let filteredSeedArray = seedArray.filter { $0.count >= 3 }
-                    self.restoreReady = !self.accountName.isEmpty && filteredSeedArray.count == seeedLength
-                }
-                .store(in: &anyCancellable)
-                
-        }
-    }
-}
-
 struct RestoreWalletView_Previews: PreviewProvider {
     static var previews: some View {
         RestoreWalletView()
+            .environmentObject(WalletsService.init(mockedWallet: WalletMock()))
             .iPadLandscapePreviews()
     }
 }
