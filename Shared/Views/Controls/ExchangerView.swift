@@ -10,9 +10,11 @@ import Combine
 
 struct ExchangerView: View {
     @ObservedObject var viewModel: ExchangerViewModel
+    @Binding var isValid: Bool
     
-    init(viewModel: ExchangerViewModel) {
+    init(viewModel: ExchangerViewModel, isValid: Binding<Bool>) {
         self.viewModel = viewModel
+        self._isValid = isValid
     }
 
     var body: some View {
@@ -28,12 +30,12 @@ struct ExchangerView: View {
                         .resizable()
                         .frame(width: 24, height: 24)
                     
-                    TextField("", text: $viewModel.assetValue)
+                    TextField(String(), text: $viewModel.assetValue)
                         .foregroundColor(Color.lightActiveLabel)
                         .modifier(
                             PlaceholderStyle(
                                 showPlaceHolder: viewModel.assetValue.isEmpty,
-                                placeholder: "0.0"
+                                placeholder: "0"
                             )
                         )
                         .frame(height: 20)
@@ -44,9 +46,12 @@ struct ExchangerView: View {
                 }
                 .modifier(TextFieldModifier())
                 .frame(width: 224)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(isValid ? Color.clear : Color.red, lineWidth: 1)
+                )
                 
-                Text("=")
-                    .foregroundColor(Color.coinViewRouteButtonInactive)
+                Text("=").foregroundColor(Color.coinViewRouteButtonInactive)
                 
                 HStack(spacing: 8) {
                     FiatCurrencyView(
@@ -56,12 +61,12 @@ struct ExchangerView: View {
                     )
                     .frame(width: 24, height: 24)
                     
-                    TextField("", text: $viewModel.fiatValue)
+                    TextField(String(), text: $viewModel.fiatValue)
                         .foregroundColor(Color.lightActiveLabel)
                         .modifier(
                             PlaceholderStyle(
                                 showPlaceHolder: viewModel.fiatValue.isEmpty,
-                                placeholder: "0.0"
+                                placeholder: "0"
                             )
                         )
                         .frame(height: 20)
@@ -72,6 +77,10 @@ struct ExchangerView: View {
                 }
                 .modifier(TextFieldModifier())
                 .frame(width: 224)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(isValid ? Color.clear : Color.red, lineWidth: 1)
+                )
             }
             .font(Font.mainFont(size: 16))
         }
@@ -85,7 +94,8 @@ struct ExchangerView_Previews: PreviewProvider {
             name: "Ethereum",
             icon:  Image("iconEth")),
             ticker: nil,
-            fiat: USD)
+            fiat: USD),
+            isValid: .constant(true)
         )
         .frame(width: 550, height: 200)
         .previewLayout(PreviewLayout.sizeThatFits)

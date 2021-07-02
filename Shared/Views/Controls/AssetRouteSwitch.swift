@@ -9,8 +9,8 @@ import SwiftUI
 import Combine
 
 struct AssetRouteSwitch: View {
-    @Binding var route: AssetView.Route
-    @State var alignment: Alignment = .leading
+    @Binding var route: AssetViewRoute
+    @State private var alignment: Alignment = .leading
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -47,7 +47,9 @@ struct AssetRouteSwitch: View {
             .padding(.vertical, 12)
             
             ZStack(alignment: alignment) {
-                Divider()
+                Rectangle()
+                    .fill(Color.exchangerFieldBorder)
+                    .frame(height: 1)
                 Divider().background(Color.gray).frame(width: 75, height: 2)
             }
         }

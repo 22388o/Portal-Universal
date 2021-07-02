@@ -119,121 +119,6 @@ struct MarketValueView: View {
     }
 }
 
-enum ValueCurrencySwitchState: Int {
-    case fiat, btc, eth
-}
-
-struct ValueCurrencySwitchView: View {
-    @Binding var state: ValueCurrencySwitchState
-    let fiatCurrency: FiatCurrency
-    let type: AssetMarketValueViewType
-    
-    var body: some View {
-        HStack(spacing: 4) {
-            FiatCurrencyView(
-                size: 16,
-                state: $state,
-                currency: .constant(.fiat(fiatCurrency))
-            )
-            Group {
-                Image("btcIconLight")
-                    .resizable()
-                    .opacity(state == .btc ? 0.78 : 0.38)
-                Image("ethIconLight")
-                    .resizable()
-                    .opacity(state == .eth ? 0.78 : 0.38)
-            }
-            .frame(width: 16, height: 16)
-            .foregroundColor(.assetValueLabel)
-        }
-        
-    }
-}
-
-
-struct TimeframeButtonsView: View {
-    let type: AssetMarketValueViewType
-    @Binding var timeframe: Timeframe
-
-    var body: some View {
-        HStack(spacing: 0) {
-//            Button(action: {
-//                timeframe = .hour
-//            }) {
-//                Text("Hour")
-//                    .modifier(
-//                        TimeframeButton(type: type, isSelected: timeframe == .hour)
-//                )
-//            }
-            
-            Button(action: {
-                timeframe = .day
-            }) {
-                Text("Day")
-                    .modifier(
-                        TimeframeButton(type: type, isSelected: timeframe == .day)
-                    )
-            }
-            
-            Button(action: {
-                timeframe = .week
-            }) {
-                Text("Week")
-                    .modifier(
-                        TimeframeButton(type: type, isSelected: timeframe == .week)
-                    )
-            }
-            Button(action: {
-                timeframe = .month
-            }) {
-                Text("Month")
-                    .modifier(
-                        TimeframeButton(type: type, isSelected: timeframe == .month)
-                    )
-            }
-            
-            Button(action: {
-                timeframe = .year
-            }) {
-                Text("Year")
-                    .modifier(
-                        TimeframeButton(type: type, isSelected: timeframe == .year)
-                    )
-            }
-            
-//            Button(action: {
-//                timeframe = .allTime
-//            }) {
-//                Text("All time")
-//                    .modifier(
-//                        TimeframeButton(type: type, isSelected: timeframe == .allTime)
-//                    )
-//            }
-        }
-    }
-}
-
-struct FiatCurrencyView: View {
-    let size: CGFloat
-
-    @Binding var state: ValueCurrencySwitchState
-    @Binding var currency: Currency
-
-    private let selectedBgColor = Color.white.opacity(0.78)
-    private let bgColor = Color(red: 66.0/255.0, green: 73.0/255.0, blue: 84.0/255.0)
-    private let textColor = Color.white//(red: 6.0/255.0, green: 42.0/255.0, blue: 60.0/255.0)
-    private let selectedTextColor = Color(red: 21.0/255.0, green: 52.0/255.0, blue: 66.0/255.0)
-        
-    var body: some View {
-        Text(currency.symbol)
-            .font(size > 16 ? Font.mainFont(size: 16) : Font.mainFont(size: 12))
-            .foregroundColor(state == .fiat ? textColor : selectedTextColor)
-            .frame(width: size, height: size)
-            .background(state == .fiat ? bgColor : selectedBgColor)
-            .cornerRadius(size/2)
-    }
-}
-
 struct LineChartUIKitWrapper: UIViewRepresentable {
     let chartDataEntries: [ChartDataEntry]
     
@@ -259,7 +144,7 @@ struct LineChartUIKitWrapper: UIViewRepresentable {
         let maxValue = chartDataEntries.map{$0.y}.max()
         
         if maxValue != nil {
-            dataSet.gradientPositions = [0, CGFloat(maxValue!)]
+//            dataSet.gradientPositions = [0, CGFloat(maxValue!)]
             lineChart.data = data
             lineChart.notifyDataSetChanged()
         }

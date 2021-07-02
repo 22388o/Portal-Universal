@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct AppSceneSwitch: View {
-//    enum Scenes {
-//        case wallet, swap
-//    }
-//    
-    @Binding var state: WalletScene.Scenes
+    @Binding var state: Scenes
     
     var body: some View {
         ZStack {
@@ -29,11 +25,7 @@ struct AppSceneSwitch: View {
                 HStack(spacing: 0) {
                     HStack {
                         Spacer()
-//                        Image("iconSafeSmall")
-//                            .renderingMode(.template)
-//                            .accentColor(
-//                                state == .wallet ? Color.black : Color.white
-//                            )
+
                         Text("My wallet")
                             .font(.mainFont(size: 12))
                             .foregroundColor(
@@ -49,11 +41,6 @@ struct AppSceneSwitch: View {
                     
                     HStack {
                         Spacer()
-//                        Image("iconSafeSmall")
-//                            .renderingMode(.template)
-//                            .accentColor(
-//                                state == .swap ? Color.black : Color.white
-//                            )
                         Text("Atomic swap")
                             .font(.mainFont(size: 12))
                             .foregroundColor(
