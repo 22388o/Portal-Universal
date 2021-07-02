@@ -13,10 +13,9 @@ let btcMockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
 
 let USD = FiatCurrency(code: "USD", name: "American Dollar", rate: 1)
 
-final class MockCoinKit: ICoinKit {
-    var balance: Double {
-        Double.random(in: 0.285..<2.567).rounded(toPlaces: 4)
-    }
+import BitcoinCore
+
+final class MockCoinKit: AbstractKit {
     func send(amount: Double) {
         print("Send coins...")
     }
@@ -37,11 +36,11 @@ class WalletMock: IWallet {
         let xtz = Coin(code: "XTZ", name: "Tezos", color: Color.red, icon: Image("iconXtz"))
         
         self.assets = [
-            Asset(coin: btc),
-            Asset(coin: bch),
-            Asset(coin: eth),
-            Asset(coin: xlm),
-            Asset(coin: xtz)
+            Asset(coin: btc, walletID: UUID()),
+            Asset(coin: bch, walletID: UUID()),
+            Asset(coin: eth, walletID: UUID()),
+            Asset(coin: xlm, walletID: UUID()),
+            Asset(coin: xtz, walletID: UUID())
         ]
     }
     
@@ -49,5 +48,3 @@ class WalletMock: IWallet {
     func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {}
     func updateFiatCurrency(_ fiatCurrency: FiatCurrency) {}
 }
-
-//let CoinsMock: [Asset] = [BTC(), BCH(), ETH(), XLM(), XTZ()]
