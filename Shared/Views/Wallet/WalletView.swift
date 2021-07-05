@@ -9,7 +9,6 @@ import SwiftUI
 
 struct WalletView: View {
     @ObservedObject private var viewModel: WalletSceneViewModel
-    @EnvironmentObject private var marketData: MarketDataRepository
     
     init(viewModel: WalletSceneViewModel) {
         self.viewModel = viewModel
@@ -20,7 +19,7 @@ struct WalletView: View {
             VStack(spacing: 0) {
                 HStack(spacing: 14) {
                     AssetSearchField(search: $viewModel.searchRequest)
-                    FiatCurrencyButton(currencies: marketData.fiatCurrencies, selectedCurrrency: $viewModel.fiatCurrency)
+                    FiatCurrencyButton(currencies: viewModel.fiatCurrencies, selectedCurrrency: $viewModel.fiatCurrency)
                 }
                 .padding([.top, .horizontal], 24)
                 .padding(.bottom, 19)
@@ -46,7 +45,6 @@ struct WalletView: View {
                             ForEach(viewModel.wallet.assets, id: \.id) { asset in
                                 AssetItemView(
                                     asset: asset,
-                                    marketData: marketData,
                                     selected: viewModel.selectedAsset.id == asset.id,
                                     fiatCurrency: viewModel.fiatCurrency,
                                     onTap: {
@@ -66,7 +64,6 @@ struct WalletView: View {
                             ForEach(viewModel.wallet.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
                                 AssetItemView(
                                     asset: asset,
-                                    marketData: marketData,
                                     selected: viewModel.selectedAsset.id == asset.id,
                                     fiatCurrency: viewModel.fiatCurrency,
                                     onTap: {

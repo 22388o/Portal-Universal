@@ -222,16 +222,6 @@ extension Asset: BitcoinCoreDelegate {
     }
 }
 
-import Coinpaprika
-
-final class MarketDataProvider: IMarketDataProvider {
-    var ticker: Ticker?
-    
-    init(coin: Coin) {
-        
-    }
-}
-
 import BitcoinCore
 import Hodler
 

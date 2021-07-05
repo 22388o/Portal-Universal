@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct WalletScene: View {
-    @EnvironmentObject private var marketData: MarketDataRepository
     @ObservedObject private var viewModel: WalletSceneViewModel
     @ObservedObject private var notificationService: NotificationService
     @State private var state: Scenes = .wallet
@@ -118,7 +117,7 @@ struct WalletScene: View {
                             case .full:
                                 PortfolioView(viewModel: viewModel.portfolioViewModel)
                                 WalletView(viewModel: viewModel)
-                                AssetView(sceneViewModel: viewModel, marketData: marketData, fiatCurrency: viewModel.fiatCurrency)
+                                AssetView(sceneViewModel: viewModel, fiatCurrency: viewModel.fiatCurrency)
                                     .padding([.top, .trailing, .bottom], 8)
                             default:
                                 if viewModel.sceneState == .walletPortfolio {
@@ -127,7 +126,7 @@ struct WalletScene: View {
                                 }
                                 WalletView(viewModel: viewModel)
                                 if viewModel.sceneState == .walletAsset {
-                                    AssetView(sceneViewModel: viewModel, marketData: marketData, fiatCurrency: viewModel.fiatCurrency)
+                                    AssetView(sceneViewModel: viewModel, fiatCurrency: viewModel.fiatCurrency)
                                         .padding([.top, .trailing, .bottom], 8)
                                         .transition(.move(edge: .trailing))
                                 }
@@ -152,7 +151,6 @@ struct WalletScene: View {
                         SendAssetView(
                             wallet: viewModel.wallet,
                             asset: viewModel.selectedAsset,
-                            marketData: marketData,
                             fiatCurrency: viewModel.fiatCurrency,
                             presented: $viewModel.sendAsset
                         )
@@ -181,6 +179,8 @@ struct WalletScene: View {
                         .padding(.leading, 20)
                 }
             }
+            .allowsHitTesting(true)
+            .zIndex(1)
         }
     }
 }

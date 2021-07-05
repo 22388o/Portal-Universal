@@ -10,7 +10,7 @@ import AVFoundation
 
 final class NotificationService: ObservableObject {
     static let shared = NotificationService()
-    private var player: AVPlayer?
+    private let player: AVPlayer?
     @Published private(set) var notifications: [PNotification] = []
     @Published private(set) var newAlerts: Int = 0
     @Published private(set) var alertsBeenSeen: Bool = false
@@ -18,6 +18,8 @@ final class NotificationService: ObservableObject {
     private init() {
         if let url = Bundle.main.url(forResource: "alert", withExtension: "mp3") {
             player = AVPlayer.init(url: url)
+        } else {
+            player = nil
         }
     }
     

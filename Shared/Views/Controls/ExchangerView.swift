@@ -26,7 +26,7 @@ struct ExchangerView: View {
             
             HStack(spacing: 4) {
                 HStack(spacing: 8) {
-                    viewModel.asset.icon
+                    viewModel.asset.coin.icon
                         .resizable()
                         .frame(width: 24, height: 24)
                     
@@ -41,7 +41,7 @@ struct ExchangerView: View {
                         .frame(height: 20)
                         .keyboardType(.numberPad)
                     
-                    Text(viewModel.asset.code)
+                    Text(viewModel.asset.coin.code)
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
                 .modifier(TextFieldModifier())
@@ -89,15 +89,8 @@ struct ExchangerView: View {
 
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangerView(viewModel: .init(asset: Coin(
-            code: "ETH",
-            name: "Ethereum",
-            icon:  Image("iconEth")),
-            ticker: nil,
-            fiat: USD),
-            isValid: .constant(true)
-        )
-        .frame(width: 550, height: 200)
-        .previewLayout(PreviewLayout.sizeThatFits)
+        ExchangerView(viewModel: .init(asset: Asset.bitcoin(), fiat: USD), isValid: .constant(true))
+            .frame(width: 550, height: 200)
+            .previewLayout(PreviewLayout.sizeThatFits)
     }
 }

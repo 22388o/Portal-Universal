@@ -13,9 +13,9 @@ struct SendAssetView: View {
     @ObservedObject private var viewModel: SendAssetViewModel
     @Binding var presented: Bool
         
-    init(wallet: IWallet, asset: IAsset, marketData: MarketDataRepository, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
+    init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
         self.coin = asset.coin
-        self.viewModel = .init(wallet: wallet, asset: asset, marketData: marketData, fiatCurrency: fiatCurrency)
+        self.viewModel = .init(wallet: wallet, asset: asset, fiatCurrency: fiatCurrency)
         self._presented = presented
     }
     
@@ -175,7 +175,6 @@ struct SendAssetView_Previews: PreviewProvider {
         SendAssetView(
             wallet: WalletMock(),
             asset: Asset.bitcoin(),
-            marketData: MarketDataRepository(),
             fiatCurrency: USD,
             presented: .constant(false)
         )

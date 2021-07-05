@@ -24,13 +24,13 @@ final class AssetItemViewModel: ObservableObject {
         let priceChange: Decimal?
         switch selectedTimeframe {
         case .day:
-            priceChange = ticker?[.usd].percentChange24h
+            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange24h
         case .week:
-            priceChange = ticker?[.usd].percentChange7d
+            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange7d
         case .month:
-            priceChange = ticker?[.usd].percentChange30d
+            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange30d
         case .year:
-            priceChange = ticker?[.usd].percentChange1y
+            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange1y
         }
         
         guard let pChange = priceChange else {
@@ -41,22 +41,19 @@ final class AssetItemViewModel: ObservableObject {
     }
     
     private let selectedTimeframe: Timeframe
-    private let ticker: Ticker?
     private let balanceProvider: IBalanceProvider
     private let marketChangeProvider: IMarketChangeProvider
-    private let marketData: CoinMarketData?
     private let fiatCurrency: FiatCurrency
     
-    init(asset: IAsset, marketData: MarketDataRepository?, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency) {
+    init(asset: IAsset, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency) {
         self.asset = asset
         self.balanceProvider = asset.balanceProvider
         self.marketChangeProvider = asset.marketChangeProvider
-        self.marketData = marketData?.data(coin: asset.coin)
-        self.ticker = marketData?.ticker(coin: asset.coin)
+        
         self.selectedTimeframe = selectedTimeFrame
         self.fiatCurrency = fiatCurrency
                 
-        if let spendable = asset.kit?.balance.spendable, let ticker = self.ticker {
+        if let spendable = asset.kit?.balance.spendable, let ticker = asset.marketDataProvider.ticker {
             updateValues(spendable: spendable, unspendable: asset.kit?.balance.unspendable, ticker: ticker)
         }
                 

@@ -30,35 +30,22 @@ final class AssetViewModel: ObservableObject {
     private let marketChangeProvider: IMarketChangeProvider
     private var subscriptions = Set<AnyCancellable>()
     
-//    private var marketData: CoinMarketData {
-//        marketData(for: asset.coin.code)
-//    }
-//
-//    private var rate: Double {
-//        marketRate(for: USD)
-//    }
-    
-    private var marketData: CoinMarketData?
-    private var ticker: Ticker?
-    private var marketDataRepository: MarketDataRepository?
     private var fiatCurrency: FiatCurrency
     
     var dayHigh: String {
-        let dayHigh: Decimal = marketData?.dayHigh ?? 0
+        let dayHigh: Decimal = asset.marketDataProvider.marketData?.dayHigh ?? 0
         return "\(fiatCurrency.symbol)\((dayHigh * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
     var dayLow: String {
-        let dayLow: Decimal = marketData?.dayLow ?? 0
+        let dayLow: Decimal = asset.marketDataProvider.marketData?.dayLow ?? 0
         return "\(fiatCurrency.symbol)\((dayLow * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
-    init(asset: IAsset, marketData: MarketDataRepository?, fiatCurrency: FiatCurrency) {
+    init(asset: IAsset, fiatCurrency: FiatCurrency) {
         self.asset = asset
         self.balanceProvider = asset.balanceProvider
         self.marketChangeProvider = asset.marketChangeProvider
-        self.marketDataRepository = marketData
-        self.ticker = marketData?.ticker(coin: asset.coin)
         self.fiatCurrency = fiatCurrency
     
         updateValues()
@@ -115,8 +102,7 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func updateValues() {
-        guard let ticker = ticker else { return }
-        self.marketData = marketDataRepository?.data(coin: asset.coin)
+        guard let ticker = asset.marketDataProvider.ticker else { return }
         let balanceInSat = asset.kit?.balance.spendable ?? 0
         let coinRate = asset.coinRate
         let balance = Decimal(balanceInSat)/coinRate
@@ -168,13 +154,13 @@ final class AssetViewModel: ObservableObject {
         let priceChange: Decimal?
         switch selectedTimeframe {
         case .day:
-            priceChange = ticker?[.usd].percentChange24h
+            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange24h
         case .week:
-            priceChange = ticker?[.usd].percentChange7d
+            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange7d
         case .month:
-            priceChange = ticker?[.usd].percentChange30d
+            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange30d
         case .year:
-            priceChange = ticker?[.usd].percentChange1y
+            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange1y
         }
         
         guard let pChange = priceChange else {
@@ -192,13 +178,13 @@ final class AssetViewModel: ObservableObject {
         
         switch selectedTimeframe {
         case .day:
-            points = marketData?.dayPoints ?? []
+            points = asset.marketDataProvider.marketData?.dayPoints ?? []
         case .week:
-            points = marketData?.weekPoints ?? []
+            points = asset.marketDataProvider.marketData?.weekPoints ?? []
         case .month:
-            points = marketData?.monthPoints ?? []
+            points = asset.marketDataProvider.marketData?.monthPoints ?? []
         case .year:
-            points = marketData?.yearPoints ?? []
+            points = asset.marketDataProvider.marketData?.yearPoints ?? []
         }
         
         let xIndexes = Array(0..<points.count).map { x in Double(x) }

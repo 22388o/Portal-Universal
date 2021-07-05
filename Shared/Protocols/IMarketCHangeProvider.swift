@@ -11,6 +11,7 @@ import Coinpaprika
 
 protocol IMarketDataProvider {
     var ticker: Ticker? { get }
+    var marketData: CoinMarketData? { get }
 }
 
 protocol IMarketChangeProvider {

@@ -28,13 +28,15 @@ final class WalletSceneViewModel: ObservableObject {
     
     @ObservedObject var portfolioViewModel: PortfolioViewModel
     
+    @Published private(set) var fiatCurrencies: [FiatCurrency] = []
+    
     private var anyCancellable = Set<AnyCancellable>()
         
     var scaleEffectRation: CGFloat {
         if switchWallet {
             return 0.45
-        } else if receiveAsset || sendAsset || allTransactions || createAlert {
-            return 0.85
+//        } else if receiveAsset || sendAsset || allTransactions || createAlert {
+//            return 0.85
         } else {
             return 1
         }
@@ -49,6 +51,7 @@ final class WalletSceneViewModel: ObservableObject {
         self.selectedAsset = wallet.assets.first ?? Asset.bitcoin()
         self.portfolioViewModel = .init(assets: wallet.assets)
         self.sceneState = UIScreen.main.bounds.width > 1180 ? .full : .walletAsset
+        self.fiatCurrencies = MarketDataRepository.service.fiatCurrencies
         
         Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert)
             .sink { [weak self] output in

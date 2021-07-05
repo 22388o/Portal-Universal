@@ -8,20 +8,21 @@
 import Foundation
 import Coinpaprika
 
-//final class MarketDataProvider: IMarketDataProvider {
-//    var ticker: Ticker?
-//    
-//    init(coin: Coin) {
-//        Coinpaprika.API.ticker(id: "btc-bitcoin", quotes: [.usd, .btc, .eth]).perform { (response) in
-//            switch response {
-//              case .success(let ticker):
-//                print(ticker[.usd].price)
-//                self.ticker = ticker
-//              case .failure(let error):
-//                print(error)
-//            }
-//        }
-//    }
-//}
+final class MarketDataProvider: IMarketDataProvider {
+    private let repo: MarketDataRepository
+    private let coin: Coin
+    
+    var ticker: Ticker? {
+        repo.ticker(coin: coin)
+    }
+    var marketData: CoinMarketData? {
+        repo.data(coin: coin)
+    }
+    
+    init(coin: Coin, repo: MarketDataRepository = MarketDataRepository.service) {
+        self.coin = coin
+        self.repo = repo
+    }
+}
 
 

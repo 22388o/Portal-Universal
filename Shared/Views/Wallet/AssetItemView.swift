@@ -12,8 +12,8 @@ struct AssetItemView: View {
     let selected: Bool
     let onTap: () -> ()
             
-    init(asset: IAsset, marketData: MarketDataRepository?, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
-        self.viewModel = .init(asset: asset, marketData: marketData, selectedTimeFrame: .day, fiatCurrency: fiatCurrency)
+    init(asset: IAsset, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
+        self.viewModel = .init(asset: asset, selectedTimeFrame: .day, fiatCurrency: fiatCurrency)
         self.selected = selected
         self.onTap = onTap
     }
@@ -66,7 +66,6 @@ struct AssetItemView_Previews: PreviewProvider {
         Group {
             AssetItemView(
                 asset: Asset.bitcoin(),
-                marketData: nil,
                 selected: true,
                 fiatCurrency: USD,
                 onTap: {}
@@ -74,7 +73,6 @@ struct AssetItemView_Previews: PreviewProvider {
             
             AssetItemView(
                 asset: Asset.bitcoin(),
-                marketData: nil,
                 selected: false,
                 fiatCurrency: USD,
                 onTap: {}

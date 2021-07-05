@@ -12,7 +12,6 @@ struct RootView: View {
     @State private var loadingAnimationStarted = false
     
     @EnvironmentObject private var walletService: WalletsService
-    @EnvironmentObject private var marketData: MarketDataRepository
         
     var body: some View {
         ZStack(alignment: .top) {
@@ -23,7 +22,9 @@ struct RootView: View {
                     switch walletService.state {
                     case .currentWallet:
                         if let wallet = walletService.currentWallet {
-                            let fiat = marketData.fiatCurrencies.first(where: { $0.code == wallet.fiatCurrencyCode }) ?? USD
+                            let fiatCurrencies = MarketDataRepository.service.fiatCurrencies
+                            let fiat = fiatCurrencies.first(where: { $0.code == wallet.fiatCurrencyCode }) ?? USD
+                            
                             WalletScene(wallet: wallet, fiatCurrency: fiat)
                         } else {
                             Text("Something went wrong")
@@ -51,7 +52,7 @@ struct RootView: View {
                 }
             }
         }
-        .onReceive(marketData.$tickers.dropFirst(), perform: { tickers in
+        .onReceive(MarketDataRepository.service.$tickers.dropFirst(), perform: { tickers in
             guard let tickers = tickers, !tickers.isEmpty else { return }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 marketDataLoaded.toggle()

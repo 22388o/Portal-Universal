@@ -28,18 +28,16 @@ final class SendAssetViewModel: ObservableObject {
     let asset: IAsset
     private let wallet: IWallet
     private let fiatCurrency: FiatCurrency
-    private let marketData: MarketDataRepository
     
     private var cancellable = Set<AnyCancellable>()
     private let disposeBag = DisposeBag()
     
-    init(wallet: IWallet, asset: IAsset, marketData: MarketDataRepository, fiatCurrency: FiatCurrency) {
+    init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency) {
         print("send asset view model inited")
         self.wallet = wallet
         self.asset = asset
-        self.exchangerViewModel = .init(asset: asset.coin, ticker: marketData.ticker(coin: asset.coin), fiat: fiatCurrency)
+        self.exchangerViewModel = .init(asset: asset, fiat: fiatCurrency)
         self.fiatCurrency = fiatCurrency
-        self.marketData = marketData
         
         updateBalance()
         
@@ -113,7 +111,7 @@ final class SendAssetViewModel: ObservableObject {
         let coinRate = asset.coinRate
         let balance = Decimal(balanceInSat)/coinRate
         
-        if let ticker = marketData.ticker(coin: asset.coin) {
+        if let ticker = asset.marketDataProvider.ticker {
             balanceString = "\(balance) \(asset.coin.code) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
         } else {
             balanceString = "\(balance) \(asset.coin.code)"

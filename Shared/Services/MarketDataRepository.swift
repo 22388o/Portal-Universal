@@ -12,6 +12,7 @@ import Combine
 import Coinpaprika
 
 final class MarketDataRepository: ObservableObject {
+    static let service = MarketDataRepository()
     typealias CoinCode = String
     typealias CurrencyCode = String
     typealias Rate = Double
@@ -30,7 +31,11 @@ final class MarketDataRepository: ObservableObject {
     @Published private(set) var tickers: [Ticker]?
     @Published private(set) var fiatCurrencies: [FiatCurrency] = []
         
-    init() {
+    private init() {
+//        bindServices()
+    }
+    
+    func start() {
         bindServices()
     }
     

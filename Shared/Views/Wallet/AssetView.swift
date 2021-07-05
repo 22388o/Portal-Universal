@@ -23,9 +23,9 @@ struct AssetView: View {
     
     let fiatCurrency: FiatCurrency
     
-    init(sceneViewModel: WalletSceneViewModel, marketData: MarketDataRepository?, fiatCurrency: FiatCurrency) {
+    init(sceneViewModel: WalletSceneViewModel, fiatCurrency: FiatCurrency) {
         self.fiatCurrency = fiatCurrency
-        self.viewModel = AssetViewModel(asset: sceneViewModel.selectedAsset, marketData: marketData, fiatCurrency: fiatCurrency)
+        self.viewModel = AssetViewModel(asset: sceneViewModel.selectedAsset, fiatCurrency: fiatCurrency)
         
         self._receiveAsset = Binding(
             get: { sceneViewModel.receiveAsset },
@@ -118,6 +118,7 @@ struct AssetView: View {
                 }
             }
             .padding(.horizontal, 24)
+            .zIndex(0)
         }
         .frame(width: 304)
     }
@@ -130,7 +131,6 @@ struct AssetView_Previews: PreviewProvider {
             Color.black.opacity(0.58)
             AssetView(
                 sceneViewModel: .init(wallet: WalletMock(), fiatCurrency: USD),
-                marketData: nil,
                 fiatCurrency: USD
             )
         }

@@ -10,11 +10,10 @@ import SwiftUI
 @main
 struct PortalApp: App {
     private let walletsService: WalletsService
-    private let marketDataRepository: MarketDataRepository
     
     init() {
         walletsService = WalletsService(context: PersistenceController.shared.container.viewContext)
-        marketDataRepository = MarketDataRepository()
+        MarketDataRepository.service.start()
         
         #if os(iOS)
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white
@@ -26,7 +25,6 @@ struct PortalApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(walletsService)
-                .environmentObject(marketDataRepository)
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .edgesIgnoringSafeArea(.all)
         }
