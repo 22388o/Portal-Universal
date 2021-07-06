@@ -8,54 +8,52 @@
 import SwiftUI
 
 struct RootView: View {
-    @State private var marketDataLoaded: Bool = false
-    @State private var loadingAnimationStarted = false
+    @State private var hideLoader = false
+    @State private var loaderIsPresented = true
     
     @EnvironmentObject private var walletService: WalletsService
         
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack {
             Color.portalWalletBackground
             
-            if marketDataLoaded {
-                Group {
-                    switch walletService.state {
-                    case .currentWallet:
-                        if let wallet = walletService.currentWallet {
-                            let fiatCurrencies = MarketDataRepository.service.fiatCurrencies
-                            let fiat = fiatCurrencies.first(where: { $0.code == wallet.fiatCurrencyCode }) ?? USD
-                            
-                            WalletScene(wallet: wallet, fiatCurrency: fiat)
-                        } else {
-                            Text("Something went wrong")
+            Group {
+                switch walletService.state {
+                case .currentWallet:
+                    if let wallet = walletService.currentWallet {
+                        let fiatCurrencies = MarketDataRepository.service.fiatCurrencies
+                        let fiat = fiatCurrencies.first(where: { $0.code == wallet.fiatCurrencyCode }) ?? USD
+
+                        WalletScene(wallet: wallet, fiatCurrency: fiat)
+                        
+                        if loaderIsPresented {
+                            PortalLoader()
+                                .scaleEffect(hideLoader ? 10 : 1)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.portalWalletBackground)
+                                .opacity(hideLoader ? 0 : 1)
                         }
-                    case .createWallet:
-                        CreateWalletScene()
-                    case .restoreWallet:
-                        RestoreWalletView()
+                    } else {
+                        Text("Something went wrong")
                     }
-                }
-                .transition(AnyTransition.scale.combined(with: .opacity))
-            } else {
-                VStack {
-                    Spacer()
-                    Text("LOADING")
-                        .font(.mainFont(size: 18))
-                        .foregroundColor(.white)
-                        .scaleEffect(loadingAnimationStarted ? 1 : 0.5)
-                        .onAppear {
-                            withAnimation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true), {
-                                loadingAnimationStarted.toggle()
-                            })
-                        }
-                    Spacer()
+                case .createWallet:
+                    CreateWalletScene()
+                case .restoreWallet:
+                    RestoreWalletView()
                 }
             }
+            .transition(AnyTransition.scale.combined(with: .opacity))
         }
         .onReceive(MarketDataRepository.service.$tickers.dropFirst(), perform: { tickers in
             guard let tickers = tickers, !tickers.isEmpty else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                marketDataLoaded.toggle()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation {
+                    hideLoader.toggle()
+                }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                loaderIsPresented.toggle()
+                hideLoader.toggle()
             }
         })
     }
