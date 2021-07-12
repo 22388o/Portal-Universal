@@ -10,6 +10,7 @@ import SwiftUI
 struct WalletItemView: View {
     let name: String
     let selected: Bool
+    let onDelete: ()->()
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -23,11 +24,24 @@ struct WalletItemView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Divider()
                     .background(Color.black.opacity(0.09))
-                Text(name)
-                    .font(.mainFont(size: 14))
-                    .foregroundColor(Color.coinViewRouteButtonActive)
-                    .padding(.vertical)
-                    .padding(.leading, 24)
+                
+                HStack(spacing: 0) {
+                    Text(name)
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.coinViewRouteButtonActive)
+                        .padding(.vertical)
+                        .padding(.leading, 24)
+                    if selected {
+                        Spacer()
+                        Button(action: {
+                            onDelete()
+                        }) {
+                            Image(systemName: "trash")
+                        }
+                    }
+                }
+                .padding(.trailing, 12)
+
                 Divider()
                     .background(Color.black.opacity(0.09))
             }
@@ -39,11 +53,11 @@ struct WalletItemView: View {
 struct WalletItemView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            WalletItemView(name: "Personal", selected: true)
+            WalletItemView(name: "Personal", selected: true, onDelete: {})
                 .frame(width: 216, height: 48)
                 .padding()
                 .previewLayout(PreviewLayout.sizeThatFits)
-            WalletItemView(name: "Buisness", selected: false)
+            WalletItemView(name: "Buisness", selected: false, onDelete: {})
                 .frame(width: 216, height: 48)
                 .padding()
                 .previewLayout(PreviewLayout.sizeThatFits)
