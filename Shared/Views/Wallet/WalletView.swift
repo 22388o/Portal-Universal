@@ -61,7 +61,7 @@ struct WalletView: View {
                                 .padding(.horizontal, 18)
                             }
                         } else {
-                            ForEach(viewModel.wallet.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
+                            ForEach(viewModel.wallet.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased()) || $0.coin.name.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
                                 AssetItemView(
                                     asset: asset,
                                     selected: viewModel.selectedAsset.id == asset.id,
