@@ -29,22 +29,20 @@ class WalletMock: IWallet {
     var assets = [IAsset]()
     
     init() {
-        let btc = Coin(code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc"))
-        let bch = Coin(code: "BCH", name: "Bitcoin Cash", color: Color.gray, icon: Image("iconBch"))
-        let eth = Coin(code: "ETH", name: "Ethereum", color: Color.yellow, icon: Image("iconEth"))
-        let xlm = Coin(code: "XLM", name: "Stellar Lumens", color: Color.blue, icon: Image("iconXlm"))
-        let xtz = Coin(code: "XTZ", name: "Tezos", color: Color.red, icon: Image("iconXtz"))
+        let btc = Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc"))
+//        let bch = Coin(code: "BCH", name: "Bitcoin Cash", color: Color.gray, icon: Image("iconBch"))
+        let eth = Coin(type: .etherium, code: "ETH", name: "Ethereum", color: Color.yellow, icon: Image("iconEth"))
+//        let xlm = Coin(code: "XLM", name: "Stellar Lumens", color: Color.blue, icon: Image("iconXlm"))
+//        let xtz = Coin(code: "XTZ", name: "Tezos", color: Color.red, icon: Image("iconXtz"))
         
         self.assets = [
             Asset(coin: btc, walletID: UUID()),
-            Asset(coin: bch, walletID: UUID()),
-            Asset(coin: eth, walletID: UUID()),
-            Asset(coin: xlm, walletID: UUID()),
-            Asset(coin: xtz, walletID: UUID())
+            Asset(coin: eth, walletID: UUID())
         ]
     }
     
     func setup() {}
+    func stop() {}
     func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {}
     func updateFiatCurrency(_ fiatCurrency: FiatCurrency) {}
 }
