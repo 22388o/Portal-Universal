@@ -71,11 +71,15 @@ final class AssetItemViewModel: ObservableObject {
         asset.balanceUpdatedSubject
             .receive(on: RunLoop.main)
             .sink { [weak self] balanceInfo in
-                let balanceInSat = balanceInfo.spendable
-                let coinRate = asset.coinRate
-                let balance = Decimal(balanceInSat)/coinRate
-                
-                self?.balance = "\(balance)"
+                if let ticker = self?.asset.marketDataProvider.ticker {
+                    self?.updateValues(spendable: balanceInfo.spendable, unspendable: balanceInfo.unspendable, ticker: ticker)
+                } else {
+                    let balanceInSat = balanceInfo.spendable
+                    let coinRate = asset.coinRate
+                    let balance = Decimal(balanceInSat)/coinRate
+                    
+                    self?.balance = "\(balance)"
+                }
             }
             .store(in: &cancellable)
     }
