@@ -13,7 +13,7 @@ final class KeychainStorage: IKeyChainStorage {
     private let keychain: Keychain
     
     init() {
-        keychain = Keychain(service: "com.portal.keychain.service").accessibility(.whenPasscodeSetThisDeviceOnly)
+        keychain = Keychain(service: "com.portal.keychain.service").accessibility(.whenUnlockedThisDeviceOnly)
     }
     
     func string(for key: String) -> String? {
@@ -34,5 +34,9 @@ final class KeychainStorage: IKeyChainStorage {
     
     func clear() throws {
         try keychain.removeAll()
+    }
+    
+    func remove(key: String) throws {
+        try keychain.remove(key)
     }
 }
