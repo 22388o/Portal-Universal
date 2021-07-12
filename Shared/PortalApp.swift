@@ -15,6 +15,20 @@ struct PortalApp: App {
         walletsService = WalletsService(context: PersistenceController.shared.container.viewContext)
         MarketDataRepository.service.start()
         
+        //TODO: - Replace with IlocalStorage
+        
+        let defaults = UserDefaults.standard
+        
+        if defaults.integer(forKey: "AppLaunchesCounts") == 0 {
+            walletsService.clear()
+            defaults.setValue(1, forKey: "AppLaunchesCounts")
+        } else {
+            let counter = defaults.integer(forKey: "AppLaunchesCounts")
+            defaults.setValue(counter + 1, forKey: "AppLaunchesCounts")
+        }
+        
+        //
+        
         #if os(iOS)
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.lightActiveLabel)], for: .normal)
