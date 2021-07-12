@@ -10,12 +10,20 @@ import Foundation
 import SwiftUI
 
 struct Coin {
+    enum CoinType {
+        case bitcoin
+        case etherium
+        case erc20(address: String)
+    }
+    
+    let type: CoinType
     let code: String
     let name: String
     let color: Color
     let icon: Image
     
-    init(code: String, name: String, color: Color = .clear, icon: Image = Image("iconBtc")) {
+    init(type: CoinType, code: String, name: String, color: Color = .clear, icon: Image = Image("iconBtc")) {
+        self.type = type
         self.code = code
         self.name = name
         self.color = color
@@ -23,14 +31,10 @@ struct Coin {
     }
     
     static func bitcoin() -> Self {
-        Coin(code: "BTC", name: "Bitcoin", color: Color.green)
-    }
-    
-    static func bitcoinCash() -> Self {
-        Coin(code: "BCH", name: "Bitcoin cash", color: Color.green)
+        Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", color: Color.green)
     }
     
     static func ethereum() -> Self {
-        Coin(code: "ETH", name: "Ethereum", color: Color.blue)
+        Coin(type: .etherium, code: "ETH", name: "Ethereum", color: Color.blue)
     }
 }
