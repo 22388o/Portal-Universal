@@ -36,7 +36,7 @@ final class MarketDataUpdater {
     }
     
     private func tickerHistory() {
-        let coins =  [Coin.bitcoin(), Coin.bitcoinCash(), Coin.ethereum()]
+        let coins =  [Coin.bitcoin()]
         let coinPaprikaCoinIds = coins.compactMap { (coin) -> String? in
             tickers?.first(where: { (ticker) -> Bool in
                 coin.name.lowercased() == ticker.name.lowercased()
