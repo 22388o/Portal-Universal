@@ -44,7 +44,7 @@ struct ReceiveAssetsView: View {
             
             VStack(spacing: 0) {
                 VStack(spacing: 16) {
-                    Text("Receive \(asset.coin.code)")
+                    Text("Receive \(asset.coin.name)")
                         .font(.mainFont(size: 23))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                 }
@@ -70,7 +70,7 @@ struct ReceiveAssetsView: View {
                         HStack(spacing: 12) {
                             PButton(label: "Copy to clipboard", width: 140, height: 32, fontSize: 12, enabled: true) {
                                 guard let address = asset.kit?.receiveAddress() else { return }
-                                
+                                print("receiver address = \(address)")
                                 UIPasteboard.general.string = address
                                 
                                 withAnimation {

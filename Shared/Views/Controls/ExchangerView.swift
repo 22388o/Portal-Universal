@@ -56,7 +56,7 @@ struct ExchangerView: View {
                 HStack(spacing: 8) {
                     FiatCurrencyView(
                         size: 24,
-                        state: .constant(.fiat),
+                        state: .constant(.btc),
                         currency: .constant(.fiat(viewModel.fiat))
                     )
                     .frame(width: 24, height: 24)

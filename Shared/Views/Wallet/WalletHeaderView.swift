@@ -86,11 +86,13 @@ struct WalletHeaderView: View {
                 
                 Spacer()
                 
-                HStack(spacing: 2) {
-                    Image("securityOn")
-                    Text("Your wallet is stored locally")
-                        .font(.mainFont(size: 12))
-                        .foregroundColor(Color.white.opacity(0.6))
+                if state == .wallet {
+                    HStack(spacing: 2) {
+                        Image("securityOn")
+                        Text("Your wallet is stored locally")
+                            .font(.mainFont(size: 12))
+                            .foregroundColor(Color.white.opacity(0.6))
+                    }
                 }
             }
             

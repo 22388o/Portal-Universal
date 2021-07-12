@@ -85,6 +85,7 @@ struct RecentTxsView: View {
                     }
                 }
                 .padding(.bottom, 41)
+                .padding(.top, 20)
             }
         }
     }

@@ -28,6 +28,7 @@ struct WalletMainView: View {
                         PortfolioView(viewModel: viewModel.portfolioViewModel)
                         WalletView(viewModel: viewModel)
                         AssetView(sceneViewModel: viewModel, fiatCurrency: viewModel.fiatCurrency)
+                            .zIndex(0)
                             .padding([.top, .trailing, .bottom], 8)
                     default:
                         if viewModel.sceneState == .walletPortfolio {
@@ -43,9 +44,14 @@ struct WalletMainView: View {
                     }
                 }
             case .swap:
-                Text("Swap")
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
+                HStack {
+                    Spacer()
+                        .frame(width: 320)
+                    
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.white.opacity(0.94))
+                        .padding(8)
+                }
             }
         }
         .zIndex(0)
