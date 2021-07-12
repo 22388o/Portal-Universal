@@ -27,7 +27,7 @@ public class DBWallet: NSManagedObject, IWallet {
     }
     
     var bctAddressFormat: BtcAddressFormat {
-        BtcAddressFormat(rawValue: btcBipFormat) ?? .segwit
+        BtcAddressFormat(rawValue: Int(btcBipFormat)) ?? .segwit
     }
     
     convenience init(model: NewWalletModel, context: NSManagedObjectContext) {
@@ -35,7 +35,7 @@ public class DBWallet: NSManagedObject, IWallet {
         
         self.id = UUID()
         self.name = model.name
-        self.btcBipFormat = model.addressType.rawValue
+        self.btcBipFormat = Int16(model.addressType.rawValue)
         
         context.insert(self)
         
