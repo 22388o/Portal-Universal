@@ -52,7 +52,6 @@ final class WalletsService: ObservableObject {
         
         self.context = context
         
-        fetchWallets()
         setupCurrentWallet()
     }
     
@@ -64,7 +63,6 @@ final class WalletsService: ObservableObject {
         let request = DBWallet.fetchRequest() as NSFetchRequest<DBWallet>
                 
         if let wallets = try? self.context?.fetch(request) {
-//            clearWallets(wallets: wallets)
             self._wallets = wallets
         }
     }
@@ -73,14 +71,18 @@ final class WalletsService: ObservableObject {
         if let fetchedCurrentWalletID = currentWalletID {
             setupWallet(id: fetchedCurrentWalletID)
         } else {
+            try? keychainStorage.remove(key: WalletsService.currentWalletIDKey)
             state = .createWallet
         }
     }
     
     private func setupWallet(id: UUID) {
+        fetchWallets()
+        
         if let wallet = _wallets?.first(where: { $0.walletID == id }) {
             guard let data = keychainStorage.data(for: wallet.key), let seed = data.toStringArray else { return }
-            currentWallet = wallet.setup(seed: seed, isNewWallet: false)
+            currentWallet = wallet.setup(seed: seed)
+            currentWalletID = wallet.walletID
             state = .currentWallet
         } else {
             fatalError("Wallet with id \(id) isn't exist")
@@ -89,8 +91,8 @@ final class WalletsService: ObservableObject {
     
     private func saveSeed(data: Data, key: String) {
         if Device.hasSecureEnclave {
+            //TODO: - Implement secure enclave implementation
             keychainStorage.save(data: data, key: key)
-//            fatalError("Not implemented yet")
         } else {
             keychainStorage.save(data: data, key: key)
         }
@@ -98,9 +100,11 @@ final class WalletsService: ObservableObject {
     
     private func clearWallets(wallets: [DBWallet]) {
         try? keychainStorage.clear()
+        
         for wallet in wallets {
             context?.delete(wallet)
         }
+        
         try? context?.save()
     }
 }
@@ -115,53 +119,54 @@ extension WalletsService: IWalletsService {
             fatalError("Cannot get seed data")
         }
         
-        if let currentWallet = currentWallet {
-            for asset in currentWallet.assets {
-                asset.kit?.stop()
-            }
-        }
+        currentWallet?.stop()
         
         let newWallet = DBWallet(model: model, context: context)
-        currentWallet = newWallet.setup(seed: model.seed, isNewWallet: true)
+        currentWallet = newWallet.setup(seed: model.seed)
         saveSeed(data: data, key: newWallet.key)
         currentWalletID = newWallet.id
         state = .currentWallet
     }
     
     func restoreWallet(model: NewWalletModel) {
-        guard let context = self.context else {
-            fatalError("Cannot get context to create wallet.")
-        }
-                    
-        guard let data = model.seedData else {
-            fatalError("Cannot get seed data")
-        }
-        
-        if let currentWallet = currentWallet {
-            for asset in currentWallet.assets {
-                asset.kit?.stop()
-            }
-        }
-        
-        let newWallet = DBWallet(model: model, context: context)
-        currentWallet = newWallet.setup(seed: model.seed, isNewWallet: false)
-        saveSeed(data: data, key: newWallet.key)
-        
-        currentWalletID = newWallet.id
-        state = .currentWallet
+        createWallet(model: model)
     }
     
     func switchWallet(_ wallet: IWallet) {
-        if let currentWallet = currentWallet {
-            for asset in currentWallet.assets {
-                asset.kit?.stop()
-            }
-        }
-        currentWalletID = wallet.walletID
+        currentWallet?.stop()
         setupWallet(id: wallet.walletID)
     }
     
     func restoreWallet() {
         state = .restoreWallet
+    }
+    
+    func deleteWallet(_ wallet: DBWallet) {
+        if let nextWallet = wallets?.first(where: { $0.walletID != wallet.id }) {
+            switchWallet(nextWallet)
+            
+            try? keychainStorage.remove(key: wallet.key)
+            context?.delete(wallet)
+            try? context?.save()
+        } else {
+            currentWallet?.stop()
+            currentWallet = nil
+            
+            try? keychainStorage.remove(key: WalletsService.currentWalletIDKey)
+            state = .createWallet
+
+            try? keychainStorage.remove(key: wallet.key)
+            context?.delete(wallet)
+            try? context?.save()
+        }
+        fetchWallets()
+    }
+    
+    func clear() {
+        fetchWallets()
+                
+        if let walletsToClear = _wallets {
+            clearWallets(wallets: walletsToClear)
+        }
     }
 }
