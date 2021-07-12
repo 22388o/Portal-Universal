@@ -14,4 +14,5 @@ protocol IWallet {
     var fiatCurrencyCode: String { get }
     var assets: [IAsset] { get }
     func updateFiatCurrency(_ fiatCurrency: FiatCurrency)
+    func stop()
 }
