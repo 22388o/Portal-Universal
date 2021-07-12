@@ -59,7 +59,7 @@ final class AssetViewModel: ObservableObject {
 //        .store(in: &subscriptions)
         
         $selectedTimeframe
-            .delay(for: 0.1, scheduler: RunLoop.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateValues()
             }

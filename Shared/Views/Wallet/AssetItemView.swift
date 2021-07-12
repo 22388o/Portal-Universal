@@ -27,7 +27,7 @@ struct AssetItemView: View {
                 HStack {
                     HStack(spacing: 12) {
                         ZStack {
-                            if viewModel.kitBalanceUpdateState != .synced && viewModel.syncProgress > 0 {
+                            if viewModel.kitBalanceUpdateState != .synced {
                                 CircularProgressBar(progress: $viewModel.syncProgress)
                                     .frame(width: 26, height: 26)
                             }
