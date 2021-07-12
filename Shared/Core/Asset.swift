@@ -20,7 +20,6 @@ final class TxProvider: ITxProvider {
 }
 protocol ITxProvider {}
 
-import BitcoinCore
 import BitcoinKit
 import RxSwift
 import Hodler
@@ -48,7 +47,7 @@ final class Asset: IAsset {
     
     let coinRate: Decimal = pow(10, 8)
     
-    init(coin: Coin, walletID: UUID, seed: [String] = [], kit: AbstractKit? = nil, isNew: Bool = false) {
+    init(coin: Coin, walletID: UUID, seed: [String] = [], kit: AbstractKit? = nil) {
         self.id = UUID()
         self.coin = coin
         
@@ -58,17 +57,19 @@ final class Asset: IAsset {
         let walletID = "\(walletID)_\(coin.name.lowercased())_wallet_id"
         
         if !seed.isEmpty {
-            switch coin.code {
-            case "BTC":
+            switch coin.type {
+            case .bitcoin:
                 self.kit = try? BitcoinKit(
                     withWords: seed,
                     bip: .bip44,
                     walletId: walletID,
-                    syncMode: isNew ? .newWallet : .api,
+                    syncMode: .api,
                     networkType: .testNet,
                     confirmationsThreshold: 0,
                     logger: .init(minLogLevel: .error)
                 )
+            case .etherium:
+                break
             default:
                 break
             }
@@ -86,10 +87,10 @@ final class Asset: IAsset {
     }
     
     private func start() {
-        switch coin.code {
-        case "BTC":
+        switch coin.type {
+        case .bitcoin:
             (self.kit as? BitcoinKit)?.delegate = self
-            kit?.start()
+            self.kit?.start()
         default:
             break
         }
@@ -165,11 +166,6 @@ extension Asset: BitcoinCoreDelegate {
         let insertedTxs = inserted.map{ PortalTx(transaction: $0, lastBlockInfo: kit?.lastBlockInfo)}
         for tx in insertedTxs {
             NotificationService.shared.add(PNotification(message: "New transaction: \(tx.amount) BTC"))
-        }
-        
-        let updatedTxs = updated.map{ PortalTx(transaction: $0, lastBlockInfo: kit?.lastBlockInfo)}
-        for tx in updatedTxs {
-            NotificationService.shared.add(PNotification(message: "Updated transaction: \(tx.amount) BTC"))
         }
     }
     
