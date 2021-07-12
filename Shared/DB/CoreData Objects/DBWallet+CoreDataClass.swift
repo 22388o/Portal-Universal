@@ -26,11 +26,16 @@ public class DBWallet: NSManagedObject, IWallet {
         "\(id.uuidString)-\(name)-seed"
     }
     
+    var bctAddressFormat: BtcAddressFormat {
+        BtcAddressFormat(rawValue: btcBipFormat) ?? .segwit
+    }
+    
     convenience init(model: NewWalletModel, context: NSManagedObjectContext) {
         self.init(context: context)
         
         self.id = UUID()
         self.name = model.name
+        self.btcBipFormat = model.addressType.rawValue
         
         context.insert(self)
         
@@ -46,7 +51,7 @@ public class DBWallet: NSManagedObject, IWallet {
             Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc"))
         ]
                 
-        self.assets = coins.map{ Asset(coin: $0, walletID: walletID, seed: seed) }
+        self.assets = coins.map{ Asset(coin: $0, walletID: walletID, seed: seed, btcAddressFormat: bctAddressFormat) }
         
         return self
     }

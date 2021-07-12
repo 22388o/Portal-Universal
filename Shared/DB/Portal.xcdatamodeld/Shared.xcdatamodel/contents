@@ -4,6 +4,7 @@
         <relationship name="wallets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DBWallet" inverseName="wallets" inverseEntity="DBWallet"/>
     </entity>
     <entity name="DBWallet" representedClassName="DBWallet" syncable="YES">
+        <attribute name="btcBipFormat" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="fiatCurrency" optional="YES" attributeType="String" defaultValueString="USD"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -11,6 +12,6 @@
     </entity>
     <elements>
         <element name="DBStorage" positionX="-897.11328125" positionY="448.49609375" width="128" height="58"/>
-        <element name="DBWallet" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="89"/>
+        <element name="DBWallet" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="104"/>
     </elements>
 </model>
