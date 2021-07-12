@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum BtcAddressFormat: Int, CustomStringConvertible, CaseIterable {
+enum BtcAddressFormat: Int16, CustomStringConvertible, CaseIterable {
     case legacy
     case segwit
     case nativeSegwit

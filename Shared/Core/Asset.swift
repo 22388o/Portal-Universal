@@ -47,7 +47,7 @@ final class Asset: IAsset {
     
     let coinRate: Decimal = pow(10, 8)
     
-    init(coin: Coin, walletID: UUID, seed: [String] = [], kit: AbstractKit? = nil) {
+    init(coin: Coin, walletID: UUID, seed: [String] = [], btcAddressFormat: BtcAddressFormat, kit: AbstractKit? = nil) {
         self.id = UUID()
         self.coin = coin
         
@@ -59,9 +59,20 @@ final class Asset: IAsset {
         if !seed.isEmpty {
             switch coin.type {
             case .bitcoin:
+                let bip: Bip
+                
+                switch btcAddressFormat {
+                case .legacy:
+                    bip = .bip44
+                case .segwit:
+                    bip = .bip49
+                case .nativeSegwit:
+                    bip = .bip49//.bip84
+                }
+                
                 self.kit = try? BitcoinKit(
                     withWords: seed,
-                    bip: .bip44,
+                    bip: bip,
                     walletId: walletID,
                     syncMode: .api,
                     networkType: .testNet,
@@ -97,7 +108,7 @@ final class Asset: IAsset {
     }
     
     static func bitcoin() -> IAsset {
-        Asset(coin: Coin.bitcoin(), walletID: UUID())
+        Asset(coin: Coin.bitcoin(), walletID: UUID(), btcAddressFormat: .segwit)
     }
     
     func availableBalance(feeRate: Int, address: String?) -> Decimal {
