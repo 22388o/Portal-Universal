@@ -85,7 +85,12 @@ struct AssetView: View {
                         }
                         .matchedGeometryEffect(id: "Shape", in: animation)
                     }
-                    PButton(label: "Swap", width: 256, height: 32, fontSize: 12, enabled: false) {
+                    PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
+                        withAnimation(.easeIn(duration: 0.2)) {
+                            
+                        }
+                    }
+                    PButton(label: "Withdraw from exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
                         withAnimation(.easeIn(duration: 0.2)) {
                             
                         }
@@ -118,7 +123,6 @@ struct AssetView: View {
                 }
             }
             .padding(.horizontal, 24)
-            .zIndex(0)
         }
         .frame(width: 304)
     }
