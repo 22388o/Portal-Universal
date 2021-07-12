@@ -12,6 +12,7 @@ struct SendAssetView: View {
 
     @ObservedObject private var viewModel: SendAssetViewModel
     @Binding var presented: Bool
+    @State private var showConfirmationAlert: Bool = false
         
     init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
         self.coin = asset.coin
@@ -46,7 +47,7 @@ struct SendAssetView: View {
             VStack(spacing: 0) {
                 VStack(spacing: 16) {
                     VStack {
-                        Text("Send \(viewModel.asset.coin.code)")
+                        Text("Send \(viewModel.asset.coin.name)")
                             .font(.mainFont(size: 23))
                             .foregroundColor(Color.coinViewRouteButtonActive)
                         Text("Instantly send to any \(viewModel.asset.coin.code) address")
@@ -102,6 +103,7 @@ struct SendAssetView: View {
                                 
                 PButton(label: "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.canSend) {
                     viewModel.send()
+                    showConfirmationAlert.toggle()
                 }
                 .padding(.top, 16)
                 .padding(.bottom, 27)
@@ -167,6 +169,13 @@ struct SendAssetView: View {
             }
         }
         .frame(width: 576, height: 662)
+        .alert(isPresented: $showConfirmationAlert) {
+            Alert(title: Text("Success"), message: Text("Transaction was sent!"), dismissButton: .default(Text("Awesome"), action: {
+                withAnimation {
+                    presented.toggle()
+                }
+            }))
+        }
     }
 }
 

@@ -55,7 +55,7 @@ final class SendAssetViewModel: ObservableObject {
                 let fee = asset.fee(amount: amount, feeRate: 4, address: address)
                 
                 if fee > 0 {
-                    self.txFee = "\(fee) \(asset.coin.code) tx fee - Fast Speed"
+                    self.txFee = "\(fee) \(asset.coin.code) (\((fee * asset.marketDataProvider.ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
                 } else {
                     self.txFee = String()
                 }
@@ -86,19 +86,16 @@ final class SendAssetViewModel: ObservableObject {
             .store(in: &cancellable)
         
         asset.kit?.transactions()
-            .subscribe{ [weak self] response in
-                switch response {
-                case .success(let txs):
-                    self?.transactions = txs.map {
-                        PortalTx(transaction: $0, lastBlockInfo: self?.asset.kit?.lastBlockInfo)
-                    }
-                    .filter {
-                        $0.destination == .outgoing || $0.destination == .sentToSelf
-                    }
-                case .error(let error):
-                    print(error.localizedDescription)
+            .subscribe(onSuccess: { [weak self] txs in
+                self?.transactions = txs.map {
+                    PortalTx(transaction: $0, lastBlockInfo: self?.asset.kit?.lastBlockInfo)
                 }
-            }
+                .filter {
+                    $0.destination == .outgoing || $0.destination == .sentToSelf
+                }
+            }, onError: { error in
+                print(error.localizedDescription)
+            })
             .disposed(by: disposeBag)
     }
     
