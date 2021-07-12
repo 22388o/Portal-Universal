@@ -13,10 +13,10 @@ struct FiatCurrencyView: View {
     @Binding var state: ValueCurrencySwitchState
     @Binding var currency: Currency
 
-    private let selectedBgColor = Color.white.opacity(0.78)
-    private let bgColor = Color(red: 66.0/255.0, green: 73.0/255.0, blue: 84.0/255.0)
-    private let textColor = Color.white//(red: 6.0/255.0, green: 42.0/255.0, blue: 60.0/255.0)
-    private let selectedTextColor = Color(red: 21.0/255.0, green: 52.0/255.0, blue: 66.0/255.0)
+    private let selectedBgColor = Color(red: 194.0/255.0, green: 194.0/255.0, blue: 199.0/255.0)
+    private let bgColor = Color(red: 144.0/255.0, green: 144.0/255.0, blue: 152.0/255.0)
+    private let textColor = Color.white
+    private let selectedTextColor = Color.white.opacity(0.78)
         
     var body: some View {
         Text(currency.symbol)
