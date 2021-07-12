@@ -35,8 +35,8 @@ final class WalletSceneViewModel: ObservableObject {
     var scaleEffectRation: CGFloat {
         if switchWallet {
             return 0.45
-//        } else if receiveAsset || sendAsset || allTransactions || createAlert {
-//            return 0.85
+        } else if receiveAsset || sendAsset || allTransactions || createAlert {
+            return 0.9
         } else {
             return 1
         }
