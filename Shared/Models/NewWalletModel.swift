@@ -10,7 +10,6 @@ import Foundation
 import HdWalletKit
 
 struct NewWalletModel {
-    let id: UUID
     let name: String
     let addressType: BtcAddressFormat
     let seed: [String]
@@ -20,7 +19,6 @@ struct NewWalletModel {
     }
     
     init(name: String, addressType: BtcAddressFormat = .segwit, seed: [String]) {
-        self.id = UUID()
         self.name = name
         self.addressType = addressType
         self.seed = seed
