@@ -64,12 +64,12 @@ struct ReceiveAssetsView: View {
                         Text("Address")
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.coinViewRouteButtonActive)
-                        Text(asset.kit?.receiveAddress() ?? "-")
+                        Text(asset.depositAdapter?.receiveAddress ?? "-")
                             .font(.mainFont(size: 16))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                         HStack(spacing: 12) {
                             PButton(label: "Copy to clipboard", width: 140, height: 32, fontSize: 12, enabled: true) {
-                                guard let address = asset.kit?.receiveAddress() else { return }
+                                guard let address = asset.depositAdapter?.receiveAddress else { return }
                                 print("receiver address = \(address)")
                                 UIPasteboard.general.string = address
                                 
@@ -96,7 +96,7 @@ struct ReceiveAssetsView: View {
         .allowsHitTesting(true)
         .frame(width: 576, height: 310)
         .onAppear {
-            qrCodeImage = asset.qrCodeProvider.qrCode(address: asset.kit?.receiveAddress())
+            qrCodeImage = asset.qrCodeProvider.code(for: asset.depositAdapter?.receiveAddress)
         }
     }
 }

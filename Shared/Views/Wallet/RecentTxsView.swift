@@ -10,7 +10,7 @@ import SwiftUI
 struct RecentTxsView: View {
     let asset: IAsset
     @Binding var showAllTxs: Bool
-    private var viewModel: TxsViewModel
+    @ObservedObject private var viewModel: TxsViewModel
     
     init(asset: IAsset, showAllTxs: Binding<Bool>) {
         self.asset = asset
@@ -44,13 +44,15 @@ struct RecentTxsView: View {
                             VStack(spacing: 4) {
                                 HStack(spacing: 8) {
                                     VStack {
-                                        switch tx.destination {
+                                        switch tx.type {
                                         case .incoming:
                                             Text("Received \(tx.amount.double) \(asset.coin.code)")
                                         case .outgoing:
                                             Text("Sent \(tx.amount.double) \(asset.coin.code)")
                                         case .sentToSelf:
                                             Text("Send to self \(tx.amount.double) \(asset.coin.code)")
+                                        case .approve:
+                                            Text("ASKUDHASKUDKHSDAHK")
                                         }
                                     }
                                     .font(.mainFont(size: 12))
@@ -63,7 +65,7 @@ struct RecentTxsView: View {
                                 }
                                 
                                 HStack {
-                                    Text("\(tx.confirmations) confirmations")
+                                    Text("\(tx.confirmations(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height)) confirmations")
                                         .font(.mainFont(size: 12))
                                         .foregroundColor(Color.coinViewRouteButtonInactive)
                                     Spacer()
@@ -88,36 +90,6 @@ struct RecentTxsView: View {
                 .padding(.top, 20)
             }
         }
-    }
-}
-
-struct RecentTxView {
-    let transaction: PortalTx
-    let coinCode: String
-    
-    var body: some View {
-        VStack {
-            HStack(spacing: 8) {
-                VStack {
-                    switch transaction.destination {
-                    case .incoming:
-                        Text("Received \(transaction.amount.double) \(coinCode)")
-                    case .outgoing:
-                        Text("Sent \(transaction.amount.double) \(coinCode)")
-                    case .sentToSelf:
-                        Text("Send to self \(transaction.amount.double) \(coinCode)")
-                    }
-                }
-                .foregroundColor(Color.coinViewRouteButtonActive)
-                Spacer()
-                Text(transaction.date.timeAgoSinceDate(shortFormat: true))
-                    .lineLimit(1)
-                    .foregroundColor(Color.coinViewRouteButtonInactive)
-            }
-            .font(.mainFont(size: 12))
-            Divider()
-        }
-        .frame(height: 48)
     }
 }
 

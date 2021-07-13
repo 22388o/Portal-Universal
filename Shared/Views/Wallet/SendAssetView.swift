@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct SendAssetView: View {
-    private let coin: Coin
+    private let asset: IAsset
 
     @ObservedObject private var viewModel: SendAssetViewModel
     @Binding var presented: Bool
     @State private var showConfirmationAlert: Bool = false
         
     init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
-        self.coin = asset.coin
+        self.asset = asset
         self.viewModel = .init(wallet: wallet, asset: asset, fiatCurrency: fiatCurrency)
         self._presented = presented
     }
@@ -135,14 +135,14 @@ struct SendAssetView: View {
                                     HStack(spacing: 0) {
                                         HStack {
                                             RoundedRectangle(cornerRadius: 8)
-                                                .fill(tx.confirmations >= 3 ? Color.orange : Color.gray)
+                                                .fill(tx.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
                                                 .frame(width: 6, height: 6)
-                                            Text(tx.confirmations >= 3 ? "Complete" : "Pending")
+                                            Text(tx.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
                                                 .foregroundColor(.orange)
                                         }
                                         .padding(.leading, 4)
                                         
-                                        Text("\(tx.amount.double) \(coin.code)")
+                                        Text("\(tx.amount.double) \(asset.coin.code)")
                                             .frame(width: 85)
                                             .padding(.leading, 30)
                                         Text("\(tx.to ?? "unknown address")")

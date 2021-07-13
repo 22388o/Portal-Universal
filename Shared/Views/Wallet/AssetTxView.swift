@@ -10,7 +10,7 @@ import SwiftUI
 struct AssetTxView: View {
     private let asset: IAsset
     @Binding var presented: Bool
-    @State private var selectedTx: PortalTx?
+    @State private var selectedTx: TransactionRecord?
     
     @ObservedObject private var viewModel: TxsViewModel
     
@@ -53,7 +53,7 @@ struct AssetTxView: View {
             .padding([.top, .horizontal], 16)
             
             if let tx = selectedTx {
-                TxDetailsView(transaction: tx, coinCode: asset.coin.code)
+                TxDetailsView(asset: asset, transaction: tx)
                     .padding(.top, 57)
                     .transition(.identity)
             } else {
@@ -83,7 +83,7 @@ struct AssetTxView: View {
                             LazyVStack(alignment: .leading, spacing: 0) {
                                 Divider()
                                 ForEach(viewModel.txs, id:\.uid) { tx in
-                                    TxPreviewView(transaction: tx, coinCode: asset.coin.code) { tx in
+                                    TxPreviewView(asset: asset, transaction: tx) { tx in
                                         withAnimation(.easeInOut(duration: 0.2)) {
                                             selectedTx = tx
                                         }
@@ -140,8 +140,8 @@ struct TxHeaderView: View {
 }
 
 struct TxDetailsView: View {
-    let transaction: PortalTx
-    let coinCode: String
+    let asset: IAsset
+    let transaction: TransactionRecord
     
     var body: some View {
         VStack(spacing: 0) {
@@ -150,7 +150,7 @@ struct TxDetailsView: View {
                 .foregroundColor(Color.coinViewRouteButtonActive.opacity(0.6))
                 .padding(.bottom, 8)
             
-            Text("\(transaction.destination == .incoming ? "Received" : "Sent") \(transaction.amount.double) \(coinCode)")
+            Text("\(transaction.type == .incoming ? "Received" : "Sent") \(transaction.amount.double) \(asset.coin.code)")
                 .font(.mainFont(size: 23))
                 .foregroundColor(Color.coinViewRouteButtonActive)
                 .padding(.bottom, 8)
@@ -203,15 +203,15 @@ struct TxDetailsView: View {
                         Text("Status")
                         HStack {
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(transaction.confirmations >= 3 ? Color.orange : Color.gray)
+                                .fill(transaction.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
                                 .frame(width: 6, height: 6)
-                            Text(transaction.confirmations >= 3 ? "Complete" : "Pending")
+                            Text(transaction.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
                         }
                     }
                     
                     VStack(alignment: .leading) {
                         Text("Block height")
-                        Text("\(transaction.blockHeight ?? 0) (\(transaction.confirmations) block confirmations)")
+                        Text("\(transaction.blockHeight ?? 0) (\(transaction.confirmations(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height)) block confirmations)")
                     }
                 }
                 .font(.mainFont(size: 12))
@@ -225,25 +225,27 @@ struct TxDetailsView: View {
 }
 
 struct TxPreviewView: View {
-    let transaction: PortalTx
-    let coinCode: String
-    let onSelect: (PortalTx) -> ()
+    let asset: IAsset
+    let transaction: TransactionRecord
+    let onSelect: (TransactionRecord) -> ()
         
     var body: some View {
         HStack(spacing: 0) {
             Group {
                 HStack(spacing: 0) {
-                    Text("\(transaction.destination == .incoming ? "Received from..." : "Sent to...")")
+                    Text("\(transaction.type == .incoming ? "Received from..." : "Sent to...")")
                     Spacer()
                 }
                 .frame(width: 100)
                 
                 Group {
-                    switch transaction.destination {
+                    switch transaction.type {
                     case .incoming, .sentToSelf:
                         Text("\(transaction.from ?? "unknown address")")
                     case .outgoing:
                         Text("\(transaction.to ?? "unknown address")")
+                    case .approve:
+                        Text("Appproerowehr")
                     }
                 }
                 .lineLimit(1)
@@ -254,15 +256,15 @@ struct TxPreviewView: View {
                     .padding(.leading, 22)
                     .frame(width: 80)
                 
-                Text("\(transaction.amount.double) \(coinCode)")
+                Text("\(transaction.amount.double) \(asset.coin.code)")
                     .padding(.leading, 16)
                     .frame(width: 120)
                 
                 HStack {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(transaction.confirmations > 3 ? Color.orange : Color.gray)
+                        .fill(transaction.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
                         .frame(width: 6, height: 6)
-                    Text(transaction.confirmations > 3 ? "Completed" : "Pending")
+                    Text(transaction.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? "Completed" : "Pending")
                     Spacer()
                 }
                 .frame(width: 90)

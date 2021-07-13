@@ -48,7 +48,7 @@ struct CreateAlertView: View {
                     }
                     HStack {
                         asset.coin.icon
-                        Text("1.00 \(asset.coin.code) is worth $\(asset.balanceProvider.price)")
+                        Text("1.00 \(asset.coin.code) is worth $\(/*asset.balanceProvider.price*/0)")
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.coinViewRouteButtonActive)
                     }
