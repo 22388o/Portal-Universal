@@ -121,6 +121,24 @@
 		750D63C7268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D63C5268B2B4300643FD3 /* TimeframeButtonsView.swift */; };
 		750D63C9268B2B9500643FD3 /* FiatCurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D63C8268B2B9500643FD3 /* FiatCurrencyView.swift */; };
 		750D63CA268B2B9500643FD3 /* FiatCurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D63C8268B2B9500643FD3 /* FiatCurrencyView.swift */; };
+		751B6544269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6542269CA218001B759C /* BitcoinBaseAdapter.swift */; };
+		751B6545269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6542269CA218001B759C /* BitcoinBaseAdapter.swift */; };
+		751B6546269CA219001B759C /* BitcoinAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6543269CA218001B759C /* BitcoinAdapter.swift */; };
+		751B6547269CA219001B759C /* BitcoinAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6543269CA218001B759C /* BitcoinAdapter.swift */; };
+		751B6549269D9711001B759C /* TransactionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6548269D9711001B759C /* TransactionRecord.swift */; };
+		751B654A269D9711001B759C /* TransactionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6548269D9711001B759C /* TransactionRecord.swift */; };
+		751B654C269D978C001B759C /* ISendBitcoinAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B654B269D978C001B759C /* ISendBitcoinAdapter.swift */; };
+		751B654D269D978C001B759C /* ISendBitcoinAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B654B269D978C001B759C /* ISendBitcoinAdapter.swift */; };
+		751B654F269D98E8001B759C /* IAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B654E269D98E8001B759C /* IAdapter.swift */; };
+		751B6550269D98E8001B759C /* IAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B654E269D98E8001B759C /* IAdapter.swift */; };
+		751B6552269D9902001B759C /* IBalanceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6551269D9902001B759C /* IBalanceAdapter.swift */; };
+		751B6553269D9902001B759C /* IBalanceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6551269D9902001B759C /* IBalanceAdapter.swift */; };
+		751B6555269D9924001B759C /* ITransactionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6554269D9924001B759C /* ITransactionAdapter.swift */; };
+		751B6556269D9924001B759C /* ITransactionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6554269D9924001B759C /* ITransactionAdapter.swift */; };
+		751B6558269D994D001B759C /* IDepositAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6557269D994D001B759C /* IDepositAdapter.swift */; };
+		751B6559269D994D001B759C /* IDepositAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6557269D994D001B759C /* IDepositAdapter.swift */; };
+		751B655B269D999F001B759C /* LastBlockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B655A269D999F001B759C /* LastBlockInfo.swift */; };
+		751B655C269D999F001B759C /* LastBlockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B655A269D999F001B759C /* LastBlockInfo.swift */; };
 		75246D6D2663C7AC00C67E7A /* DBWallet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75246D6B2663C7AC00C67E7A /* DBWallet+CoreDataProperties.swift */; };
 		752712FC261B48A7008C962C /* WalletNameInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752712FB261B48A7008C962C /* WalletNameInputView.swift */; };
 		752712FD261B48A7008C962C /* WalletNameInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752712FB261B48A7008C962C /* WalletNameInputView.swift */; };
@@ -400,6 +418,15 @@
 		750D63C2268B2B0800643FD3 /* ValueCurrencySwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueCurrencySwitchView.swift; sourceTree = "<group>"; };
 		750D63C5268B2B4300643FD3 /* TimeframeButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeframeButtonsView.swift; sourceTree = "<group>"; };
 		750D63C8268B2B9500643FD3 /* FiatCurrencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiatCurrencyView.swift; sourceTree = "<group>"; };
+		751B6542269CA218001B759C /* BitcoinBaseAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitcoinBaseAdapter.swift; sourceTree = "<group>"; };
+		751B6543269CA218001B759C /* BitcoinAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitcoinAdapter.swift; sourceTree = "<group>"; };
+		751B6548269D9711001B759C /* TransactionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRecord.swift; sourceTree = "<group>"; };
+		751B654B269D978C001B759C /* ISendBitcoinAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISendBitcoinAdapter.swift; sourceTree = "<group>"; };
+		751B654E269D98E8001B759C /* IAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAdapter.swift; sourceTree = "<group>"; };
+		751B6551269D9902001B759C /* IBalanceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBalanceAdapter.swift; sourceTree = "<group>"; };
+		751B6554269D9924001B759C /* ITransactionAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITransactionAdapter.swift; sourceTree = "<group>"; };
+		751B6557269D994D001B759C /* IDepositAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDepositAdapter.swift; sourceTree = "<group>"; };
+		751B655A269D999F001B759C /* LastBlockInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBlockInfo.swift; sourceTree = "<group>"; };
 		75246D6B2663C7AC00C67E7A /* DBWallet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBWallet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		752712FB261B48A7008C962C /* WalletNameInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletNameInputView.swift; sourceTree = "<group>"; };
 		75271302261B5378008C962C /* PButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PButton.swift; sourceTree = "<group>"; };
@@ -562,6 +589,7 @@
 			isa = PBXGroup;
 			children = (
 				750AE9A326149DD900C45971 /* IAsset.swift */,
+				751B6554269D9924001B759C /* ITransactionAdapter.swift */,
 				750AE9A226149DD900C45971 /* IBalanceProvider.swift */,
 				750AE9A826149DD900C45971 /* IChartDataProvider.swift */,
 				750AE99D26149DD900C45971 /* ICoinKit.swift */,
@@ -575,6 +603,10 @@
 				750AE9A726149DD900C45971 /* IQRCodeProvider.swift */,
 				750AE9A426149DD900C45971 /* IWallet.swift */,
 				750AE99C26149DD900C45971 /* IWalletsService.swift */,
+				751B654B269D978C001B759C /* ISendBitcoinAdapter.swift */,
+				751B654E269D98E8001B759C /* IAdapter.swift */,
+				751B6551269D9902001B759C /* IBalanceAdapter.swift */,
+				751B6557269D994D001B759C /* IDepositAdapter.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -641,6 +673,16 @@
 			path = Wallet;
 			sourceTree = "<group>";
 		};
+		751F07132697082D000647FD /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				750AE90826149A8C00C45971 /* Asset.swift */,
+				751B6543269CA218001B759C /* BitcoinAdapter.swift */,
+				751B6542269CA218001B759C /* BitcoinBaseAdapter.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		755782BE26087903000E1686 = {
 			isa = PBXGroup;
 			children = (
@@ -662,6 +704,7 @@
 			isa = PBXGroup;
 			children = (
 				755782C626087903000E1686 /* PortalApp.swift */,
+				751F07132697082D000647FD /* Core */,
 				750AE8DC2614990500C45971 /* Services */,
 				7557857A260F6143000E1686 /* Views */,
 				755785A7260F7265000E1686 /* Models */,
@@ -761,7 +804,6 @@
 		755785A7260F7265000E1686 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				750AE90826149A8C00C45971 /* Asset.swift */,
 				750AE90326149A8B00C45971 /* Coin.swift */,
 				750AE90426149A8B00C45971 /* CoinMarketData.swift */,
 				750AE90626149A8B00C45971 /* MarketPrice.swift */,
@@ -770,6 +812,8 @@
 				755785B6260F73A2000E1686 /* FiatCurrency.swift */,
 				755785A8260F7331000E1686 /* NewWalletModel.swift */,
 				75F5CD822684C4D1005ECA5B /* PortalTx.swift */,
+				751B6548269D9711001B759C /* TransactionRecord.swift */,
+				751B655A269D999F001B759C /* LastBlockInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1093,6 +1137,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				751B6544269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */,
 				750AE9D126149DD900C45971 /* IMarketData.swift in Sources */,
 				75C95C622614CC0400B0EE10 /* Color+Extension.swift in Sources */,
 				75C95C4A2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
@@ -1115,6 +1160,7 @@
 				75C95C662614CC0400B0EE10 /* Array+Extension.swift in Sources */,
 				750D63C9268B2B9500643FD3 /* FiatCurrencyView.swift in Sources */,
 				75984F46264833E5002CD1EA /* RestoreSeedField.swift in Sources */,
+				751B655B269D999F001B759C /* LastBlockInfo.swift in Sources */,
 				75F5CD8D2684C5FA005ECA5B /* CircularProgressBar.swift in Sources */,
 				750AE8F32614992400C45971 /* KeychainStorage.swift in Sources */,
 				75C95C882614CC3700B0EE10 /* Syncronized.swift in Sources */,
@@ -1127,6 +1173,7 @@
 				750AE9C926149DD900C45971 /* IAsset.swift in Sources */,
 				750D63B62689C32B00643FD3 /* NotificationService.swift in Sources */,
 				750AE9DD26149DD900C45971 /* IChartDataProvider.swift in Sources */,
+				751B654F269D98E8001B759C /* IAdapter.swift in Sources */,
 				750D63C0268B2AAC00643FD3 /* TxSortSwitch.swift in Sources */,
 				75C95C162614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
 				75F5CDA92684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
@@ -1146,6 +1193,7 @@
 				75C95C782614CC3700B0EE10 /* ViewModifiers.swift in Sources */,
 				75C95C422614CC0400B0EE10 /* Publisher+Extension.swift in Sources */,
 				75F5CD902684C6AD005ECA5B /* AssetItemViewModel.swift in Sources */,
+				751B654C269D978C001B759C /* ISendBitcoinAdapter.swift in Sources */,
 				753471FD262C2ECA005CD93C /* ExchangerViewModel.swift in Sources */,
 				75F5CDAE2684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */,
 				752712FC261B48A7008C962C /* WalletNameInputView.swift in Sources */,
@@ -1154,6 +1202,7 @@
 				750C36CB261F44BF0088CCED /* AssetItemView.swift in Sources */,
 				759E51212618F81700FA737C /* CreateWalletNameView.swift in Sources */,
 				750AE9A926149DD900C45971 /* IMarketDataMockable.swift in Sources */,
+				751B6552269D9902001B759C /* IBalanceAdapter.swift in Sources */,
 				75C95C1E2614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
 				75503C5F264FFA250043FDEC /* MarketDataProvider.swift in Sources */,
 				756C66B42640363500CD22B2 /* AlertsView.swift in Sources */,
@@ -1176,6 +1225,7 @@
 				75B1512C26222B2700542415 /* AssetSearchField.swift in Sources */,
 				75F5CD952684C8D6005ECA5B /* CreateWalletSceneViewModel.swift in Sources */,
 				750C36A0261F298B0088CCED /* WalletScene.swift in Sources */,
+				751B6546269CA219001B759C /* BitcoinAdapter.swift in Sources */,
 				75246D6D2663C7AC00C67E7A /* DBWallet+CoreDataProperties.swift in Sources */,
 				7599A7912694566800562009 /* PortalLoader.swift in Sources */,
 				750AE9D526149DD900C45971 /* IPieChartModel.swift in Sources */,
@@ -1183,6 +1233,7 @@
 				75C95C222614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
 				750AE91D26149A8C00C45971 /* Asset.swift in Sources */,
 				756A66C12624850A00353635 /* SendAssetView.swift in Sources */,
+				751B6549269D9711001B759C /* TransactionRecord.swift in Sources */,
 				75F5CD882684C541005ECA5B /* TxsViewModel.swift in Sources */,
 				755785A9260F7331000E1686 /* NewWalletModel.swift in Sources */,
 				750AE9AD26149DD900C45971 /* IWalletsService.swift in Sources */,
@@ -1190,8 +1241,10 @@
 				75B151422622EC0F00542415 /* AssetRouteSwitch.swift in Sources */,
 				75B151332622D68F00542415 /* FiatCurrencyButton.swift in Sources */,
 				75F5CD7E2684C418005ECA5B /* Data+Extension.swift in Sources */,
+				751B6555269D9924001B759C /* ITransactionAdapter.swift in Sources */,
 				755785B0260F7363000E1686 /* Enums.swift in Sources */,
 				750AE9CD26149DD900C45971 /* IWallet.swift in Sources */,
+				751B6558269D994D001B759C /* IDepositAdapter.swift in Sources */,
 				75C95C8C2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
 				750C36BD261F2DE80088CCED /* AppSceneSwitch.swift in Sources */,
 				75F5CDA42684CA76005ECA5B /* RestoreWalletViewModel.swift in Sources */,
@@ -1219,17 +1272,21 @@
 				75C95C4F2614CC0400B0EE10 /* LineChart+Extension.swift in Sources */,
 				75C95C1B2614CBB500B0EE10 /* QRCodeProvider.swift in Sources */,
 				75984F47264833E5002CD1EA /* RestoreSeedField.swift in Sources */,
+				751B6556269D9924001B759C /* ITransactionAdapter.swift in Sources */,
 				75F5CD962684C8D6005ECA5B /* CreateWalletSceneViewModel.swift in Sources */,
+				751B6547269CA219001B759C /* BitcoinAdapter.swift in Sources */,
 				75F5CDAA2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
 				755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */,
 				75C95C472614CC0400B0EE10 /* PieChart+Extension.swift in Sources */,
 				75B151512622FA7D00542415 /* TimeframeSwitch.swift in Sources */,
 				75984F2F2648219B002CD1EA /* RestoreWalletView.swift in Sources */,
+				751B655C269D999F001B759C /* LastBlockInfo.swift in Sources */,
 				750AE90E26149A8C00C45971 /* CoinMarketData.swift in Sources */,
 				75271304261B5378008C962C /* PButton.swift in Sources */,
 				75B1514A2622F96800542415 /* MarketValueView.swift in Sources */,
 				75C95C852614CC3700B0EE10 /* MockData.swift in Sources */,
 				750C36C5261F3AEE0088CCED /* WalletView.swift in Sources */,
+				751B6559269D994D001B759C /* IDepositAdapter.swift in Sources */,
 				75C95C672614CC0400B0EE10 /* Array+Extension.swift in Sources */,
 				750AE8F42614992400C45971 /* KeychainStorage.swift in Sources */,
 				75F5CDBD2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */,
@@ -1237,9 +1294,11 @@
 				756A66B72624443A00353635 /* PortfolioViewModel.swift in Sources */,
 				750AE8F82614992400C45971 /* MarketDataRepository.swift in Sources */,
 				75C95C5F2614CC0400B0EE10 /* Int+Extension.swift in Sources */,
+				751B6545269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */,
 				750D63C7268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */,
 				750AE9CA26149DD900C45971 /* IAsset.swift in Sources */,
 				750AE9DE26149DD900C45971 /* IChartDataProvider.swift in Sources */,
+				751B6550269D98E8001B759C /* IAdapter.swift in Sources */,
 				75C95C172614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
 				75568BF1262D9F810010C7E6 /* ReceiveAssetsView.swift in Sources */,
 				75F5CDAF2684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */,
@@ -1249,6 +1308,7 @@
 				75F5CD7F2684C418005ECA5B /* Data+Extension.swift in Sources */,
 				756C66BC264038E900CD22B2 /* CreateAlertView.swift in Sources */,
 				755782F726087905000E1686 /* Persistence.swift in Sources */,
+				751B654A269D9711001B759C /* TransactionRecord.swift in Sources */,
 				7527130B261BAAE8008C962C /* StoreSeedView.swift in Sources */,
 				75F5CDB72684CD7F005ECA5B /* AssetAllocationViewModel.swift in Sources */,
 				750AE9BE26149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
@@ -1305,12 +1365,14 @@
 				75B151432622EC0F00542415 /* AssetRouteSwitch.swift in Sources */,
 				75B151342622D68F00542415 /* FiatCurrencyButton.swift in Sources */,
 				755785B1260F7363000E1686 /* Enums.swift in Sources */,
+				751B654D269D978C001B759C /* ISendBitcoinAdapter.swift in Sources */,
 				750AE9CE26149DD900C45971 /* IWallet.swift in Sources */,
 				75C95C8D2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
 				7599A7982695D63900562009 /* WalletMainView.swift in Sources */,
 				750C36BE261F2DE80088CCED /* AppSceneSwitch.swift in Sources */,
 				755782F526087905000E1686 /* RootView.swift in Sources */,
 				750AE8EC2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */,
+				751B6553269D9902001B759C /* IBalanceAdapter.swift in Sources */,
 				75C95C812614CC3700B0EE10 /* StringFormatter.swift in Sources */,
 				750D63B72689C32B00643FD3 /* NotificationService.swift in Sources */,
 				750AE8F02614992400C45971 /* WalletsService.swift in Sources */,
@@ -1517,7 +1579,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1596,7 +1658,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = iphoneos;
@@ -1677,6 +1739,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
