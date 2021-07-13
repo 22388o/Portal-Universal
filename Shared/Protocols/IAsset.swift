@@ -12,17 +12,14 @@ import Combine
 
 protocol IAsset {
     var id: UUID { get }
-    var coinRate: Decimal { get }
     var marketDataProvider: IMarketDataProvider { get }
     var coin: Coin { get }
-    var kit: AbstractKit? { get }
-    var chartDataProvider: IChartDataProvider { get }
-    var balanceProvider: IBalanceProvider { get }
-    var marketChangeProvider: IMarketChangeProvider { get }
+    var adapter: IAdapter? { get }
+    var sendBtcAdapter: ISendBitcoinAdapter? { get }
+    var balanceAdapter: IBalanceAdapter? { get }
+    var depositAdapter: IDepositAdapter? { get }
+    var transactionAdaper: ITransactionsAdapter? { get }
     var qrCodeProvider: IQRCodeProvider { get }
-    var balanceStatePublisher: Published<KitSyncState>.Publisher { get }
-    var balanceUpdatedSubject: PassthroughSubject<BalanceInfo, Never> { get }
-    var txStatePublisher: Published<KitSyncState>.Publisher { get }
     
     func availableBalance(feeRate: Int, address: String?) -> Decimal
     func maximumSendAmount() -> Decimal?

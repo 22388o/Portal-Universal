@@ -10,11 +10,11 @@ import Foundation
 import SwiftUI
 
 protocol IQRCodeProvider {
-    func qrCode(address: String?) -> Image
+    func code(for address: String?) -> Image
 }
 
 extension IQRCodeProvider {
-    func qrCode(address: String?) -> Image {
+    func code(for address: String?) -> Image {
         guard let message = address?.data(using: .utf8) else { return Image(systemName: "cloud") }
         
         let parameters: [String : Any] = [

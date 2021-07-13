@@ -24,7 +24,7 @@ extension IBarChartViewModel {
     }
     
     var totalPortfolioValue: Double {
-        assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency).double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
+        0//assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency).double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
     }
     
     func barChartData() -> (entries: [BarChartDataEntry], colors: [Color]) {
@@ -69,8 +69,9 @@ extension IBarChartViewModel {
     }
     
     func allocationSizeInPercents(for asset: IAsset) -> Double {
-        let value = asset.balanceProvider.balance(currency: totalValueCurrency).double
-        return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
+        return 0
+//        let value = asset.balanceProvider.balance(currency: totalValueCurrency).double
+//        return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
     }
     
     func assetAllocationBarChartData() -> BarChartData {
@@ -91,7 +92,8 @@ extension IPieChartModel {
     }
     
     var totalPortfolioValue: Double {
-        assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency).double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
+        return 0
+//        assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency).double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
     }
     
     func pieChartData() -> (entries: [PieChartDataEntry], colors: [Color]) {
@@ -134,8 +136,9 @@ extension IPieChartModel {
     }
     
     func allocationSizeInPercents(for asset: IAsset) -> Double {
-        let value = asset.balanceProvider.balance(currency: totalValueCurrency).double
-        return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
+        return 0
+//        let value = asset.balanceProvider.balance(currency: totalValueCurrency).double
+//        return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
     }
     
     func assetAllocationChartData() -> PieChartData {

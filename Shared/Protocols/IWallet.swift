@@ -10,6 +10,7 @@ import Foundation
 
 protocol IWallet {
     var walletID: UUID { get }
+    var mnemonicDereviation: MnemonicDerivation { get }
     var name: String { get }
     var fiatCurrencyCode: String { get }
     var assets: [IAsset] { get }
