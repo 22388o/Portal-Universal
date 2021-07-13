@@ -20,7 +20,7 @@ final class WalletsService: ObservableObject {
     var wallets: [IWallet]? { _wallets }
     
     private var _wallets: [DBWallet]?
-    private let keychainStorage: KeychainStorage
+    private let keychainStorage: IKeyChainStorage
     private var context: NSManagedObjectContext?
 
     static private let currentWalletIDKey = "CURRENT_WALLET_ID"
@@ -80,7 +80,7 @@ final class WalletsService: ObservableObject {
         fetchWallets()
         
         if let wallet = _wallets?.first(where: { $0.walletID == id }) {
-            guard let data = keychainStorage.data(for: wallet.key), let seed = data.toStringArray else { return }
+            guard let seed = keychainStorage.recoverStringArray(for: wallet.key) else { return }
             currentWallet = wallet.setup(seed: seed)
             currentWalletID = wallet.walletID
             state = .currentWallet

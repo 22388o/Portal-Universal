@@ -39,4 +39,9 @@ final class KeychainStorage: IKeyChainStorage {
     func remove(key: String) throws {
         try keychain.remove(key)
     }
+    
+    func recoverStringArray(for key: String) -> [String]? {
+        guard let data = data(for: key), let seed = data.toStringArray else { return nil }
+        return seed
+    }
 }
