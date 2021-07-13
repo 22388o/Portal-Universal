@@ -22,6 +22,7 @@ final class MockCoinKit: AbstractKit {
 }
 
 class WalletMock: IWallet {
+    var mnemonicDereviation: MnemonicDerivation = .bip44
     var walletID: UUID = UUID()
     var name: String = "Personal"
     var fiatCurrencyCode: String = "USD"
@@ -36,8 +37,8 @@ class WalletMock: IWallet {
 //        let xtz = Coin(code: "XTZ", name: "Tezos", color: Color.red, icon: Image("iconXtz"))
         
         self.assets = [
-            Asset(coin: btc, walletID: UUID(), btcAddressFormat: .segwit),
-            Asset(coin: eth, walletID: UUID(), btcAddressFormat: .segwit)
+            Asset(coin: btc, walletID: UUID(), btcAddressDereviation: .bip49),
+            Asset(coin: eth, walletID: UUID(), btcAddressDereviation: .bip49)
         ]
     }
     
