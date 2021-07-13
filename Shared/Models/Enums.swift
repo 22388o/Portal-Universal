@@ -167,19 +167,59 @@ enum Device {
     }
 }
 
-enum PError: Error {
-    case unknow
+enum AppError: Error {
+    case noConnection
+    case ethereum(reason: EthereumError)
+    case wordsChecksum
+    case addressInvalid
+    case notSupportedByHodler
+    case unknownError
+
+    enum EthereumError: Error {
+        case insufficientBalanceWithFee
+        case executionReverted(message: String)
+    }
 }
 
-enum KitSyncState {
+
+extension AppError: LocalizedError {
+
+    var errorDescription: String? {
+        switch self {
+        case .noConnection: return "alert.no_internet"
+        case .ethereum(let reason):
+            switch reason {
+            case .insufficientBalanceWithFee: return "" // localized in modules
+            case .executionReverted(let message): return "ethereum_transaction.error.reverted: \(message)"
+            }
+        case .wordsChecksum:
+            return "restore.checksum_error"
+        case .addressInvalid: return "send.error.invalid_address"
+        case .notSupportedByHodler: return "send.hodler_error.unsupported_address"
+        case .unknownError: return "Unknown Error"
+        }
+
+    }
+
+}
+
+enum AdapterState {
     case synced
     case syncing(progress: Int, lastBlockDate: Date?)
     case searchingTxs(count: Int)
     case notSynced(error: Error)
+
+    var isSynced: Bool {
+        switch self {
+        case .synced: return true
+        default: return false
+        }
+    }
+
 }
 
-extension KitSyncState: Equatable {
-    public static func ==(lhs: KitSyncState, rhs: KitSyncState) -> Bool {
+extension AdapterState: Equatable {
+    public static func ==(lhs: AdapterState, rhs: AdapterState) -> Bool {
         switch (lhs, rhs) {
         case (.synced, .synced): return true
         case (.syncing(let lProgress, let lLastBlockDate), .syncing(let rProgress, let rLastBlockDate)): return lProgress == rProgress && lLastBlockDate == rLastBlockDate
@@ -247,4 +287,106 @@ enum NetworkError: Error, LocalizedError {
     var errorDescription: String? {
         return "Something went wrong, we will fix it!"
     }
+}
+
+enum AdapterError: Error {
+    case wrongParameters
+    case unsupportedAccount
+}
+
+enum TransactionType: Int, Equatable { case incoming, outgoing, sentToSelf, approve }
+
+extension TransactionType: Comparable {
+
+    public static func <(lhs: TransactionType, rhs: TransactionType) -> Bool {
+        lhs.rawValue >= rhs.rawValue
+    }
+
+}
+
+enum TransactionStatus {
+    case failed
+    case pending
+    case processing(progress: Double)
+    case completed
+}
+
+extension TransactionStatus: Equatable {
+
+    public static func ==(lhs: TransactionStatus, rhs: TransactionStatus) -> Bool {
+        switch (lhs, rhs) {
+        case (.pending, .pending): return true
+        case (let .processing(lhsProgress), let .processing(rhsProgress)): return lhsProgress == rhsProgress
+        case (.completed, .completed): return true
+        default: return false
+        }
+    }
+
+}
+
+enum MnemonicDerivation: String, CaseIterable {
+    case bip44
+    case bip49
+    case bip84
+
+    var title: String {
+        "\(addressType) - \(self.rawValue.uppercased())"
+    }
+
+    var addressType: String {
+        switch self {
+        case .bip44: return "Legacy"
+        case .bip49: return "SegWit"
+        case .bip84: return "Native SegWit"
+        }
+    }
+
+    func description(coinType: Coin.CoinType) -> String {
+        var description = "coin_settings.derivation.description.\(self)"
+
+        if let addressPrefix = addressPrefix(coinType: coinType) {
+            let startsWith = "coin_settings.derivation.starts_with \(addressPrefix)"
+            description += " (\(startsWith))"
+        }
+
+        return description
+    }
+
+    private func addressPrefix(coinType: Coin.CoinType) -> String? {
+        switch coinType {
+        case .bitcoin:
+            switch self {
+            case .bip44: return "1"
+            case .bip49: return "3"
+            case .bip84: return "bc1"
+            }
+        default:
+            return nil
+        }
+    }
+
+}
+
+
+enum SyncMode: String {
+    case fast
+    case slow
+    case new
+
+    var title: String {
+        switch self {
+        case .fast: return "API"
+        case .slow: return "sync_mode.from_blockchain"
+        case .new: return ""
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .fast: return "settings_privacy.alert_sync.recommended"
+        case .slow: return "settings_privacy.alert_sync.more_private"
+        case .new: return ""
+        }
+    }
+
 }
