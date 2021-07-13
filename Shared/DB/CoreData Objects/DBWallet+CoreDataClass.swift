@@ -12,22 +12,23 @@ import SwiftUI
 
 @objc(DBWallet)
 public class DBWallet: NSManagedObject, IWallet {
-    var fiatCurrencyCode: String {
-        fiatCurrency
-    }
-    
-    var walletID: UUID {
-        id
-    }
-    
+    var fiatCurrencyCode: String { fiatCurrency }
+    var walletID: UUID { id }
     var assets: [IAsset] = []
         
     var key: String {
         "\(id.uuidString)-\(name)-seed"
     }
     
-    var bctAddressFormat: BtcAddressFormat {
-        BtcAddressFormat(rawValue: Int(btcBipFormat)) ?? .segwit
+    var mnemonicDereviation: MnemonicDerivation {
+        switch btcBipFormat {
+        case 1:
+            return .bip49
+        case 2:
+            return .bip84
+        default:
+            return .bip44
+        }        
     }
     
     convenience init(model: NewWalletModel, context: NSManagedObjectContext) {
@@ -51,7 +52,7 @@ public class DBWallet: NSManagedObject, IWallet {
             Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc"))
         ]
                 
-        self.assets = coins.map{ Asset(coin: $0, walletID: walletID, seed: seed, btcAddressFormat: bctAddressFormat) }
+        self.assets = coins.map{ Asset(coin: $0, walletID: walletID, seed: seed, btcAddressDereviation: mnemonicDereviation) }
         
         return self
     }
@@ -64,6 +65,6 @@ public class DBWallet: NSManagedObject, IWallet {
     }
     
     func stop() {
-        _ = assets.map { $0.kit?.stop() }
+        _ = assets.map { $0.adapter?.stop() }
     }
 }
