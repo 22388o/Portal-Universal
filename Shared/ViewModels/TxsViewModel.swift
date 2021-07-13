@@ -14,44 +14,61 @@ final class TxsViewModel: ObservableObject {
     private let disposeBag = DisposeBag()
     private var cancellable: AnyCancellable?
     private let asset: IAsset
-    private var allTxs: [PortalTx] = []
+    private var allTxs: [TransactionRecord] = [] {
+        didSet {
+            updateTxList()
+        }
+    }
     
-    @Published private(set) var txs: [PortalTx] = []
+    @Published private(set) var txs: [TransactionRecord] = []
     @Published var txSortState: TxSortState = .all
     
     var balanceString: String {
-        let balanceInSat = asset.kit?.balance.spendable ?? 0
-        let coinRate = asset.coinRate
-        let balance = Decimal(balanceInSat)/coinRate
-        
-        return "\(balance) \(asset.coin.code)"
+        return "\(asset.balanceAdapter?.balance ?? 0) \(asset.coin.code)"
     }
     
     init(asset: IAsset) {
         self.asset = asset
         
-        self.asset.kit?.transactions()
-            .subscribe{ [weak self] response in
-                switch response {
-                case .success(let txs):
-                    self?.allTxs = txs.map{ PortalTx(transaction: $0, lastBlockInfo: self?.asset.kit?.lastBlockInfo) }
-                case .error(let error):
-                    print(error.localizedDescription)
-                }
+        cancellable = $txSortState
+            .removeDuplicates()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                self?.updateTxList()
             }
+        
+        asset.transactionAdaper?.transactionRecordsObservable
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] records in
+                self?.allTxs = records
+            })
             .disposed(by: disposeBag)
         
-        cancellable = $txSortState.removeDuplicates().sink { [weak self] state in
-            switch state {
-            case .all:
-                self?.txs = self?.allTxs ?? []
-            case .sent:
-                self?.txs = self?.allTxs.filter{ $0.destination == .outgoing } ?? []
-            case .received:
-                self?.txs = self?.allTxs.filter{ $0.destination == .incoming } ?? []
-            case .swapped:
-                self?.txs = []
-            }
+        asset.transactionAdaper?.transactionsSingle(from: nil, limit: 100)
+            .asObservable()
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] records in
+                self?.allTxs = records
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func updateTxList() {
+        switch txSortState {
+        case .all:
+            txs = allTxs
+        case .sent:
+            txs = allTxs.filter{ $0.type == .outgoing }
+        case .received:
+            txs = allTxs.filter{ $0.type == .incoming }
+        case .swapped:
+            txs = []
         }
+    }
+    
+    deinit {
+        print("Tx view Model deinited")
     }
 }

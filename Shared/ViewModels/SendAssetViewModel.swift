@@ -21,7 +21,7 @@ final class SendAssetViewModel: ObservableObject {
     @Published private(set) var addressIsValid: Bool = true
     @Published private(set) var canSend: Bool = false
     @Published private(set) var balanceString: String = String()
-    @Published private(set) var transactions: [PortalTx] = []
+    @Published private(set) var transactions: [TransactionRecord] = []
     
     @ObservedObject var exchangerViewModel: ExchangerViewModel
     
@@ -66,14 +66,12 @@ final class SendAssetViewModel: ObservableObject {
                 } catch {
                     self.addressIsValid = false
                 }
-                
-                let coinRate = asset.coinRate
-                
+                                
                 if self.addressIsValid {
                     self.amountIsValid = amount <= asset.availableBalance(feeRate: 4, address: self.receiverAddress)
                 } else {
-                    let avaliableBalance = asset.kit?.balance.spendable ?? 0
-                    self.amountIsValid = amount <= Decimal(avaliableBalance)/coinRate
+                    let avaliableBalance = asset.balanceAdapter?.balance ?? 0
+                    self.amountIsValid = amount <= avaliableBalance
                 }
     
                 if self.receiverAddress.isEmpty {
@@ -85,16 +83,20 @@ final class SendAssetViewModel: ObservableObject {
             }
             .store(in: &cancellable)
         
-        asset.kit?.transactions()
-            .subscribe(onSuccess: { [weak self] txs in
-                self?.transactions = txs.map {
-                    PortalTx(transaction: $0, lastBlockInfo: self?.asset.kit?.lastBlockInfo)
-                }
-                .filter {
-                    $0.destination == .outgoing || $0.destination == .sentToSelf
-                }
-            }, onError: { error in
-                print(error.localizedDescription)
+        asset.transactionAdaper?.transactionRecordsObservable
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] records in
+                self?.transactions = records.filter{ $0.type != .incoming }
+            })
+            .disposed(by: disposeBag)
+        
+        asset.transactionAdaper?.transactionsSingle(from: nil, limit: 100)
+            .asObservable()
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] records in
+                self?.transactions = records.filter{ $0.type != .incoming }
             })
             .disposed(by: disposeBag)
     }
@@ -104,9 +106,7 @@ final class SendAssetViewModel: ObservableObject {
     }
     
     private func updateBalance() {
-        let balanceInSat = asset.kit?.balance.spendable ?? 0
-        let coinRate = asset.coinRate
-        let balance = Decimal(balanceInSat)/coinRate
+        let balance = asset.balanceAdapter?.balance ?? 0
         
         if let ticker = asset.marketDataProvider.ticker {
             balanceString = "\(balance) \(asset.coin.code) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"

@@ -15,8 +15,7 @@ final class SeedTestViewModel: ObservableObject {
     
     private(set) var formIsValid = false
     private(set) var testIndices = [Int]()
-    
-    private var testSolved = [String]()
+    private(set) var testSolved = [String]()
     
     let seed: [String]
 

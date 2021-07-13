@@ -14,22 +14,19 @@ import Coinpaprika
 final class AssetViewModel: ObservableObject {
     let asset: IAsset
             
-    @Published var balance = String()
-    @Published var totalValue = String()
-    @Published var price = String()
-    @Published var change = String()
     @Published var selectedTimeframe: Timeframe = .day
-    
-    @Published var chartDataEntries = [ChartDataEntry]()
-    @Published var currency: Currency = .fiat(USD)
     @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
-    @Published var isLoadingData: Bool = false
+    
+    @Published private(set) var balance = String()
+    @Published private(set) var totalValue = String()
+    @Published private(set) var price = String()
+    @Published private(set) var change = String()
+    @Published private(set) var chartDataEntries = [ChartDataEntry]()
+    @Published private(set) var currency: Currency = .fiat(USD)
+    @Published private(set) var isLoadingData: Bool = false
         
     private let queue = DispatchQueue.main
-    private let balanceProvider: IBalanceProvider
-    private let marketChangeProvider: IMarketChangeProvider
     private var subscriptions = Set<AnyCancellable>()
-    
     private var fiatCurrency: FiatCurrency
     
     var dayHigh: String {
@@ -44,8 +41,6 @@ final class AssetViewModel: ObservableObject {
     
     init(asset: IAsset, fiatCurrency: FiatCurrency) {
         self.asset = asset
-        self.balanceProvider = asset.balanceProvider
-        self.marketChangeProvider = asset.marketChangeProvider
         self.fiatCurrency = fiatCurrency
     
         updateValues()
@@ -103,10 +98,9 @@ final class AssetViewModel: ObservableObject {
     
     private func updateValues() {
         guard let ticker = asset.marketDataProvider.ticker else { return }
-        let balanceInSat = asset.kit?.balance.spendable ?? 0
-        let coinRate = asset.coinRate
-        let balance = Decimal(balanceInSat)/coinRate
-        self.balance = "\(balance)"
+        
+        self.balance = "\(asset.balanceAdapter?.balance ?? 0)"
+        
         price = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
         
         let currentPrice: Decimal
