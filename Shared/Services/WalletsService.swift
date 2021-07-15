@@ -41,28 +41,21 @@ final class WalletsService: ObservableObject {
         self.secureStorage = secureStorage
         self.notificationService = notificationService
         
-        setupCurrentWallet()
+        if let walletID = localStorage.getCurrentWalletID() {
+            setupWallet(id: walletID)
+        }
     }
     
     deinit {
         print("\(#function) deinit")
     }
     
-    private func fetchWallets() {
-        self._wallets = try? dbStorage.fetchWallets()
+    private func syncWallets() {
+        self._wallets = try? dbStorage.fetchWallets() ?? []
     }
-    
-    private func setupCurrentWallet() {
-        if let fetchedCurrentWalletID = localStorage.getCurrentWalletID() {
-            setupWallet(id: fetchedCurrentWalletID)
-        } else {
-            localStorage.removeCurrentWalletID()
-            state = .createWallet
-        }
-    }
-    
+        
     private func setupWallet(id: UUID) {
-        fetchWallets()
+        syncWallets()
         
         if let wallet = _wallets?.first(where: { $0.walletID == id }) {
             guard let seed = secureStorage.data(for: wallet.key) else { return }
@@ -71,11 +64,6 @@ final class WalletsService: ObservableObject {
             localStorage.removeCurrentWalletID()
             state = .createWallet
         }
-    }
-        
-    private func deleteWallets(wallets: [DBWallet]) {
-        try? secureStorage.clear()
-        try? dbStorage.deleteWallets(wallets: wallets)
     }
     
     private func setCurrent(wallet: DBWallet) {
@@ -103,7 +91,7 @@ final class WalletsService: ObservableObject {
                         
                         let message = "New \(type) transaction \(record.amount) \(listener!.coin.code)"
                         let notification = PNotification(message: message)
-                        self?.notificationService.add(notification)
+                        self?.notificationService.notify(notification)
                     }
                 }, onError: { error in
                     print("Cannot setup silteners")
@@ -111,22 +99,26 @@ final class WalletsService: ObservableObject {
                 .disposed(by: disposeBag)
         }
         
-        wallet.start()
         currentWallet = wallet
         localStorage.setCurrentWalletID(wallet.walletID)
         state = .currentWallet
+    }
+    
+    private func deleteWallets(wallets: [DBWallet]) {
+        try? secureStorage.clear()
+        try? dbStorage.deleteWallets(wallets: wallets)
     }
     
     func onTerminate() {
         currentWallet?.stop()
     }
     
-    func willEnterForeground() {
-//        currentWallet?.start()
+    func didEnterBackground() {
+        currentWallet?.stop()
     }
-    
+        
     func didBecomeActive() {
-//        currentWallet?.start()
+        currentWallet?.start()
     }
 }
 
@@ -139,13 +131,13 @@ extension WalletsService: IWalletsService {
         currentWallet?.stop()
         
         if let newWallet = try? dbStorage.createWallet(model: model) {
-            setCurrent(wallet: newWallet.setup(data: data))
             secureStorage.save(data: data, key: newWallet.key)
+            setCurrent(wallet: newWallet.setup(data: data))
         } else {
             state = .createWallet
         }
         
-        fetchWallets()
+        syncWallets()
     }
     
     func restoreWallet(model: NewWalletModel) {
@@ -175,11 +167,11 @@ extension WalletsService: IWalletsService {
             state = .createWallet
         }
         
-        fetchWallets()
+        syncWallets()
     }
     
     func clear() {
-        fetchWallets()
+        syncWallets()
                 
         if let walletsToClear = _wallets {
             deleteWallets(wallets: walletsToClear)

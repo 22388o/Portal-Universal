@@ -23,7 +23,7 @@ final class NotificationService: ObservableObject {
         }
     }
     
-    func add(_ notification: PNotification) {
+    func notify(_ notification: PNotification) {
         player?.seek(to: .zero)
         player?.play()
         

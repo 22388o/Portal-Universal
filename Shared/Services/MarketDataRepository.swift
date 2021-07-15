@@ -28,7 +28,7 @@ final class MarketDataRepository: ObservableObject {
     var tickers: [Ticker]?
     var fiatCurrencies: [FiatCurrency] = []
     
-    @Published var dataIsLoaded: Bool = false
+    @Published var tickersReady: Bool = false
         
     init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater, pdUpdater: PricesDataUpdater) {
         self.mdUpdater = mdUpdater
@@ -56,8 +56,8 @@ final class MarketDataRepository: ObservableObject {
         mdUpdater.onTickersUpdatePublisher
             .sink(receiveValue: { [weak self] tickers in
                 guard let self = self else { return }
-                if !self.dataIsLoaded {
-                    self.dataIsLoaded.toggle()
+                if !self.tickersReady {
+                    self.tickersReady.toggle()
                 }
                 self.tickers = tickers
             })
