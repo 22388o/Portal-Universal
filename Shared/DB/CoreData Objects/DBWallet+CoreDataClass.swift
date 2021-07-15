@@ -37,30 +37,28 @@ public class DBWallet: NSManagedObject, IWallet {
         self.id = UUID()
         self.name = model.name
         self.btcBipFormat = Int16(model.addressType.rawValue)
-        
-        context.insert(self)
-        
-        do {
-            try context.save()
-        } catch {
-            fatalError(error.localizedDescription)
-        }
     }
     
-    func setup(seed: [String]) -> Self {
+    func setup(data: Data) -> Self {
         let coins = [
-            Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc"))
+            Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc")),
+            Coin(type: .etherium, code: "ETH", name: "Ethereum", color: Color.blue, icon: Image("iconEth"))
         ]
                 
-        self.assets = coins.map{ Asset(coin: $0, walletID: walletID, seed: seed, btcAddressDereviation: mnemonicDereviation) }
+        self.assets = coins.map {
+            if $0.code == "BTC" {
+                return Asset(coin: $0, walletID: walletID, data: data, bip: mnemonicDereviation)
+            } else {
+                return Asset(coin: $0, walletID: walletID, data: data)
+            }
+        }
         
         return self
     }
     
     func updateFiatCurrency(_ currency: FiatCurrency) {
         guard let contex = self.managedObjectContext else { return }
-        let code = currency.code
-        fiatCurrency = code
+        fiatCurrency = currency.code
         try? contex.save()
     }
     
