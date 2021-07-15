@@ -80,9 +80,9 @@ final class Asset: IAsset {
                         minLogLevel: .error
                     )
                                         
-                    let etheriumKit = EtheriumAdapter(evmKit: evmKit)
-                    kit = etheriumKit
-                    sendEtherAdapter = etheriumKit
+                    let ethereumKit = EvmAdapter(evmKit: evmKit)
+                    kit = ethereumKit
+                    sendEtherAdapter = ethereumKit
                     
                 } catch {
                     fatalError("Cannot create eth kit")

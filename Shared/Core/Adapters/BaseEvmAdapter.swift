@@ -1,5 +1,5 @@
 //
-//  BaseEtheriumAdapter.swift
+//  BaseEvmAdapter.swift
 //  Portal
 //
 //  Created by Farid on 10.07.2021.
@@ -11,7 +11,7 @@ import RxSwift
 import BigInt
 import HsToolKit
 
-class BaseEtheriumAdapter {
+class BaseEvmAdapter {
     static let confirmationsThreshold = 0
     let evmKit: EthereumKit.Kit
 
@@ -45,7 +45,7 @@ class BaseEtheriumAdapter {
 }
 
 // ITransactionsAdapter
-extension BaseEtheriumAdapter {
+extension BaseEvmAdapter {
 
     var lastBlockInfo: LastBlockInfo? {
         evmKit.lastBlockHeight.map { LastBlockInfo(height: $0, timestamp: nil) }
@@ -57,7 +57,7 @@ extension BaseEtheriumAdapter {
 
 }
 
-extension BaseEtheriumAdapter: IDepositAdapter {
+extension BaseEvmAdapter: IDepositAdapter {
 
     var receiveAddress: String {
         evmKit.receiveAddress.eip55

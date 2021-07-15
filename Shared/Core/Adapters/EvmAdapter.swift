@@ -1,5 +1,5 @@
 //
-//  EtheriumAdapter.swift
+//  EvmAdapter.swift
 //  Portal
 //
 //  Created by Farid on 10.07.2021.
@@ -11,11 +11,11 @@ import RxSwift
 import BigInt
 import HsToolKit
 
-final class EtheriumAdapter: BaseEtheriumAdapter {
+final class EvmAdapter: BaseEvmAdapter {
     static let decimal = 18
 
     init(evmKit: EthereumKit.Kit) {
-        super.init(evmKit: evmKit, decimal: EtheriumAdapter.decimal)
+        super.init(evmKit: evmKit, decimal: EvmAdapter.decimal)
     }
 
     private func convertAmount(amount: BigUInt, fromAddress: EthereumKit.Address) -> Decimal {
@@ -61,7 +61,7 @@ final class EtheriumAdapter: BaseEtheriumAdapter {
                 interTransactionIndex: 0,
                 type: type,
                 blockHeight: receipt?.blockNumber,
-                confirmationsThreshold: BaseEtheriumAdapter.confirmationsThreshold,
+                confirmationsThreshold: BaseEvmAdapter.confirmationsThreshold,
                 amount: abs(amount),
                 fee: receipt.map { Decimal(sign: .plus, exponent: -decimal, significand: Decimal($0.gasUsed * transaction.gasPrice)) },
                 date: Date(timeIntervalSince1970: Double(transaction.timestamp)),
@@ -77,7 +77,7 @@ final class EtheriumAdapter: BaseEtheriumAdapter {
 
 }
 
-extension EtheriumAdapter {
+extension EvmAdapter {
 
     static func clear(except excludedWalletIds: [String]) throws {
         try EthereumKit.Kit.clear(exceptFor: excludedWalletIds)
@@ -86,7 +86,7 @@ extension EtheriumAdapter {
 }
 
 // IAdapter
-extension EtheriumAdapter: IAdapter {
+extension EvmAdapter: IAdapter {
 
     func start() {
         evmKit.start()
@@ -112,7 +112,7 @@ protocol ISendEthereumAdapter {
     func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData
 }
 
-extension EtheriumAdapter: IBalanceAdapter {
+extension EvmAdapter: IBalanceAdapter {
 
     var balanceState: AdapterState {
         convertToAdapterState(evmSyncState: evmKit.syncState)
@@ -123,7 +123,7 @@ extension EtheriumAdapter: IBalanceAdapter {
     }
 
     var balance: Decimal {
-        balanceDecimal(kitBalance: evmKit.accountState?.balance, decimal: EtheriumAdapter.decimal)
+        balanceDecimal(kitBalance: evmKit.accountState?.balance, decimal: EvmAdapter.decimal)
     }
 
     var balanceUpdatedObservable: Observable<Void> {
@@ -132,7 +132,7 @@ extension EtheriumAdapter: IBalanceAdapter {
 
 }
 
-extension EtheriumAdapter: ISendEthereumAdapter {
+extension EvmAdapter: ISendEthereumAdapter {
 
     func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData {
         evmKit.transferTransactionData(to: address, value: amount)
@@ -140,7 +140,7 @@ extension EtheriumAdapter: ISendEthereumAdapter {
 
 }
 
-extension EtheriumAdapter: ITransactionsAdapter {
+extension EvmAdapter: ITransactionsAdapter {
 
     var coin: Coin {
         Coin(type: .etherium, code: "ETH", name: "Etherium")
