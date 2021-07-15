@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-protocol IWalletsService: ObservableObject {
+protocol IWalletsService {
     var currentWallet: IWallet? { get }
     var wallets: [IWallet]? { get }
     

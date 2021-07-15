@@ -15,3 +15,7 @@ protocol IBalanceAdapter {
     var balanceLocked: Decimal? { get }
     var balanceUpdatedObservable: Observable<Void> { get }
 }
+
+extension IBalanceAdapter {
+    var balanceLocked: Decimal? { nil }
+}

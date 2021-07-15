@@ -8,11 +8,11 @@
 
 import Foundation
 
-protocol IKeyChainStorage {
-    func save(string: String, for key: String)
+protocol IKeychainStorage {
+    func save(data: Data, key: String)
+    func save(string: String, key: String)
     func string(for key: String) -> String?
     func data(for key: String) -> Data?
-    func save(data: Data, key: String)
     func recoverStringArray(for key: String) -> [String]?
     func remove(key: String) throws
     func clear() throws

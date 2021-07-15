@@ -12,7 +12,6 @@ import Combine
 
 protocol IAsset {
     var id: UUID { get }
-    var marketDataProvider: IMarketDataProvider { get }
     var coin: Coin { get }
     var adapter: IAdapter? { get }
     var sendBtcAdapter: ISendBitcoinAdapter? { get }
