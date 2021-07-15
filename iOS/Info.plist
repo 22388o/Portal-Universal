@@ -37,6 +37,8 @@
 	<false/>
 	<key>UIStatusBarHidden~ipad</key>
 	<true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -48,9 +50,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDarkContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>EtherscanApiKey</key>
+	<string>${etherscan_api_key}</string>
+	<key>InfuraProjectId</key>
+	<string>${infura_project_id}</string>
+	<key>InfuraProjectSecret</key>
+	<string>${infura_project_secret}</string>
+	<key>BtcCoreRpcUrl</key>
+	<string>${btc_core_rpc_url}</string>
+	<key>FixerApiKey</key>
+	<string>${fixer_api_key}</string>
 </dict>
 </plist>
