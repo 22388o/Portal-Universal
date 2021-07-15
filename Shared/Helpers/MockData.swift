@@ -44,6 +44,7 @@ class WalletMock: IWallet {
     
     func setup() {}
     func stop() {}
+    func start() {}
     func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {}
     func updateFiatCurrency(_ fiatCurrency: FiatCurrency) {}
 }

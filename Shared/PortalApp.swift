@@ -9,6 +9,12 @@ import SwiftUI
 
 @main
 struct PortalApp: App {
+    private let notificationCenter = NotificationCenter.default
+    private let willTerninateNotification = UIApplication.willTerminateNotification
+    private let willEnterForegroundNotification = UIApplication.willEnterForegroundNotification
+    private let didEnterBackgroundNotification = UIApplication.didEnterBackgroundNotification
+    private let didBecomeActiveNotification = UIApplication.didBecomeActiveNotification
+    
     init() {
         #if os(iOS)
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white
@@ -23,6 +29,18 @@ struct PortalApp: App {
                 .environmentObject(Portal.shared.walletsService)
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .edgesIgnoringSafeArea(.all)
+                .onReceive(notificationCenter.publisher(for: willTerninateNotification), perform: { _ in
+                    Portal.shared.onTerminate()
+                })
+                .onReceive(notificationCenter.publisher(for: didEnterBackgroundNotification), perform: { _ in
+                    Portal.shared.didEnterBackground()
+                })
+                .onReceive(notificationCenter.publisher(for: willEnterForegroundNotification), perform: { _ in
+                    Portal.shared.willEnterForeground()
+                })
+                .onReceive(notificationCenter.publisher(for: didBecomeActiveNotification), perform: { _ in
+                    Portal.shared.didBecomeActive()
+                })
         }
     }
 }

@@ -99,14 +99,8 @@ final class Asset: IAsset {
         self.transactionAdaper = kit
                 
         self.qrCodeProvider = QRCodeProvider()
+    }
         
-        start()
-    }
-    
-    private func start() {
-        self.adapter?.start()
-    }
-    
     func availableBalance(feeRate: Int, address: String?) -> Decimal {
         switch coin.type {
         case .bitcoin:

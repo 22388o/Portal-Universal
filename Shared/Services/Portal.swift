@@ -21,7 +21,7 @@ final class Portal: ObservableObject {
     let etherFeesProvider: IFeeRateProvider
     let bitcoinFeeRateProvider: IFeeRateProvider
     
-    @Published var marketDataReady: Bool = false
+    @Published private(set) var marketDataReady: Bool = false
     
     private var anyCancellables: Set<AnyCancellable> = []
 
@@ -75,5 +75,21 @@ final class Portal: ObservableObject {
                 }
             })
             .store(in: &anyCancellables)
+    }
+    
+    func onTerminate() {
+        walletsService.onTerminate()
+    }
+    
+    func didEnterBackground() {
+        print("App did enter background")
+    }
+    
+    func willEnterForeground() {
+        walletsService.willEnterForeground()
+    }
+    
+    func didBecomeActive() {
+        walletsService.didBecomeActive()
     }
 }

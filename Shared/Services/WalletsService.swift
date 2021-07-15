@@ -57,6 +57,7 @@ final class WalletsService: ObservableObject {
         if let wallet = _wallets?.first(where: { $0.walletID == id }) {
             guard let seed = secureStorage.data(for: wallet.key) else { return }
             currentWallet = wallet.setup(data: seed)
+            currentWallet?.start()
             localStorage.setCurrentWalletID(wallet.walletID)
             state = .currentWallet
         } else {
@@ -68,6 +69,18 @@ final class WalletsService: ObservableObject {
     private func deleteWallets(wallets: [DBWallet]) {
         try? secureStorage.clear()
         try? dbStorage.deleteWallets(wallets: wallets)
+    }
+    
+    func onTerminate() {
+        currentWallet?.stop()
+    }
+    
+    func willEnterForeground() {
+//        currentWallet?.start()
+    }
+    
+    func didBecomeActive() {
+//        currentWallet?.start()
     }
 }
 

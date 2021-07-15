@@ -62,6 +62,10 @@ public class DBWallet: NSManagedObject, IWallet {
         try? contex.save()
     }
     
+    func start() {
+        _ = assets.map { $0.adapter?.start() }
+    }
+    
     func stop() {
         _ = assets.map { $0.adapter?.stop() }
     }
