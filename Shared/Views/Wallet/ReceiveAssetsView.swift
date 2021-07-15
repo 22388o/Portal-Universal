@@ -73,8 +73,10 @@ struct ReceiveAssetsView: View {
                                 print("receiver address = \(address)")
                                 UIPasteboard.general.string = address
                                 
-                                withAnimation {
-                                    isCopied.toggle()
+                                if isCopied != true {
+                                    withAnimation {
+                                        isCopied = true
+                                    }
                                 }
                             }
                             
