@@ -9,18 +9,17 @@
 import BitcoinKit
 import BitcoinCore
 import RxSwift
-import Hodler
 
-class BitcoinAdapter: BitcoinBaseAdapter {
-    private let bitcoinKit: BitcoinKit
+final class BitcoinAdapter: BitcoinBaseAdapter {
+    private let bitcoinKit: Kit
 
-    init(walletID: String, seed: [String], dereviation: MnemonicDerivation, syncMode: SyncMode?, testMode: Bool) throws {
-        let networkType: BitcoinKit.NetworkType = testMode ? .testNet : .mainNet
+    init(walletID: String, data: Data, dereviation: MnemonicDerivation, syncMode: SyncMode?, testMode: Bool) throws {
+        let networkType: Kit.NetworkType = testMode ? .testNet : .mainNet
         let bip = BitcoinBaseAdapter.bip(from: dereviation)
         let syncMode = BitcoinBaseAdapter.kitMode(from: .fast)
 
-        bitcoinKit = try BitcoinKit(
-            withWords: seed,
+        bitcoinKit = try Kit(
+            seed: data,
             bip: bip,
             walletId: walletID,
             syncMode: syncMode,
@@ -40,7 +39,7 @@ extension BitcoinAdapter: ISendBitcoinAdapter {
 }
 
 extension BitcoinAdapter {
-//    static func clear(except excludedWalletIds: [String]) throws {
-//        try Kit.clear(exceptFor: excludedWalletIds)
-//    }
+    static func clear(except excludedWalletIds: [String]) throws {
+        try Kit.clear(exceptFor: excludedWalletIds)
+    }
 }
