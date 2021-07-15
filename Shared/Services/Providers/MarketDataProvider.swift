@@ -8,20 +8,29 @@
 import Foundation
 import Coinpaprika
 
-final class MarketDataProvider: IMarketDataProvider {
-    private let repo: MarketDataRepository
-    private let coin: Coin
+final class MarketDataProvider: ObservableObject {
+    private let repository: IMarketDataProvider
     
-    var ticker: Ticker? {
-        repo.ticker(coin: coin)
+    init(repository: IMarketDataProvider) {
+        self.repository = repository
     }
-    var marketData: CoinMarketData? {
-        repo.data(coin: coin)
+}
+
+extension MarketDataProvider: IMarketDataProvider {
+    var fiatCurrencies: [FiatCurrency] {
+        repository.fiatCurrencies
     }
     
-    init(coin: Coin, repo: MarketDataRepository = MarketDataRepository.service) {
-        self.coin = coin
-        self.repo = repo
+    var tickers: [Ticker]? {
+        repository.tickers
+    }
+    
+    func ticker(coin: Coin) -> Ticker? {
+        repository.ticker(coin: coin)
+    }
+    
+    func marketData(coin: Coin) -> CoinMarketData {
+        repository.marketData(coin: coin)
     }
 }
 
