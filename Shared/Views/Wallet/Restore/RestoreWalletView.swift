@@ -135,7 +135,7 @@ struct RestoreWalletView: View {
 struct RestoreWalletView_Previews: PreviewProvider {
     static var previews: some View {
         RestoreWalletView()
-            .environmentObject(WalletsService.init(mockedWallet: WalletMock()))
+//            .environmentObject(WalletsService.init(dbStorage: <#T##IDBStorage#>, keychainStorage: <#T##IKeyChainStorage#>))
             .iPadLandscapePreviews()
     }
 }

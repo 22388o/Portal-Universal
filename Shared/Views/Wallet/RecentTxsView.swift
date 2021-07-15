@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct RecentTxsView: View {
-    let asset: IAsset
     @Binding var showAllTxs: Bool
     @ObservedObject private var viewModel: TxsViewModel
     
     init(asset: IAsset, showAllTxs: Binding<Bool>) {
-        self.asset = asset
         self._showAllTxs = showAllTxs
         self.viewModel = .init(asset: asset)
     }
@@ -44,28 +42,19 @@ struct RecentTxsView: View {
                             VStack(spacing: 4) {
                                 HStack(spacing: 8) {
                                     VStack {
-                                        switch tx.type {
-                                        case .incoming:
-                                            Text("Received \(tx.amount.double) \(asset.coin.code)")
-                                        case .outgoing:
-                                            Text("Sent \(tx.amount.double) \(asset.coin.code)")
-                                        case .sentToSelf:
-                                            Text("Send to self \(tx.amount.double) \(asset.coin.code)")
-                                        case .approve:
-                                            Text("ASKUDHASKUDKHSDAHK")
-                                        }
+                                        Text(viewModel.title(tx: tx))
                                     }
                                     .font(.mainFont(size: 12))
                                     .foregroundColor(Color.coinViewRouteButtonActive)
                                     Spacer()
-                                    Text(tx.date.timeAgoSinceDate(shortFormat: true))
+                                    Text(viewModel.date(tx: tx))
                                         .lineLimit(1)
                                         .font(.mainFont(size: 12))
                                         .foregroundColor(Color.coinViewRouteButtonInactive)
                                 }
                                 
                                 HStack {
-                                    Text("\(tx.confirmations(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height)) confirmations")
+                                    Text(viewModel.confimations(tx: tx))
                                         .font(.mainFont(size: 12))
                                         .foregroundColor(Color.coinViewRouteButtonInactive)
                                     Spacer()

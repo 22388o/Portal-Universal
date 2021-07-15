@@ -53,6 +53,6 @@ struct WalletModalViews: View {
 
 struct WalletModalViews_Previews: PreviewProvider {
     static var previews: some View {
-        WalletModalViews(viewModel: .init(wallet: WalletMock(), fiatCurrency: USD))
+        WalletModalViews(viewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: [USD]))
     }
 }

@@ -16,7 +16,14 @@ struct SendAssetView: View {
         
     init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
         self.asset = asset
-        self.viewModel = .init(wallet: wallet, asset: asset, fiatCurrency: fiatCurrency)
+        
+        self.viewModel = .init(
+            wallet: wallet,
+            asset: asset,
+            fiatCurrency: fiatCurrency,
+            ticker: Portal.shared.marketDataProvider.ticker(coin: asset.coin)
+        )
+            
         self._presented = presented
     }
     
@@ -103,7 +110,6 @@ struct SendAssetView: View {
                                 
                 PButton(label: "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.canSend) {
                     viewModel.send()
-                    showConfirmationAlert.toggle()
                 }
                 .padding(.top, 16)
                 .padding(.bottom, 27)
@@ -130,7 +136,7 @@ struct SendAssetView: View {
                     
                     ScrollView {
                         LazyVStack(alignment: .leading) {
-                            ForEach(viewModel.transactions, id:\.uid) { tx in
+                            ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.uid) { tx in
                                 VStack(spacing: 0) {
                                     HStack(spacing: 0) {
                                         HStack {

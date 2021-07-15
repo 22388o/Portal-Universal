@@ -12,6 +12,7 @@ struct RootView: View {
     @State private var loaderIsPresented = true
     
     @EnvironmentObject private var walletService: WalletsService
+    @EnvironmentObject private var marketDataProvider: MarketDataProvider
         
     var body: some View {
         ZStack {
@@ -21,10 +22,10 @@ struct RootView: View {
                 switch walletService.state {
                 case .currentWallet:
                     if let wallet = walletService.currentWallet {
-                        let fiatCurrencies = MarketDataRepository.service.fiatCurrencies
+                        let fiatCurrencies = marketDataProvider.fiatCurrencies
                         let fiat = fiatCurrencies.first(where: { $0.code == wallet.fiatCurrencyCode }) ?? USD
 
-                        WalletScene(wallet: wallet, fiatCurrency: fiat)
+                        WalletScene(viewModel: .init(wallet: wallet, userCurrrency: fiat, allCurrencies: fiatCurrencies))
                         
                         if loaderIsPresented {
                             PortalLoader()
@@ -44,8 +45,7 @@ struct RootView: View {
             }
             .transition(AnyTransition.scale.combined(with: .opacity))
         }
-        .onReceive(MarketDataRepository.service.$tickers.dropFirst(), perform: { tickers in
-            guard let tickers = tickers, !tickers.isEmpty else { return }
+        .onReceive(Portal.shared.$marketDataReady.dropFirst(), perform: { dataIsLoaded in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 withAnimation {
                     hideLoader.toggle()

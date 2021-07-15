@@ -13,7 +13,7 @@ struct AssetItemView: View {
     let onTap: () -> ()
             
     init(asset: IAsset, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
-        self.viewModel = .init(asset: asset, selectedTimeFrame: .day, fiatCurrency: fiatCurrency)
+        self.viewModel = .init(asset: asset, selectedTimeFrame: .day, fiatCurrency: fiatCurrency, ticker: Portal.shared.marketDataProvider.ticker(coin: asset.coin))
         self.selected = selected
         self.onTap = onTap
     }

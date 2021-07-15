@@ -15,7 +15,7 @@ struct WalletHeaderView: View {
     init(state: Binding<Scenes>, viewModel: WalletSceneViewModel) {
         self._state = state
         self.viewModel = viewModel
-        self.notificationService = NotificationService.shared
+        self.notificationService = Portal.shared.notificationService
     }
     
     var body: some View {
@@ -103,6 +103,6 @@ struct WalletHeaderView: View {
 
 struct WalletHeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletHeaderView(state: .constant(.wallet), viewModel: .init(wallet: WalletMock(), fiatCurrency: USD))
+        WalletHeaderView(state: .constant(.wallet), viewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []))
     }
 }

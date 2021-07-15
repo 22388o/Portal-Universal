@@ -94,7 +94,7 @@ struct ReceiveAssetsView: View {
             .padding(.horizontal, 40)
         }
         .allowsHitTesting(true)
-        .frame(width: 576, height: 310)
+        .frame(width: 630, height: 310)
         .onAppear {
             qrCodeImage = asset.qrCodeProvider.code(for: asset.depositAdapter?.receiveAddress)
         }

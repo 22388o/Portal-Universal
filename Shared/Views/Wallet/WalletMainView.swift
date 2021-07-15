@@ -10,6 +10,7 @@ import SwiftUI
 struct WalletMainView: View {
     @Binding var state: Scenes
     @ObservedObject private var viewModel: WalletSceneViewModel
+    @State private var sceneState: WalletSceneState = .walletAsset
     
     init(state: Binding<Scenes>, viewModel: WalletSceneViewModel) {
         self._state = state
@@ -23,20 +24,20 @@ struct WalletMainView: View {
             switch state {
             case .wallet:
                 HStack(spacing: 0) {
-                    switch viewModel.sceneState {
+                    switch sceneState {
                     case .full:
-                        PortfolioView(viewModel: viewModel.portfolioViewModel)
+//                        PortfolioView(viewModel: viewModel.portfolioViewModel)
                         WalletView(viewModel: viewModel)
                         AssetView(sceneViewModel: viewModel, fiatCurrency: viewModel.fiatCurrency)
                             .zIndex(0)
                             .padding([.top, .trailing, .bottom], 8)
                     default:
-                        if viewModel.sceneState == .walletPortfolio {
-                            PortfolioView(viewModel: viewModel.portfolioViewModel)
-                                .transition(.move(edge: .leading))
-                        }
+//                        if viewModel.sceneState == .walletPortfolio {
+//                            PortfolioView(viewModel: viewModel.portfolioViewModel)
+//                                .transition(.move(edge: .leading))
+//                        }
                         WalletView(viewModel: viewModel)
-                        if viewModel.sceneState == .walletAsset {
+                        if sceneState == .walletAsset {
                             AssetView(sceneViewModel: viewModel, fiatCurrency: viewModel.fiatCurrency)
                                 .padding([.top, .trailing, .bottom], 8)
                                 .transition(.move(edge: .trailing))
@@ -60,6 +61,6 @@ struct WalletMainView: View {
 
 struct WalletMainView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletMainView(state: .constant(.wallet), viewModel: .init(wallet: WalletMock(), fiatCurrency: USD))
+        WalletMainView(state: .constant(.wallet), viewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []))
     }
 }

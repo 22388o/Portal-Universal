@@ -11,8 +11,8 @@ struct WalletScene: View {
     @ObservedObject private var viewModel: WalletSceneViewModel
     @State private var state: Scenes = .wallet
             
-    init(wallet: IWallet, fiatCurrency: FiatCurrency) {
-        viewModel = .init(wallet: wallet, fiatCurrency: fiatCurrency)
+    init(viewModel: WalletSceneViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -47,7 +47,7 @@ struct WalletScene: View {
 
 struct MainScene_Previews: PreviewProvider {
     static var previews: some View {
-        WalletScene(wallet: WalletMock(), fiatCurrency: USD)
+        WalletScene(viewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []))
             .iPadLandscapePreviews()
     }
 }

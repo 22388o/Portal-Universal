@@ -50,11 +50,11 @@ struct WalletView: View {
                                     onTap: {
                                         if asset.coin.code != viewModel.selectedAsset.coin.code {
                                             viewModel.selectedAsset = asset
-                                            print("selected asset changed")
-                                            guard viewModel.sceneState != .full, viewModel.sceneState == .walletPortfolio  else { return }
-                                            withAnimation {
-                                                viewModel.sceneState = .walletAsset
-                                            }
+//                                            print("selected asset changed")
+//                                            guard viewModel.sceneState != .full, viewModel.sceneState == .walletPortfolio  else { return }
+//                                            withAnimation {
+//                                                viewModel.sceneState = .walletAsset
+//                                            }
                                         }
                                     }
                                 )
@@ -90,7 +90,7 @@ struct WalletView_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            WalletView(viewModel: WalletSceneViewModel(wallet: WalletMock(), fiatCurrency: USD))
+            WalletView(viewModel: WalletSceneViewModel(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []))
         }
         .frame(width: .infinity, height: 430)
         .previewLayout(PreviewLayout.sizeThatFits)

@@ -53,7 +53,7 @@ struct AssetTxView: View {
             .padding([.top, .horizontal], 16)
             
             if let tx = selectedTx {
-                TxDetailsView(asset: asset, transaction: tx)
+                TxDetailsView(coin: asset.coin, transaction: tx, lastBlockInfo: asset.transactionAdaper?.lastBlockInfo)
                     .padding(.top, 57)
                     .transition(.identity)
             } else {
@@ -139,9 +139,61 @@ struct TxHeaderView: View {
     }
 }
 
-struct TxDetailsView: View {
-    let asset: IAsset
+struct TxDetailsViewModel {
+    let coin: Coin
     let transaction: TransactionRecord
+    let lastBlockInfo: LastBlockInfo?
+    
+    var title: String {
+        "\(transaction.type == .incoming ? "Received" : "Sent") \(transaction.amount.double) \(coin.code)"
+    }
+    
+    var date: String {
+        "\(transaction.date)"
+    }
+    
+    var from: String {
+        "\(transaction.from ?? "Unknown")"
+    }
+    
+    var to: String {
+        "\(transaction.to ?? "Unknown")"
+    }
+    
+    var txHash: String {
+        "\(transaction.transactionHash)"
+    }
+    
+    var amount: String {
+        "\(transaction.amount.double) \(coin.code)"
+    }
+    
+    var blockHeight: String {
+        "\(transaction.blockHeight ?? 0) (\(transaction.confirmations(lastBlockHeight: lastBlockInfo?.height)) block confirmations)"
+    }
+    
+    var completed: Bool {
+        transaction.status(lastBlockHeight: lastBlockInfo?.height) == .completed
+    }
+    
+    var explorerUrl: URL? {
+        switch coin.type {
+        case .bitcoin:
+            return URL(string: "https://blockstream.info/testnet/tx/\(transaction.transactionHash)")
+        case .etherium:
+            return URL(string: "https://ropsten.etherscan.io/tx/\(transaction.transactionHash)")
+        default:
+            return nil
+        }
+    }
+}
+
+struct TxDetailsView: View {
+    private var viewModel: TxDetailsViewModel
+    
+    init(coin: Coin, transaction: TransactionRecord, lastBlockInfo: LastBlockInfo?) {
+        viewModel = .init(coin: coin, transaction: transaction, lastBlockInfo: lastBlockInfo)
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -150,19 +202,18 @@ struct TxDetailsView: View {
                 .foregroundColor(Color.coinViewRouteButtonActive.opacity(0.6))
                 .padding(.bottom, 8)
             
-            Text("\(transaction.type == .incoming ? "Received" : "Sent") \(transaction.amount.double) \(asset.coin.code)")
+            Text(viewModel.title)
                 .font(.mainFont(size: 23))
                 .foregroundColor(Color.coinViewRouteButtonActive)
                 .padding(.bottom, 8)
             
-            Text("\(transaction.date)")
+            Text(viewModel.date)
                 .font(.mainFont(size: 12))
                 .foregroundColor(Color.coinViewRouteButtonActive.opacity(0.6))
                 .padding(.bottom, 13)
             
             Button(action: {
-                let urlString = "https://blockstream.info/testnet/tx/\(transaction.transactionHash)"
-                if let url = URL(string: urlString) {
+                if let url = viewModel.explorerUrl {
                     #if os(iOS)
                     UIApplication.shared.open(url)
                     #elseif os(macOS)
@@ -189,29 +240,29 @@ struct TxDetailsView: View {
                 VStack(alignment: .leading, spacing: 15) {
                     VStack(alignment: .leading) {
                         Text("From")
-                        Text("\(transaction.from ?? "Unknown")")
+                        Text(viewModel.from)
                     }
                     VStack(alignment: .leading) {
                         Text("To")
-                        Text("\(transaction.to ?? "Unknown")")
+                        Text(viewModel.to)
                     }
                     VStack(alignment: .leading) {
                         Text("Hash")
-                        Text("\(transaction.transactionHash)")
+                        Text(viewModel.txHash)
                     }
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Status")
                         HStack {
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(transaction.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
+                                .fill(viewModel.completed ? Color.orange : Color.gray)
                                 .frame(width: 6, height: 6)
-                            Text(transaction.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
+                            Text(viewModel.completed ? "Complete" : "Pending")
                         }
                     }
                     
                     VStack(alignment: .leading) {
                         Text("Block height")
-                        Text("\(transaction.blockHeight ?? 0) (\(transaction.confirmations(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height)) block confirmations)")
+                        Text(viewModel.blockHeight)
                     }
                 }
                 .font(.mainFont(size: 12))
