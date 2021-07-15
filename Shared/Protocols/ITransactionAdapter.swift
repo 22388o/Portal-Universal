@@ -9,6 +9,7 @@ import Foundation
 import RxSwift
 
 protocol ITransactionsAdapter {
+    var coin: Coin { get }
     var transactionState: AdapterState { get }
     var transactionStateUpdatedObservable: Observable<Void> { get }
     var lastBlockInfo: LastBlockInfo? { get }

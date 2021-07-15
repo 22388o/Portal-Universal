@@ -142,6 +142,10 @@ extension EtheriumAdapter: ISendEthereumAdapter {
 
 extension EtheriumAdapter: ITransactionsAdapter {
 
+    var coin: Coin {
+        Coin(type: .etherium, code: "ETH", name: "Etherium")
+    }
+    
     var transactionState: AdapterState {
         convertToAdapterState(evmSyncState: evmKit.transactionsSyncState)
     }

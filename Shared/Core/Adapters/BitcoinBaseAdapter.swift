@@ -322,6 +322,9 @@ extension BitcoinBaseAdapter {
 }
 
 extension BitcoinBaseAdapter: ITransactionsAdapter {
+    var coin: Coin {
+        Coin(type: .bitcoin, code: "Code", name: "Bitcoin")
+    }
 
     var lastBlockInfo: LastBlockInfo? {
         abstractKit.lastBlockInfo.map { LastBlockInfo(height: $0.height, timestamp: $0.timestamp) }
