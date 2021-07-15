@@ -9,18 +9,18 @@
 import Foundation
 import KeychainAccess
 
-final class KeychainStorage: IKeyChainStorage {
+final class KeychainStorage: IKeychainStorage {
     private let keychain: Keychain
-    
-    init() {
-        keychain = Keychain(service: "com.portal.keychain.service").accessibility(.whenUnlockedThisDeviceOnly)
+        
+    init(keychain: Keychain) {
+        self.keychain = keychain.accessibility(.whenUnlockedThisDeviceOnly)
     }
     
     func string(for key: String) -> String? {
         keychain[key]
     }
     
-    func save(string: String, for key: String) {
+    func save(string: String, key: String) {
         keychain[key] = string
     }
     

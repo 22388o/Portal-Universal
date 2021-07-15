@@ -9,13 +9,13 @@ import Foundation
 import AVFoundation
 
 final class NotificationService: ObservableObject {
-    static let shared = NotificationService()
+
     private let player: AVPlayer?
     @Published private(set) var notifications: [PNotification] = []
     @Published private(set) var newAlerts: Int = 0
     @Published private(set) var alertsBeenSeen: Bool = false
         
-    private init() {
+    init() {
         if let url = Bundle.main.url(forResource: "alert", withExtension: "mp3") {
             player = AVPlayer.init(url: url)
         } else {
@@ -81,7 +81,7 @@ struct AlertView_Previews: PreviewProvider {
 struct NotificationsView: View {
     @Binding var presented: Bool
     
-    @ObservedObject private var service = NotificationService.shared
+    @ObservedObject private var service = Portal.shared.notificationService
     
     init(presented: Binding<Bool>) {
         self._presented = presented

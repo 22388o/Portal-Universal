@@ -22,21 +22,32 @@ struct FiatSymbols: Codable {
     let symbols: [String: String]?
 }
 
-final class FiatCurrenciesUpdater {
+final class FiatCurrenciesUpdater { 
     let onUpdatePublisher = PassthroughSubject<[FiatCurrency], Never>()
         
     private let jsonDecoder: JSONDecoder
     private let timer: RepeatingTimer
+    private let apiKey: String
     
     private var subscriptions = Set<AnyCancellable>()
+    
+    private var latestUrl: URL? {
+        URL(string: "https://data.fixer.io/api/latest?access_key=\(apiKey)&base=USD")
+    }
+    
+    private var symbolsUrl: URL? {
+        URL(string: "https://data.fixer.io/api/symbols?access_key=\(apiKey)&base=USD")
+    }
         
     init(
         jsonDecoder: JSONDecoder = JSONDecoder(),
-        interval: TimeInterval
+        interval: TimeInterval,
+        fixerApiKey: String
     ) {
         self.jsonDecoder = jsonDecoder
         self.timer = RepeatingTimer(timeInterval: interval)
-        self.timer.eventHandler = { [unowned self] in            
+        self.apiKey = fixerApiKey
+        self.timer.eventHandler = { [unowned self] in
             self.updateRatesPublisher().combineLatest(self.updateSymbolsPublisher())
                 .sink { (completion) in
                     if case let .failure(error) = completion {
@@ -61,8 +72,7 @@ final class FiatCurrenciesUpdater {
     
     private func updateRatesPublisher() -> Future<Rates, NetworkError> {
         return Future<Rates, NetworkError> { [unowned self] promise in
-            guard let url = URL(string: "https://data.fixer.io/api/latest?access_key=13af1e52c56117b6c7d513603fb7cee8&base=USD") else {
-                
+            guard let url = latestUrl else {
                 return promise(.failure(.inconsistentBehavior))
             }
             URLSession.shared.dataTaskPublisher(for: url)
@@ -87,7 +97,7 @@ final class FiatCurrenciesUpdater {
     
     private func updateSymbolsPublisher() -> Future<[String : String], NetworkError> {
         return Future<[String : String], NetworkError> { [unowned self] promise in
-            guard let url = URL(string: "https://data.fixer.io/api/symbols?access_key=13af1e52c56117b6c7d513603fb7cee8&base=USD") else {
+            guard let url = symbolsUrl else {
                 return promise(.failure(.inconsistentBehavior))
             }
             URLSession.shared.dataTaskPublisher(for: url)
