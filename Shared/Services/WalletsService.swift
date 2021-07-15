@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 final class WalletsService: ObservableObject {
     enum State {
@@ -23,13 +24,22 @@ final class WalletsService: ObservableObject {
     private let localStorage: ILocalStorage
     private let secureStorage: IKeychainStorage
     private let dbStorage: IDBStorage
+    private let notificationService: NotificationService
+    
+    private var disposeBag = DisposeBag()
 
-    init(dbStorage: IDBStorage, localStorage: ILocalStorage, secureStorage: IKeychainStorage) {
+    init(
+        dbStorage: IDBStorage,
+        localStorage: ILocalStorage,
+        secureStorage: IKeychainStorage,
+        notificationService: NotificationService
+    ) {
         print("\(#function) init")
         
         self.dbStorage = dbStorage
         self.localStorage = localStorage
         self.secureStorage = secureStorage
+        self.notificationService = notificationService
         
         setupCurrentWallet()
     }
@@ -56,10 +66,7 @@ final class WalletsService: ObservableObject {
         
         if let wallet = _wallets?.first(where: { $0.walletID == id }) {
             guard let seed = secureStorage.data(for: wallet.key) else { return }
-            currentWallet = wallet.setup(data: seed)
-            currentWallet?.start()
-            localStorage.setCurrentWalletID(wallet.walletID)
-            state = .currentWallet
+            setCurrent(wallet: wallet.setup(data: seed))
         } else {
             localStorage.removeCurrentWalletID()
             state = .createWallet
@@ -69,6 +76,45 @@ final class WalletsService: ObservableObject {
     private func deleteWallets(wallets: [DBWallet]) {
         try? secureStorage.clear()
         try? dbStorage.deleteWallets(wallets: wallets)
+    }
+    
+    private func setCurrent(wallet: DBWallet) {
+        let listeners = wallet.assets.map{ $0.transactionAdaper }
+        
+        disposeBag = DisposeBag()
+        notificationService.clear()
+        
+        for listener in listeners {
+            listener?.transactionRecordsObservable
+                .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] records in
+                    for record in records {
+                        let type: String
+                        
+                        switch record.type {
+                        case .incoming, .sentToSelf:
+                            type = "incoming"
+                        case .outgoing:
+                            type = "outgoing"
+                        case .approve:
+                            type = "approve"
+                        }
+                        
+                        let message = "New \(type) transaction \(record.amount) \(listener!.coin.code)"
+                        let notification = PNotification(message: message)
+                        self?.notificationService.add(notification)
+                    }
+                }, onError: { error in
+                    print("Cannot setup silteners")
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        wallet.start()
+        currentWallet = wallet
+        localStorage.setCurrentWalletID(wallet.walletID)
+        state = .currentWallet
     }
     
     func onTerminate() {
@@ -93,11 +139,8 @@ extension WalletsService: IWalletsService {
         currentWallet?.stop()
         
         if let newWallet = try? dbStorage.createWallet(model: model) {
-            currentWallet = newWallet.setup(data: data)
+            setCurrent(wallet: newWallet.setup(data: data))
             secureStorage.save(data: data, key: newWallet.key)
-            localStorage.setCurrentWalletID(newWallet.id)
-            
-            state = .currentWallet
         } else {
             state = .createWallet
         }

@@ -58,10 +58,15 @@ final class Portal: ObservableObject {
         let bdContext = PersistenceController.shared.container.viewContext
         let bdStorage: IDBStorage = DBlocalStorage(context: bdContext)
         
-        walletsService = WalletsService(dbStorage: bdStorage, localStorage: localStorage, secureStorage: secureStorage)
-        
         notificationService = NotificationService()
         
+        walletsService = WalletsService(
+            dbStorage: bdStorage,
+            localStorage: localStorage,
+            secureStorage: secureStorage,
+            notificationService: notificationService
+        )
+                
         if localStorage.isFirstLaunch {
             walletsService.clear()
         }
