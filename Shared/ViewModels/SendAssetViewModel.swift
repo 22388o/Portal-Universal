@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 import RxSwift
+import Coinpaprika
 
 final class SendAssetViewModel: ObservableObject {
     @Published private var amount: Decimal = 0
@@ -28,14 +29,16 @@ final class SendAssetViewModel: ObservableObject {
     let asset: IAsset
     private let wallet: IWallet
     private let fiatCurrency: FiatCurrency
+    private var ticker: Ticker?
     
     private var cancellable = Set<AnyCancellable>()
     private let disposeBag = DisposeBag()
     
-    init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency) {
+    init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency, ticker: Ticker?) {
         print("send asset view model inited")
         self.wallet = wallet
         self.asset = asset
+        self.ticker = ticker
         self.exchangerViewModel = .init(asset: asset, fiat: fiatCurrency)
         self.fiatCurrency = fiatCurrency
         
@@ -55,7 +58,7 @@ final class SendAssetViewModel: ObservableObject {
                 let fee = asset.fee(amount: amount, feeRate: 4, address: address)
                 
                 if fee > 0 {
-                    self.txFee = "\(fee) \(asset.coin.code) (\((fee * asset.marketDataProvider.ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
+                    self.txFee = "\(fee) \(asset.coin.code) (\((fee * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
                 } else {
                     self.txFee = String()
                 }
@@ -87,7 +90,7 @@ final class SendAssetViewModel: ObservableObject {
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] records in
-                self?.transactions = records.filter{ $0.type != .incoming }
+                self?.transactions.append(contentsOf: records.filter{ $0.type != .incoming })
             })
             .disposed(by: disposeBag)
         
@@ -108,7 +111,7 @@ final class SendAssetViewModel: ObservableObject {
     private func updateBalance() {
         let balance = asset.balanceAdapter?.balance ?? 0
         
-        if let ticker = asset.marketDataProvider.ticker {
+        if let ticker = ticker {
             balanceString = "\(balance) \(asset.coin.code) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
         } else {
             balanceString = "\(balance) \(asset.coin.code)"
@@ -126,12 +129,14 @@ final class SendAssetViewModel: ObservableObject {
     }
     
     private func reset() {
-        amount = 0
-        receiverAddress = String()
-        memo = String()
-        
-        updateBalance()
-        
-        exchangerViewModel.reset()
+        DispatchQueue.main.async {
+            self.amount = 0
+            self.receiverAddress = String()
+            self.memo = String()
+            
+            self.updateBalance()
+            
+            self.exchangerViewModel.reset()
+        }
     }
 }

@@ -23,17 +23,19 @@ final class AssetItemViewModel: ObservableObject {
     private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
     private let disposeBag = DisposeBag()
     
+    private let ticker: Ticker?
+    
     var changeLabelColor: Color {
         let priceChange: Decimal?
         switch selectedTimeframe {
         case .day:
-            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange24h
+            priceChange = ticker?[.usd].percentChange24h
         case .week:
-            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange7d
+            priceChange = ticker?[.usd].percentChange7d
         case .month:
-            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange30d
+            priceChange = ticker?[.usd].percentChange30d
         case .year:
-            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange1y
+            priceChange = ticker?[.usd].percentChange1y
         }
         
         guard let pChange = priceChange else {
@@ -46,8 +48,9 @@ final class AssetItemViewModel: ObservableObject {
     private let selectedTimeframe: Timeframe
     private let fiatCurrency: FiatCurrency
     
-    init(asset: IAsset, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency) {
+    init(asset: IAsset, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency, ticker: Ticker?) {
         self.asset = asset
+        self.ticker = ticker
         
         self.selectedTimeframe = selectedTimeFrame
         self.fiatCurrency = fiatCurrency
@@ -56,7 +59,7 @@ final class AssetItemViewModel: ObservableObject {
             self.adapterState = state
         }
                 
-        if let spendable = asset.balanceAdapter?.balance, let ticker = asset.marketDataProvider.ticker {
+        if let spendable = asset.balanceAdapter?.balance, let ticker = ticker {
             updateValues(spendable: spendable, unspendable: asset.balanceAdapter?.balanceLocked, ticker: ticker)
         }
         
@@ -64,7 +67,7 @@ final class AssetItemViewModel: ObservableObject {
             .subscribeOn(serialQueueScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
-                if let adapter = asset.balanceAdapter, let ticker = self?.asset.marketDataProvider.ticker {
+                if let adapter = asset.balanceAdapter, let ticker = self?.ticker {
                     self?.updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
                 } else {
                     if let balance = asset.balanceAdapter?.balance {
@@ -84,7 +87,11 @@ final class AssetItemViewModel: ObservableObject {
                         let progress = Float(currentProgress)/100
                         if self?.syncProgress != progress {
                             self?.syncProgress = progress
+                            print("\(asset.coin.code) sync progress = \(currentProgress)")
                         }
+                    }
+                    if case .synced  = state {
+                        print("\(asset.coin.code) is synced!")
                     }
                     self?.adapterState = state
                 }

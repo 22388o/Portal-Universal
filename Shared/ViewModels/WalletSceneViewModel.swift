@@ -42,16 +42,16 @@ final class WalletSceneViewModel: ObservableObject {
         }
     }
     
-    init(wallet: IWallet, fiatCurrency: FiatCurrency) {
+    init(wallet: IWallet, userCurrrency: FiatCurrency, allCurrencies: [FiatCurrency]) {
         print("WalletViewModel init")
-        self.fiatCurrency = fiatCurrency
+        self.fiatCurrency = userCurrrency
         
         self.wallet = wallet
         self.walletName = wallet.name
         self.selectedAsset = wallet.assets.first ?? Asset.bitcoin()
         self.portfolioViewModel = .init(assets: wallet.assets)
         self.sceneState = UIScreen.main.bounds.width > 1180 ? .full : .walletAsset
-        self.fiatCurrencies = MarketDataRepository.service.fiatCurrencies
+        self.fiatCurrencies = allCurrencies
         
         Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert)
             .sink { [weak self] output in

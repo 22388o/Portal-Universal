@@ -27,6 +27,27 @@ final class TxsViewModel: ObservableObject {
         return "\(asset.balanceAdapter?.balance ?? 0) \(asset.coin.code)"
     }
     
+    func title(tx: TransactionRecord) -> String {
+        switch tx.type {
+        case .incoming:
+            return "Received \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+        case .outgoing:
+            return "Sent \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+        case .sentToSelf:
+            return "Send to self \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+        case .approve:
+            return "Approving... \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+        }
+    }
+    
+    func date(tx: TransactionRecord) -> String {
+        tx.date.timeAgoSinceDate(shortFormat: true)
+    }
+    
+    func confimations(tx: TransactionRecord) -> String {
+        "\(tx.confirmations(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height)) confirmations"
+    }
+    
     init(asset: IAsset) {
         self.asset = asset
         

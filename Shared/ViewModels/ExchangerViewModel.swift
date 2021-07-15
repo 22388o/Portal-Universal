@@ -18,10 +18,14 @@ final class ExchangerViewModel: ObservableObject {
     @Published var fiatValue = String()
     
     private var price: Double {
-        ((asset.marketDataProvider.ticker?[.usd].price ?? 0) * Decimal(fiat.rate)).double
+        ((ticker?[.usd].price ?? 0) * Decimal(fiat.rate)).double
     }
     
     private var subscriptions = Set<AnyCancellable>()
+    
+    var ticker: Ticker? {
+        Portal.shared.marketDataProvider.ticker(coin: asset.coin)
+    }
     
     init(asset: IAsset, fiat: FiatCurrency) {
         print("ExchangerViewModel init")

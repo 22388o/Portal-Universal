@@ -11,7 +11,7 @@ import Charts
 import SwiftUI
 import Combine
 
-final class PortfolioViewModel: ObservableObject, IMarketData {
+final class PortfolioViewModel: ObservableObject {
     var assets: [IAsset]
     
     @Published var selectedTimeframe: Timeframe = .day

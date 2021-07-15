@@ -29,19 +29,22 @@ final class AssetViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private var fiatCurrency: FiatCurrency
     
+    private var marketDataProvider: IMarketDataProvider
+    
     var dayHigh: String {
-        let dayHigh: Decimal = asset.marketDataProvider.marketData?.dayHigh ?? 0
+        let dayHigh: Decimal = marketDataProvider.marketData(coin: asset.coin).dayHigh
         return "\(fiatCurrency.symbol)\((dayHigh * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
     var dayLow: String {
-        let dayLow: Decimal = asset.marketDataProvider.marketData?.dayLow ?? 0
+        let dayLow: Decimal = marketDataProvider.marketData(coin: asset.coin).dayLow
         return "\(fiatCurrency.symbol)\((dayLow * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
-    init(asset: IAsset, fiatCurrency: FiatCurrency) {
+    init(asset: IAsset, fiatCurrency: FiatCurrency, marketDataProvider: IMarketDataProvider) {
         self.asset = asset
         self.fiatCurrency = fiatCurrency
+        self.marketDataProvider = marketDataProvider
     
         updateValues()
         
@@ -97,7 +100,7 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func updateValues() {
-        guard let ticker = asset.marketDataProvider.ticker else { return }
+        guard let ticker = marketDataProvider.ticker(coin: asset.coin) else { return }
         
         self.balance = "\(asset.balanceAdapter?.balance ?? 0)"
         
@@ -148,13 +151,13 @@ final class AssetViewModel: ObservableObject {
         let priceChange: Decimal?
         switch selectedTimeframe {
         case .day:
-            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange24h
+            priceChange = marketDataProvider.ticker(coin: asset.coin)?[.usd].percentChange24h
         case .week:
-            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange7d
+            priceChange = marketDataProvider.ticker(coin: asset.coin)?[.usd].percentChange7d
         case .month:
-            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange30d
+            priceChange = marketDataProvider.ticker(coin: asset.coin)?[.usd].percentChange30d
         case .year:
-            priceChange = asset.marketDataProvider.ticker?[.usd].percentChange1y
+            priceChange = marketDataProvider.ticker(coin: asset.coin)?[.usd].percentChange1y
         }
         
         guard let pChange = priceChange else {
@@ -172,13 +175,13 @@ final class AssetViewModel: ObservableObject {
         
         switch selectedTimeframe {
         case .day:
-            points = asset.marketDataProvider.marketData?.dayPoints ?? []
+            points = marketDataProvider.marketData(coin: asset.coin).dayPoints
         case .week:
-            points = asset.marketDataProvider.marketData?.weekPoints ?? []
+            points = marketDataProvider.marketData(coin: asset.coin).weekPoints
         case .month:
-            points = asset.marketDataProvider.marketData?.monthPoints ?? []
+            points = marketDataProvider.marketData(coin: asset.coin).monthPoints
         case .year:
-            points = asset.marketDataProvider.marketData?.yearPoints ?? []
+            points = marketDataProvider.marketData(coin: asset.coin).yearPoints
         }
         
         let xIndexes = Array(0..<points.count).map { x in Double(x) }
