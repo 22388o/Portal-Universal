@@ -31,6 +31,37 @@ public class NetworkManager {
         }
     }
 
+    public func single<Mapper: IApiMapper>(url: URLConvertible, method: HTTPMethod, parameters: Parameters, mapper: Mapper, encoding: ParameterEncoding = URLEncoding.default,
+                                           headers: HTTPHeaders? = nil, interceptor: RequestInterceptor? = nil, responseCacherBehavior: ResponseCacher.Behavior? = nil) -> Single<Mapper.T> {
+        let serializer = JsonMapperResponseSerializer<Mapper>(mapper: mapper, logger: logger)
+
+        return Single<Mapper.T>.create { [weak self] observer in
+            guard let manager = self else {
+                observer(.error(NetworkManager.RequestError.disposed))
+                return Disposables.create()
+            }
+
+            var request = manager.session.request(url, method: method, parameters: parameters, encoding: encoding, headers: headers, interceptor: interceptor)
+
+            if let behavior = responseCacherBehavior {
+                request = request.cacheResponse(using: ResponseCacher(behavior: behavior))
+            }
+
+            let requestReference = request.response(queue: DispatchQueue.global(qos: .background), responseSerializer: serializer) { response in
+                switch response.result {
+                case .success(let result):
+                    observer(.success(result))
+                case .failure(let error):
+                    observer(.error(NetworkManager.unwrap(error: error)))
+                }
+            }
+
+            return Disposables.create {
+                requestReference.cancel()
+            }
+        }
+    }
+
 }
 
 extension NetworkManager {
@@ -45,19 +76,25 @@ extension NetworkManager {
         }
 
         func requestDidResume(_ request: Request) {
-            logger?.debug("API OUT: \(request)")
+            var parametersLog = ""
+
+            if let httpBody = request.request?.httpBody, let json = try? JSONSerialization.jsonObject(with: httpBody), let data = try? JSONSerialization.data(withJSONObject: json, options: [.sortedKeys, .prettyPrinted]), let string = String(data: data, encoding: .utf8) {
+                parametersLog = "\n\(string)"
+            }
+
+            logger?.debug("API OUT [\(request.id)]\n\(request)\(parametersLog)\n")
         }
 
         func requestIsRetrying(_ request: Request) {
-            logger?.warning("API RETRY: \(request)")
+            logger?.warning("API RETRY: \(request.id)")
         }
 
         func request<Value>(_ request: DataRequest, didParseResponse response: DataResponse<Value, AFError>) {
             switch response.result {
             case .success(let result):
-                logger?.debug("API IN: \(request)\n\(result)")
+                logger?.debug("API IN [\(request.id)]\n\(result)\n")
             case .failure(let error):
-                logger?.error("API IN: \(request)\n\(NetworkManager.unwrap(error: error))")
+                logger?.error("API IN [\(request.id)]\n\(NetworkManager.unwrap(error: error))\n")
             }
         }
 
@@ -113,6 +150,7 @@ extension NetworkManager {
     public enum RequestError: Error {
         case invalidResponse(statusCode: Int, data: Any?)
         case noResponse(reason: String?)
+        case disposed
     }
 
 }

@@ -1,6 +1,7 @@
 import BigInt
 import RxSwift
 import HsToolKit
+import NIO
 
 enum BlockValidatorType { case header, bits, legacy, testNet, EDA, DAA, DGW }
 
@@ -168,6 +169,7 @@ public protocol IPeerGroup: class {
 
     func start()
     func stop()
+    func reconnectPeers()
 
     func isReady(peer: IPeer) -> Bool
 }
@@ -224,7 +226,7 @@ public protocol IPeerTaskDelegate: class {
 protocol IPeerConnection: class {
     var delegate: PeerConnectionDelegate? { get set }
     var host: String { get }
-    var port: UInt32 { get }
+    var port: Int { get }
     var logName: String { get }
     func connect()
     func disconnect(error: Error?)
@@ -251,14 +253,14 @@ protocol IPeerAddressManagerDelegate: class {
 
 protocol IPeerDiscovery {
     var peerAddressManager: IPeerAddressManager? { get set }
-    func lookup(dnsSeed: String)
+    func lookup(dnsSeeds: [String])
 }
 
 protocol IFactory {
     func block(withHeader header: BlockHeader, previousBlock: Block) -> Block
     func block(withHeader header: BlockHeader, height: Int) -> Block
     func blockHash(withHeaderHash headerHash: Data, height: Int, order: Int) -> BlockHash
-    func peer(withHost host: String, logger: Logger?) -> IPeer
+    func peer(withHost host: String, eventLoopGroup: MultiThreadedEventLoopGroup, logger: Logger?) -> IPeer
     func transaction(version: Int, lockTime: Int) -> Transaction
     func inputToSign(withPreviousOutput: UnspentOutput, script: Data, sequence: Int) -> InputToSign
     func output(withIndex index: Int, address: Address, value: Int, publicKey: PublicKey?) -> Output
@@ -487,7 +489,7 @@ public protocol INetwork: class {
     var xPubKey: UInt32 { get }
     var xPrivKey: UInt32 { get }
     var magic: UInt32 { get }
-    var port: UInt32 { get }
+    var port: Int { get }
     var dnsSeeds: [String] { get }
     var dustRelayTxFee: Int { get }
     var bip44Checkpoint: Checkpoint { get }

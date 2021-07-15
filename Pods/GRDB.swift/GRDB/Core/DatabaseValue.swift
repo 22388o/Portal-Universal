@@ -1,18 +1,11 @@
 import Foundation
-#if SWIFT_PACKAGE
-import CSQLite
-#elseif GRDBCIPHER
-import SQLCipher
-#elseif !GRDBCUSTOMSQLITE && !GRDBCIPHER
-import SQLite3
-#endif
 
 // MARK: - DatabaseValue
 
 /// DatabaseValue is the intermediate type between SQLite and your values.
 ///
 /// See https://www.sqlite.org/datatype3.html
-public struct DatabaseValue: Hashable, CustomStringConvertible, DatabaseValueConvertible, SQLExpression {
+public struct DatabaseValue: Hashable, CustomStringConvertible, DatabaseValueConvertible, SQLSpecificExpressible {
     /// The SQLite storage
     public let storage: Storage
     
@@ -93,6 +86,7 @@ public struct DatabaseValue: Hashable, CustomStringConvertible, DatabaseValueCon
     
     // MARK: - Not Public
     
+    @inlinable
     init(storage: Storage) {
         self.storage = storage
     }
@@ -122,6 +116,7 @@ public struct DatabaseValue: Hashable, CustomStringConvertible, DatabaseValueCon
     }
     
     /// Returns a DatabaseValue initialized from a raw SQLite statement pointer.
+    @usableFromInline
     init(sqliteStatement: SQLiteStatement, index: Int32) {
         switch sqlite3_column_type(sqliteStatement, index) {
         case SQLITE_NULL:
@@ -142,6 +137,24 @@ public struct DatabaseValue: Hashable, CustomStringConvertible, DatabaseValueCon
         case let type:
             // Assume a GRDB bug: there is no point throwing any error.
             fatalError("Unexpected SQLite column type: \(type)")
+        }
+    }
+}
+
+extension DatabaseValue: StatementBinding {
+    @inlinable
+    public func bind(to sqliteStatement: SQLiteStatement, at index: CInt) -> CInt {
+        switch storage {
+        case .null:
+            return sqlite3_bind_null(sqliteStatement, index)
+        case .int64(let int64):
+            return int64.bind(to: sqliteStatement, at: index)
+        case .double(let double):
+            return double.bind(to: sqliteStatement, at: index)
+        case .string(let string):
+            return string.bind(to: sqliteStatement, at: index)
+        case .blob(let data):
+            return data.bind(to: sqliteStatement, at: index)
         }
     }
 }
@@ -208,76 +221,21 @@ extension DatabaseValue {
 // DatabaseValueConvertible
 extension DatabaseValue {
     /// Returns self
+    @inlinable
     public var databaseValue: DatabaseValue {
-        return self
+        self
     }
     
     /// Returns the database value
     public static func fromDatabaseValue(_ dbValue: DatabaseValue) -> DatabaseValue? {
-        return dbValue
+        dbValue
     }
 }
 
 // SQLExpressible
 extension DatabaseValue {
-    /// [**Experimental**](http://github.com/groue/GRDB.swift#what-are-experimental-features)
-    /// :nodoc:
     public var sqlExpression: SQLExpression {
-        return self
-    }
-}
-
-// SQLExpression
-extension DatabaseValue {
-    /// [**Experimental**](http://github.com/groue/GRDB.swift#what-are-experimental-features)
-    /// :nodoc:
-    public func expressionSQL(_ context: inout SQLGenerationContext, wrappedInParenthesis: Bool) -> String {
-        // fast path for NULL
-        if isNull {
-            return "NULL"
-        }
-        
-        if context.append(arguments: [self]) {
-            return "?"
-        } else {
-            // Correctness above all: use SQLite to quote the value.
-            // Assume that the Quote function always succeeds
-            return DatabaseQueue().inDatabase { try! String.fetchOne($0, sql: "SELECT QUOTE(?)", arguments: [self])! }
-        }
-    }
-    
-    /// [**Experimental**](http://github.com/groue/GRDB.swift#what-are-experimental-features)
-    /// :nodoc:
-    public var negated: SQLExpression {
-        switch storage {
-        case .null:
-            // SELECT NOT NULL -- NULL
-            return DatabaseValue.null
-        case .int64(let int64):
-            return (int64 == 0).sqlExpression
-        case .double(let double):
-            return (double == 0.0).sqlExpression
-        case .string:
-            // We can't assume all strings are true, and return false:
-            //
-            // SELECT NOT '1' -- 0 (because '1' is turned into the integer 1, which is negated into 0)
-            // SELECT NOT '0' -- 1 (because '0' is turned into the integer 0, which is negated into 1)
-            return SQLExpressionNot(self)
-        case .blob:
-            // We can't assume all blobs are true, and return false:
-            //
-            // SELECT NOT X'31' -- 0 (because X'31' is turned into the string '1',
-            //  then into integer 1, which is negated into 0)
-            // SELECT NOT X'30' -- 1 (because X'30' is turned into the string '0',
-            //  then into integer 0, which is negated into 1)
-            return SQLExpressionNot(self)
-        }
-    }
-    
-    /// [**Experimental**](http://github.com/groue/GRDB.swift#what-are-experimental-features)
-    /// :nodoc:
-    public func qualifiedExpression(with alias: TableAlias) -> SQLExpression {
-        return self
+        .databaseValue(self)
     }
 }
 

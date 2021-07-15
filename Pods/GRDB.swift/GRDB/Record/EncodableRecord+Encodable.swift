@@ -12,10 +12,10 @@ extension EncodableRecord where Self: Encodable {
 
 /// The encoder that encodes a record into GRDB's PersistenceContainer
 private class RecordEncoder<Record: EncodableRecord>: Encoder {
-    var codingPath: [CodingKey] { return [] }
-    var userInfo: [CodingUserInfoKey: Any] { return Record.databaseEncodingUserInfo }
+    var codingPath: [CodingKey] { [] }
+    var userInfo: [CodingUserInfoKey: Any] { Record.databaseEncodingUserInfo }
     private var _persistenceContainer: PersistenceContainer
-    var persistenceContainer: PersistenceContainer { return _persistenceContainer }
+    var persistenceContainer: PersistenceContainer { _persistenceContainer }
     
     init(persistenceContainer: PersistenceContainer) {
         _persistenceContainer = persistenceContainer
@@ -47,13 +47,8 @@ private class RecordEncoder<Record: EncodableRecord>: Encoder {
     
     private struct KeyedContainer<Key: CodingKey>: KeyedEncodingContainerProtocol {
         var recordEncoder: RecordEncoder
-        var userInfo: [CodingUserInfoKey: Any] { return Record.databaseEncodingUserInfo }
-        
-        init(recordEncoder: RecordEncoder) {
-            self.recordEncoder = recordEncoder
-        }
-        
-        var codingPath: [CodingKey] { return [] }
+        var userInfo: [CodingUserInfoKey: Any] { Record.databaseEncodingUserInfo }
+        var codingPath: [CodingKey] { [] }
         
         // swiftlint:disable comma
         func encode(_ value: Bool,   forKey key: Key) throws { recordEncoder.persist(value, forKey: key) }
@@ -106,7 +101,7 @@ private class RecordEncoder<Record: EncodableRecord>: Encoder {
         func nestedContainer<NestedKey>(
             keyedBy keyType: NestedKey.Type,
             forKey key: Key)
-            -> KeyedEncodingContainer<NestedKey>
+        -> KeyedEncodingContainer<NestedKey>
         {
             fatalError("Not implemented")
         }
@@ -116,11 +111,11 @@ private class RecordEncoder<Record: EncodableRecord>: Encoder {
         }
         
         func superEncoder() -> Encoder {
-            fatalError("Not implemented")
+            recordEncoder
         }
         
         func superEncoder(forKey key: Key) -> Encoder {
-            fatalError("Not implemented")
+            recordEncoder
         }
     }
     
@@ -153,16 +148,19 @@ private class RecordEncoder<Record: EncodableRecord>: Encoder {
                 }
             } catch is JSONRequiredError {
                 // Encode to JSON
-                let jsonData = try Record.databaseJSONEncoder(for: key.stringValue).encode(value)
-                
-                // Store JSON String in the database for easier debugging and
-                // database inspection. Thanks to SQLite weak typing, we won't
-                // have any trouble decoding this string into data when we
-                // eventually perform JSON decoding.
-                // TODO: possible optimization: avoid this conversion to string,
-                // and store raw data bytes as an SQLite string
-                let jsonString = String(data: jsonData, encoding: .utf8)!
-                persist(jsonString, forKey: key)
+                try autoreleasepool {
+
+                    let jsonData = try Record.databaseJSONEncoder(for: key.stringValue).encode(value)
+
+                    // Store JSON String in the database for easier debugging and
+                    // database inspection. Thanks to SQLite weak typing, we won't
+                    // have any trouble decoding this string into data when we
+                    // eventually perform JSON decoding.
+                    // TODO: possible optimization: avoid this conversion to string,
+                    // and store raw data bytes as an SQLite string
+                    let jsonString = String(data: jsonData, encoding: .utf8)!
+                    persist(jsonString, forKey: key)
+                }
             }
         }
     }
@@ -174,8 +172,8 @@ private class RecordEncoder<Record: EncodableRecord>: Encoder {
 private class ColumnEncoder<Record: EncodableRecord>: Encoder {
     var recordEncoder: RecordEncoder<Record>
     var key: CodingKey
-    var codingPath: [CodingKey] { return [key] }
-    var userInfo: [CodingUserInfoKey: Any] { return Record.databaseEncodingUserInfo }
+    var codingPath: [CodingKey] { [key] }
+    var userInfo: [CodingUserInfoKey: Any] { Record.databaseEncodingUserInfo }
     var requiresJSON = false
     
     init(recordEncoder: RecordEncoder<Record>, key: CodingKey) {
@@ -200,9 +198,7 @@ private class ColumnEncoder<Record: EncodableRecord>: Encoder {
         return JSONRequiredEncoder<Record>(codingPath: codingPath)
     }
     
-    func singleValueContainer() -> SingleValueEncodingContainer {
-        return self
-    }
+    func singleValueContainer() -> SingleValueEncodingContainer { self }
 }
 
 extension ColumnEncoder: SingleValueEncodingContainer {
@@ -236,28 +232,20 @@ private struct JSONRequiredError: Error { }
 /// The encoder that always ends up with a JSONRequiredError
 private struct JSONRequiredEncoder<Record: EncodableRecord>: Encoder {
     var codingPath: [CodingKey]
-    var userInfo: [CodingUserInfoKey: Any] { return Record.databaseEncodingUserInfo }
-    
-    init(codingPath: [CodingKey]) {
-        self.codingPath = codingPath
-    }
+    var userInfo: [CodingUserInfoKey: Any] { Record.databaseEncodingUserInfo }
     
     func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key: CodingKey {
         let container = KeyedContainer<Key>(codingPath: codingPath)
         return KeyedEncodingContainer(container)
     }
     
-    func unkeyedContainer() -> UnkeyedEncodingContainer {
-        return self
-    }
+    func unkeyedContainer() -> UnkeyedEncodingContainer { self }
     
-    func singleValueContainer() -> SingleValueEncodingContainer {
-        return self
-    }
+    func singleValueContainer() -> SingleValueEncodingContainer { self }
     
     struct KeyedContainer<KeyType: CodingKey>: KeyedEncodingContainerProtocol {
         var codingPath: [CodingKey]
-        var userInfo: [CodingUserInfoKey: Any] { return Record.databaseEncodingUserInfo }
+        var userInfo: [CodingUserInfoKey: Any] { Record.databaseEncodingUserInfo }
         
         func encodeNil(forKey key: KeyType) throws { throw JSONRequiredError() }
         func encode(_ value: Bool,   forKey key: KeyType) throws { throw JSONRequiredError() }
@@ -279,23 +267,23 @@ private struct JSONRequiredEncoder<Record: EncodableRecord>: Encoder {
         func nestedContainer<NestedKey>(
             keyedBy keyType: NestedKey.Type,
             forKey key: KeyType)
-            -> KeyedEncodingContainer<NestedKey>
-            where NestedKey: CodingKey
+        -> KeyedEncodingContainer<NestedKey>
+        where NestedKey: CodingKey
         {
             let container = KeyedContainer<NestedKey>(codingPath: codingPath + [key])
             return KeyedEncodingContainer(container)
         }
         
         func nestedUnkeyedContainer(forKey key: KeyType) -> UnkeyedEncodingContainer {
-            return JSONRequiredEncoder(codingPath: codingPath)
+            JSONRequiredEncoder(codingPath: codingPath)
         }
         
         func superEncoder() -> Encoder {
-            return JSONRequiredEncoder(codingPath: codingPath)
+            JSONRequiredEncoder(codingPath: codingPath)
         }
         
         func superEncoder(forKey key: KeyType) -> Encoder {
-            return JSONRequiredEncoder(codingPath: codingPath)
+            JSONRequiredEncoder(codingPath: codingPath)
         }
     }
 }
@@ -320,26 +308,22 @@ extension JSONRequiredEncoder: SingleValueEncodingContainer {
 }
 
 extension JSONRequiredEncoder: UnkeyedEncodingContainer {
-    var count: Int { return 0 }
+    var count: Int { 0 }
     
     mutating func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type)
-        -> KeyedEncodingContainer<NestedKey>
-        where NestedKey: CodingKey
+    -> KeyedEncodingContainer<NestedKey>
+    where NestedKey: CodingKey
     {
         let container = KeyedContainer<NestedKey>(codingPath: codingPath)
         return KeyedEncodingContainer(container)
     }
     
-    mutating func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-        return self
-    }
+    mutating func nestedUnkeyedContainer() -> UnkeyedEncodingContainer { self }
     
-    mutating func superEncoder() -> Encoder {
-        return self
-    }
+    mutating func superEncoder() -> Encoder { self }
 }
 
-@available(macOS 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *)
+@available(macOS 10.12, watchOS 3.0, tvOS 10.0, *)
 private var iso8601Formatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = .withInternetDateTime
@@ -361,7 +345,7 @@ extension DatabaseDateEncodingStrategy {
         case .secondsSince1970:
             return Int64(floor(date.timeIntervalSince1970))
         case .iso8601:
-            if #available(macOS 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *) {
+            if #available(macOS 10.12, watchOS 3.0, tvOS 10.0, *) {
                 return iso8601Formatter.string(from: date)
             } else {
                 fatalError("ISO8601DateFormatter is unavailable on this platform.")
