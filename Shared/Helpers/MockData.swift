@@ -37,8 +37,8 @@ class WalletMock: IWallet {
 //        let xtz = Coin(code: "XTZ", name: "Tezos", color: Color.red, icon: Image("iconXtz"))
         
         self.assets = [
-            Asset(coin: btc, walletID: UUID(), btcAddressDereviation: .bip49),
-            Asset(coin: eth, walletID: UUID(), btcAddressDereviation: .bip49)
+            Asset(coin: btc, walletID: UUID(), data: Data(), bip: .bip49),
+            Asset(coin: eth, walletID: UUID(), data: Data())
         ]
     }
     

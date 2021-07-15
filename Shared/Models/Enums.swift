@@ -203,6 +203,43 @@ extension AppError: LocalizedError {
 
 }
 
+enum DBStorageError: Error {
+    case cannotFetchWallets(error: Error)
+    case cannotCreateWallet(error: Error)
+    case cannotDeleteWallet(error: Error)
+    case cannotSaveContext(error: Error)
+}
+
+enum FeeRatePriority: Equatable {
+    case low
+    case medium
+    case recommended
+    case high
+    case custom(value: Int, range: ClosedRange<Int>)
+
+    var title: String {
+        switch self {
+        case .low: return "send.tx_speed_low"
+        case .medium: return "send.tx_speed_recommended"
+        case .recommended: return "send.tx_speed_recommended"
+        case .high: return "send.tx_speed_high"
+        case .custom: return "send.tx_speed_custom"
+        }
+    }
+
+    static func ==(lhs: FeeRatePriority, rhs: FeeRatePriority) -> Bool {
+        switch (lhs, rhs) {
+        case (.low, .low): return true
+        case (.medium, .medium): return true
+        case (.recommended, .recommended): return true
+        case (.high, .high): return true
+        case (.custom, .custom): return true
+        default: return false
+        }
+    }
+
+}
+
 enum AdapterState {
     case synced
     case syncing(progress: Int, lastBlockDate: Date?)
