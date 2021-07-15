@@ -54,7 +54,6 @@ struct SwitchWalletsView: View {
                             .onTapGesture {
                                 withAnimation {
                                     if service.currentWallet?.walletID != wallet.walletID {
-                                        Portal.shared.notificationService.clear()
                                         service.switchWallet(wallet)
                                     } else {
                                         presented.toggle()
