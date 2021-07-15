@@ -35,7 +35,7 @@ struct PortalLoader: View {
         frames[counter.value % frames.count]
             .resizable()
             .frame(width: 250, height: 250, alignment: .center)
-            .scaleEffect(animating ? 1 : 0.5)
+            .scaleEffect(animating ? 1 : 0.7)
             .onAppear {
                 withAnimation(Animation.easeInOut(duration: 0.4).repeatForever(autoreverses: true), {
                     animating.toggle()
