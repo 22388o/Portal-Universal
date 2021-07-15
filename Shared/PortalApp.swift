@@ -35,9 +35,9 @@ struct PortalApp: App {
                 .onReceive(notificationCenter.publisher(for: didEnterBackgroundNotification), perform: { _ in
                     Portal.shared.didEnterBackground()
                 })
-                .onReceive(notificationCenter.publisher(for: willEnterForegroundNotification), perform: { _ in
-                    Portal.shared.willEnterForeground()
-                })
+//                .onReceive(notificationCenter.publisher(for: willEnterForegroundNotification), perform: { _ in
+//                    Portal.shared.willEnterForeground()
+//                })
                 .onReceive(notificationCenter.publisher(for: didBecomeActiveNotification), perform: { _ in
                     Portal.shared.didBecomeActive()
                 })

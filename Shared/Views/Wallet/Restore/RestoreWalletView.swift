@@ -97,8 +97,11 @@ struct RestoreWalletView: View {
                     
                     HStack {
                         PButton(bgColor: Color(red: 250/255, green: 147/255, blue: 36/255), label: "Restore", width: 203, height: 48, fontSize: 15, enabled: viewModel.restoreReady) {
+                            guard let btcAddressDeriviation = BtcAddressFormat(rawValue: viewModel.btcAddressFormat) else {
+                                return
+                            }
                             withAnimation {
-                                service.restoreWallet(model: NewWalletModel(name: viewModel.accountName, addressType: .segwit, seed: viewModel.seed))
+                                service.restoreWallet(model: NewWalletModel(name: viewModel.accountName, addressType: btcAddressDeriviation, seed: viewModel.seed))
                             }
                         }
                         

@@ -99,6 +99,8 @@ final class Asset: IAsset {
         self.transactionAdaper = kit
                 
         self.qrCodeProvider = QRCodeProvider()
+        
+        
     }
         
     func availableBalance(feeRate: Int, address: String?) -> Decimal {
@@ -185,9 +187,9 @@ final class Asset: IAsset {
                     .flatMap({ gasPrice in
                         return weakSelf.sendEtherAdapter!
                             .evmKit
-                            .estimateGas(to: recepientAddress, amount: amountToSend, gasPrice: gasPrice * 4)
+                            .estimateGas(to: recepientAddress, amount: amountToSend, gasPrice: gasPrice)
                             .flatMap({ gasLimit in
-                                return weakSelf.sendEtherAdapter!.evmKit.sendSingle(address: recepientAddress, value: amountToSend, gasPrice: gasPrice * 4, gasLimit: gasLimit)
+                                return weakSelf.sendEtherAdapter!.evmKit.sendSingle(address: recepientAddress, value: amountToSend, gasPrice: gasPrice, gasLimit: gasLimit)
                             })
                     })
                     .subscribe(onSuccess: { transaction in

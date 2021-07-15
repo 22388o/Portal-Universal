@@ -53,7 +53,7 @@ final class Portal: ObservableObject {
             pdUpdater: pricesDataUpdater
         )
         
-        marketDataProvider =  MarketDataProvider(repository: marketDataRepository)
+        marketDataProvider = MarketDataProvider(repository: marketDataRepository)
         
         let bdContext = PersistenceController.shared.container.viewContext
         let bdStorage: IDBStorage = DBlocalStorage(context: bdContext)
@@ -73,12 +73,19 @@ final class Portal: ObservableObject {
         
         localStorage.incrementAppLaunchesCouner()
                 
-        marketDataRepository.$dataIsLoaded
+        marketDataRepository.$tickersReady
             .sink(receiveValue: { [unowned self] dataIsReady in
                 if dataIsReady {
                     self.marketDataReady = dataIsReady
                 }
             })
+            .store(in: &anyCancellables)
+        
+        walletsService.$currentWallet
+            .subscribe(on: RunLoop.current)
+            .sink { wallet in
+                wallet?.start()
+            }
             .store(in: &anyCancellables)
     }
     
@@ -87,11 +94,7 @@ final class Portal: ObservableObject {
     }
     
     func didEnterBackground() {
-        print("App did enter background")
-    }
-    
-    func willEnterForeground() {
-        walletsService.willEnterForeground()
+        walletsService.didEnterBackground()
     }
     
     func didBecomeActive() {

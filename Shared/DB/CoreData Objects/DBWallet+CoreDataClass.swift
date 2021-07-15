@@ -63,6 +63,7 @@ public class DBWallet: NSManagedObject, IWallet {
     }
     
     func start() {
+        stop()
         _ = assets.map { $0.adapter?.start() }
     }
     
