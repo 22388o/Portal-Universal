@@ -8,9 +8,11 @@
 
 import Foundation
 import Combine
-import BitcoinCore
 import RxSwift
 import Hodler
+import BitcoinCore
+import EthereumKit
+import BigInt
 
 final class Asset: IAsset {
     private(set) var id: UUID
@@ -20,36 +22,82 @@ final class Asset: IAsset {
     private(set) var balanceAdapter: IBalanceAdapter?
     private(set) var depositAdapter: IDepositAdapter?
     private(set) var transactionAdaper: ITransactionsAdapter?
-    private(set) var sendBtcAdapter: ISendBitcoinAdapter?
     
-    private(set) var marketDataProvider: IMarketDataProvider
+    private(set) var sendBtcAdapter: ISendBitcoinAdapter?
+    private(set) var sendEtherAdapter: ISendEthereumAdapter?
+    
     private(set) var qrCodeProvider: IQRCodeProvider
+    
+    private var disposeBag = DisposeBag()
         
-    init(coin: Coin, walletID: UUID, seed: [String] = [], btcAddressDereviation: MnemonicDerivation) {
+    init(coin: Coin, walletID: UUID, data: Data?, bip: MnemonicDerivation? = nil) {
         self.id = UUID()
         self.coin = coin
         
-        if !seed.isEmpty {
+        let walletID = "\(walletID)_\(coin.name.lowercased())_wallet_id"
+        var kit: (IAdapter & IBalanceAdapter & IDepositAdapter & ITransactionsAdapter)? = nil
+        
+        if let seed = data {
             switch coin.type {
             case .bitcoin:
-                let walletID = "\(walletID)_\(coin.name.lowercased())_wallet_id"
                 
-                let kit = try? BitcoinAdapter(walletID: walletID, seed: seed, dereviation: btcAddressDereviation, syncMode: .fast, testMode: true)
+                guard let dereviation = bip else {
+                    fatalError("Bip cannot be nil for bitcoin")
+                }
                 
-                self.adapter = kit
-                self.balanceAdapter = kit
-                self.depositAdapter = kit
-                self.transactionAdaper = kit
-                self.sendBtcAdapter = kit
+                if let bitcoinKit = try? BitcoinAdapter(
+                    walletID: walletID,
+                    data: seed,
+                    dereviation: dereviation,
+                    syncMode: .fast,
+                    testMode: true
+                ) {
+                    kit = bitcoinKit
+                    sendBtcAdapter = bitcoinKit
+                }
                  
             case .etherium:
-                break
+
+                let configProvider: IAppConfigProvider = AppConfigProvider()
+                
+                let networkType: NetworkType = .ropsten
+
+                guard
+                    !configProvider.infuraCredentials.id.isEmpty,
+                    let infuraSecret = configProvider.infuraCredentials.secret,
+                    !infuraSecret.isEmpty,
+                    let syncSource = EthereumKit.Kit.infuraWebsocketSyncSource(networkType: networkType, projectId: configProvider.infuraCredentials.id, projectSecret: infuraSecret) else {
+                    fatalError("Sync source isn't set")
+                }
+
+                do {
+                    let evmKit = try EthereumKit.Kit.instance(
+                        seed: seed,
+                        networkType: .ropsten,
+                        syncSource: syncSource,
+                        etherscanApiKey: configProvider.etherscanKey,
+                        walletId: walletID,
+                        minLogLevel: .error
+                    )
+                                        
+                    let etheriumKit = EtheriumAdapter(evmKit: evmKit)
+                    kit = etheriumKit
+                    sendEtherAdapter = etheriumKit
+                    
+                } catch {
+                    fatalError("Cannot create eth kit")
+                }
+                                
             default:
                 break
             }
         }
+        
+        self.adapter = kit
+        self.balanceAdapter = kit
+        self.depositAdapter = kit
+        self.transactionAdaper = kit
                 
-        self.marketDataProvider = MarketDataProvider(coin: coin)
         self.qrCodeProvider = QRCodeProvider()
         
         start()
@@ -64,7 +112,7 @@ final class Asset: IAsset {
         case .bitcoin:
             return sendBtcAdapter?.availableBalance(feeRate: feeRate, address: address, pluginData: [:]) ?? 0
         case .etherium:
-            return 0
+            return sendEtherAdapter?.balance ?? 0
         case .erc20( _):
             return 0
         }
@@ -75,7 +123,7 @@ final class Asset: IAsset {
         case .bitcoin:
             return sendBtcAdapter?.maximumSendAmount(pluginData: [:])
         case .etherium:
-            return nil
+            return sendEtherAdapter?.balance ?? 0
         case .erc20( _):
             return nil
         }
@@ -97,7 +145,7 @@ final class Asset: IAsset {
         case .bitcoin:
             try sendBtcAdapter?.validate(address: address, pluginData: [:])
         case .etherium:
-            break
+            _ = try EthereumKit.Address.init(hex: address)
         case .erc20( _):
             break
         }
@@ -118,12 +166,44 @@ final class Asset: IAsset {
         return Future { [weak self] promisse in
             print("Sending to \(address)")
             
+            guard let weakSelf = self else { return }
+            
             switch self?.coin.type {
             case .bitcoin:
-                _ = self?.sendBtcAdapter?.sendSingle(amount: amount, address: address, feeRate: feeRate, pluginData: [:], sortMode: sortMode)
-                promisse(.success(()))
+                weakSelf.sendBtcAdapter?
+                    .sendSingle(amount: amount, address: address, feeRate: feeRate, pluginData: [:], sortMode: sortMode)
+                    .subscribe(onSuccess: { _ in
+                        promisse(.success(()))
+                    }, onError: { error in
+                        promisse(.failure(error))
+                    })
+                    .disposed(by: weakSelf.disposeBag)
             case .etherium:
-                promisse(.failure(AppError.unknownError))
+                
+                guard
+                    let amountToSend = BigUInt(amount.roundedString(decimal: 18)),
+                    let recepientAddress = try? Address(hex: address)
+                else {
+                    return promisse(.failure(AppError.unknownError))
+                }
+                
+                Portal.shared.etherFeesProvider.feeRate(priority: .high)
+                    .flatMap({ gasPrice in
+                        return weakSelf.sendEtherAdapter!
+                            .evmKit
+                            .estimateGas(to: recepientAddress, amount: amountToSend, gasPrice: gasPrice * 4)
+                            .flatMap({ gasLimit in
+                                return weakSelf.sendEtherAdapter!.evmKit.sendSingle(address: recepientAddress, value: amountToSend, gasPrice: gasPrice * 4, gasLimit: gasLimit)
+                            })
+                    })
+                    .subscribe(onSuccess: { transaction in
+                        print(transaction.transaction.hash.hex)
+                        promisse(.success(()))
+                    }, onError: { error in
+                        promisse(.failure(error))
+                    })
+                    .disposed(by: weakSelf.disposeBag)
+                
             case .erc20( _):
                 promisse(.failure(AppError.unknownError))
             case .none:
@@ -135,10 +215,6 @@ final class Asset: IAsset {
 
 extension Asset {
     static func bitcoin() -> IAsset {
-        Asset(coin: Coin.bitcoin(), walletID: UUID(), btcAddressDereviation: .bip49)
+        Asset(coin: Coin.bitcoin(), walletID: UUID(), data: Data(), bip: .bip49)
     }
 }
-
-protocol IBitcoinPluginData: IPluginData {}
-
-extension HodlerData: IBitcoinPluginData {}
