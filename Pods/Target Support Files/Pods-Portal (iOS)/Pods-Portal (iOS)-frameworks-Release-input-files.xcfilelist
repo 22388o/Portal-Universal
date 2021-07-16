@@ -14,6 +14,7 @@ ${BUILT_PRODUCTS_DIR}/CNIOSHA1/CNIOSHA1.framework
 ${BUILT_PRODUCTS_DIR}/CNIOWindows/CNIOWindows.framework
 ${BUILT_PRODUCTS_DIR}/Charts/Charts.framework
 ${BUILT_PRODUCTS_DIR}/CoinpaprikaAPI/Coinpaprika.framework
+${BUILT_PRODUCTS_DIR}/Erc20Kit.swift/Erc20Kit.framework
 ${BUILT_PRODUCTS_DIR}/EthereumKit.swift/EthereumKit.framework
 ${BUILT_PRODUCTS_DIR}/FeeRateKit.swift/FeeRateKit.framework
 ${BUILT_PRODUCTS_DIR}/GRDB.swift/GRDB.framework

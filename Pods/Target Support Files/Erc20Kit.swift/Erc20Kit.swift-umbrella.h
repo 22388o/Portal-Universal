@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_Portal__macOS_VersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_Portal__macOS_VersionString[];
+FOUNDATION_EXPORT double Erc20KitVersionNumber;
+FOUNDATION_EXPORT const unsigned char Erc20KitVersionString[];
 

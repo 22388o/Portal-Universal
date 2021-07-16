@@ -1,5 +1,5 @@
 //
-//  EtheriumFeeRateProvider.swift
+//  EthereumFeeRateProvider.swift
 //  Portal
 //
 //  Created by Farid on 15.07.2021.
