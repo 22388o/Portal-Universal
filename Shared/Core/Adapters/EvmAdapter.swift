@@ -85,7 +85,6 @@ extension EvmAdapter {
 
 }
 
-// IAdapter
 extension EvmAdapter: IAdapter {
 
     func start() {
@@ -104,12 +103,6 @@ extension EvmAdapter: IAdapter {
         evmKit.debugInfo
     }
 
-}
-
-protocol ISendEthereumAdapter {
-    var evmKit: EthereumKit.Kit { get }
-    var balance: Decimal { get }
-    func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData
 }
 
 extension EvmAdapter: IBalanceAdapter {
