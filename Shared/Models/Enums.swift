@@ -331,7 +331,7 @@ enum AdapterError: Error {
     case unsupportedAccount
 }
 
-enum TransactionType: Int, Equatable { case incoming, outgoing, sentToSelf, approve }
+enum TransactionType: Int, Equatable { case incoming, outgoing, sentToSelf, approve, transfer }
 
 extension TransactionType: Comparable {
 

@@ -296,7 +296,9 @@ struct TxPreviewView: View {
                     case .outgoing:
                         Text("\(transaction.to ?? "unknown address")")
                     case .approve:
-                        Text("Appproerowehr")
+                        Text("Approve")
+                    case .transfer:
+                        Text("Transfer")
                     }
                 }
                 .lineLimit(1)

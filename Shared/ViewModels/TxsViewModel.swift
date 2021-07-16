@@ -37,6 +37,8 @@ final class TxsViewModel: ObservableObject {
             return "Send to self \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
         case .approve:
             return "Approving... \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+        case .transfer:
+            return "Trasfer... \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
         }
     }
     

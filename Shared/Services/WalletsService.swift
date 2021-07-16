@@ -87,6 +87,8 @@ final class WalletsService: ObservableObject {
                             type = "outgoing"
                         case .approve:
                             type = "approve"
+                        case .transfer:
+                            type = "transfer"
                         }
                         
                         let message = "New \(type) transaction \(record.amount) \(listener!.coin.code)"
