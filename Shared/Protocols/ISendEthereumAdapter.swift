@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import EthereumKit
+import BigInt
 
 protocol ISendEthereumAdapter {
     var evmKit: EthereumKit.Kit { get }

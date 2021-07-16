@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import RxSwift
+import EthereumKit
 
 protocol IErc20Adapter {
     var pendingTransactions: [TransactionRecord] { get }
