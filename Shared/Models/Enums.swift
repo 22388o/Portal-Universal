@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HdWalletKit
 
 enum BtcAddressFormat: Int, CustomStringConvertible, CaseIterable {
     case legacy
@@ -426,4 +427,14 @@ enum SyncMode: String {
         }
     }
 
+}
+
+enum AccountType {
+    case mnemonic(words: [String], salt: String)
+    
+    var mnemonicSeed: Data? {
+        switch self {
+        case let .mnemonic(words, salt): return Mnemonic.seed(mnemonic: words, passphrase: salt)
+        }
+    }
 }

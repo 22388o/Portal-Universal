@@ -9,7 +9,7 @@
 import Foundation
 import HdWalletKit
 
-struct NewWalletModel {
+struct NewAccountModel {
     let name: String
     let addressType: BtcAddressFormat
     let seed: [String]
