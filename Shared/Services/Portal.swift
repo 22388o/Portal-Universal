@@ -12,14 +12,18 @@ import Combine
 final class Portal: ObservableObject {
     static let shared = Portal()
         
-    let walletsService: WalletsService
     let appConfigProvider: IAppConfigProvider
+    let accountManager: IAccountManager
+    let walletManager: IWalletManager
     let marketDataProvider: MarketDataProvider
     let localStorage: ILocalStorage
     let secureStorage: IKeychainStorage
     let notificationService: NotificationService
-    let etherFeesProvider: IFeeRateProvider
-    let bitcoinFeeRateProvider: IFeeRateProvider
+    let feeRateProvider: FeeRateProvider
+    let ethereumKitManager: EthereumKitManager
+    let adapterManager: AdapterManager
+    
+    @Published var state = PortalState()
     
     @Published private(set) var marketDataReady: Bool = false
     
@@ -33,10 +37,8 @@ final class Portal: ObservableObject {
         
         let keychain = Keychain(service: appConfigProvider.keychainStorageID)
         secureStorage = KeychainStorage(keychain: keychain)
-        
-        let feeRateProvider = FeeRateProvider(appConfigProvider: appConfigProvider)
-        bitcoinFeeRateProvider = BitcoinFeeRateProvider(feeRateProvider: feeRateProvider)
-        etherFeesProvider = EthereumFeeRateProvider(feeRateProvider: feeRateProvider)
+                
+        feeRateProvider = FeeRateProvider(appConfigProvider: appConfigProvider)
         
         let marketDataUpdater = MarketDataUpdater()
         
@@ -56,23 +58,33 @@ final class Portal: ObservableObject {
         marketDataProvider = MarketDataProvider(repository: marketDataRepository)
         
         let bdContext = PersistenceController.shared.container.viewContext
-        let bdStorage: IDBStorage = DBlocalStorage(context: bdContext)
+        let bdStorage: IDBStorage & IIDBStorage = DBlocalStorage(context: bdContext)
         
+        accountManager = AccountManager(dbStorage: bdStorage, secureStorage: secureStorage, localStorage: localStorage)
+
         notificationService = NotificationService()
-        
-        walletsService = WalletsService(
-            dbStorage: bdStorage,
-            localStorage: localStorage,
-            secureStorage: secureStorage,
-            notificationService: notificationService
-        )
                 
+        let coinManager: ICoinManager = CoinManager()
+        let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)
+        walletManager = WalletManager(accountManager: accountManager, storage: walletStorage)
+        
+        ethereumKitManager = EthereumKitManager(appConfigProvider: appConfigProvider)
+        
+        let adapterFactory = AdapterFactory(appConfigProvider: appConfigProvider, ethereumKitManager: ethereumKitManager)
+        adapterManager = AdapterManager(adapterFactory: adapterFactory, ethereumKitManager: ethereumKitManager, walletManager: walletManager)
+        
+        if accountManager.activeAccount != nil {
+            state.current = .currentWallet
+        }
+                        
         if localStorage.isFirstLaunch {
-            walletsService.clear()
+            localStorage.removeCurrentWalletID()
+            try? secureStorage.clear()
+            bdStorage.clear()
         }
         
         localStorage.incrementAppLaunchesCouner()
-                
+                        
         marketDataRepository.$tickersReady
             .sink(receiveValue: { [unowned self] dataIsReady in
                 if dataIsReady {
@@ -80,24 +92,18 @@ final class Portal: ObservableObject {
                 }
             })
             .store(in: &anyCancellables)
-        
-        walletsService.$currentWallet
-            .subscribe(on: RunLoop.current)
-            .sink { wallet in
-                wallet?.start()
-            }
-            .store(in: &anyCancellables)
     }
     
     func onTerminate() {
-        walletsService.onTerminate()
+//        walletsService.onTerminate()
     }
     
     func didEnterBackground() {
-        walletsService.didEnterBackground()
+//        walletsService.didEnterBackground()
     }
     
     func didBecomeActive() {
-        walletsService.didBecomeActive()
+//        walletsService.didBecomeActive()
     }
 }
+
