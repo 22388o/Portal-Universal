@@ -8,8 +8,19 @@
 import Foundation
 
 protocol IDBStorage {
-    func fetchWallets() throws -> [DBWallet]?
-    func createWallet(model: NewWalletModel) throws -> DBWallet?
-    func delete(wallet: DBWallet) throws
-    func deleteWallets(wallets: [DBWallet]) throws
+    func fetchWallets() throws -> [AccountRecord]?
+    func createWallet(model: NewAccountModel) throws -> AccountRecord?
+    func delete(wallet: AccountRecord) throws
+    func deleteWallets(wallets: [AccountRecord]) throws
+}
+
+protocol IIDBStorage {
+    func accountRecords() -> [AccountRecord]
+    func account(id: UUID) -> AccountRecord?
+    func save(account: Account) throws
+    func createAccount(model: NewAccountModel) throws -> AccountRecord?
+    func deleteAccount(id: String) throws
+    func delete(account: Account) throws
+    func deleteAccounts(accounts: [Account]) throws
+    func clear()
 }

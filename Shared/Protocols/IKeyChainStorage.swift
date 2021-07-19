@@ -9,11 +9,11 @@
 import Foundation
 
 protocol IKeychainStorage {
-    func save(data: Data, key: String)
-    func save(string: String, key: String)
+    func save(data: Data, key: UUID)
+    func save(string: String, key: UUID)
     func string(for key: String) -> String?
     func data(for key: String) -> Data?
-    func recoverStringArray(for key: String) -> [String]?
+    func recoverStringArray(for key: UUID) -> [String]?
     func remove(key: String) throws
     func clear() throws
 }

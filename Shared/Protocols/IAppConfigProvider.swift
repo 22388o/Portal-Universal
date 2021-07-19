@@ -21,5 +21,6 @@ protocol IAppConfigProvider {
     var coinPaprikaApiKey: String { get }
     var btcCoreRpcUrl: String { get }
     var currencyCodes: [String] { get }
+    var testMode: Bool { get }
     var feeRateAdjustedForCurrencyCodes: [String] { get }
 }
