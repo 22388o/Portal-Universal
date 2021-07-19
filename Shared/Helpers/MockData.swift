@@ -30,15 +30,15 @@ class WalletMock: IWallet {
     var assets = [IAsset]()
     
     init() {
-        let btc = Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", color: Color.green, icon: Image("iconBtc"))
+        let btc = Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", decimal: 18, color: Color.green, icon: Image("iconBtc"))
 //        let bch = Coin(code: "BCH", name: "Bitcoin Cash", color: Color.gray, icon: Image("iconBch"))
-        let eth = Coin(type: .etherium, code: "ETH", name: "Ethereum", color: Color.yellow, icon: Image("iconEth"))
+        let eth = Coin(type: .ethereum, code: "ETH", name: "Ethereum", decimal: 18, color: Color.yellow, icon: Image("iconEth"))
 //        let xlm = Coin(code: "XLM", name: "Stellar Lumens", color: Color.blue, icon: Image("iconXlm"))
 //        let xtz = Coin(code: "XTZ", name: "Tezos", color: Color.red, icon: Image("iconXtz"))
         
         self.assets = [
-            Asset(coin: btc, walletID: UUID(), data: Data(), bip: .bip49),
-            Asset(coin: eth, walletID: UUID(), data: Data())
+            Asset(account: MockedAccount(), coin: btc),
+            Asset(account: MockedAccount(), coin: eth),
         ]
     }
     
