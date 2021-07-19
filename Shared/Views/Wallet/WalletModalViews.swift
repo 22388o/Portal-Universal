@@ -8,42 +8,37 @@
 import SwiftUI
 
 struct WalletModalViews: View {
-    @ObservedObject private var viewModel: WalletSceneViewModel
-    
-    init(viewModel: WalletSceneViewModel) {
-        self.viewModel = viewModel
-    }
+    @ObservedObject private var state: PortalState = Portal.shared.state
     
     var body: some View {
         Group {
-            if viewModel.sendAsset {
+            if state.sendAsset {
                 SendAssetView(
-                    wallet: viewModel.wallet,
-                    asset: viewModel.selectedAsset,
-                    fiatCurrency: viewModel.fiatCurrency,
-                    presented: $viewModel.sendAsset
+                    coin: state.selectedCoin,
+                    fiatCurrency: USD,
+                    presented: $state.sendAsset
                 )
             }
-            if viewModel.receiveAsset {
-                ReceiveAssetsView(asset: viewModel.selectedAsset, presented: $viewModel.receiveAsset)
+            if state.receiveAsset {
+                ReceiveAssetsView(coin: state.selectedCoin)
             }
-            if viewModel.allTransactions {
-                AssetTxView(asset: viewModel.selectedAsset, presented: $viewModel.allTransactions)
+            if state.allTransactions {
+                AssetTxView(coin: state.selectedCoin)
             }
-            if viewModel.createAlert {
-                CreateAlertView(asset: viewModel.selectedAsset, presented: $viewModel.createAlert)
+            if state.createAlert {
+//                CreateAlertView(asset: state.selectedAsset, presented: $state.createAlert)
             }
         }
         .transition(.scale)
         
-        if viewModel.switchWallet {
-            SwitchWalletsView(presented: $viewModel.switchWallet)
+        if state.switchWallet {
+            AccountsView()
                 .padding(.top, 78)
                 .padding(.leading, 24)
         }
         
-        if viewModel.allNotifications {
-            NotificationsView(presented: $viewModel.allNotifications)
+        if state.allNotifications {
+            NotificationsView(presented: $state.allNotifications)
                 .padding(.top, 70)
                 .padding(.leading, 20)
         }
@@ -53,6 +48,6 @@ struct WalletModalViews: View {
 
 struct WalletModalViews_Previews: PreviewProvider {
     static var previews: some View {
-        WalletModalViews(viewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: [USD]))
+        WalletModalViews()
     }
 }

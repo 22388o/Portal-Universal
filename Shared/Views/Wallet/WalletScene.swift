@@ -8,16 +8,11 @@
 import SwiftUI
 
 struct WalletScene: View {
-    @ObservedObject private var viewModel: WalletSceneViewModel
-    @State private var state: Scenes = .wallet
-            
-    init(viewModel: WalletSceneViewModel) {
-        self.viewModel = viewModel
-    }
-    
+    @ObservedObject var portalState = Portal.shared.state
+                
     var body: some View {
-        ZStack(alignment: viewModel.switchWallet || viewModel.allNotifications ? .topLeading : .center) {
-            switch state {
+        ZStack(alignment: portalState.switchWallet || portalState.allNotifications ? .topLeading : .center) {
+            switch portalState.mainScene {
             case .wallet:
                 Color.portalWalletBackground.allowsHitTesting(false)
             case .swap:
@@ -25,20 +20,21 @@ struct WalletScene: View {
             }
             
             VStack(spacing: 0) {
-                WalletHeaderView(state: $state, viewModel: viewModel)
+                WalletHeaderView(state: $portalState.mainScene, accountName: Portal.shared.accountManager.activeAccount?.name ?? "no name")
                     .padding(.horizontal, 48)
                     .padding(.vertical, 24)
                 
-                WalletMainView(state: $state, viewModel: viewModel)
+                WalletMainView()
+                    .transition(.slide)
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
             }
-            .blur(radius: viewModel.modalViewIsPresented ? 6 : 0)
-            .scaleEffect(viewModel.scaleEffectRation)
-            .allowsHitTesting(!viewModel.modalViewIsPresented)
+            .blur(radius: portalState.modalViewIsPresented ? 6 : 0)
+            .scaleEffect(portalState.scaleEffectRation)
+            .allowsHitTesting(!portalState.modalViewIsPresented)
             
-            if viewModel.modalViewIsPresented || viewModel.allNotifications {
-                WalletModalViews(viewModel: viewModel)
+            if portalState.modalViewIsPresented || portalState.allNotifications {
+                WalletModalViews()
                     .zIndex(1)
             }
         }
@@ -47,7 +43,7 @@ struct WalletScene: View {
 
 struct MainScene_Previews: PreviewProvider {
     static var previews: some View {
-        WalletScene(viewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []))
+        WalletScene()
             .iPadLandscapePreviews()
     }
 }

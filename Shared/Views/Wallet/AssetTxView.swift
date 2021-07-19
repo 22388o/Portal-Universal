@@ -8,16 +8,15 @@
 import SwiftUI
 
 struct AssetTxView: View {
-    private let asset: IAsset
-    @Binding var presented: Bool
     @State private var selectedTx: TransactionRecord?
-    
     @ObservedObject private var viewModel: TxsViewModel
+    @ObservedObject private var state = Portal.shared.state
     
-    init(asset: IAsset, presented: Binding<Bool>) {
-        self.asset = asset
-        self.viewModel = .init(asset: asset)
-        self._presented = presented
+    init(coin: Coin) {
+        guard let viewModel = TxsViewModel.config(coin: coin) else {
+            fatalError("Cannot config TxsViewModel")
+        }
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -30,7 +29,7 @@ struct AssetTxView: View {
                 )
                 .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
             
-            asset.coin.icon
+            viewModel.coin.icon
                 .resizable()
                 .frame(width: 64, height: 64)
                 .offset(y: -32)
@@ -46,19 +45,19 @@ struct AssetTxView: View {
                 Spacer()
                 PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
                     withAnimation(.easeInOut(duration: 0.2)) {
-                        presented.toggle()
+                        state.allTransactions.toggle()
                     }
                 }
             }
             .padding([.top, .horizontal], 16)
             
             if let tx = selectedTx {
-                TxDetailsView(coin: asset.coin, transaction: tx, lastBlockInfo: asset.transactionAdaper?.lastBlockInfo)
+                TxDetailsView(coin: viewModel.coin, transaction: tx, lastBlockInfo: viewModel.lastBlockInfo)
                     .padding(.top, 57)
                     .transition(.identity)
             } else {
                 VStack(spacing: 0) {
-                    Text("\(asset.coin.code) Transactions")
+                    Text("\(viewModel.coin.code) Transactions")
                         .font(.mainFont(size: 23))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                         .padding(.bottom, 8)
@@ -83,7 +82,7 @@ struct AssetTxView: View {
                             LazyVStack(alignment: .leading, spacing: 0) {
                                 Divider()
                                 ForEach(viewModel.txs, id:\.uid) { tx in
-                                    TxPreviewView(asset: asset, transaction: tx) { tx in
+                                    TxPreviewView(coin: viewModel.coin, lastBlockInfo: viewModel.lastBlockInfo, transaction: tx) { tx in
                                         withAnimation(.easeInOut(duration: 0.2)) {
                                             selectedTx = tx
                                         }
@@ -180,7 +179,7 @@ struct TxDetailsViewModel {
         switch coin.type {
         case .bitcoin:
             return URL(string: "https://blockstream.info/testnet/tx/\(transaction.transactionHash)")
-        case .etherium:
+        case .ethereum:
             return URL(string: "https://ropsten.etherscan.io/tx/\(transaction.transactionHash)")
         default:
             return nil
@@ -276,7 +275,8 @@ struct TxDetailsView: View {
 }
 
 struct TxPreviewView: View {
-    let asset: IAsset
+    let coin: Coin
+    let lastBlockInfo: LastBlockInfo?
     let transaction: TransactionRecord
     let onSelect: (TransactionRecord) -> ()
         
@@ -309,15 +309,15 @@ struct TxPreviewView: View {
                     .padding(.leading, 22)
                     .frame(width: 80)
                 
-                Text("\(transaction.amount.double) \(asset.coin.code)")
+                Text("\(transaction.amount.double) \(coin.code)")
                     .padding(.leading, 16)
                     .frame(width: 120)
                 
                 HStack {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(transaction.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
+                        .fill(transaction.status(lastBlockHeight: lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
                         .frame(width: 6, height: 6)
-                    Text(transaction.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? "Completed" : "Pending")
+                    Text(transaction.status(lastBlockHeight: lastBlockInfo?.height) == .completed ? "Completed" : "Pending")
                     Spacer()
                 }
                 .frame(width: 90)
@@ -342,7 +342,7 @@ struct TxPreviewView: View {
 
 struct AssetTxView_Previews: PreviewProvider {
     static var previews: some View {
-        AssetTxView(asset: Asset.bitcoin(), presented: .constant(false))
+        AssetTxView(coin: Coin.bitcoin())
             .frame(width: 776, height: 594)
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)

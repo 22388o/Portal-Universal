@@ -9,8 +9,9 @@ import SwiftUI
 
 struct SeedTestView: View {
     @ObservedObject private var viewModel: CreateWalletSceneViewModel
-    @EnvironmentObject private var service: WalletsService
     @StateObject private var keyboard = KeyboardResponder()
+    private var accountManager = Portal.shared.accountManager
+    @ObservedObject private var state = Portal.shared.state
 
     init(viewModel: CreateWalletSceneViewModel) {
         self.viewModel = viewModel
@@ -69,9 +70,8 @@ struct SeedTestView: View {
                 Spacer().frame(height: 21)
                 
                 PButton(bgColor: Color(red: 250/255, green: 147/255, blue: 36/255), label: "Create my wallet", width: 203, height: 48, fontSize: 15, enabled: viewModel.test.formIsValid) {
-                    withAnimation {
-                        service.createWallet(model: viewModel.newWalletViewModel)
-                    }
+                    accountManager.createNewAccount(model: viewModel.newWalletViewModel)
+                    state.current = .currentWallet
                 }
             }
             .padding(.bottom, keyboard.currentHeight)

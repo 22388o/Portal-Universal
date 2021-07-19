@@ -9,7 +9,8 @@ import SwiftUI
 
 struct RestoreWalletView: View {
     @ObservedObject var viewModel: RestoreWalletViewModel
-    @EnvironmentObject private var service: WalletsService
+    private var accountManager = Portal.shared.accountManager
+    @ObservedObject private var state = Portal.shared.state
     
     init() {
         viewModel = .init()
@@ -33,11 +34,11 @@ struct RestoreWalletView: View {
             }
             .padding(.top, 35)
             
-            if service.currentWallet != nil {
+            if accountManager.activeAccount != nil {
                 HStack {
                     PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
                         withAnimation {
-                            service.state = .currentWallet
+                            state.current = .currentWallet
                         }
                     }
                     Spacer()
@@ -101,7 +102,7 @@ struct RestoreWalletView: View {
                                 return
                             }
                             withAnimation {
-                                service.restoreWallet(model: NewWalletModel(name: viewModel.accountName, addressType: btcAddressDeriviation, seed: viewModel.seed))
+                                accountManager.createNewAccount(model: NewAccountModel(name: viewModel.accountName, addressType: btcAddressDeriviation, seed: viewModel.seed))
                             }
                         }
                         
@@ -121,7 +122,7 @@ struct RestoreWalletView: View {
                         
                         PButton(label: "Create new wallet", width: 140, height: 30, fontSize: 12, enabled: true) {
                             withAnimation {
-                                service.state = .createWallet
+                                state.current = .createWallet
                             }
                         }
                     }
@@ -138,7 +139,6 @@ struct RestoreWalletView: View {
 struct RestoreWalletView_Previews: PreviewProvider {
     static var previews: some View {
         RestoreWalletView()
-//            .environmentObject(WalletsService.init(dbStorage: <#T##IDBStorage#>, keychainStorage: <#T##IKeyChainStorage#>))
             .iPadLandscapePreviews()
     }
 }

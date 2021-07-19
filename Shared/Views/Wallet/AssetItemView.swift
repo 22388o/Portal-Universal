@@ -9,11 +9,18 @@ import SwiftUI
 
 struct AssetItemView: View {
     @ObservedObject private var viewModel: AssetItemViewModel
+    let coin: Coin
     let selected: Bool
     let onTap: () -> ()
             
-    init(asset: IAsset, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
-        self.viewModel = .init(asset: asset, selectedTimeFrame: .day, fiatCurrency: fiatCurrency, ticker: Portal.shared.marketDataProvider.ticker(coin: asset.coin))
+    init(coin: Coin, adapter: IBalanceAdapter, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
+        self.coin = coin
+        self.viewModel = .init(
+            adapter: adapter,
+            selectedTimeFrame: .day,
+            fiatCurrency: fiatCurrency,
+            ticker: Portal.shared.marketDataProvider.ticker(coin: coin)
+        )
         self.selected = selected
         self.onTap = onTap
     }
@@ -31,13 +38,13 @@ struct AssetItemView: View {
                                 CircularProgressBar(progress: $viewModel.syncProgress)
                                     .frame(width: 26, height: 26)
                             }
-                            viewModel.asset.coin.icon
+                            coin.icon
                                 .resizable()
                                 .frame(width: 24, height: 24)
                         }
                         .frame(width: 26, height: 26)
                         
-                        Text("\(viewModel.balance) \(viewModel.asset.coin.code)")
+                        Text("\(viewModel.balance) \(coin.code)")
                     }
                     
                     Spacer()
@@ -65,14 +72,16 @@ struct AssetItemView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             AssetItemView(
-                asset: Asset.bitcoin(),
+                coin: Coin.bitcoin(),
+                adapter: MockedBalanceAdapter(),
                 selected: true,
                 fiatCurrency: USD,
                 onTap: {}
             )
             
             AssetItemView(
-                asset: Asset.bitcoin(),
+                coin: Coin.bitcoin(),
+                adapter: MockedBalanceAdapter(),
                 selected: false,
                 fiatCurrency: USD,
                 onTap: {}
@@ -88,4 +97,18 @@ struct AssetItemView_Previews: PreviewProvider {
             }
         )
     }
+}
+
+import RxSwift
+
+struct MockedBalanceAdapter: IBalanceAdapter {
+    var balanceState: AdapterState = .synced
+    
+    var balanceStateUpdatedObservable: Observable<Void> = Observable.just(())
+    
+    var balance: Decimal = 2.25
+    
+    var balanceUpdatedObservable: Observable<Void> = Observable.just(())
+    
+    init() {}
 }

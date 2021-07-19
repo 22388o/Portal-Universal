@@ -9,13 +9,13 @@ import SwiftUI
 
 struct WalletHeaderView: View {
     @Binding var state: Scenes
-    @ObservedObject private var viewModel: WalletSceneViewModel
-    @ObservedObject private var notificationService: NotificationService
+    @ObservedObject private var notificationService = Portal.shared.notificationService
+    @ObservedObject private var portalState = Portal.shared.state
+    private let name: String
     
-    init(state: Binding<Scenes>, viewModel: WalletSceneViewModel) {
+    init(state: Binding<Scenes>, accountName: String) {
         self._state = state
-        self.viewModel = viewModel
-        self.notificationService = Portal.shared.notificationService
+        self.name = accountName
     }
     
     var body: some View {
@@ -23,12 +23,12 @@ struct WalletHeaderView: View {
             HStack {
                 Button(action: {
                     withAnimation {
-                        viewModel.switchWallet.toggle()
+                        portalState.switchWallet.toggle()
                     }
                 }, label: {
                     HStack {
                         Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
-                        Text("\(viewModel.walletName)")
+                        Text("\(name)")
                             .font(.mainFont(size: 14))
                     }
                     .foregroundColor(Color.white.opacity(0.82))
@@ -63,7 +63,7 @@ struct WalletHeaderView: View {
                 
                 Button(action: {
                     notificationService.markAllAlertsViewed()
-                    viewModel.allNotifications.toggle()
+                    portalState.allNotifications.toggle()
                 }, label: {
                     ZStack(alignment: .topTrailing) {
                         Image(systemName: "bell")
@@ -103,6 +103,6 @@ struct WalletHeaderView: View {
 
 struct WalletHeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletHeaderView(state: .constant(.wallet), viewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []))
+        WalletHeaderView(state: .constant(.wallet), accountName: "Mocked")
     }
 }

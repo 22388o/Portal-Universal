@@ -10,39 +10,19 @@ import Charts
 import Coinpaprika
 
 struct AssetView: View {
-    @Namespace private var animation
-    
     @State private var route: AssetViewRoute = .value
     
-    @Binding var receiveAsset: Bool
-    @Binding var sendAsset: Bool
-    @Binding var allTxs: Bool
-    @Binding var createAlert: Bool
-    
     @ObservedObject private var viewModel: AssetViewModel
+    @ObservedObject private var state = Portal.shared.state
     
     let fiatCurrency: FiatCurrency
     
-    init(sceneViewModel: WalletSceneViewModel, fiatCurrency: FiatCurrency) {
+    init(fiatCurrency: FiatCurrency) {
         self.fiatCurrency = fiatCurrency
-        self.viewModel = AssetViewModel(asset: sceneViewModel.selectedAsset, fiatCurrency: fiatCurrency, marketDataProvider: Portal.shared.marketDataProvider)
-        
-        self._receiveAsset = Binding(
-            get: { sceneViewModel.receiveAsset },
-            set: { sceneViewModel.receiveAsset = $0 }
-        )
-        self._sendAsset = Binding(
-            get: { sceneViewModel.sendAsset },
-            set: { sceneViewModel.sendAsset = $0 }
-        )
-        self._allTxs = Binding(
-            get: { sceneViewModel.allTransactions },
-            set: { sceneViewModel.allTransactions = $0 }
-        )
-        self._createAlert = Binding(
-            get: { sceneViewModel.createAlert },
-            set: { sceneViewModel.createAlert = $0 }
-        )
+        guard let viewModel = AssetViewModel.config() else {
+            fatalError("Cannot config view model")
+        }
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -54,17 +34,17 @@ struct AssetView: View {
                 Spacer().frame(height: 24)
                 
                 HStack {
-                    viewModel.asset.coin.icon
+                    viewModel.coin.icon
                         .resizable()
                         .frame(width: 24, height: 24)
-                    Text("\(viewModel.asset.coin.name)")
+                    Text("\(viewModel.coin.name)")
                         .font(.mainFont(size: 15))
                         .foregroundColor(Color.assetValueLabel)
                     Spacer()
                 }
                 
                 HStack {
-                    Text("\(viewModel.balance) \(viewModel.asset.coin.code)")
+                    Text("\(viewModel.balance) \(viewModel.coin.code)")
                         .font(.mainFont(size: 28))
                         .padding(.bottom, 15)
                         .foregroundColor(Color.assetValueLabel)
@@ -75,15 +55,14 @@ struct AssetView: View {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
                             withAnimation {
-                                receiveAsset.toggle()
+                                state.receiveAsset.toggle()
                             }
                         }
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: true) {
                             withAnimation {
-                                sendAsset.toggle()
+                                state.sendAsset.toggle()
                             }
                         }
-                        .matchedGeometryEffect(id: "Shape", in: animation)
                     }
                     PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
                         withAnimation(.easeIn(duration: 0.2)) {
@@ -115,10 +94,10 @@ struct AssetView: View {
                         type: .asset
                     )
                 case .transactions:
-                    RecentTxsView(asset: viewModel.asset, showAllTxs: $allTxs)
+                    RecentTxsView(coin: state.selectedCoin)
                         .transition(.identity)
                 case .alerts:
-                    AlertsView(coin: viewModel.asset.coin, createAlert: $createAlert)
+                    AlertsView(coin: viewModel.coin, createAlert: $state.createAlert)
                         .transition(.identity)
                 }
             }
@@ -134,7 +113,6 @@ struct AssetView_Previews: PreviewProvider {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
             AssetView(
-                sceneViewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []),
                 fiatCurrency: USD
             )
         }

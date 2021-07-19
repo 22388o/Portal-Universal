@@ -8,22 +8,15 @@
 import SwiftUI
 
 struct SendAssetView: View {
-    private let asset: IAsset
-
     @ObservedObject private var viewModel: SendAssetViewModel
     @Binding var presented: Bool
     @State private var showConfirmationAlert: Bool = false
         
-    init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
-        self.asset = asset
-        
-        self.viewModel = .init(
-            wallet: wallet,
-            asset: asset,
-            fiatCurrency: fiatCurrency,
-            ticker: Portal.shared.marketDataProvider.ticker(coin: asset.coin)
-        )
-            
+    init(coin: Coin, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
+        guard let viewModel = SendAssetViewModel.config(coin: coin) else {
+            fatalError("Cannot config SendAssetViewModel")
+        }
+        self.viewModel = viewModel
         self._presented = presented
     }
     
@@ -36,7 +29,7 @@ struct SendAssetView: View {
                         .stroke(Color.black.opacity(0.7), lineWidth: 8)
                 )
             
-            viewModel.asset.coin.icon
+            viewModel.coin.icon
                 .resizable()
                 .frame(width: 64, height: 64)
                 .offset(y: -32)
@@ -54,10 +47,10 @@ struct SendAssetView: View {
             VStack(spacing: 0) {
                 VStack(spacing: 16) {
                     VStack {
-                        Text("Send \(viewModel.asset.coin.name)")
+                        Text("Send \(viewModel.coin.name)")
                             .font(.mainFont(size: 23))
                             .foregroundColor(Color.coinViewRouteButtonActive)
-                        Text("Instantly send to any \(viewModel.asset.coin.code) address")
+                        Text("Instantly send to any \(viewModel.coin.code) address")
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                     }
@@ -141,14 +134,14 @@ struct SendAssetView: View {
                                     HStack(spacing: 0) {
                                         HStack {
                                             RoundedRectangle(cornerRadius: 8)
-                                                .fill(tx.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
+                                                .fill(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
                                                 .frame(width: 6, height: 6)
-                                            Text(tx.status(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
+                                            Text(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
                                                 .foregroundColor(.orange)
                                         }
                                         .padding(.leading, 4)
                                         
-                                        Text("\(tx.amount.double) \(asset.coin.code)")
+                                        Text("\(tx.amount.double) \(viewModel.coin.code)")
                                             .frame(width: 85)
                                             .padding(.leading, 30)
                                         Text("\(tx.to ?? "unknown address")")
@@ -188,8 +181,7 @@ struct SendAssetView: View {
 struct SendAssetView_Previews: PreviewProvider {
     static var previews: some View {
         SendAssetView(
-            wallet: WalletMock(),
-            asset: Asset.bitcoin(),
+            coin: Coin.bitcoin(),
             fiatCurrency: USD,
             presented: .constant(false)
         )

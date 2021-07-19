@@ -8,27 +8,20 @@
 import SwiftUI
 
 struct WalletMainView: View {
-    @Binding var state: Scenes
-    @ObservedObject private var viewModel: WalletSceneViewModel
-    @State private var sceneState: WalletSceneState = .walletAsset
-    
-    init(state: Binding<Scenes>, viewModel: WalletSceneViewModel) {
-        self._state = state
-        self.viewModel = viewModel
-    }
+    @ObservedObject private var state = Portal.shared.state
     
     var body: some View {
         ZStack {
             Color.black.opacity(0.58).allowsHitTesting(false)
             
-            switch state {
+            switch state.mainScene {
             case .wallet:
                 HStack(spacing: 0) {
-                    switch sceneState {
+                    switch state.sceneState {
                     case .full:
 //                        PortfolioView(viewModel: viewModel.portfolioViewModel)
-                        WalletView(viewModel: viewModel)
-                        AssetView(sceneViewModel: viewModel, fiatCurrency: viewModel.fiatCurrency)
+                        WalletView()
+                        AssetView(fiatCurrency: USD)
                             .zIndex(0)
                             .padding([.top, .trailing, .bottom], 8)
                     default:
@@ -36,9 +29,9 @@ struct WalletMainView: View {
 //                            PortfolioView(viewModel: viewModel.portfolioViewModel)
 //                                .transition(.move(edge: .leading))
 //                        }
-                        WalletView(viewModel: viewModel)
-                        if sceneState == .walletAsset {
-                            AssetView(sceneViewModel: viewModel, fiatCurrency: viewModel.fiatCurrency)
+                        WalletView()
+                        if state.sceneState == .walletAsset {
+                            AssetView(fiatCurrency: USD)
                                 .padding([.top, .trailing, .bottom], 8)
                                 .transition(.move(edge: .trailing))
                         }
@@ -56,11 +49,16 @@ struct WalletMainView: View {
             }
         }
         .zIndex(0)
+        .onReceive(Portal.shared.$marketDataReady.dropFirst(), perform: { dataIsLoaded in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                state.selectedCoin = Coin.bitcoin()
+            }
+        })
     }
 }
 
 struct WalletMainView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletMainView(state: .constant(.wallet), viewModel: .init(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []))
+        WalletMainView()
     }
 }

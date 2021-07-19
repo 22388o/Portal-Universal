@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CreateWalletScene: View {
     @ObservedObject private var viewModel: CreateWalletSceneViewModel
-    @EnvironmentObject private var service: WalletsService
     
     init() {
         self.viewModel = CreateWalletSceneViewModel()
@@ -33,11 +32,11 @@ struct CreateWalletScene: View {
             }
             .padding(.top, 35)
             
-            if service.currentWallet != nil {
+            if Portal.shared.accountManager.activeAccount != nil {
                 HStack {
                     PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
                         withAnimation {
-                            service.state = .currentWallet
+                            Portal.shared.state.current = .currentWallet
                         }
                     }
                     Spacer()

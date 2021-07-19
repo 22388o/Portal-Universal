@@ -21,12 +21,12 @@ struct AlertsView: View {
             }
             .padding(.top, 35)
             Spacer()
-            PButton(label: "Manage alerts", width: 256, height: 32, fontSize: 12, enabled: true) {
-                withAnimation {
-                    createAlert.toggle()
-                }
-            }
-            .padding(.bottom, 41)
+//            PButton(label: "Manage alerts", width: 256, height: 32, fontSize: 12, enabled: true) {
+//                withAnimation {
+//                    createAlert.toggle()
+//                }
+//            }
+//            .padding(.bottom, 41)
         }
     }
 }
