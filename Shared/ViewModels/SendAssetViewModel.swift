@@ -10,6 +10,8 @@ import SwiftUI
 import Combine
 import RxSwift
 import Coinpaprika
+import EthereumKit
+import BigInt
 
 final class SendAssetViewModel: ObservableObject {
     @Published private var amount: Decimal = 0
@@ -23,23 +25,45 @@ final class SendAssetViewModel: ObservableObject {
     @Published private(set) var canSend: Bool = false
     @Published private(set) var balanceString: String = String()
     @Published private(set) var transactions: [TransactionRecord] = []
+    @Published private(set) var lastBlockInfo: LastBlockInfo?
     
-    @ObservedObject var exchangerViewModel: ExchangerViewModel
+    @ObservedObject private(set) var exchangerViewModel: ExchangerViewModel
     
-    let asset: IAsset
-    private let wallet: IWallet
+    let coin: Coin
+    private let balanceAdapter: IBalanceAdapter
+    private let txsAdapter: ITransactionsAdapter
+    private let sendBtcAdapter: ISendBitcoinAdapter?
+    private let sendEthAdapter: ISendEthereumAdapter?
+    private let feeRateProvider: IFeeRateProvider
     private let fiatCurrency: FiatCurrency
     private var ticker: Ticker?
+    private var feeRate: Int = 8 //medium
     
     private var cancellable = Set<AnyCancellable>()
     private let disposeBag = DisposeBag()
     
-    init(wallet: IWallet, asset: IAsset, fiatCurrency: FiatCurrency, ticker: Ticker?) {
+    init(
+        coin: Coin,
+        balanceAdapter: IBalanceAdapter,
+        txsAdapter: ITransactionsAdapter,
+        feeRateProvider: IFeeRateProvider,
+        sendBitcoinAdapter: ISendBitcoinAdapter?,
+        sendEtherAdapter: ISendEthereumAdapter?,
+        fiatCurrency: FiatCurrency,
+        ticker: Ticker?
+    ) {
         print("send asset view model inited")
-        self.wallet = wallet
-        self.asset = asset
+        self.coin = coin
+        self.sendEthAdapter = sendEtherAdapter
+        self.sendBtcAdapter = sendBitcoinAdapter
+        self.balanceAdapter = balanceAdapter
+        self.txsAdapter = txsAdapter
+        self.feeRateProvider = feeRateProvider
         self.ticker = ticker
-        self.exchangerViewModel = .init(asset: asset, fiat: fiatCurrency)
+        self.lastBlockInfo = txsAdapter.lastBlockInfo
+        
+        self.exchangerViewModel = .init(coin: coin, fiat: fiatCurrency)
+        
         self.fiatCurrency = fiatCurrency
         
         updateBalance()
@@ -50,43 +74,24 @@ final class SendAssetViewModel: ObservableObject {
             .assign(to: \.amount, on: self)
             .store(in: &cancellable)
         
+        feeRateProvider.feeRate(priority: .high)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] feeRate in
+                self?.feeRate = feeRate
+            }, onError: { error in
+                
+            })
+            .disposed(by: disposeBag)
+        
         Publishers.CombineLatest($amount, $receiverAddress)
             .receive(on: RunLoop.main)
             .sink { [weak self] (amount, address) in
-                guard let self = self else { return }
-                
-                let fee = asset.fee(amount: amount, feeRate: 4, address: address)
-                
-                if fee > 0 {
-                    self.txFee = "\(fee) \(asset.coin.code) (\((fee * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
-                } else {
-                    self.txFee = String()
-                }
-                
-                do {
-                    try asset.validate(address: self.receiverAddress)
-                    self.addressIsValid = true
-                } catch {
-                    self.addressIsValid = false
-                }
-                                
-                if self.addressIsValid {
-                    self.amountIsValid = amount <= asset.availableBalance(feeRate: 4, address: self.receiverAddress)
-                } else {
-                    let avaliableBalance = asset.balanceAdapter?.balance ?? 0
-                    self.amountIsValid = amount <= avaliableBalance
-                }
-    
-                if self.receiverAddress.isEmpty {
-                    self.addressIsValid = true
-                    self.canSend = false
-                } else {
-                    self.canSend = amount > 0 && amount <= asset.availableBalance(feeRate: 4, address: address) && self.addressIsValid
-                }
+                self?.validate(address: address, amount: amount)
             }
             .store(in: &cancellable)
         
-        asset.transactionAdaper?.transactionRecordsObservable
+        txsAdapter.transactionRecordsObservable
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] records in
@@ -94,11 +99,10 @@ final class SendAssetViewModel: ObservableObject {
             })
             .disposed(by: disposeBag)
         
-        asset.transactionAdaper?.transactionsSingle(from: nil, limit: 100)
-            .asObservable()
+        txsAdapter.transactionsSingle(from: nil, limit: 100)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] records in
+            .subscribe(onSuccess: { [weak self] records in
                 self?.transactions = records.filter{ $0.type != .incoming }
             })
             .disposed(by: disposeBag)
@@ -108,24 +112,127 @@ final class SendAssetViewModel: ObservableObject {
         print("send asset view model deinited")
     }
     
+    private func validate(address: String, amount: Decimal) {
+        let fee = fee(amount: amount, address: address)
+        
+        if fee > 0 {
+            switch coin.type {
+            case .bitcoin:
+                txFee = "\(fee) \(coin.code) (\((fee * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
+            default:
+                let gasPrice = feeRate
+                let gasLimit = 21000
+                let etherTxFee = gasPrice * gasLimit / 1_000_000_000
+                
+                txFee = "\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
+            }
+        } else {
+            txFee = String()
+        }
+        
+        do {
+            try validate(address: self.receiverAddress)
+            addressIsValid = true
+        } catch {
+            addressIsValid = false
+        }
+                        
+        if addressIsValid {
+            amountIsValid = amount <= availableBalance(address: address)
+        } else {
+            let avaliableBalance = balanceAdapter.balance
+            amountIsValid = amount <= avaliableBalance
+        }
+
+        if receiverAddress.isEmpty {
+            addressIsValid = true
+            canSend = false
+        } else {
+            canSend = amount > 0 && amount <= availableBalance(address: address) && addressIsValid
+        }
+    }
+    
+    private func validate(address: String) throws {
+        switch coin.type {
+        case .bitcoin:
+            try sendBtcAdapter?.validate(address: address, pluginData: [:])
+        case .ethereum:
+            _ = try EthereumKit.Address.init(hex: address)
+        case .erc20( _):
+            break
+        }
+    }
+    
+    private func fee(amount: Decimal, address: String?) -> Decimal {
+        switch coin.type {
+        case .bitcoin:
+            return sendBtcAdapter?.fee(amount: amount, feeRate: feeRate, address: address, pluginData: [:]) ?? 0
+        case .ethereum:
+            return 0
+        case .erc20( _):
+            return 0
+        }
+    }
+    
+    private func availableBalance(address: String?) -> Decimal {
+        switch coin.type {
+        case .bitcoin:
+            return sendBtcAdapter?.availableBalance(feeRate: feeRate, address: address, pluginData: [:]) ?? 0
+        case .ethereum:
+            return sendEthAdapter?.balance ?? 0
+        case .erc20( _):
+            return 0
+        }
+    }
+    
     private func updateBalance() {
-        let balance = asset.balanceAdapter?.balance ?? 0
+        let balance = balanceAdapter.balance
         
         if let ticker = ticker {
-            balanceString = "\(balance) \(asset.coin.code) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+            balanceString = "\(balance) \(coin.code) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
         } else {
-            balanceString = "\(balance) \(asset.coin.code)"
+            balanceString = "\(balance) \(coin.code)"
         }
     }
     
     func send() {
-        asset.send(amount: amount, address: receiverAddress, feeRate: 4, sortMode: .shuffle)
-            .sink { error in
-                print(error)
-            } receiveValue: { _ in
-                self.reset()
+        switch coin.type {
+        case .bitcoin:
+            sendBtcAdapter?
+                .sendSingle(amount: amount, address: receiverAddress, feeRate: feeRate, pluginData: [:], sortMode: .shuffle)
+                .subscribe(onSuccess: { _ in
+                    
+                }, onError: { error in
+                    
+                })
+                .disposed(by: disposeBag)
+        case .ethereum:
+            
+            guard
+                let amountToSend = BigUInt(amount.roundedString(decimal: coin.decimal)),
+                let recepientAddress = try? Address(hex: receiverAddress),
+                let provider = sendEthAdapter
+            else {
+                return
             }
-            .store(in: &cancellable)
+            
+            let gasPrice = feeRate
+            
+            provider
+                .evmKit
+                .estimateGas(to: recepientAddress, amount: amountToSend, gasPrice: gasPrice)
+                .flatMap({ gasLimit in
+                    return provider.evmKit.sendSingle(address: recepientAddress, value: amountToSend, gasPrice: gasPrice, gasLimit: gasLimit)
+                })
+                .subscribe(onSuccess: { transaction in
+                    print(transaction.transaction.hash.hex)
+                }, onError: { error in
+                    print("Sending ether error: \(error.localizedDescription)")
+                })
+                .disposed(by: disposeBag)
+        case .erc20(_ ):
+            break
+        }
     }
     
     private func reset() {
@@ -137,6 +244,57 @@ final class SendAssetViewModel: ObservableObject {
             self.updateBalance()
             
             self.exchangerViewModel.reset()
+        }
+    }
+}
+
+extension SendAssetViewModel {
+    static func config(coin: Coin) -> SendAssetViewModel? {
+        let walletManager: IWalletManager = Portal.shared.walletManager
+        let adapterManager: IAdapterManager = Portal.shared.adapterManager
+        let feeProvider: FeeRateProvider = Portal.shared.feeRateProvider
+        let mdProvider: MarketDataProvider = Portal.shared.marketDataProvider
+        
+        guard
+            let wallet = walletManager.activeWallets.first(where: { $0.coin == coin }),
+            let balanceAdapter = adapterManager.balanceAdapter(for: wallet),
+            let transactionAdapter = adapterManager.transactionsAdapter(for: wallet)
+        else {
+            return nil
+        }
+        
+        let ticker = mdProvider.ticker(coin: coin)
+        
+        switch coin.type {
+        case .bitcoin:
+            let sendBTCAdapter = adapterManager.adapter(for: coin) as? ISendBitcoinAdapter
+            let feesProvider = BitcoinFeeRateProvider(feeRateProvider: feeProvider)
+            
+            return SendAssetViewModel(
+                coin: coin,
+                balanceAdapter: balanceAdapter,
+                txsAdapter: transactionAdapter,
+                feeRateProvider: feesProvider,
+                sendBitcoinAdapter: sendBTCAdapter,
+                sendEtherAdapter: nil,
+                fiatCurrency: USD,
+                ticker: ticker
+            )
+            
+        case .ethereum, .erc20(address: _):
+            let sendEtherAdapter = adapterManager.adapter(for: coin) as? ISendEthereumAdapter
+            let feesProvider = EthereumFeeRateProvider(feeRateProvider: feeProvider)
+            
+            return SendAssetViewModel(
+                coin: coin,
+                balanceAdapter: balanceAdapter,
+                txsAdapter: transactionAdapter,
+                feeRateProvider: feesProvider,
+                sendBitcoinAdapter: nil,
+                sendEtherAdapter: sendEtherAdapter,
+                fiatCurrency: USD,
+                ticker: ticker
+            )
         }
     }
 }

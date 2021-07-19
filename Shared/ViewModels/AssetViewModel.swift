@@ -12,7 +12,7 @@ import Charts
 import Coinpaprika
 
 final class AssetViewModel: ObservableObject {
-    let asset: IAsset
+    let coin: Coin
             
     @Published var selectedTimeframe: Timeframe = .day
     @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
@@ -31,18 +31,36 @@ final class AssetViewModel: ObservableObject {
     
     private var marketDataProvider: IMarketDataProvider
     
+    let adapter: IBalanceAdapter
+        
     var dayHigh: String {
-        let dayHigh: Decimal = marketDataProvider.marketData(coin: asset.coin).dayHigh
+        let dayHigh: Decimal = marketDataProvider.marketData(coin: coin).dayHigh
         return "\(fiatCurrency.symbol)\((dayHigh * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
     var dayLow: String {
-        let dayLow: Decimal = marketDataProvider.marketData(coin: asset.coin).dayLow
+        let dayLow: Decimal = marketDataProvider.marketData(coin: coin).dayLow
         return "\(fiatCurrency.symbol)\((dayLow * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
-    init(asset: IAsset, fiatCurrency: FiatCurrency, marketDataProvider: IMarketDataProvider) {
-        self.asset = asset
+    static func config() -> AssetViewModel? {
+        let coin = Portal.shared.state.selectedCoin
+        
+        guard
+            let wallet = Portal.shared.walletManager.activeWallets.first(where: { $0.coin == coin }),
+            let adapter = Portal.shared.adapterManager.balanceAdapter(for: wallet)
+        else { return nil }
+        
+        let marketDataProvider = Portal.shared.marketDataProvider
+        let fiat: FiatCurrency = USD
+        
+        return AssetViewModel(coin: coin, adapter: adapter, fiatCurrency: fiat, marketDataProvider: marketDataProvider)
+    }
+    
+    init(coin: Coin, adapter: IBalanceAdapter, fiatCurrency: FiatCurrency, marketDataProvider: IMarketDataProvider) {
+        self.coin = coin
+        self.adapter = adapter
+        self.balance = "\(adapter.balance)"
         self.fiatCurrency = fiatCurrency
         self.marketDataProvider = marketDataProvider
     
@@ -95,14 +113,14 @@ final class AssetViewModel: ObservableObject {
     }
     
     deinit {
-        print("Deinit - \(asset.coin.code)")
+        print("Deinit - \(coin.code)")
 //        cancellable = nil
     }
     
     private func updateValues() {
-        guard let ticker = marketDataProvider.ticker(coin: asset.coin) else { return }
+        guard let ticker = marketDataProvider.ticker(coin: coin) else { return }
         
-        self.balance = "\(asset.balanceAdapter?.balance ?? 0)"
+        self.balance = "\(adapter.balance)"
         
         price = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
         
@@ -151,13 +169,13 @@ final class AssetViewModel: ObservableObject {
         let priceChange: Decimal?
         switch selectedTimeframe {
         case .day:
-            priceChange = marketDataProvider.ticker(coin: asset.coin)?[.usd].percentChange24h
+            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange24h
         case .week:
-            priceChange = marketDataProvider.ticker(coin: asset.coin)?[.usd].percentChange7d
+            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange7d
         case .month:
-            priceChange = marketDataProvider.ticker(coin: asset.coin)?[.usd].percentChange30d
+            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange30d
         case .year:
-            priceChange = marketDataProvider.ticker(coin: asset.coin)?[.usd].percentChange1y
+            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange1y
         }
         
         guard let pChange = priceChange else {
@@ -175,13 +193,13 @@ final class AssetViewModel: ObservableObject {
         
         switch selectedTimeframe {
         case .day:
-            points = marketDataProvider.marketData(coin: asset.coin).dayPoints
+            points = marketDataProvider.marketData(coin: coin).dayPoints
         case .week:
-            points = marketDataProvider.marketData(coin: asset.coin).weekPoints
+            points = marketDataProvider.marketData(coin: coin).weekPoints
         case .month:
-            points = marketDataProvider.marketData(coin: asset.coin).monthPoints
+            points = marketDataProvider.marketData(coin: coin).monthPoints
         case .year:
-            points = marketDataProvider.marketData(coin: asset.coin).yearPoints
+            points = marketDataProvider.marketData(coin: coin).yearPoints
         }
         
         let xIndexes = Array(0..<points.count).map { x in Double(x) }

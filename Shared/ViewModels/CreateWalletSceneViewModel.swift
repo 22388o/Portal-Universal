@@ -18,7 +18,7 @@ final class CreateWalletSceneViewModel: ObservableObject {
     private var cancalable: AnyCancellable?
     
     init() {
-        self.test = SeedTestViewModel(seed: try! NewWalletModel.generateWords())
+        self.test = SeedTestViewModel(seed: try! NewAccountModel.generateWords())
         
         cancalable = $walletName.sink { [weak self] name in
             self?.nameIsValid = name.count >= 3
@@ -29,7 +29,7 @@ final class CreateWalletSceneViewModel: ObservableObject {
         print("\(#function) deinit")
     }
     
-    var newWalletViewModel: NewWalletModel {
+    var newWalletViewModel: NewAccountModel {
         .init(
             name: walletName,
             addressType: BtcAddressFormat(rawValue: btcAddressFormat) ?? .segwit,

@@ -11,7 +11,7 @@ import Combine
 import Coinpaprika
 
 final class ExchangerViewModel: ObservableObject {
-    let asset: IAsset
+    let coin: Coin
     let fiat: FiatCurrency
     
     @Published var assetValue = String()
@@ -24,13 +24,13 @@ final class ExchangerViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     var ticker: Ticker? {
-        Portal.shared.marketDataProvider.ticker(coin: asset.coin)
+        Portal.shared.marketDataProvider.ticker(coin: coin)
     }
     
-    init(asset: IAsset, fiat: FiatCurrency) {
+    init(coin: Coin, fiat: FiatCurrency) {
         print("ExchangerViewModel init")
 
-        self.asset = asset
+        self.coin = coin
         self.fiat = fiat
         
         $assetValue

@@ -13,7 +13,7 @@ import Combine
 final class TxsViewModel: ObservableObject {
     private let disposeBag = DisposeBag()
     private var cancellable: AnyCancellable?
-    private let asset: IAsset
+    let coin: Coin
     private var allTxs: [TransactionRecord] = [] {
         didSet {
             updateTxList()
@@ -22,23 +22,27 @@ final class TxsViewModel: ObservableObject {
     
     @Published private(set) var txs: [TransactionRecord] = []
     @Published var txSortState: TxSortState = .all
+    var lastBlockInfo: LastBlockInfo?
+    
+    private var transactionAdaper: ITransactionsAdapter
+    private var balance: Decimal
     
     var balanceString: String {
-        return "\(asset.balanceAdapter?.balance ?? 0) \(asset.coin.code)"
+        return "\(balance) \(coin.code)"
     }
     
     func title(tx: TransactionRecord) -> String {
         switch tx.type {
         case .incoming:
-            return "Received \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+            return "Received \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
         case .outgoing:
-            return "Sent \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+            return "Sent \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
         case .sentToSelf:
-            return "Send to self \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+            return "Send to self \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
         case .approve:
-            return "Approving... \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+            return "Approving... \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
         case .transfer:
-            return "Trasfer... \(tx.amount.double.rounded(toPlaces: 6)) \(asset.coin.code)"
+            return "Trasfer... \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
         }
     }
     
@@ -47,11 +51,14 @@ final class TxsViewModel: ObservableObject {
     }
     
     func confimations(tx: TransactionRecord) -> String {
-        "\(tx.confirmations(lastBlockHeight: asset.transactionAdaper?.lastBlockInfo?.height)) confirmations"
+        "\(tx.confirmations(lastBlockHeight: transactionAdaper.lastBlockInfo?.height)) confirmations"
     }
     
-    init(asset: IAsset) {
-        self.asset = asset
+    init(coin: Coin, balance: Decimal, transactionAdaper: ITransactionsAdapter) {
+        self.coin = coin
+        self.balance = balance
+        self.transactionAdaper = transactionAdaper
+        self.lastBlockInfo = transactionAdaper.lastBlockInfo
         
         cancellable = $txSortState
             .removeDuplicates()
@@ -60,7 +67,7 @@ final class TxsViewModel: ObservableObject {
                 self?.updateTxList()
             }
         
-        asset.transactionAdaper?.transactionRecordsObservable
+        transactionAdaper.transactionRecordsObservable
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] records in
@@ -68,11 +75,10 @@ final class TxsViewModel: ObservableObject {
             })
             .disposed(by: disposeBag)
         
-        asset.transactionAdaper?.transactionsSingle(from: nil, limit: 100)
-            .asObservable()
+        transactionAdaper.transactionsSingle(from: nil, limit: 100)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] records in
+            .subscribe(onSuccess: { [weak self] records in
                 self?.allTxs = records
             })
             .disposed(by: disposeBag)
@@ -93,5 +99,22 @@ final class TxsViewModel: ObservableObject {
     
     deinit {
         print("Tx view Model deinited")
+    }
+}
+
+extension TxsViewModel {
+    static func config(coin: Coin) -> TxsViewModel? {
+        let walletManager: IWalletManager = Portal.shared.walletManager
+        let adapterManager: IAdapterManager = Portal.shared.adapterManager
+        
+        guard
+            let wallet = walletManager.activeWallets.first(where: { $0.coin == coin }),
+            let balanceAdapter = adapterManager.balanceAdapter(for: wallet),
+            let transactionAdapter = adapterManager.transactionsAdapter(for: wallet)
+        else {
+            return nil
+        }
+        
+        return TxsViewModel(coin: coin, balance: balanceAdapter.balance, transactionAdaper: transactionAdapter)
     }
 }

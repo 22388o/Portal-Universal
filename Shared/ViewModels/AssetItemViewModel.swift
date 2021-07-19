@@ -11,7 +11,7 @@ import Coinpaprika
 import RxSwift
 
 final class AssetItemViewModel: ObservableObject {
-    let asset: IAsset
+    let adapter: IBalanceAdapter
     
     @Published private(set) var totalValue = String()
     @Published private(set) var change = String()
@@ -48,53 +48,49 @@ final class AssetItemViewModel: ObservableObject {
     private let selectedTimeframe: Timeframe
     private let fiatCurrency: FiatCurrency
     
-    init(asset: IAsset, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency, ticker: Ticker?) {
-        self.asset = asset
+    init(adapter: IBalanceAdapter, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency, ticker: Ticker?) {
+        self.adapter = adapter
         self.ticker = ticker
         
         self.selectedTimeframe = selectedTimeFrame
         self.fiatCurrency = fiatCurrency
         
-        if let state = asset.balanceAdapter?.balanceState {
-            self.adapterState = state
-        }
+        self.adapterState = adapter.balanceState
+        
                 
-        if let spendable = asset.balanceAdapter?.balance, let ticker = ticker {
-            updateValues(spendable: spendable, unspendable: asset.balanceAdapter?.balanceLocked, ticker: ticker)
+        if let ticker = ticker {
+            updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
         }
         
-        asset.balanceAdapter?.balanceStateUpdatedObservable
+        adapter.balanceStateUpdatedObservable
             .subscribeOn(serialQueueScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
-                if let adapter = asset.balanceAdapter, let ticker = self?.ticker {
+                if let ticker = self?.ticker {
                     self?.updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
                 } else {
-                    if let balance = asset.balanceAdapter?.balance {
-                        self?.balance = "\(balance)"
-                    }
+                    self?.balance = "\(adapter.balance)"
                 }
             })
             .disposed(by: disposeBag)
         
         
-        asset.balanceAdapter?.balanceStateUpdatedObservable
+        adapter.balanceStateUpdatedObservable
             .subscribeOn(serialQueueScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
-                if let state = asset.balanceAdapter?.balanceState {
-                    if case let .syncing(currentProgress, _) = state {
-                        let progress = Float(currentProgress)/100
-                        if self?.syncProgress != progress {
-                            self?.syncProgress = progress
-                            print("\(asset.coin.code) sync progress = \(currentProgress)")
-                        }
+                let state = adapter.balanceState
+                if case let .syncing(currentProgress, _) = state {
+                    let progress = Float(currentProgress)/100
+                    if self?.syncProgress != progress {
+                        self?.syncProgress = progress
+                        print("sync progress = \(currentProgress)")
                     }
-                    if case .synced  = state {
-                        print("\(asset.coin.code) is synced!")
-                    }
-                    self?.adapterState = state
                 }
+                if case .synced  = state {
+//                    print("\(asset.coin.code) is synced!")
+                }
+                self?.adapterState = state
             })
             .disposed(by: disposeBag)
     }
