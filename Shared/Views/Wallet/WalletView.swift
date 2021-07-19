@@ -7,19 +7,59 @@
 
 import SwiftUI
 
-struct WalletView: View {
-    @ObservedObject private var viewModel: WalletSceneViewModel
+struct WalletItem {
+    let coin: Coin
+    let adapter: IBalanceAdapter
+}
+
+class WalletViewModel: ObservableObject {
+    @Published var items: [WalletItem] = []
+    @Published var fiatCurrencies: [FiatCurrency] = []
     
-    init(viewModel: WalletSceneViewModel) {
-        self.viewModel = viewModel
+    @ObservedObject var state: PortalState
+        
+    init(wallets: [Wallet], adapterManager: IAdapterManager, state: PortalState, currencies: [FiatCurrency]) {
+        self.state = state
+        
+        items = wallets.compactMap({ wallet in
+            let coin = wallet.coin
+            guard let adapter = adapterManager.balanceAdapter(for: wallet) else { return nil }
+            return WalletItem(coin: coin, adapter: adapter)
+        })
+        
+        fiatCurrencies = Portal.shared.marketDataProvider.fiatCurrencies
+    }
+}
+
+extension WalletViewModel {
+    static func config() -> WalletViewModel {
+        let adapterManager = Portal.shared.adapterManager
+        let walletManager = Portal.shared.walletManager
+        let state = Portal.shared.state
+        let fiatCurrencies = Portal.shared.marketDataProvider.fiatCurrencies
+        
+        return WalletViewModel(
+            wallets: walletManager.activeWallets,
+            adapterManager: adapterManager,
+            state: state,
+            currencies: fiatCurrencies
+        )
+    }
+}
+
+struct WalletView: View {
+    @ObservedObject private var viewModel: WalletViewModel
+    
+    init() {
+        self.viewModel = WalletViewModel.config()
     }
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 0) {
                 HStack(spacing: 14) {
-                    AssetSearchField(search: $viewModel.searchRequest)
-                    FiatCurrencyButton(currencies: viewModel.fiatCurrencies, selectedCurrrency: $viewModel.fiatCurrency)
+                    AssetSearchField(search: $viewModel.state.searchRequest)
+                    FiatCurrencyButton(currencies: viewModel.fiatCurrencies, selectedCurrrency: .constant(USD))
                 }
                 .padding([.top, .horizontal], 24)
                 .padding(.bottom, 19)
@@ -41,34 +81,31 @@ struct WalletView: View {
                 
                 ScrollView {
                     LazyVStack(spacing: 8) {
-                        if viewModel.searchRequest.isEmpty {
-                            ForEach(viewModel.wallet.assets, id: \.id) { asset in
+                        if viewModel.state.searchRequest.isEmpty {
+                            ForEach(viewModel.items, id: \.coin.code) { item in
                                 AssetItemView(
-                                    asset: asset,
-                                    selected: viewModel.selectedAsset.id == asset.id,
-                                    fiatCurrency: viewModel.fiatCurrency,
+                                    coin: item.coin,
+                                    adapter: item.adapter,
+                                    selected: viewModel.state.selectedCoin.code == item.coin.code,
+                                    fiatCurrency: USD,
                                     onTap: {
-                                        if asset.coin.code != viewModel.selectedAsset.coin.code {
-                                            viewModel.selectedAsset = asset
-//                                            print("selected asset changed")
-//                                            guard viewModel.sceneState != .full, viewModel.sceneState == .walletPortfolio  else { return }
-//                                            withAnimation {
-//                                                viewModel.sceneState = .walletAsset
-//                                            }
+                                        if item.coin.code != viewModel.state.selectedCoin.code {
+                                            viewModel.state.selectedCoin = item.coin
                                         }
                                     }
                                 )
                                 .padding(.horizontal, 18)
                             }
                         } else {
-                            ForEach(viewModel.wallet.assets.filter { $0.coin.code.lowercased().contains(viewModel.searchRequest.lowercased()) || $0.coin.name.lowercased().contains(viewModel.searchRequest.lowercased())}, id: \.id) { asset in
+                            ForEach(viewModel.items.filter { $0.coin.code.lowercased().contains(viewModel.state.searchRequest.lowercased()) || $0.coin.name.lowercased().contains(viewModel.state.searchRequest.lowercased())}, id: \.coin.code) { item in
                                 AssetItemView(
-                                    asset: asset,
-                                    selected: viewModel.selectedAsset.id == asset.id,
-                                    fiatCurrency: viewModel.fiatCurrency,
+                                    coin: item.coin,
+                                    adapter: item.adapter,
+                                    selected: viewModel.state.selectedCoin.code == item.coin.code,
+                                    fiatCurrency: USD,
                                     onTap: {
-                                        if asset.coin.code != viewModel.selectedAsset.coin.code {
-                                            viewModel.selectedAsset = asset
+                                        if item.coin.code != viewModel.state.selectedCoin.code {
+                                            viewModel.state.selectedCoin = item.coin
                                         }
                                     }
                                 )
@@ -90,7 +127,7 @@ struct WalletView_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            WalletView(viewModel: WalletSceneViewModel(wallet: WalletMock(), userCurrrency: USD, allCurrencies: []))
+            WalletView()
         }
         .frame(width: .infinity, height: 430)
         .previewLayout(PreviewLayout.sizeThatFits)
