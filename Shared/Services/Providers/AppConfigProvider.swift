@@ -15,6 +15,7 @@ class AppConfigProvider: IAppConfigProvider {
     let pricesUpdateInterval = 60
     let fiatCurrenciesUpdateInterval = 3600
     let keychainStorageID: String = "com.portal.keychain.service"
+    let testMode = true
 
     var infuraCredentials: (id: String, secret: String?) {
         let id = (Bundle.main.object(forInfoDictionaryKey: "InfuraProjectId") as? String) ?? ""
@@ -29,7 +30,7 @@ class AppConfigProvider: IAppConfigProvider {
     var coinPaprikaApiKey: String {
         (Bundle.main.object(forInfoDictionaryKey: "CoinPaprikaApiKey") as? String) ?? ""
     }
-    
+        
     var btcCoreRpcUrl: String {
         (Bundle.main.object(forInfoDictionaryKey: "BtcCoreRpcUrl") as? String) ?? ""
     }
