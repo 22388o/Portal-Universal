@@ -20,16 +20,16 @@ final class KeychainStorage: IKeychainStorage {
         keychain[key]
     }
     
-    func save(string: String, key: String) {
-        keychain[key] = string
+    func save(string: String, key: UUID) {
+        keychain[key.uuidString] = string
     }
     
     func data(for key: String) -> Data? {
         keychain[data: key]
     }
     
-    func save(data: Data, key: String) {
-        keychain[data: key] = data
+    func save(data: Data, key: UUID) {
+        keychain[data: key.uuidString] = data
     }
     
     func clear() throws {
@@ -40,8 +40,8 @@ final class KeychainStorage: IKeychainStorage {
         try keychain.remove(key)
     }
     
-    func recoverStringArray(for key: String) -> [String]? {
-        guard let data = data(for: key), let seed = data.toStringArray else { return nil }
+    func recoverStringArray(for key: UUID) -> [String]? {
+        guard let data = data(for: key.uuidString), let seed = data.toStringArray else { return nil }
         return seed
     }
 }
