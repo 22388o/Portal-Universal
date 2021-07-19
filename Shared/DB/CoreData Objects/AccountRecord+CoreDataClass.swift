@@ -1,17 +1,16 @@
 //
-//  DBWallet+CoreDataClass.swift
-//  Portal (iOS)
+//  AccountRecord+CoreDataClass.swift
+//  
 //
-//  Created by Farid on 19.04.2021.
+//  Created by Farid on 19.07.2021.
 //
 //
 
 import Foundation
 import CoreData
-import SwiftUI
 
-@objc(DBWallet)
-public class DBWallet: NSManagedObject {
+@objc(AccountRecord)
+public class AccountRecord: NSManagedObject {
     var fiatCurrencyCode: String { fiatCurrency }
     
     var bip: String {
@@ -25,7 +24,7 @@ public class DBWallet: NSManagedObject {
         }
     }
     
-    convenience init(model: NewWalletModel, context: NSManagedObjectContext) {
+    convenience init(model: NewAccountModel, context: NSManagedObjectContext) {
         self.init(context: context)
         
         self.id = UUID()

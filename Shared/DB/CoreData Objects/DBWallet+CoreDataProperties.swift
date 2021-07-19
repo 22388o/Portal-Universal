@@ -21,7 +21,6 @@ extension DBWallet {
     @NSManaged public var fiatCurrency: String
     @NSManaged public var btcBipFormat: Int16
     @NSManaged public var txs: NSSet?
-    @NSManaged public var wallets: DBStorage?
 
 }
 

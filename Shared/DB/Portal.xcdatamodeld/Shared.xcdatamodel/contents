@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="DBStorage" representedClassName="DBStorage" syncable="YES" codeGenerationType="class">
-        <relationship name="wallets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DBWallet" inverseName="wallets" inverseEntity="DBWallet"/>
-    </entity>
-    <entity name="DBWallet" representedClassName="DBWallet" syncable="YES">
+    <entity name="AccountRecord" representedClassName="AccountRecord" syncable="YES">
         <attribute name="btcBipFormat" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="fiatCurrency" optional="YES" attributeType="String" defaultValueString="USD"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="wallets" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DBStorage" inverseName="wallets" inverseEntity="DBStorage"/>
     </entity>
     <elements>
-        <element name="DBStorage" positionX="-897.11328125" positionY="448.49609375" width="128" height="58"/>
-        <element name="DBWallet" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="104"/>
+        <element name="AccountRecord" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="89"/>
     </elements>
 </model>
