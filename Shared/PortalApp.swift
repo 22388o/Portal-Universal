@@ -26,7 +26,6 @@ struct PortalApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(Portal.shared.marketDataProvider)
-                .environmentObject(Portal.shared.walletsService)
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .edgesIgnoringSafeArea(.all)
                 .onReceive(notificationCenter.publisher(for: willTerninateNotification), perform: { _ in
@@ -35,9 +34,6 @@ struct PortalApp: App {
                 .onReceive(notificationCenter.publisher(for: didEnterBackgroundNotification), perform: { _ in
                     Portal.shared.didEnterBackground()
                 })
-//                .onReceive(notificationCenter.publisher(for: willEnterForegroundNotification), perform: { _ in
-//                    Portal.shared.willEnterForeground()
-//                })
                 .onReceive(notificationCenter.publisher(for: didBecomeActiveNotification), perform: { _ in
                     Portal.shared.didBecomeActive()
                 })
