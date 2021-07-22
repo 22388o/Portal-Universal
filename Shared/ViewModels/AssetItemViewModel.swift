@@ -12,6 +12,7 @@ import RxSwift
 
 final class AssetItemViewModel: ObservableObject {
     let adapter: IBalanceAdapter
+    let coin: Coin
     
     @Published private(set) var totalValue = String()
     @Published private(set) var change = String()
@@ -48,7 +49,8 @@ final class AssetItemViewModel: ObservableObject {
     private let selectedTimeframe: Timeframe
     private let fiatCurrency: FiatCurrency
     
-    init(adapter: IBalanceAdapter, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency, ticker: Ticker?) {
+    init(coin: Coin, adapter: IBalanceAdapter, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency, ticker: Ticker?) {
+        self.coin = coin
         self.adapter = adapter
         self.ticker = ticker
         
@@ -84,11 +86,11 @@ final class AssetItemViewModel: ObservableObject {
                     let progress = Float(currentProgress)/100
                     if self?.syncProgress != progress {
                         self?.syncProgress = progress
-                        print("sync progress = \(currentProgress)")
+                        print("\(coin.code) sync progress = \(currentProgress)")
                     }
                 }
                 if case .synced  = state {
-//                    print("\(asset.coin.code) is synced!")
+                    print("\(coin.code) is synced")
                 }
                 self?.adapterState = state
             })

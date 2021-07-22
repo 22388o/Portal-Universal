@@ -52,7 +52,7 @@ final class SendAssetViewModel: ObservableObject {
         fiatCurrency: FiatCurrency,
         ticker: Ticker?
     ) {
-        print("send asset view model inited")
+        
         self.coin = coin
         self.sendEthAdapter = sendEtherAdapter
         self.sendBtcAdapter = sendBitcoinAdapter
@@ -80,7 +80,7 @@ final class SendAssetViewModel: ObservableObject {
             .subscribe(onSuccess: { [weak self] feeRate in
                 self?.feeRate = feeRate
             }, onError: { error in
-                
+                print(error.localizedDescription)
             })
             .disposed(by: disposeBag)
         
@@ -92,7 +92,7 @@ final class SendAssetViewModel: ObservableObject {
             .store(in: &cancellable)
         
         txsAdapter.transactionRecordsObservable
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] records in
                 self?.transactions.append(contentsOf: records.filter{ $0.type != .incoming })
@@ -100,7 +100,7 @@ final class SendAssetViewModel: ObservableObject {
             .disposed(by: disposeBag)
         
         txsAdapter.transactionsSingle(from: nil, limit: 100)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .observeOn(MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] records in
                 self?.transactions = records.filter{ $0.type != .incoming }
@@ -132,6 +132,7 @@ final class SendAssetViewModel: ObservableObject {
         
         do {
             try validate(address: self.receiverAddress)
+            
             addressIsValid = true
         } catch {
             addressIsValid = false
@@ -148,7 +149,8 @@ final class SendAssetViewModel: ObservableObject {
             addressIsValid = true
             canSend = false
         } else {
-            canSend = amount > 0 && amount <= availableBalance(address: address) && addressIsValid
+            let avaliableBalance = availableBalance(address: address)
+            canSend = addressIsValid && (amount > 0 && amount <= avaliableBalance)
         }
     }
     
@@ -201,9 +203,9 @@ final class SendAssetViewModel: ObservableObject {
             sendBtcAdapter?
                 .sendSingle(amount: amount, address: receiverAddress, feeRate: feeRate, pluginData: [:], sortMode: .shuffle)
                 .subscribe(onSuccess: { _ in
-                    
+                    print("Btc tx sent")
                 }, onError: { error in
-                    
+                    print("Sending btc error: \(error.localizedDescription)")
                 })
                 .disposed(by: disposeBag)
         case .ethereum:
@@ -249,7 +251,7 @@ final class SendAssetViewModel: ObservableObject {
 }
 
 extension SendAssetViewModel {
-    static func config(coin: Coin) -> SendAssetViewModel? {
+    static func config(coin: Coin, fiatCurrency: FiatCurrency) -> SendAssetViewModel? {
         let walletManager: IWalletManager = Portal.shared.walletManager
         let adapterManager: IAdapterManager = Portal.shared.adapterManager
         let feeProvider: FeeRateProvider = Portal.shared.feeRateProvider
@@ -277,7 +279,7 @@ extension SendAssetViewModel {
                 feeRateProvider: feesProvider,
                 sendBitcoinAdapter: sendBTCAdapter,
                 sendEtherAdapter: nil,
-                fiatCurrency: USD,
+                fiatCurrency: fiatCurrency,
                 ticker: ticker
             )
             
@@ -292,7 +294,7 @@ extension SendAssetViewModel {
                 feeRateProvider: feesProvider,
                 sendBitcoinAdapter: nil,
                 sendEtherAdapter: sendEtherAdapter,
-                fiatCurrency: USD,
+                fiatCurrency: fiatCurrency,
                 ticker: ticker
             )
         }

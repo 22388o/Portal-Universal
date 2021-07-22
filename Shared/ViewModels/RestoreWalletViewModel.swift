@@ -32,6 +32,21 @@ final class RestoreWalletViewModel: ObservableObject {
         }
     }
     
+    var account: Account {
+        Account(id: UUID().uuidString, name: accountName, bip: mnemonicDereviation, type: .mnemonic(words: seed, salt: "salty_password"))
+    }
+    
+    private var mnemonicDereviation: MnemonicDerivation {
+        switch btcAddressFormat {
+        case 1:
+            return MnemonicDerivation.bip49
+        case 2:
+            return MnemonicDerivation.bip84
+        default:
+            return MnemonicDerivation.bip44
+        }
+    }
+    
     init() {
         for _ in 1...seeedLength {
             seed.append(String())
@@ -52,6 +67,5 @@ final class RestoreWalletViewModel: ObservableObject {
                 self.restoreReady = !self.accountName.isEmpty && filteredSeedArray.count == self.seeedLength
             }
             .store(in: &anyCancellable)
-            
     }
 }

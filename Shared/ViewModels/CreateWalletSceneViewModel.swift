@@ -6,6 +6,7 @@
 //
 
 import Combine
+import HdWalletKit
 
 final class CreateWalletSceneViewModel: ObservableObject {
     @Published var walletCreationStep: WalletCreationSteps = .createWalletName
@@ -17,8 +18,15 @@ final class CreateWalletSceneViewModel: ObservableObject {
     
     private var cancalable: AnyCancellable?
     
-    init() {
-        self.test = SeedTestViewModel(seed: try! NewAccountModel.generateWords())
+    private var type: AccountType
+    
+    init(type: AccountType) {
+        self.type = type
+        
+        switch type {
+        case .mnemonic(let words, _):
+            self.test = SeedTestViewModel(seed: words)
+        }
         
         cancalable = $walletName.sink { [weak self] name in
             self?.nameIsValid = name.count >= 3
@@ -29,11 +37,23 @@ final class CreateWalletSceneViewModel: ObservableObject {
         print("\(#function) deinit")
     }
     
-    var newWalletViewModel: NewAccountModel {
-        .init(
-            name: walletName,
-            addressType: BtcAddressFormat(rawValue: btcAddressFormat) ?? .segwit,
-            seed: test.seed
-        )
+    var account: Account? {
+        Account(id: UUID().uuidString, name: walletName, bip: mnemonicDereviation, type: type)
+    }
+    
+    private var mnemonicDereviation: MnemonicDerivation {
+        switch btcAddressFormat {
+        case 1:
+            return MnemonicDerivation.bip49
+        case 2:
+            return MnemonicDerivation.bip84
+        default:
+            return MnemonicDerivation.bip44
+        }
+    }
+
+    static func mnemonicAccountType() -> AccountType {
+        let words = try! Mnemonic.generate(strength: .veryHigh, language: .english)
+        return .mnemonic(words: words, salt: "salty_password")
     }
 }

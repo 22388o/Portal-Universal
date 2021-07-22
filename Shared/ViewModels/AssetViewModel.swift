@@ -12,8 +12,9 @@ import Charts
 import Coinpaprika
 
 final class AssetViewModel: ObservableObject {
-    let coin: Coin
-            
+    var coin: Coin
+    
+    @ObservedObject private var state: PortalState
     @Published var selectedTimeframe: Timeframe = .day
     @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
     
@@ -30,8 +31,10 @@ final class AssetViewModel: ObservableObject {
     private var fiatCurrency: FiatCurrency
     
     private var marketDataProvider: IMarketDataProvider
+    private let walletManager: IWalletManager
+    private let adapterManager: IAdapterManager
     
-    let adapter: IBalanceAdapter
+    var adapter: IBalanceAdapter?
         
     var dayHigh: String {
         let dayHigh: Decimal = marketDataProvider.marketData(coin: coin).dayHigh
@@ -43,36 +46,24 @@ final class AssetViewModel: ObservableObject {
         return "\(fiatCurrency.symbol)\((dayLow * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
-    static func config() -> AssetViewModel? {
-        let coin = Portal.shared.state.selectedCoin
+    init(state: PortalState, walletManager: IWalletManager, adapterManager: IAdapterManager, marketDataProvider: IMarketDataProvider) {
+        self.state = state
+        self.coin = state.selectedCoin
+        self.walletManager = walletManager
+        self.adapterManager = adapterManager
         
-        guard
-            let wallet = Portal.shared.walletManager.activeWallets.first(where: { $0.coin == coin }),
-            let adapter = Portal.shared.adapterManager.balanceAdapter(for: wallet)
-        else { return nil }
+        if let wallet = Portal.shared.walletManager.activeWallets.first(where: { $0.coin == state.selectedCoin }),
+           let adapter = Portal.shared.adapterManager.balanceAdapter(for: wallet) {
+            self.adapter = adapter
+        } else {
+            self.adapter = nil
+        }
         
-        let marketDataProvider = Portal.shared.marketDataProvider
-        let fiat: FiatCurrency = USD
-        
-        return AssetViewModel(coin: coin, adapter: adapter, fiatCurrency: fiat, marketDataProvider: marketDataProvider)
-    }
-    
-    init(coin: Coin, adapter: IBalanceAdapter, fiatCurrency: FiatCurrency, marketDataProvider: IMarketDataProvider) {
-        self.coin = coin
-        self.adapter = adapter
-        self.balance = "\(adapter.balance)"
-        self.fiatCurrency = fiatCurrency
+        self.balance = "\(adapter?.balance ?? 0)"
+        self.fiatCurrency = state.fiatCurrency
         self.marketDataProvider = marketDataProvider
-    
-        updateValues()
         
-//        queue.schedule(
-//            after: queue.now,
-//            interval: .seconds(10)
-//        ){ [weak self] in
-//            self?.updateValues()
-//        }
-//        .store(in: &subscriptions)
+        updateValues()
         
         $selectedTimeframe
             .receive(on: RunLoop.main)
@@ -82,45 +73,44 @@ final class AssetViewModel: ObservableObject {
             .store(in: &subscriptions)
         
         $valueCurrencySwitchState
+            .receive(on: RunLoop.main)
             .sink { [weak self] state in
-                guard let self = self else { return }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.updateValues()
-                }
+                self?.updateValues()
             }
             .store(in: &subscriptions)
         
         $isLoadingData
             .dropFirst()
-            .sink { [unowned self] (isLoading) in
+            .sink { [weak self] (isLoading) in
                 if !isLoading {
-                    self.updateValues()
+                    self?.updateValues()
                 }
             }
             .store(in: &subscriptions)
         
+        state.$fiatCurrency
+            .sink { [weak self] currency in
+                self?.fiatCurrency = currency
+                self?.updateValues()
+            }
+            .store(in: &subscriptions)
         
-//        MarketDataRepository.service.coinLatestOhlcv(coin: asset.coin) { (response) in
-//            guard let ohlc = response else { return }
-//            
-//            print("Coin latest ohlc: \(ohlc)")
-//        }
-        
-//        $ticker.sink { [weak self] (ticker) in
-//            self?.updateValues()
-//        }
-//        .store(in: &subscriptions)
+        state.$selectedCoin
+            .sink { [weak self] coin in
+                self?.coin = coin
+                self?.updateValues()
+            }
+            .store(in: &subscriptions)
     }
     
     deinit {
         print("Deinit - \(coin.code)")
-//        cancellable = nil
     }
     
     private func updateValues() {
         guard let ticker = marketDataProvider.ticker(coin: coin) else { return }
         
-        self.balance = "\(adapter.balance)"
+        self.balance = "\(adapter?.balance ?? 0)"
         
         price = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
         
@@ -209,5 +199,16 @@ final class AssetViewModel: ObservableObject {
         }
         
         return chartDataEntries
+    }
+}
+
+extension AssetViewModel {
+    static func config() -> AssetViewModel {
+        let state = Portal.shared.state
+        let walletManager = Portal.shared.walletManager
+        let adapterManager = Portal.shared.adapterManager
+        let marketDataProvider = Portal.shared.marketDataProvider
+        
+        return AssetViewModel(state: state, walletManager: walletManager, adapterManager: adapterManager, marketDataProvider: marketDataProvider)
     }
 }
