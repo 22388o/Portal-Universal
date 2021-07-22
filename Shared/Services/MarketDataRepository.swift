@@ -28,7 +28,11 @@ final class MarketDataRepository: ObservableObject {
     var tickers: [Ticker]?
     var fiatCurrencies: [FiatCurrency] = []
     
+    @Published var marketDataReady: Bool = false
     @Published var tickersReady: Bool = false
+    @Published var historicalDataReady: Bool = false
+    @Published var dataReady: Bool = false
+    
         
     init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater, pdUpdater: PricesDataUpdater) {
         self.mdUpdater = mdUpdater
@@ -49,6 +53,9 @@ final class MarketDataRepository: ObservableObject {
         mdUpdater.onUpdateHistoricalDataPublisher
             .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
+                if !self.historicalDataReady {
+                    self.historicalDataReady = true
+                }
                 self.update(range, data)
             })
             .store(in: &cancellables)
@@ -57,7 +64,7 @@ final class MarketDataRepository: ObservableObject {
             .sink(receiveValue: { [weak self] tickers in
                 guard let self = self else { return }
                 if !self.tickersReady {
-                    self.tickersReady.toggle()
+                    self.tickersReady = true
                 }
                 self.tickers = tickers
             })
@@ -70,6 +77,12 @@ final class MarketDataRepository: ObservableObject {
                 self.fiatCurrencies = currencies.filter {
                     self.supportedFiatCurrenciesSymbols.contains($0.code)}.sorted(by: {$0.code < $1.code})
             })
+            .store(in: &cancellables)
+        
+        Publishers.MergeMany($historicalDataReady, $tickersReady, $marketDataReady)
+            .sink { [weak self] ready in
+                self?.dataReady = ready
+            }
             .store(in: &cancellables)
     }
     
@@ -84,6 +97,9 @@ final class MarketDataRepository: ObservableObject {
                 switch range {
                 case .day:
                     data[points.key]?.dayPoints = points.value
+                    if !self.marketDataReady {
+                        self.marketDataReady = true
+                    }
                 case .week:
                     data[points.key]?.weekPoints = points.value
                 case .month:
