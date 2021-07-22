@@ -11,16 +11,16 @@ import Combine
 
 class AdapterManager {
     private let disposeBag = DisposeBag()
+    private var cancellable = Set<AnyCancellable>()
 
     private let adapterFactory: IAdapterFactory
     private let ethereumKitManager: EthereumKitManager
     private let walletManager: IWalletManager
 
-    private let subject = PublishSubject<Void>()
-    private var cancellable = Set<AnyCancellable>()
-
     private let queue = DispatchQueue(label: "tides.universal.portal.adapter_manager", qos: .userInitiated)
     private var adapters = [Wallet: IAdapter]()
+    
+    var adapterdReadyPublisher = CurrentValueSubject<Bool, Never>(false)
 
     init(adapterFactory: IAdapterFactory, ethereumKitManager: EthereumKitManager, walletManager: IWalletManager) {
         self.adapterFactory = adapterFactory
@@ -62,7 +62,7 @@ class AdapterManager {
 
         queue.async {
             self.adapters = newAdapters
-            self.subject.onNext(())
+            self.adapterdReadyPublisher.send(true)
         }
 
         removedAdapters.forEach { adapter in
@@ -73,10 +73,6 @@ class AdapterManager {
 }
 
 extension AdapterManager: IAdapterManager {
-
-    var adaptersReadyObservable: Observable<Void> {
-        subject.asObservable()
-    }
 
     func adapter(for wallet: Wallet) -> IAdapter? {
         queue.sync { adapters[wallet] }
