@@ -3,10 +3,12 @@
     <entity name="AccountRecord" representedClassName="AccountRecord" syncable="YES">
         <attribute name="btcBipFormat" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="fiatCurrency" optional="YES" attributeType="String" defaultValueString="USD"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="saltKey" optional="YES" attributeType="String"/>
+        <attribute name="wordsKey" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="AccountRecord" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="89"/>
+        <element name="AccountRecord" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="119"/>
     </elements>
 </model>

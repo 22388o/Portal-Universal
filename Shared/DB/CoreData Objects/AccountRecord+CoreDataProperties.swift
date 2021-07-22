@@ -18,7 +18,9 @@ extension AccountRecord {
 
     @NSManaged public var btcBipFormat: Int16
     @NSManaged public var fiatCurrency: String
-    @NSManaged public var id: UUID
+    @NSManaged public var id: String
     @NSManaged public var name: String
+    @NSManaged public var wordsKey: String?
+    @NSManaged public var saltKey: String?
 
 }
