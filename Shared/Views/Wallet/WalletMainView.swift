@@ -9,6 +9,8 @@ import SwiftUI
 
 struct WalletMainView: View {
     @ObservedObject private var state = Portal.shared.state
+    @StateObject private var walletViewModel = WalletViewModel.config()
+    @StateObject private var assetViewModel = AssetViewModel.config()
     
     var body: some View {
         ZStack {
@@ -20,8 +22,8 @@ struct WalletMainView: View {
                     switch state.sceneState {
                     case .full:
 //                        PortfolioView(viewModel: viewModel.portfolioViewModel)
-                        WalletView()
-                        AssetView(fiatCurrency: USD)
+                        WalletView(state: state, viewModel: walletViewModel)
+                        AssetView(viewModel: assetViewModel)
                             .zIndex(0)
                             .padding([.top, .trailing, .bottom], 8)
                     default:
@@ -29,9 +31,9 @@ struct WalletMainView: View {
 //                            PortfolioView(viewModel: viewModel.portfolioViewModel)
 //                                .transition(.move(edge: .leading))
 //                        }
-                        WalletView()
+                        WalletView(state: state, viewModel: walletViewModel)
                         if state.sceneState == .walletAsset {
-                            AssetView(fiatCurrency: USD)
+                            AssetView(viewModel: assetViewModel)
                                 .padding([.top, .trailing, .bottom], 8)
                                 .transition(.move(edge: .trailing))
                         }
@@ -49,11 +51,6 @@ struct WalletMainView: View {
             }
         }
         .zIndex(0)
-        .onReceive(Portal.shared.$marketDataReady.dropFirst(), perform: { dataIsLoaded in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                state.selectedCoin = Coin.bitcoin()
-            }
-        })
     }
 }
 

@@ -6,16 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct WalletHeaderView: View {
-    @Binding var state: Scenes
-    @ObservedObject private var notificationService = Portal.shared.notificationService
-    @ObservedObject private var portalState = Portal.shared.state
-    private let name: String
+    @ObservedObject private var viewModel: WalletHeaderViewModel
     
-    init(state: Binding<Scenes>, accountName: String) {
-        self._state = state
-        self.name = accountName
+    init(viewModel: WalletHeaderViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -23,12 +20,12 @@ struct WalletHeaderView: View {
             HStack {
                 Button(action: {
                     withAnimation {
-                        portalState.switchWallet.toggle()
+                        viewModel.state.switchWallet.toggle()
                     }
                 }, label: {
                     HStack {
                         Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
-                        Text("\(name)")
+                        Text("\(viewModel.accountName)")
                             .font(.mainFont(size: 14))
                     }
                     .foregroundColor(Color.white.opacity(0.82))
@@ -62,13 +59,13 @@ struct WalletHeaderView: View {
 //                            .foregroundColor(Color.white.opacity(0.6))
                 
                 Button(action: {
-                    notificationService.markAllAlertsViewed()
-                    portalState.allNotifications.toggle()
+                    viewModel.markAllNotificationsViewed()
+                    viewModel.state.allNotifications.toggle()
                 }, label: {
                     ZStack(alignment: .topTrailing) {
                         Image(systemName: "bell")
-                        if !notificationService.alertsBeenSeen && notificationService.newAlerts > 0 {
-                            Text("\(notificationService.newAlerts)")
+                        if viewModel.hasBadge {
+                            Text("\(viewModel.newAlerts)")
                                 .lineLimit(1)
                                 .padding(.horizontal, 3)
                                 .frame(minWidth: 16)
@@ -86,7 +83,7 @@ struct WalletHeaderView: View {
                 
                 Spacer()
                 
-                if state == .wallet {
+                if viewModel.state.mainScene == .wallet {
                     HStack(spacing: 2) {
                         Image("securityOn")
                         Text("Your wallet is stored locally")
@@ -96,13 +93,13 @@ struct WalletHeaderView: View {
                 }
             }
             
-            AppSceneSwitch(state: $state)
+            AppSceneSwitch(state: $viewModel.state.mainScene)
         }
     }
 }
 
 struct WalletHeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletHeaderView(state: .constant(.wallet), accountName: "Mocked")
+        WalletHeaderView(viewModel: WalletHeaderViewModel.config())
     }
 }

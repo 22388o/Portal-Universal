@@ -93,7 +93,7 @@ struct StoreSeedView: View {
 
 struct StoreSeedView_Previews: PreviewProvider {
     static var previews: some View {
-        StoreSeedView(viewModel: CreateWalletSceneViewModel())
+        StoreSeedView(viewModel: CreateWalletSceneViewModel(type: .mnemonic(words: [], salt: String())))
             .frame(width: 750, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

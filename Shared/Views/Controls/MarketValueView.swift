@@ -11,8 +11,8 @@ import Charts
 struct MarketValueView: View {
     @Binding var timeframe: Timeframe
     @Binding var valueCurrencyViewSate: ValueCurrencySwitchState
-
-    let fiatCurrency: FiatCurrency
+    @Binding var fiatCurrency: FiatCurrency
+    
     let totalValue: String
     let change: String
     let high: String
@@ -157,7 +157,7 @@ struct AssetMarketValueView_Previews: PreviewProvider {
         MarketValueView(
             timeframe: .constant(.day),
             valueCurrencyViewSate: .constant(.fiat),
-            fiatCurrency: USD,
+            fiatCurrency: .constant(USD),
             totalValue: "$2836.211",
             change: "-$423 (3.46%)",
             high: "$0.0",

@@ -88,7 +88,7 @@ struct CreateWalletNameView: View {
 
 struct CreateWalletNameView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateWalletNameView(viewModel: CreateWalletSceneViewModel())
+        CreateWalletNameView(viewModel: CreateWalletSceneViewModel(type: .mnemonic(words: [], salt: "")))
             .frame(width: 656, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

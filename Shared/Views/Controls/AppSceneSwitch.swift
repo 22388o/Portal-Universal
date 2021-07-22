@@ -41,7 +41,7 @@ struct AppSceneSwitch: View {
                     
                     HStack {
                         Spacer()
-                        Text("Atomic swap")
+                        Text("Exchange")
                             .font(.mainFont(size: 12))
                             .foregroundColor(
                                 state == .swap ? Color.walletExchangeSwitchActentLabel : Color.white.opacity(0.82)

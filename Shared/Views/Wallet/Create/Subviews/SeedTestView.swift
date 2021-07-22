@@ -70,8 +70,7 @@ struct SeedTestView: View {
                 Spacer().frame(height: 21)
                 
                 PButton(bgColor: Color(red: 250/255, green: 147/255, blue: 36/255), label: "Create my wallet", width: 203, height: 48, fontSize: 15, enabled: viewModel.test.formIsValid) {
-                    accountManager.createNewAccount(model: viewModel.newWalletViewModel)
-                    state.current = .currentWallet
+                    accountManager.save(account: viewModel.account!)
                 }
             }
             .padding(.bottom, keyboard.currentHeight)
@@ -81,7 +80,7 @@ struct SeedTestView: View {
 
 struct SeedTestView_Previews: PreviewProvider {
     static var previews: some View {
-        SeedTestView(viewModel: CreateWalletSceneViewModel())
+        SeedTestView(viewModel: CreateWalletSceneViewModel(type: .mnemonic(words: [], salt: String())))
             .frame(width: 750, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

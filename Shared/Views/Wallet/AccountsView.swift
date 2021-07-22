@@ -31,7 +31,7 @@ class AccountsViewModel: ObservableObject {
     }
     
     func delete(account: Account) {
-        
+        manager.delete(account: account)
     }
 }
 
@@ -80,9 +80,8 @@ struct AccountsView: View {
                                 withAnimation {
                                     if account != viewModel.activeAcount {
                                         viewModel.switchAccount(account: account)
-                                    } else {
-                                        viewModel.state.switchWallet.toggle()
                                     }
+                                    viewModel.state.switchWallet.toggle()
                                 }
                             }
                         }
@@ -92,13 +91,15 @@ struct AccountsView: View {
                 
                 PButton(label: "Create new wallet", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
-                        Portal.shared.state.current = .createWallet
+                        viewModel.state.current = .createAccount
+                        viewModel.state.switchWallet.toggle()
                     }
                 }
                                 
                 PButton(label: "Restore wallet", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
-                        Portal.shared.state.current = .restoreWallet
+                        viewModel.state.current = .restoreAccount
+                        viewModel.state.switchWallet.toggle()
                     }
                 }
                 .padding(.top, 8)
@@ -109,6 +110,7 @@ struct AccountsView: View {
                     if let account = viewModel.accountToDelete {
                         withAnimation {
                             viewModel.delete(account: account)
+                            viewModel.state.switchWallet.toggle()
                         }
                         viewModel.accountToDelete = nil
                     }

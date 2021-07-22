@@ -7,59 +7,16 @@
 
 import SwiftUI
 
-struct WalletItem {
-    let coin: Coin
-    let adapter: IBalanceAdapter
-}
-
-class WalletViewModel: ObservableObject {
-    @Published var items: [WalletItem] = []
-    @Published var fiatCurrencies: [FiatCurrency] = []
-    
-    @ObservedObject var state: PortalState
-        
-    init(wallets: [Wallet], adapterManager: IAdapterManager, state: PortalState, currencies: [FiatCurrency]) {
-        self.state = state
-        
-        items = wallets.compactMap({ wallet in
-            let coin = wallet.coin
-            guard let adapter = adapterManager.balanceAdapter(for: wallet) else { return nil }
-            return WalletItem(coin: coin, adapter: adapter)
-        })
-        
-        fiatCurrencies = Portal.shared.marketDataProvider.fiatCurrencies
-    }
-}
-
-extension WalletViewModel {
-    static func config() -> WalletViewModel {
-        let adapterManager = Portal.shared.adapterManager
-        let walletManager = Portal.shared.walletManager
-        let state = Portal.shared.state
-        let fiatCurrencies = Portal.shared.marketDataProvider.fiatCurrencies
-        
-        return WalletViewModel(
-            wallets: walletManager.activeWallets,
-            adapterManager: adapterManager,
-            state: state,
-            currencies: fiatCurrencies
-        )
-    }
-}
-
 struct WalletView: View {
-    @ObservedObject private var viewModel: WalletViewModel
-    
-    init() {
-        self.viewModel = WalletViewModel.config()
-    }
+    @ObservedObject var state: PortalState
+    @ObservedObject var viewModel: WalletViewModel
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 0) {
                 HStack(spacing: 14) {
-                    AssetSearchField(search: $viewModel.state.searchRequest)
-                    FiatCurrencyButton(currencies: viewModel.fiatCurrencies, selectedCurrrency: .constant(USD))
+                    AssetSearchField(search: $state.searchRequest)
+                    FiatCurrencyButton(currencies: viewModel.fiatCurrencies, selectedCurrrency: $state.fiatCurrency)
                 }
                 .padding([.top, .horizontal], 24)
                 .padding(.bottom, 19)
@@ -79,44 +36,54 @@ struct WalletView: View {
                     .background(Color.white.opacity(0.11))
                     .padding(.top, 12)
                 
-                ScrollView {
-                    LazyVStack(spacing: 8) {
-                        if viewModel.state.searchRequest.isEmpty {
-                            ForEach(viewModel.items, id: \.coin.code) { item in
-                                AssetItemView(
-                                    coin: item.coin,
-                                    adapter: item.adapter,
-                                    selected: viewModel.state.selectedCoin.code == item.coin.code,
-                                    fiatCurrency: USD,
-                                    onTap: {
-                                        if item.coin.code != viewModel.state.selectedCoin.code {
-                                            viewModel.state.selectedCoin = item.coin
+                if viewModel.items.isEmpty {
+                    VStack {
+                        Spacer()
+                        Text("Loading wallet...")
+                            .font(.mainFont(size: 20, bold: false))
+                            .foregroundColor(Color.white.opacity(0.8))
+                        Spacer()
+                    }
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 8) {
+                            if state.searchRequest.isEmpty {
+                                ForEach(viewModel.items, id: \.coin.code) { item in
+                                    AssetItemView(
+                                        coin: item.coin,
+                                        adapter: item.adapter,
+                                        selected: state.selectedCoin.code == item.coin.code,
+                                        fiatCurrency: state.fiatCurrency,
+                                        onTap: {
+                                            if item.coin.code != state.selectedCoin.code {
+                                                state.selectedCoin = item.coin
+                                            }
                                         }
-                                    }
-                                )
-                                .padding(.horizontal, 18)
-                            }
-                        } else {
-                            ForEach(viewModel.items.filter { $0.coin.code.lowercased().contains(viewModel.state.searchRequest.lowercased()) || $0.coin.name.lowercased().contains(viewModel.state.searchRequest.lowercased())}, id: \.coin.code) { item in
-                                AssetItemView(
-                                    coin: item.coin,
-                                    adapter: item.adapter,
-                                    selected: viewModel.state.selectedCoin.code == item.coin.code,
-                                    fiatCurrency: USD,
-                                    onTap: {
-                                        if item.coin.code != viewModel.state.selectedCoin.code {
-                                            viewModel.state.selectedCoin = item.coin
+                                    )
+                                    .padding(.horizontal, 18)
+                                }
+                            } else {
+                                ForEach(viewModel.items.filter { $0.coin.code.lowercased().contains(state.searchRequest.lowercased()) || $0.coin.name.lowercased().contains(state.searchRequest.lowercased())}, id: \.coin.code) { item in
+                                    AssetItemView(
+                                        coin: item.coin,
+                                        adapter: item.adapter,
+                                        selected: state.selectedCoin.code == item.coin.code,
+                                        fiatCurrency: state.fiatCurrency,
+                                        onTap: {
+                                            if item.coin.code != state.selectedCoin.code {
+                                                state.selectedCoin = item.coin
+                                            }
                                         }
-                                    }
-                                )
-                                .padding(.horizontal, 18)
+                                    )
+                                    .padding(.horizontal, 18)
+                                }
                             }
                         }
+                        .offset(y: 20)
+                        .padding(.bottom, 40)
                     }
-                    .offset(y: 20)
-                    .padding(.bottom, 40)
+                    .padding(.horizontal, 6)
                 }
-                .padding(.horizontal, 6)
             }
         }
     }
@@ -127,7 +94,7 @@ struct WalletView_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            WalletView()
+            WalletView(state: Portal.shared.state, viewModel: WalletViewModel.config())
         }
         .frame(width: .infinity, height: 430)
         .previewLayout(PreviewLayout.sizeThatFits)

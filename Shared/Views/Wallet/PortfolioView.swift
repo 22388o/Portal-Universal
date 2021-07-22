@@ -16,7 +16,7 @@ struct PortfolioView: View {
                 MarketValueView(
                     timeframe: $viewModel.selectedTimeframe,
                     valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
-                    fiatCurrency: USD,
+                    fiatCurrency: .constant(USD),
                     totalValue: viewModel.totalValue,
                     change: viewModel.change,
                     high: "$0.0",

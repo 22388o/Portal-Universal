@@ -38,7 +38,7 @@ struct RestoreWalletView: View {
                 HStack {
                     PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
                         withAnimation {
-                            state.current = .currentWallet
+                            state.current = .currentAccount
                         }
                     }
                     Spacer()
@@ -98,11 +98,8 @@ struct RestoreWalletView: View {
                     
                     HStack {
                         PButton(bgColor: Color(red: 250/255, green: 147/255, blue: 36/255), label: "Restore", width: 203, height: 48, fontSize: 15, enabled: viewModel.restoreReady) {
-                            guard let btcAddressDeriviation = BtcAddressFormat(rawValue: viewModel.btcAddressFormat) else {
-                                return
-                            }
                             withAnimation {
-                                accountManager.createNewAccount(model: NewAccountModel(name: viewModel.accountName, addressType: btcAddressDeriviation, seed: viewModel.seed))
+                                accountManager.save(account: viewModel.account)
                             }
                         }
                         
@@ -122,7 +119,7 @@ struct RestoreWalletView: View {
                         
                         PButton(label: "Create new wallet", width: 140, height: 30, fontSize: 12, enabled: true) {
                             withAnimation {
-                                state.current = .createWallet
+                                state.current = .createAccount
                             }
                         }
                     }

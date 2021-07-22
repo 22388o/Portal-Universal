@@ -15,7 +15,7 @@ struct WalletModalViews: View {
             if state.sendAsset {
                 SendAssetView(
                     coin: state.selectedCoin,
-                    fiatCurrency: USD,
+                    fiatCurrency: state.fiatCurrency,
                     presented: $state.sendAsset
                 )
             }

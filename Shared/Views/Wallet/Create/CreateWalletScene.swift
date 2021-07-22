@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct CreateWalletScene: View {
-    @ObservedObject private var viewModel: CreateWalletSceneViewModel
-    
-    init() {
-        self.viewModel = CreateWalletSceneViewModel()
-    }
+    @StateObject private var viewModel = CreateWalletSceneViewModel(
+        type: CreateWalletSceneViewModel.mnemonicAccountType()
+    )
     
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
@@ -36,7 +34,7 @@ struct CreateWalletScene: View {
                 HStack {
                     PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
                         withAnimation {
-                            Portal.shared.state.current = .currentWallet
+                            Portal.shared.state.current = .currentAccount
                         }
                     }
                     Spacer()

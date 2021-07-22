@@ -13,7 +13,7 @@ struct SendAssetView: View {
     @State private var showConfirmationAlert: Bool = false
         
     init(coin: Coin, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
-        guard let viewModel = SendAssetViewModel.config(coin: coin) else {
+        guard let viewModel = SendAssetViewModel.config(coin: coin, fiatCurrency: fiatCurrency) else {
             fatalError("Cannot config SendAssetViewModel")
         }
         self.viewModel = viewModel

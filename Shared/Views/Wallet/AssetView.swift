@@ -14,14 +14,8 @@ struct AssetView: View {
     
     @ObservedObject private var viewModel: AssetViewModel
     @ObservedObject private var state = Portal.shared.state
-    
-    let fiatCurrency: FiatCurrency
-    
-    init(fiatCurrency: FiatCurrency) {
-        self.fiatCurrency = fiatCurrency
-        guard let viewModel = AssetViewModel.config() else {
-            fatalError("Cannot config view model")
-        }
+        
+    init(viewModel: AssetViewModel) {
         self.viewModel = viewModel
     }
     
@@ -85,7 +79,7 @@ struct AssetView: View {
                     MarketValueView(
                         timeframe: $viewModel.selectedTimeframe,
                         valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
-                        fiatCurrency: fiatCurrency,
+                        fiatCurrency: $state.fiatCurrency,
                         totalValue: viewModel.totalValue,
                         change: viewModel.change,
                         high: viewModel.dayHigh,
@@ -112,9 +106,7 @@ struct AssetView_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            AssetView(
-                fiatCurrency: USD
-            )
+            AssetView(viewModel: AssetViewModel.config())
         }
         .frame(width: 304, height: 656)
         .previewLayout(PreviewLayout.sizeThatFits)

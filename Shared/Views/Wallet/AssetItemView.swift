@@ -16,6 +16,7 @@ struct AssetItemView: View {
     init(coin: Coin, adapter: IBalanceAdapter, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
         self.coin = coin
         self.viewModel = .init(
+            coin: coin,
             adapter: adapter,
             selectedTimeFrame: .day,
             fiatCurrency: fiatCurrency,

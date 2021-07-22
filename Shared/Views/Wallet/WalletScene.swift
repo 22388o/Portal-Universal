@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct WalletScene: View {
-    @ObservedObject var portalState = Portal.shared.state
+    @ObservedObject var state = Portal.shared.state
+    @StateObject var headerViewModel = WalletHeaderViewModel.config()
+    
+    var containerZStackAlignment: Alignment {
+        return state.switchWallet || state.allNotifications ? .topLeading : .center
+    }
                 
     var body: some View {
-        ZStack(alignment: portalState.switchWallet || portalState.allNotifications ? .topLeading : .center) {
-            switch portalState.mainScene {
+        ZStack(alignment: containerZStackAlignment) {
+            switch state.mainScene {
             case .wallet:
                 Color.portalWalletBackground.allowsHitTesting(false)
             case .swap:
@@ -20,7 +25,7 @@ struct WalletScene: View {
             }
             
             VStack(spacing: 0) {
-                WalletHeaderView(state: $portalState.mainScene, accountName: Portal.shared.accountManager.activeAccount?.name ?? "no name")
+                WalletHeaderView(viewModel: headerViewModel)
                     .padding(.horizontal, 48)
                     .padding(.vertical, 24)
                 
@@ -29,11 +34,12 @@ struct WalletScene: View {
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
             }
-            .blur(radius: portalState.modalViewIsPresented ? 6 : 0)
-            .scaleEffect(portalState.scaleEffectRation)
-            .allowsHitTesting(!portalState.modalViewIsPresented)
+            .blur(radius: state.modalViewIsPresented ? 6 : 0)
+            .scaleEffect(state.scaleEffectRation)
+            .allowsHitTesting(!state.modalViewIsPresented)
+            .isLocked(locked: $state.loading)
             
-            if portalState.modalViewIsPresented || portalState.allNotifications {
+            if state.modalViewIsPresented || state.allNotifications {
                 WalletModalViews()
                     .zIndex(1)
             }
