@@ -9,13 +9,13 @@ import Foundation
 
 final class LocalStorage: ILocalStorage {
     private let storage: UserDefaults
-    private let appLaunchesCountKey = "APP_LAUNCHES_COUNT"
-    private let currentWalletIDKey = "CURRENT_WALLET_ID"
+    private let appLaunchesCountKey = "APP_LAUNCHES_COUNTER"
+    private let currentAccountIDKey = "CURRENT_WALLET_ID"
     private var appLaunchesCounter: Int {
         storage.integer(forKey: appLaunchesCountKey)
     }
 
-    var currentWalletID: UUID?
+    var currentAccountID: String?
     var isFirstLaunch: Bool {
         storage.integer(forKey: appLaunchesCountKey) == 0
     }
@@ -29,18 +29,18 @@ final class LocalStorage: ILocalStorage {
         storage.setValue(counter + 1, forKey: appLaunchesCountKey)
     }
     
-    func getCurrentWalletID() -> UUID? {
-        guard let uuidString = storage.string(forKey: currentWalletIDKey) else {
+    func getCurrentAccountID() -> String? {
+        guard let uuidString = storage.string(forKey: currentAccountIDKey) else {
             return nil
         }
-        return UUID(uuidString: uuidString)
+        return uuidString
     }
     
-    func removeCurrentWalletID() {
-        storage.removeObject(forKey: currentWalletIDKey)
+    func setCurrentAccountID(_ id: String) {
+        storage.setValue(id, forKey: currentAccountIDKey)
     }
     
-    func setCurrentWalletID(_ uuid: UUID) {
-        storage.setValue(uuid.uuidString, forKey: currentWalletIDKey)
+    func removeCurrentAccountID() {
+        storage.removeObject(forKey: currentAccountIDKey)
     }
 }
