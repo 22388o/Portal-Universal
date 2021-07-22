@@ -17,16 +17,16 @@ final class BitcoinAdapter: BitcoinBaseAdapter {
         guard let seed = wallet.account.type.mnemonicSeed else {
             throw AdapterError.unsupportedAccount
         }
-
+        
         guard let walletSyncMode = syncMode else {
             throw AdapterError.wrongParameters
         }
 
         let networkType: Kit.NetworkType = testMode ? .testNet : .mainNet
-        let bip = BitcoinBaseAdapter.bip(from: MnemonicDerivation.bip44)
+        let bip = BitcoinBaseAdapter.bip(from: wallet.account.mnemonicDereviation)
         let syncMode = BitcoinBaseAdapter.kitMode(from: walletSyncMode)
-
-        bitcoinKit = try Kit(seed: seed, bip: bip, walletId: wallet.account.id.uuidString, syncMode: syncMode, networkType: networkType, confirmationsThreshold: BitcoinBaseAdapter.confirmationsThreshold, logger: .init(minLogLevel: .error))
+        
+        bitcoinKit = try Kit(seed: seed, bip: bip, walletId: wallet.account.id, syncMode: syncMode, networkType: networkType, confirmationsThreshold: BitcoinBaseAdapter.confirmationsThreshold, logger: .init(minLogLevel: .error))
 
         super.init(abstractKit: bitcoinKit)
 

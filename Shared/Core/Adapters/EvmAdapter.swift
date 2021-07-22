@@ -88,15 +88,15 @@ extension EvmAdapter {
 extension EvmAdapter: IAdapter {
 
     func start() {
-        evmKit.start()
+//        evmKit.start()
     }
 
     func stop() {
-        evmKit.stop()
+//        evmKit.stop()
     }
 
     func refresh() {
-        evmKit.start()
+//        evmKit.start()
     }
 
     var debugInfo: String {
