@@ -9,9 +9,9 @@ import Foundation
 
 protocol ILocalStorage {
     var isFirstLaunch: Bool { get }
-    var currentWalletID: UUID? { get set }
+    var currentAccountID: String? { get set }
     func incrementAppLaunchesCouner()
-    func getCurrentWalletID() -> UUID?
-    func setCurrentWalletID(_ uuid: UUID)
-    func removeCurrentWalletID()
+    func getCurrentAccountID() -> String?
+    func setCurrentAccountID(_ id: String)
+    func removeCurrentAccountID()
 }

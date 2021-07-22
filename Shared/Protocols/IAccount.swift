@@ -8,7 +8,7 @@
 import Foundation
 
 protocol IAccount {
-    var id: UUID { get }
+    var id: String { get }
     var name: String { get }
     var type: AccountType { get }
     var fiatCurrencyCode: String { get }

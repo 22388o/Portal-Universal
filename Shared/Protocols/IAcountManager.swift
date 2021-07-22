@@ -12,12 +12,12 @@ protocol IAccountManager {
     var onActiveAccountUpdatePublisher: PassthroughSubject<Account?, Never> { get }
     var accounts: [Account] { get }
     var activeAccount: Account? { get }
-    func account(id: UUID) -> Account?
-    func createAccount(model: NewAccountModel) -> Account?
-    func createNewAccount(model: NewAccountModel)
-    func setActiveAccount(id: UUID)
+    func account(id: String) -> Account?
+    func setActiveAccount(id: String)
     func save(account: Account)
+    func update(account: Account)
     func delete(account: Account)
     func delete(accountId: String)
     func clear()
 }
+

@@ -14,9 +14,8 @@ protocol IWalletManager: AnyObject {
     var wallets: [Wallet] { get }
     func preloadWallets()
     func wallets(account: Account) -> [Wallet]
-//    func handle(newWallets: [Wallet], deletedWallets: [Wallet])
+    func handle(newWallets: [Wallet], deletedWallets: [Wallet])
     func save(wallets: [Wallet])
     func delete(wallets: [Wallet])
-
     func clearWallets()
 }

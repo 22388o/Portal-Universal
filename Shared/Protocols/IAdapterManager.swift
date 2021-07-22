@@ -7,9 +7,10 @@
 
 import Foundation
 import RxSwift
+import Combine
 
 protocol IAdapterManager: AnyObject {
-    var adaptersReadyObservable: Observable<Void> { get }
+    var adapterdReadyPublisher: CurrentValueSubject<Bool, Never> { get }
     func adapter(for wallet: Wallet) -> IAdapter?
     func adapter(for coin: Coin) -> IAdapter?
     func balanceAdapter(for wallet: Wallet) -> IBalanceAdapter?
