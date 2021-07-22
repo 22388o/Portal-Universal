@@ -8,23 +8,18 @@
 import Foundation
 
 class Account: IAccount {
-    let id: UUID
+    let id: String
     let type: AccountType
     let mnemonicDereviation: MnemonicDerivation
 
     private(set) var name: String
     private(set) var fiatCurrencyCode: String
 
-    init(accountRecord: AccountRecord, type: AccountType) {
-        self.id = accountRecord.id
-        self.name = accountRecord.name
+    init(id: String, name: String, bip: MnemonicDerivation, type: AccountType) {
+        self.id = id
+        self.name = name
         self.type = type
-        self.fiatCurrencyCode = accountRecord.fiatCurrencyCode
-        
-        guard let bip = MnemonicDerivation(rawValue: accountRecord.bip) else {
-            fatalError("bip isn't set")
-        }
-        
+        self.fiatCurrencyCode = "USD"
         self.mnemonicDereviation = bip
     }
 }
@@ -42,8 +37,8 @@ extension Account: Hashable {
 }
 
 class MockedAccount: IAccount {
-    var id: UUID {
-        UUID()
+    var id: String {
+        UUID().uuidString
     }
     
     var name: String {

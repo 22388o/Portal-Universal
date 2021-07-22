@@ -1,5 +1,5 @@
 //
-//  NewWalletModel.swift
+//  AccountModel.swift
 //  Portal
 //
 //  Created by Farid on 14.05.2020.
@@ -9,7 +9,7 @@
 import Foundation
 import HdWalletKit
 
-struct NewAccountModel {
+struct AccountModel {
     let name: String
     let addressType: BtcAddressFormat
     let seed: [String]

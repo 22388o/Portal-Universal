@@ -209,6 +209,7 @@ enum DBStorageError: Error {
     case cannotCreateWallet(error: Error)
     case cannotDeleteWallet(error: Error)
     case cannotSaveContext(error: Error)
+    case cannotGetContext
 }
 
 enum FeeRatePriority: Equatable {
@@ -376,6 +377,14 @@ enum MnemonicDerivation: String, CaseIterable {
         case .bip44: return "Legacy"
         case .bip49: return "SegWit"
         case .bip84: return "Native SegWit"
+        }
+    }
+    
+    var intValue: Int {
+        switch self {
+        case .bip44: return 0
+        case .bip49: return 1
+        case .bip84: return 2
         }
     }
 
