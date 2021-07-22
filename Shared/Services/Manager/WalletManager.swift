@@ -20,7 +20,6 @@ class WalletManager {
     private let subject = PublishSubject<[Wallet]>()
 
     private let queue = DispatchQueue(label: "tides.universal.portal.wallet_manager", qos: .userInitiated)
-    private let activeWalletsQueue = DispatchQueue(label: "tides.universal.portal.wallet_manager.active_wallets", qos: .userInitiated)
 
     private var cachedWallets = [Wallet]()
     private var cachedActiveWallets = [Wallet]()
@@ -29,7 +28,7 @@ class WalletManager {
         self.accountManager = accountManager
         self.storage = storage
         
-        cachedWallets = storage.allWallets
+        cachedWallets = storage.wallets
         handleUpdate(activeAccount: accountManager.activeAccount)
         
         accountManager.onActiveAccountUpdatePublisher
@@ -50,7 +49,7 @@ class WalletManager {
     private func handleUpdate(activeAccount: Account?) {
         let activeWallets = activeAccount.map { storage.wallets(account: $0) } ?? []
 
-        queue.async {
+        queue.sync {
             self.cachedActiveWallets = activeWallets
             self.notifyActiveWallets()
         }
@@ -60,7 +59,7 @@ class WalletManager {
 
 extension WalletManager: IWalletManager {
     var activeWallets: [Wallet] {
-        activeWalletsQueue.sync { cachedActiveWallets }
+        queue.sync { cachedActiveWallets }
     }
 
     var wallets: [Wallet] {
@@ -73,11 +72,8 @@ extension WalletManager: IWalletManager {
 
     func preloadWallets() {
         queue.async {
-            self.cachedWallets = self.storage.allWallets
+            self.cachedWallets = self.storage.wallets
             self.notify()
-
-//            self.cachedActiveWallets = activeWallets
-//            self.notifyActiveWallets()
         }
     }
 
