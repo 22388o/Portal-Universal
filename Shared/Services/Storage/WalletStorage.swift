@@ -6,35 +6,47 @@
 //
 
 import Foundation
+import Combine
 
 class WalletStorage: IWalletStorage {
     private let coinManager: ICoinManager
     private let accountManager: IAccountManager
-    var allWallets: [Wallet] = []
+    var wallets: [Wallet] = []
+    
+    private var cancelabel = Set<AnyCancellable>()
 
     init(coinManager: ICoinManager, accountManager: IAccountManager) {
         self.coinManager = coinManager
         self.accountManager = accountManager
         
         syncWallets()
+        subscribeForUpdates()
+    }
+    
+    private func subscribeForUpdates() {
+        accountManager.onActiveAccountUpdatePublisher
+            .sink { [weak self] _ in
+                self?.syncWallets()
+            }
+            .store(in: &cancelabel)
     }
     
     func syncWallets() {
-        allWallets.removeAll()
+        wallets.removeAll()
         
         for account in accountManager.accounts {
             for coin in coinManager.coins {
-                allWallets.append(Wallet(coin: coin, account: account))
+                wallets.append(Wallet(coin: coin, account: account))
             }
         }
     }
     
     func wallets(account: Account) -> [Wallet] {
-        allWallets.filter{ $0.account == account }
+        wallets.filter{ $0.account == account }
     }
     
     func clearWallets() {
-        allWallets.removeAll()
+        wallets.removeAll()
     }
     
     func handle(newWallets: [Wallet], deletedWallets: [Wallet]) {
