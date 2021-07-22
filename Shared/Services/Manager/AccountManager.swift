@@ -8,112 +8,64 @@
 import Foundation
 import Combine
 
-final class AccountManager: IAccountManager {
+final class AccountManager {
     var onActiveAccountUpdatePublisher = PassthroughSubject<Account?, Never>()
 
-    private let storage: IIDBStorage
-    private let secureStorage: IKeychainStorage
+    private let accountStorage: AccountStorage
     private let localStorage: ILocalStorage
     
-    private(set) var accounts: [Account] = []
-    
-    init(dbStorage: IIDBStorage, secureStorage: IKeychainStorage, localStorage: ILocalStorage) {
-        self.storage = dbStorage
-        self.secureStorage = secureStorage
+    init(localStorage: ILocalStorage, accountStorage: AccountStorage) {
         self.localStorage = localStorage
-                
-        syncAccounts()        
+        self.accountStorage = accountStorage
     }
-    
-    private func syncAccounts() {
-        accounts.removeAll()
         
-        let accountRecords = storage.accountRecords()
-        
-        for record in accountRecords {
-            if let words = secureStorage.recoverStringArray(for: record.id) {
-                let account = Account(accountRecord: record, type: .mnemonic(words: words, salt: ""))
-                accounts.append(account)
-            }
+    private func nextActiveAccount() {
+        if let newWalletId = accounts.first?.id {
+            setActiveAccount(id: newWalletId)
+        } else {
+            Portal.shared.state.current = .createAccount
         }
     }
-    
+}
+
+extension AccountManager: IAccountManager {
     var activeAccount: Account? {
-        guard let id = localStorage.getCurrentWalletID() else { return nil }
-        return account(id: id)
+        accountStorage.activeAccount
     }
     
-    func account(id: UUID) -> Account? {
+    var accounts: [Account] {
+        accountStorage.allAccounts
+    }
+    
+    func account(id: String) -> Account? {
         accounts.first(where: { $0.id == id })
     }
     
-    func createNewAccount(model: NewAccountModel) {
-        guard
-            let record = try? storage.createAccount(model: model),
-            let data = model.seedData
-        else { return }
-        
-        secureStorage.save(data: data, key: record.id)
-        
-        let newAccount = Account(accountRecord: record, type: .mnemonic(words: model.seed, salt: ""))
-        localStorage.setCurrentWalletID(newAccount.id)
-        
-        accounts.append(newAccount)
-        
-        onActiveAccountUpdatePublisher.send(newAccount)
-    }
-    
-    func createAccount(model: NewAccountModel) -> Account? {
-        guard
-            let record = try? storage.createAccount(model: model),
-            let data = model.seedData
-        else { return nil }
-        
-        secureStorage.save(data: data, key: record.id)
-        
-        let newAccount = Account(accountRecord: record, type: .mnemonic(words: model.seed, salt: ""))
-        localStorage.setCurrentWalletID(newAccount.id)
-        
-        accounts.append(newAccount)
-        
-        onActiveAccountUpdatePublisher.send(newAccount)
-        
-        return newAccount
-    }
-    
-    func setActiveAccount(id: UUID) {
-        localStorage.setCurrentWalletID(id)
-        onActiveAccountUpdatePublisher.send(activeAccount)
+    func setActiveAccount(id: String) {
+        localStorage.setCurrentAccountID(id)
+        onActiveAccountUpdatePublisher.send(accountStorage.activeAccount)
     }
     
     func save(account: Account) {
-        do {
-            try storage.save(account: account)
-        } catch {
-            print("Cannot save account")
-        }
-        syncAccounts()
+        accountStorage.save(account: account)
+        onActiveAccountUpdatePublisher.send(account)
     }
     
     func delete(account: Account) {
-        do {
-            try storage.delete(account: account)
-        } catch {
-            print("Cannot delete account")
-        }
-        syncAccounts()
+        accountStorage.delete(account: account)
+        nextActiveAccount()
     }
     
     func delete(accountId: String) {
-        do {
-            try storage.deleteAccount(id: accountId)
-        } catch {
-            print("Cannot delete account")
-        }
-        syncAccounts()
+        accountStorage.delete(accountId: accountId)
+        nextActiveAccount()
+    }
+    
+    func update(account: Account) {
+        
     }
     
     func clear() {
-        storage.clear()
+        accountStorage.clear()
     }
 }
