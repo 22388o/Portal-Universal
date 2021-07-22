@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class WalletHeaderViewModel: ObservableObject {
     @Published var accountName = String()
