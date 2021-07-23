@@ -67,7 +67,7 @@ final class Portal: ObservableObject {
         marketDataProvider = MarketDataProvider(repository: marketDataRepository)
                 
         let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: bdStorage)
-        accountManager = AccountManager(localStorage: localStorage, accountStorage: accountStorage)
+        accountManager = AccountManager(accountStorage: accountStorage)
         
         let coinManager: ICoinManager = CoinManager()
         let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)

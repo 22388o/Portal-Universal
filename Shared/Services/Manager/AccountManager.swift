@@ -12,10 +12,8 @@ final class AccountManager {
     var onActiveAccountUpdatePublisher = PassthroughSubject<Account?, Never>()
 
     private let accountStorage: AccountStorage
-    private let localStorage: ILocalStorage
     
-    init(localStorage: ILocalStorage, accountStorage: AccountStorage) {
-        self.localStorage = localStorage
+    init(accountStorage: AccountStorage) {
         self.accountStorage = accountStorage
     }
         
@@ -42,7 +40,7 @@ extension AccountManager: IAccountManager {
     }
     
     func setActiveAccount(id: String) {
-        localStorage.setCurrentAccountID(id)
+        accountStorage.setCurrentAccount(id: id)
         onActiveAccountUpdatePublisher.send(accountStorage.activeAccount)
     }
     

@@ -130,6 +130,10 @@ extension AccountStorage {
     func clear() {
         storage.deleteAllAccountRecords()
     }
+    
+    func setCurrentAccount(id: String) {
+        localStorage.setCurrentAccountID(id)
+    }
 
 }
 
