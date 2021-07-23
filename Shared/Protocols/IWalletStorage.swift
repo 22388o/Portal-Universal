@@ -9,7 +9,6 @@ import Foundation
 
 protocol IWalletStorage {
     var wallets: [Wallet] { get }
-//    func wallets(accounts: [Account]) -> [Wallet]
     func wallets(account: Account) -> [Wallet]
     func handle(newWallets: [Wallet], deletedWallets: [Wallet])
     func clearWallets()

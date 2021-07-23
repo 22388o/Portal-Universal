@@ -19,7 +19,6 @@ protocol IAsset {
     var depositAdapter: IDepositAdapter? { get }
     var transactionAdaper: ITransactionsAdapter? { get }
     var qrCodeProvider: IQRCodeProvider { get }
-    
     func availableBalance(feeRate: Int, address: String?) -> Decimal
     func maximumSendAmount() -> Decimal?
     func minimumSendAmount(address: String?) -> Decimal

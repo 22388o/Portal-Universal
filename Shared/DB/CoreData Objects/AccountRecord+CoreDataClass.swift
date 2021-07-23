@@ -24,14 +24,12 @@ public class AccountRecord: NSManagedObject {
         }
     }
     
-    convenience init(id: String, name: String, bip: MnemonicDerivation, wordsKey: String?, saltKey: String?, context: NSManagedObjectContext) {
+    convenience init(id: String, name: String, bip: MnemonicDerivation, context: NSManagedObjectContext) {
         self.init(context: context)
         
         self.id = id
         self.name = name
         self.btcBipFormat = Int16(bip.intValue)
-        self.wordsKey = wordsKey
-        self.saltKey = saltKey
     }
     
     func updateFiatCurrency(_ currency: FiatCurrency) {

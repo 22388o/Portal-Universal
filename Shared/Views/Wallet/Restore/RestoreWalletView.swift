@@ -26,7 +26,7 @@ struct RestoreWalletView: View {
                         .font(.mainFont(size: 14, bold: true))
                     Group {
                         Text("|")
-                        Text("Restore wallet")
+                        Text("Restore account")
                     }
                     .font(.mainFont(size: 14))
                 }
@@ -56,7 +56,7 @@ struct RestoreWalletView: View {
                     HStack(spacing: 14) {
                         Image("lockedSafeIcon")
                             .offset(y: -2)
-                        Text("Restore Wallet")
+                        Text("Restore Account")
                             .font(.mainFont(size: 23))
                             .foregroundColor(Color.lightActiveLabel)
                     }
@@ -117,7 +117,7 @@ struct RestoreWalletView: View {
                         
                         Spacer()
                         
-                        PButton(label: "Create new wallet", width: 140, height: 30, fontSize: 12, enabled: true) {
+                        PButton(label: "Create new account", width: 140, height: 30, fontSize: 12, enabled: true) {
                             withAnimation {
                                 state.current = .createAccount
                             }

@@ -38,17 +38,15 @@ class AccountStorage {
         let id = account.id
 
         let typeName: TypeName
-        var wordsKey: String?
-        var saltKey: String?
 
         switch account.type {
         case .mnemonic(let words, let salt):
             typeName = .mnemonic
-            wordsKey = try store(stringArray: words, id: id, typeName: typeName, keyName: .words)
-            saltKey = try store(salt, id: id, typeName: typeName, keyName: .salt)
+            _ = try store(stringArray: words, id: id, typeName: typeName, keyName: .words)
+            _ = try store(salt, id: id, typeName: typeName, keyName: .salt)
         }
         
-        return AccountRecord(id: id, name: account.name, bip: account.mnemonicDereviation, wordsKey: wordsKey, saltKey: saltKey, context: storage.context)
+        return AccountRecord(id: id, name: account.name, bip: account.mnemonicDereviation, context: storage.context)
     }
 
     private func clearSecureStorage(account: Account) throws {
@@ -62,7 +60,7 @@ class AccountStorage {
     }
 
     private func secureKey(id: String, typeName: TypeName, keyName: KeyName) -> String {
-        "\(typeName.rawValue)_\(id)_\(keyName.rawValue)"
+        "\(keyName.rawValue)_\(id)_\(typeName.rawValue)"
     }
 
     private func store(stringArray: [String], id: String, typeName: TypeName, keyName: KeyName) throws -> String {

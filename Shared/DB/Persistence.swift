@@ -43,7 +43,7 @@ extension PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        let tempWallet = AccountRecord.init(id: UUID().uuidString, name: "mocked", bip: .bip44, wordsKey: nil, saltKey: nil, context: viewContext)
+        let tempWallet = AccountRecord.init(id: UUID().uuidString, name: "mocked", bip: .bip44, context: viewContext)
         
         do {
             try viewContext.save()

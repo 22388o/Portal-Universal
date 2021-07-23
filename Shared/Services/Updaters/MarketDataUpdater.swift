@@ -65,39 +65,39 @@ final class MarketDataUpdater {
                         }
                     }
             }
-//            if let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: today) {
-//                Coinpaprika.API.tickerHistory(id: id, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours2)
-//                    .perform { [unowned self] (response) in
-//                        switch response {
-//                        case .success(let response):
-//                            self.onUpdateHistoricalPricePublisher.send((.week, [coins[index].code : response.map{ $0.price }]))
-//                        case .failure(let error):
-//                            print(error)
-//                        }
-//                    }
-//            }
-//            if let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: today) {
-//                Coinpaprika.API.tickerHistory(id: id, start: monthAgo, end: today, limit: 60, quote: .usd, interval: .hours12)
-//                    .perform { [unowned self] (response) in
-//                        switch response {
-//                        case .success(let response):
-//                            self.onUpdateHistoricalPricePublisher.send((.month, [coins[index].code : response.map{ $0.price }]))
-//                        case .failure(let error):
-//                            print(error)
-//                        }
-//                    }
-//            }
-//            if let aYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: today) {
-//                Coinpaprika.API.tickerHistory(id: id, start: aYearAgo, end: today, limit: 60, quote: .usd, interval: .days7)
-//                    .perform { [unowned self] (response) in
-//                        switch response {
-//                        case .success(let response):
-//                            self.onUpdateHistoricalPricePublisher.send((.year, [coins[index].code : response.map{ $0.price }]))
-//                        case .failure(let error):
-//                            print(error)
-//                        }
-//                    }
-//            }
+            if let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: today) {
+                Coinpaprika.API.tickerHistory(id: id, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours2)
+                    .perform { [unowned self] (response) in
+                        switch response {
+                        case .success(let response):
+                            self.onUpdateHistoricalPricePublisher.send((.week, [coins[index].code : response.map{ $0.price }]))
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+            }
+            if let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: today) {
+                Coinpaprika.API.tickerHistory(id: id, start: monthAgo, end: today, limit: 60, quote: .usd, interval: .hours12)
+                    .perform { [unowned self] (response) in
+                        switch response {
+                        case .success(let response):
+                            self.onUpdateHistoricalPricePublisher.send((.month, [coins[index].code : response.map{ $0.price }]))
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+            }
+            if let aYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: today) {
+                Coinpaprika.API.tickerHistory(id: id, start: aYearAgo, end: today, limit: 60, quote: .usd, interval: .days7)
+                    .perform { [unowned self] (response) in
+                        switch response {
+                        case .success(let response):
+                            self.onUpdateHistoricalPricePublisher.send((.year, [coins[index].code : response.map{ $0.price }]))
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ struct CreateWalletNameView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text("Name your wallet")
+            Text("Name your account")
                 .font(.mainFont(size: 17))
                 .foregroundColor(Color.createWalletLabel)
             

@@ -89,14 +89,14 @@ struct AccountsView: View {
                 }
                 .padding(.bottom, 16)
                 
-                PButton(label: "Create new wallet", width: 184, height: 32, fontSize: 12, enabled: true) {
+                PButton(label: "Create new account", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
                         viewModel.state.current = .createAccount
                         viewModel.state.switchWallet.toggle()
                     }
                 }
                                 
-                PButton(label: "Restore wallet", width: 184, height: 32, fontSize: 12, enabled: true) {
+                PButton(label: "Restore account", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
                         viewModel.state.current = .restoreAccount
                         viewModel.state.switchWallet.toggle()
@@ -106,7 +106,7 @@ struct AccountsView: View {
                 .padding(.bottom, 16)
             }
             .alert(isPresented: $viewModel.showDeletionAlert) {
-                Alert(title: Text("This cannot be undone"), message: Text("Want to delete the wallet?"), primaryButton: .destructive(Text("Delete")) {
+                Alert(title: Text("This cannot be undone"), message: Text("Want to delete the account?"), primaryButton: .destructive(Text("Delete")) {
                     if let account = viewModel.accountToDelete {
                         withAnimation {
                             viewModel.delete(account: account)
