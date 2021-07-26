@@ -152,6 +152,10 @@ final class MarketDataRepository: ObservableObject {
 }
 
 extension MarketDataRepository: IMarketDataProvider {
+    func requestHistoricalData(coin: Coin, timeframe: Timeframe) {
+        mdUpdater.requestHistoricalMarketData(coin: coin, timeframe: timeframe)
+    }
+    
     func ticker(coin: Coin) -> Ticker? {
         tickers?.first(where: { $0.symbol == coin.code })
     }

@@ -24,7 +24,7 @@ final class AssetViewModel: ObservableObject {
     @Published private(set) var change = String()
     @Published private(set) var chartDataEntries = [ChartDataEntry]()
     @Published private(set) var currency: Currency = .fiat(USD)
-    @Published private(set) var isLoadingData: Bool = false
+    @Published var loadingData: Bool = false
         
     private let queue = DispatchQueue.main
     private var subscriptions = Set<AnyCancellable>()
@@ -79,11 +79,11 @@ final class AssetViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        $isLoadingData
+        $loadingData
             .dropFirst()
-            .sink { [weak self] (isLoading) in
-                if !isLoading {
-                    self?.updateValues()
+            .sink { [weak self] loading in
+                if !loading {
+                    self?.chartDataEntries = self?.assetChartDataEntries() ?? []
                 }
             }
             .store(in: &subscriptions)
@@ -179,17 +179,14 @@ final class AssetViewModel: ObservableObject {
         var chartDataEntries = [ChartDataEntry]()
         var points = [Decimal]()
         
-//        let step = 4
-        
-        switch selectedTimeframe {
-        case .day:
-            points = marketDataProvider.marketData(coin: coin).dayPoints
-        case .week:
-            points = marketDataProvider.marketData(coin: coin).weekPoints
-        case .month:
-            points = marketDataProvider.marketData(coin: coin).monthPoints
-        case .year:
-            points = marketDataProvider.marketData(coin: coin).yearPoints
+        if hasChartData(timeframe: selectedTimeframe) {
+            points = chartDataPonts(timeframe: selectedTimeframe)
+        } else {
+            loadingData = true
+            marketDataProvider.requestHistoricalData(coin: coin, timeframe: selectedTimeframe)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.loadingData = false
+            }
         }
         
         let xIndexes = Array(0..<points.count).map { x in Double(x) }
@@ -199,6 +196,23 @@ final class AssetViewModel: ObservableObject {
         }
         
         return chartDataEntries
+    }
+    
+    private func hasChartData(timeframe: Timeframe) -> Bool {
+        return !chartDataPonts(timeframe: timeframe).isEmpty
+    }
+    
+    private func chartDataPonts(timeframe: Timeframe) -> [Decimal] {
+        switch timeframe {
+        case .day:
+            return marketDataProvider.marketData(coin: coin).dayPoints
+        case .week:
+            return marketDataProvider.marketData(coin: coin).weekPoints
+        case .month:
+            return marketDataProvider.marketData(coin: coin).monthPoints
+        case .year:
+            return marketDataProvider.marketData(coin: coin).yearPoints
+        }
     }
 }
 
