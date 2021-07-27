@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HdWalletKit
 
 enum BtcAddressFormat: Int, CustomStringConvertible, CaseIterable {
     case legacy
@@ -60,7 +61,7 @@ enum TxSpeed: Int, CustomStringConvertible, CaseIterable {
 }
 
 enum MarketDataRange {
-    case hour, day, week, month, year
+    case day, week, month, year
 }
 
 enum AssetMarketValueViewType {
@@ -75,16 +76,7 @@ enum Currency {
     var symbol: String {
         switch self {
         case .fiat(let currency):
-            return currency.symbol ?? String()
-        default:
-            return String()
-        }
-    }
-    
-    func stringValue() -> String {
-        switch self {
-        case .fiat(let currency):
-            return currency.code
+            return currency.symbol
         case .btc:
             return "BTC"
         case .eth:
@@ -94,12 +86,10 @@ enum Currency {
 }
 
 enum Timeframe: Int {
-    case hour = 0, day, week, month, year, allTime
+    case day, week, month, year
     
     func intervalString() -> String {
         switch self {
-        case .hour:
-            return "1h"
         case .day:
             return "1d"
         case .week:
@@ -108,8 +98,6 @@ enum Timeframe: Int {
             return "1M"
         case .year:
             return "1y"
-        case .allTime:
-            return "All"
         }
     }
     
@@ -117,8 +105,6 @@ enum Timeframe: Int {
         let intervalString: String
         
         switch self {
-        case .hour:
-            intervalString = "Hour"
         case .day:
             intervalString = "Day"
         case .week:
@@ -127,8 +113,6 @@ enum Timeframe: Int {
             intervalString = "Month"
         case .year:
             intervalString = "Year"
-        case .allTime:
-            intervalString = "All time"
         }
         return intervalString + " change"
     }
@@ -182,5 +166,284 @@ enum Device {
         }
         return isValidPolicy
     }
+}
 
+enum AppError: Error {
+    case noConnection
+    case ethereum(reason: EthereumError)
+    case wordsChecksum
+    case addressInvalid
+    case notSupportedByHodler
+    case unknownError
+
+    enum EthereumError: Error {
+        case insufficientBalanceWithFee
+        case executionReverted(message: String)
+    }
+}
+
+
+extension AppError: LocalizedError {
+
+    var errorDescription: String? {
+        switch self {
+        case .noConnection: return "alert.no_internet"
+        case .ethereum(let reason):
+            switch reason {
+            case .insufficientBalanceWithFee: return "" // localized in modules
+            case .executionReverted(let message): return "ethereum_transaction.error.reverted: \(message)"
+            }
+        case .wordsChecksum:
+            return "restore.checksum_error"
+        case .addressInvalid: return "send.error.invalid_address"
+        case .notSupportedByHodler: return "send.hodler_error.unsupported_address"
+        case .unknownError: return "Unknown Error"
+        }
+
+    }
+
+}
+
+enum DBStorageError: Error {
+    case cannotFetchWallets(error: Error)
+    case cannotCreateWallet(error: Error)
+    case cannotDeleteWallet(error: Error)
+    case cannotSaveContext(error: Error)
+    case cannotGetContext
+}
+
+enum FeeRatePriority: Equatable {
+    case low
+    case medium
+    case recommended
+    case high
+    case custom(value: Int, range: ClosedRange<Int>)
+
+    var title: String {
+        switch self {
+        case .low: return "send.tx_speed_low"
+        case .medium: return "send.tx_speed_recommended"
+        case .recommended: return "send.tx_speed_recommended"
+        case .high: return "send.tx_speed_high"
+        case .custom: return "send.tx_speed_custom"
+        }
+    }
+
+    static func ==(lhs: FeeRatePriority, rhs: FeeRatePriority) -> Bool {
+        switch (lhs, rhs) {
+        case (.low, .low): return true
+        case (.medium, .medium): return true
+        case (.recommended, .recommended): return true
+        case (.high, .high): return true
+        case (.custom, .custom): return true
+        default: return false
+        }
+    }
+
+}
+
+enum AdapterState {
+    case synced
+    case syncing(progress: Int, lastBlockDate: Date?)
+    case searchingTxs(count: Int)
+    case notSynced(error: Error)
+
+    var isSynced: Bool {
+        switch self {
+        case .synced: return true
+        default: return false
+        }
+    }
+
+}
+
+extension AdapterState: Equatable {
+    public static func ==(lhs: AdapterState, rhs: AdapterState) -> Bool {
+        switch (lhs, rhs) {
+        case (.synced, .synced): return true
+        case (.syncing(let lProgress, let lLastBlockDate), .syncing(let rProgress, let rLastBlockDate)): return lProgress == rProgress && lLastBlockDate == rLastBlockDate
+        case (.notSynced, .notSynced): return true
+        default: return false
+        }
+    }
+}
+
+enum TransactionDataSortMode: String, CaseIterable {
+    case shuffle
+    case bip69
+
+    var title: String {
+        "settings_privacy.sorting_\(self)"
+    }
+
+    var description: String {
+        "settings_privacy.sorting_\(self).description"
+    }
+}
+
+enum WalletCreationSteps {
+    case createWalletName, seed, test, confirmation
+}
+
+enum WalletSceneState {
+    case full, walletPortfolio, walletAsset
+}
+
+enum Scenes {
+    case wallet, swap
+}
+
+enum AssetViewRoute {
+    case value, transactions, alerts
+}
+
+enum ValueCurrencySwitchState: Int {
+    case fiat, btc, eth
+}
+
+enum TxSortState {
+    case all, sent, received, swapped
+    
+    var description: String {
+        switch self {
+        case .all:
+            return "All transactions"
+        case .sent:
+            return "Sent"
+        case .received:
+            return "Received"
+        case .swapped:
+            return "Swapped"
+        }
+    }
+}
+
+enum NetworkError: Error, LocalizedError {
+    case parsing
+    case inconsistentBehavior
+    case networkError
+    
+    var errorDescription: String? {
+        return "Something went wrong, we will fix it!"
+    }
+}
+
+enum AdapterError: Error {
+    case wrongParameters
+    case unsupportedAccount
+}
+
+enum TransactionType: Int, Equatable { case incoming, outgoing, sentToSelf, approve, transfer }
+
+extension TransactionType: Comparable {
+
+    public static func <(lhs: TransactionType, rhs: TransactionType) -> Bool {
+        lhs.rawValue >= rhs.rawValue
+    }
+
+}
+
+enum TransactionStatus {
+    case failed
+    case pending
+    case processing(progress: Double)
+    case completed
+}
+
+extension TransactionStatus: Equatable {
+
+    public static func ==(lhs: TransactionStatus, rhs: TransactionStatus) -> Bool {
+        switch (lhs, rhs) {
+        case (.pending, .pending): return true
+        case (let .processing(lhsProgress), let .processing(rhsProgress)): return lhsProgress == rhsProgress
+        case (.completed, .completed): return true
+        default: return false
+        }
+    }
+
+}
+
+enum MnemonicDerivation: String, CaseIterable {
+    case bip44
+    case bip49
+    case bip84
+
+    var title: String {
+        "\(addressType) - \(self.rawValue.uppercased())"
+    }
+
+    var addressType: String {
+        switch self {
+        case .bip44: return "Legacy"
+        case .bip49: return "SegWit"
+        case .bip84: return "Native SegWit"
+        }
+    }
+    
+    var intValue: Int {
+        switch self {
+        case .bip44: return 0
+        case .bip49: return 1
+        case .bip84: return 2
+        }
+    }
+
+    func description(coinType: Coin.CoinType) -> String {
+        var description = "coin_settings.derivation.description.\(self)"
+
+        if let addressPrefix = addressPrefix(coinType: coinType) {
+            let startsWith = "coin_settings.derivation.starts_with \(addressPrefix)"
+            description += " (\(startsWith))"
+        }
+
+        return description
+    }
+
+    private func addressPrefix(coinType: Coin.CoinType) -> String? {
+        switch coinType {
+        case .bitcoin:
+            switch self {
+            case .bip44: return "1"
+            case .bip49: return "3"
+            case .bip84: return "bc1"
+            }
+        default:
+            return nil
+        }
+    }
+
+}
+
+
+enum SyncMode: String {
+    case fast
+    case slow
+    case new
+
+    var title: String {
+        switch self {
+        case .fast: return "API"
+        case .slow: return "sync_mode.from_blockchain"
+        case .new: return ""
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .fast: return "settings_privacy.alert_sync.recommended"
+        case .slow: return "settings_privacy.alert_sync.more_private"
+        case .new: return ""
+        }
+    }
+
+}
+
+enum AccountType {
+    case mnemonic(words: [String], salt: String)
+    
+    var mnemonicSeed: Data? {
+        switch self {
+        case let .mnemonic(words, salt): return Mnemonic.seed(mnemonic: words, passphrase: salt)
+        }
+    }
 }

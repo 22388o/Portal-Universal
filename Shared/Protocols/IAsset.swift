@@ -7,14 +7,22 @@
 //
 
 import Foundation
+import BitcoinCore
+import Combine
 
 protocol IAsset {
     var id: UUID { get }
-//    var viewModel: AssetViewModel { get }
     var coin: Coin { get }
-    var kit: ICoinKit { get }
-    var chartDataProvider: IChartDataProvider { get }
-    var balanceProvider: IBalanceProvider { get }
-    var marketChangeProvider: IMarketChangeProvider { get }
+    var adapter: IAdapter? { get }
+    var sendBtcAdapter: ISendBitcoinAdapter? { get }
+    var balanceAdapter: IBalanceAdapter? { get }
+    var depositAdapter: IDepositAdapter? { get }
+    var transactionAdaper: ITransactionsAdapter? { get }
     var qrCodeProvider: IQRCodeProvider { get }
+    func availableBalance(feeRate: Int, address: String?) -> Decimal
+    func maximumSendAmount() -> Decimal?
+    func minimumSendAmount(address: String?) -> Decimal
+    func validate(address: String) throws
+    func fee(amount: Decimal, feeRate: Int, address: String?) -> Decimal
+    func send(amount: Decimal, address: String, feeRate: Int, sortMode: TransactionDataSortMode) -> Future<Void, Error>
 }

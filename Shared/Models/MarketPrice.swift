@@ -9,7 +9,7 @@
 import Foundation
 
 struct MarketPrice {
-    let price: Double
+    let price: Decimal
     let dayHigh: Float
     let dayLow: Float
     let changeIn24Hrs: Float
@@ -28,7 +28,7 @@ extension MarketPrice: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Keys.self)
-        price = try container.decode(Double.self, forKey: .price)
+        price = try container.decode(Decimal.self, forKey: .price)
         dayHigh = try container.decode(Float.self, forKey: .dayHigh)
         dayLow = try container.decode(Float.self, forKey: .dayLow)
         changeIn24Hrs = try container.decode(Float.self, forKey: .changeIn24Hrs)

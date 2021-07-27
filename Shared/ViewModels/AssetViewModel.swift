@@ -6,120 +6,209 @@
 //  Copyright © 2020 Tides Network. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
 import Combine
 import Charts
+import Coinpaprika
 
-final class AssetViewModel: ObservableObject, IMarketData {
+final class AssetViewModel: ObservableObject {
+    var coin: Coin
     
-    let asset: IAsset
-    
-    private let balanceProvider: IBalanceProvider
-    private let marketChangeProvider: IMarketChangeProvider
-            
-    @Published var balance = String()
-    @Published var totalValue = String()
-    @Published var price = String()
-    @Published var change = String()
-    @Published var selectedTimeframe: Timeframe = .hour
-    
-    @Published var chartDataEntries = [ChartDataEntry]()
-    @Published var currency: Currency = .fiat(USD)
+    @ObservedObject private var state: PortalState
+    @Published var selectedTimeframe: Timeframe = .day
     @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
     
+    @Published private(set) var balance = String()
+    @Published private(set) var totalValue = String()
+    @Published private(set) var price = String()
+    @Published private(set) var change = String()
+    @Published private(set) var chartDataEntries = [ChartDataEntry]()
+    @Published private(set) var currency: Currency = .fiat(USD)
+    @Published private(set) var isLoadingData: Bool = false
+        
     private let queue = DispatchQueue.main
-    
     private var subscriptions = Set<AnyCancellable>()
+    private var fiatCurrency: FiatCurrency
     
-    private var marketData: CoinMarketData {
-        marketData(for: asset.coin.code)
+    private var marketDataProvider: IMarketDataProvider
+    private let walletManager: IWalletManager
+    private let adapterManager: IAdapterManager
+    
+    var adapter: IBalanceAdapter?
+        
+    var dayHigh: String {
+        let dayHigh: Decimal = marketDataProvider.marketData(coin: coin).dayHigh
+        return "\(fiatCurrency.symbol)\((dayHigh * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
-    private var rate: Double {
-        marketRate(for: USD)
+    var dayLow: String {
+        let dayLow: Decimal = marketDataProvider.marketData(coin: coin).dayLow
+        return "\(fiatCurrency.symbol)\((dayLow * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
     
-    init(asset: IAsset) {
-        self.asset = asset
-        self.balanceProvider = asset.balanceProvider
-        self.marketChangeProvider = asset.marketChangeProvider
-                        
+    init(state: PortalState, walletManager: IWalletManager, adapterManager: IAdapterManager, marketDataProvider: IMarketDataProvider) {
+        self.state = state
+        self.coin = state.selectedCoin
+        self.walletManager = walletManager
+        self.adapterManager = adapterManager
+        
+        if let wallet = Portal.shared.walletManager.activeWallets.first(where: { $0.coin == state.selectedCoin }),
+           let adapter = Portal.shared.adapterManager.balanceAdapter(for: wallet) {
+            self.adapter = adapter
+        } else {
+            self.adapter = nil
+        }
+        
+        self.balance = "\(adapter?.balance ?? 0)"
+        self.fiatCurrency = state.fiatCurrency
+        self.marketDataProvider = marketDataProvider
+        
         updateValues()
         
-        queue.schedule(
-            after: queue.now,
-            interval: .seconds(10)
-        ){ [weak self] in
-            self?.updateValues()
-        }
-        .store(in: &subscriptions)
-        
         $selectedTimeframe
-            .removeDuplicates()
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-//                self?.selectedTimeframe = timeframe
                 self?.updateValues()
             }
             .store(in: &subscriptions)
         
-        $valueCurrencySwitchState.sink { state in
-            switch state {
-            case .fiat:
-                self.totalValue = asset.balanceProvider.totalValueString
-            case .btc:
-                self.totalValue = "0.224 BTC"
-            case .eth:
-                self.totalValue = "1.62 ETH"
+        $valueCurrencySwitchState
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                self?.updateValues()
             }
-        }
-        .store(in: &subscriptions)
+            .store(in: &subscriptions)
+        
+        $isLoadingData
+            .dropFirst()
+            .sink { [weak self] (isLoading) in
+                if !isLoading {
+                    self?.updateValues()
+                }
+            }
+            .store(in: &subscriptions)
+        
+        state.$fiatCurrency
+            .sink { [weak self] currency in
+                self?.fiatCurrency = currency
+                self?.updateValues()
+            }
+            .store(in: &subscriptions)
+        
+        state.$selectedCoin
+            .sink { [weak self] coin in
+                self?.coin = coin
+                self?.updateValues()
+            }
+            .store(in: &subscriptions)
     }
     
     deinit {
-        print("Deinit - \(asset.coin.code)")
-//        cancellable = nil
+        print("Deinit - \(coin.code)")
     }
     
     private func updateValues() {
-        balance = balanceProvider.balanceString
-        totalValue = balanceProvider.totalValueString + "\(Int.random(in: 1...8))"
-        price = balanceProvider.price + "\(Int.random(in: 1...8))"
-        change = marketChangeProvider.changeString
-        chartDataEntries = portfolioChartDataEntries()
-    }
-    
-    private func portfolioChartDataEntries() -> [ChartDataEntry] {
-        var chartDataEntries = [ChartDataEntry]()
-        var points = [MarketSnapshot]()
+        guard let ticker = marketDataProvider.ticker(coin: coin) else { return }
         
-        let step = 4
+        self.balance = "\(adapter?.balance ?? 0)"
+        
+        price = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
+        
+        let currentPrice: Decimal
+        
+        switch valueCurrencySwitchState {
+        case .fiat:
+            totalValue = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
+            currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
+        case .btc:
+            totalValue = "\((ticker[.btc].price).rounded(toPlaces: 2)) BTC"
+            currentPrice = ticker[.btc].price
+        case .eth:
+            totalValue = "\((ticker[.eth].price).rounded(toPlaces: 2)) ETH"
+            currentPrice = ticker[.eth].price
+        }
+        let percentChange: Decimal
         
         switch selectedTimeframe {
-        case .hour:
-            points = marketData.hourPoints
         case .day:
-            points = marketData.dayPoints
+            percentChange = ticker[.usd].percentChange24h
         case .week:
-            points = marketData.weekPoints.enumerated().compactMap {
-                $0.offset % step == 0 ? $0.element : nil
-            }
+            percentChange = ticker[.usd].percentChange7d
         case .month:
-            points = marketData.monthPoints
+            percentChange = ticker[.usd].percentChange30d
         case .year:
-            points = marketData.yearPoints.enumerated().compactMap {
-                $0.offset % step == 0 ? $0.element : nil
-            }
-        case .allTime:
-            return []
+            percentChange = ticker[.usd].percentChange1y
+        }
+        
+        change = change(currentPrice: currentPrice, changeInPercents: percentChange)
+        chartDataEntries = assetChartDataEntries()
+    }
+    
+    private func change(currentPrice: Decimal, changeInPercents: Decimal) -> String {
+        switch valueCurrencySwitchState {
+        case .fiat:
+            return "\(changeInPercents > 0 ? "+" : "-")\(fiatCurrency.symbol)\(abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)) (\(changeInPercents.double.rounded(toPlaces: 2))%)"
+        case .btc:
+            return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)) BTC (\(changeInPercents.double.rounded(toPlaces: 2))%)"
+        case .eth:
+            return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)) ETH (\(changeInPercents.double.rounded(toPlaces: 2))%)"
+        }
+    }
+    
+    var changeLabelColor: Color {
+        let priceChange: Decimal?
+        switch selectedTimeframe {
+        case .day:
+            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange24h
+        case .week:
+            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange7d
+        case .month:
+            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange30d
+        case .year:
+            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange1y
+        }
+        
+        guard let pChange = priceChange else {
+            return .white
+        }
+        
+        return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
+    }
+    
+    private func assetChartDataEntries() -> [ChartDataEntry] {
+        var chartDataEntries = [ChartDataEntry]()
+        var points = [Decimal]()
+        
+//        let step = 4
+        
+        switch selectedTimeframe {
+        case .day:
+            points = marketDataProvider.marketData(coin: coin).dayPoints
+        case .week:
+            points = marketDataProvider.marketData(coin: coin).weekPoints
+        case .month:
+            points = marketDataProvider.marketData(coin: coin).monthPoints
+        case .year:
+            points = marketDataProvider.marketData(coin: coin).yearPoints
         }
         
         let xIndexes = Array(0..<points.count).map { x in Double(x) }
         for (index, point) in points.enumerated() {
-            let dataEntry = ChartDataEntry(x: xIndexes[index], y: Double(point.close))
+            let dataEntry = ChartDataEntry(x: xIndexes[index], y: point.double)
             chartDataEntries.append(dataEntry)
         }
         
         return chartDataEntries
+    }
+}
+
+extension AssetViewModel {
+    static func config() -> AssetViewModel {
+        let state = Portal.shared.state
+        let walletManager = Portal.shared.walletManager
+        let adapterManager = Portal.shared.adapterManager
+        let marketDataProvider = Portal.shared.marketDataProvider
+        
+        return AssetViewModel(state: state, walletManager: walletManager, adapterManager: adapterManager, marketDataProvider: marketDataProvider)
     }
 }

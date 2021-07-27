@@ -13,9 +13,9 @@ struct FiatCurrency {
     let name: String
     let rate: Double
     
-    var symbol: String? {
+    var symbol: String {
         get {
-            getSymbolForCurrencyCode(code: code)
+            getSymbolForCurrencyCode(code: code) ?? "-"
         }
     }
     

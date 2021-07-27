@@ -7,49 +7,16 @@
 
 import SwiftUI
 import Charts
+import Coinpaprika
 
 struct AssetView: View {
-    
-    enum Route {
-        case value, transactions, alerts
-    }
-    
-    @Binding var receiveAsset: Bool
-    @Binding var sendAsset: Bool
-    @Binding var sendAssetToExchange: Bool
-    @Binding var withdrawAssetFromExchange: Bool
-    @Binding var allTxs: Bool
-    @Binding var route: Route
+    @State private var route: AssetViewRoute = .value
     
     @ObservedObject private var viewModel: AssetViewModel
-    
-    init(viewModel: WalletScene.ViewModel) {
-        self.viewModel = AssetViewModel(asset: viewModel.selectedAsset)
+    @ObservedObject private var state = Portal.shared.state
         
-        self._receiveAsset = Binding(
-            get: { viewModel.receiveAsset },
-            set: { viewModel.receiveAsset = $0 }
-        )
-        self._sendAsset = Binding(
-            get: { viewModel.sendAsset },
-            set: { viewModel.sendAsset = $0 }
-        )
-        self._sendAssetToExchange = Binding(
-            get: { viewModel.sendAssetToExchange },
-            set: { viewModel.sendAssetToExchange = $0 }
-        )
-        self._withdrawAssetFromExchange = Binding(
-            get: { viewModel.withdrawAssetFromExchange },
-            set: { viewModel.withdrawAssetFromExchange = $0 }
-        )
-        self._route = Binding(
-            get: { viewModel.assetViewRoute },
-            set: { viewModel.assetViewRoute = $0 }
-        )
-        self._allTxs = Binding(
-            get: { viewModel.allTransactions },
-            set: { viewModel.allTransactions = $0 }
-        )
+    init(viewModel: AssetViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -61,42 +28,44 @@ struct AssetView: View {
                 Spacer().frame(height: 24)
                 
                 HStack {
-                    viewModel.asset.coin.icon
+                    viewModel.coin.icon
                         .resizable()
                         .frame(width: 24, height: 24)
-                    Text("\(viewModel.asset.coin.code)")
+                    Text("\(viewModel.coin.name)")
                         .font(.mainFont(size: 15))
+                        .foregroundColor(Color.assetValueLabel)
                     Spacer()
                 }
                 
                 HStack {
-                    Text("\(viewModel.balance) \(viewModel.asset.coin.code)")
+                    Text("\(viewModel.balance) \(viewModel.coin.code)")
                         .font(.mainFont(size: 28))
                         .padding(.bottom, 15)
+                        .foregroundColor(Color.assetValueLabel)
                     Spacer()
                 }
                 
                 VStack {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation(.easeIn(duration: 0.2)) {
-                                receiveAsset.toggle()
+                            withAnimation {
+                                state.receiveAsset.toggle()
                             }
                         }
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation(.easeIn(duration: 0.2)) {
-                                sendAsset.toggle()
+                            withAnimation {
+                                state.sendAsset.toggle()
                             }
                         }
                     }
-                    PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: true) {
+                    PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
                         withAnimation(.easeIn(duration: 0.2)) {
-                            sendAssetToExchange.toggle()
+                            
                         }
                     }
-                    PButton(label: "Withdraw from exchange", width: 256, height: 32, fontSize: 12, enabled: true) {
+                    PButton(label: "Withdraw from exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
                         withAnimation(.easeIn(duration: 0.2)) {
-                            withdrawAssetFromExchange.toggle()
+                            
                         }
                     }
                 }
@@ -109,24 +78,21 @@ struct AssetView: View {
                 case .value:
                     MarketValueView(
                         timeframe: $viewModel.selectedTimeframe,
-                        totalValue: $viewModel.totalValue,
-                        change: $viewModel.change,
-                        chartDataEntries: $viewModel.chartDataEntries,
                         valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
+                        fiatCurrency: $state.fiatCurrency,
+                        totalValue: viewModel.totalValue,
+                        change: viewModel.change,
+                        high: viewModel.dayHigh,
+                        low: viewModel.dayLow,
+                        chartDataEntries: viewModel.chartDataEntries,
                         type: .asset
                     )
-                    .transition(.identity)
                 case .transactions:
-                    RecentTxsView(coin: viewModel.asset.coin, showAllTxs: $allTxs)
+                    RecentTxsView(coin: state.selectedCoin)
                         .transition(.identity)
                 case .alerts:
-                    VStack {
-                        Spacer()
-                        Text("Alerts")
-                        Spacer()
-                    }
-                    .padding()
-//                    .transition(.move(edge: .bottom))
+                    AlertsView(coin: viewModel.coin, createAlert: $state.createAlert)
+                        .transition(.identity)
                 }
             }
             .padding(.horizontal, 24)
@@ -138,12 +104,11 @@ struct AssetView: View {
 struct AssetView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Color.portalGradientBackground
+            Color.portalWalletBackground
             Color.black.opacity(0.58)
-            AssetView(viewModel: .init(name: "Personal", assets: WalletMock().assets))
+            AssetView(viewModel: AssetViewModel.config())
         }
         .frame(width: 304, height: 656)
         .previewLayout(PreviewLayout.sizeThatFits)
-//        .padding()
     }
 }

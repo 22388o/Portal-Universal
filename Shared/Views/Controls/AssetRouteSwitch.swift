@@ -9,16 +9,14 @@ import SwiftUI
 import Combine
 
 struct AssetRouteSwitch: View {
-    @Binding var route: AssetView.Route
-    @State var alignment: Alignment = .leading
+    @Binding var route: AssetViewRoute
+    @State private var alignment: Alignment = .leading
     
     var body: some View {
         ZStack(alignment: .bottom) {
             HStack(spacing: 2) {
                 Button(action: {
-                    withAnimation {
-                        route = .value
-                    }
+                    route = .value
                 }) {
                     Text("Value")
                         .foregroundColor(route == .value ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
@@ -28,9 +26,7 @@ struct AssetRouteSwitch: View {
                 Spacer()
                 
                 Button(action: {
-                    withAnimation {
-                        route = .transactions
-                    }
+                    route = .transactions
                 }) {
                     Text("Transactions")
                         .foregroundColor(route == .transactions ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
@@ -40,9 +36,7 @@ struct AssetRouteSwitch: View {
                 Spacer()
                 
                 Button(action: {
-                    withAnimation {
-                        route = .alerts
-                    }
+                    route = .alerts
                 }) {
                     Text("Alerts")
                         .foregroundColor(route == .alerts ? Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
@@ -53,20 +47,20 @@ struct AssetRouteSwitch: View {
             .padding(.vertical, 12)
             
             ZStack(alignment: alignment) {
-                Divider()
+                Rectangle()
+                    .fill(Color.exchangerFieldBorder)
+                    .frame(height: 1)
                 Divider().background(Color.gray).frame(width: 75, height: 2)
             }
         }
         .onReceive(Just(route), perform: { route in
-            withAnimation {
-                switch route {
-                case .value:
-                    alignment = .leading
-                case .transactions:
-                    alignment = .center
-                case .alerts:
-                    alignment = .trailing
-                }
+            switch route {
+            case .value:
+                alignment = .leading
+            case .transactions:
+                alignment = .center
+            case .alerts:
+                alignment = .trailing
             }
         })
     }

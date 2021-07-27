@@ -18,16 +18,17 @@ struct AssetSearchField: View {
                 .frame(height: 40)
             
             if search.isEmpty {
-                Text("Find asset...")
-                    .font(.mainFont(size: 15))
-                    .foregroundColor(Color.white.opacity(0.8))
-                    .padding(.horizontal, 21)
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                    Text("Find asset...")
+                }
+                .padding(.horizontal, 21)
             }
             TextField(String(), text: $search)
-                .font(.mainFont(size: 15))
-                .foregroundColor(Color.white.opacity(0.5))
                 .padding(.horizontal, 21)
         }
+        .font(.mainFont(size: 15))
+        .foregroundColor(Color.white.opacity(0.5))
     }
 }
 
@@ -39,7 +40,7 @@ struct AssetSearchField_Previews: PreviewProvider {
             .padding()
             .background(
                 ZStack {
-                    Color.portalGradientBackground
+                    Color.portalWalletBackground
                     Color.black.opacity(0.58)
                 }
             )

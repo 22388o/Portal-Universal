@@ -9,7 +9,7 @@
 import Foundation
 
 protocol IBalanceProvider {
-    func balance(currency: Currency) -> Double
+    func balance(currency: Currency) -> Decimal
     var balanceString: String { get }
     var totalValueString: String { get }
     var price: String { get }

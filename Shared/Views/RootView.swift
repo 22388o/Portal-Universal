@@ -8,24 +8,27 @@
 import SwiftUI
 
 struct RootView: View {
-    @ObservedObject private var walletService: WalletsService
-
-    init(walletService: WalletsService) {
-        self.walletService = walletService
-    }
-    
+    @ObservedObject private var state = Portal.shared.state
+        
     var body: some View {
-        if let wallet = walletService.currentWallet {
-            WalletScene(wallet: wallet)
-        } else {
-            CreateWalletScene(walletService: walletService)
+        ZStack {
+            Color.portalWalletBackground
+            
+            switch state.current {
+            case .currentAccount:
+                WalletScene()
+            case .createAccount:
+                CreateWalletScene()
+            case .restoreAccount:
+                RestoreWalletView()
+            }
         }
     }
 }
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
-        RootView(walletService: WalletsService())
+        RootView()
             .iPadLandscapePreviews()
     }
 }

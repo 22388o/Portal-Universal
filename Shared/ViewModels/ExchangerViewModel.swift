@@ -8,50 +8,64 @@
 
 import Foundation
 import Combine
+import Coinpaprika
 
-final class ExchangerViewModel: ObservableObject, IMarketData {
-    let asset: Coin
+final class ExchangerViewModel: ObservableObject {
+    let coin: Coin
     let fiat: FiatCurrency
     
     @Published var assetValue = String()
     @Published var fiatValue = String()
     
-    private var marketData: CoinMarketData {
-        marketData(for: asset.code)
-    }
-    
     private var price: Double {
-        9320.24//marketData.priceData?.price ?? 9320.24
-    }
-    
-    private var rate: Double {
-        marketRate(for: USD)
+        ((ticker?[.usd].price ?? 0) * Decimal(fiat.rate)).double
     }
     
     private var subscriptions = Set<AnyCancellable>()
     
-    init(asset: Coin, fiat: FiatCurrency) {
+    var ticker: Ticker? {
+        Portal.shared.marketDataProvider.ticker(coin: coin)
+    }
+    
+    init(coin: Coin, fiat: FiatCurrency) {
         print("ExchangerViewModel init")
 
-        self.asset = asset
+        self.coin = coin
         self.fiat = fiat
         
         $assetValue
             .removeDuplicates()
             .map { Double($0) ?? 0 }
-            .map { [weak self] in "\(($0 * (self?.price ?? 1.0)).rounded(toPlaces: 2))" }
-            .sink { [weak self] in self?.fiatValue = $0 }
+            .map { [weak self] in
+                "\(($0 * (self?.price ?? 1.0)).rounded(toPlaces: 2))"
+            }
+            .sink { [weak self] value in
+                if value == "0.0" {
+                    self?.fiatValue = "0"
+                } else {
+                    self?.fiatValue = value
+                }
+            }
             .store(in: &subscriptions)
         
         $fiatValue
             .removeDuplicates()
             .map { Double($0) ?? 0 }
-            .map { [weak self] in "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6))" }
-            .sink { [weak self] in
-                print($0)
-                self?.assetValue = $0
+            .map { [weak self] in
+                "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6))"
+            }
+            .sink { [weak self] value in
+                if value == "0.0" {
+                    self?.assetValue = "0"
+                } else {
+                    self?.assetValue = value
+                }
             }
             .store(in: &subscriptions)
+    }
+    
+    func reset() {
+        assetValue = String()
     }
     
     deinit {

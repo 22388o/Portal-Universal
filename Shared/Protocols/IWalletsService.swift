@@ -9,11 +9,11 @@
 import Foundation
 import SwiftUI
 
-protocol IWalletsService: ObservableObject {
+protocol IWalletsService {
     var currentWallet: IWallet? { get }
     var wallets: [IWallet]? { get }
-    
-    func createWallet(model: NewWalletModel)
+    func createWallet(model: AccountModel)
+    func switchWallet(_ wallet: IWallet)
+    func deleteWallet(_ wallet: AccountRecord)
     func restoreWallet()
-    func setupWallet(id: String)
 }

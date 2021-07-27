@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PButton: View {
+    var bgColor: Color? = Color.pButtonEnabledBackground
     let label: String
     let width: CGFloat
     let height: CGFloat
@@ -23,7 +24,7 @@ struct PButton: View {
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: height/2, style: .continuous)
-                    .fill(enabled ? Color.pButtonEnabledBackground : Color.pButtonDisableBackground)
+                    .fill(enabled ? bgColor! : Color.pButtonDisableBackground)
                     .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 Text(label)
                     .font(.mainFont(size: fontSize))
@@ -31,6 +32,7 @@ struct PButton: View {
             }
         }
         .frame(width: width, height: height)
+        .disabled(!enabled)
     }
 }
 

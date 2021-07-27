@@ -15,7 +15,6 @@ struct PTextField: View {
 
     let width: CGFloat
     let height: CGFloat
-//    let enabled: Bool
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -35,6 +34,7 @@ struct PTextField: View {
                     .font(.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
                     .autocapitalization(upperCase ? .sentences : .none)
+                    .disableAutocorrection(true)
             }
             .padding(.horizontal, 24)
         }

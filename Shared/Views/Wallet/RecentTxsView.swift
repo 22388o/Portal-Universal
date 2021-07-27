@@ -8,19 +8,18 @@
 import SwiftUI
 
 struct RecentTxsView: View {
-    let coin: Coin
-    @Binding var showAllTxs: Bool
+    @ObservedObject private var viewModel: TxsViewModel
+    @ObservedObject private var state = Portal.shared.state
     
-    @FetchRequest(
-        entity: DBTx.entity(),
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \DBTx.timestamp, ascending: false),
-        ]
-//        predicate: NSPredicate(format: "coin == %@", code)
-    ) private var allTxs: FetchedResults<DBTx>
+    init(coin: Coin) {
+        guard let viewModel = TxsViewModel.config(coin: coin) else {
+            fatalError("Cannot config TxsViewModel")
+        }
+        self.viewModel = viewModel
+    }
     
     var body: some View {
-        if allTxs.filter({$0.coin == coin.code}).isEmpty {
+        if viewModel.txs.isEmpty {
             VStack {
                 Spacer()
                 Text("There is no transactions yet")
@@ -29,42 +28,57 @@ struct RecentTxsView: View {
                 Spacer()
             }
         } else {
-            VStack {
-                HStack {
-                    Text("Recent activity")
-                        .font(.mainFont(size: 14))
-                        .foregroundColor(Color.coinViewRouteButtonActive)
-                }
-                .padding(.top)
+            VStack(spacing: 0) {
+                Text("Recent activity")
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.coinViewRouteButtonActive)
+                    .padding(.vertical)
                 
                 ScrollView {
-                    LazyVStack(alignment: .leading) {
-                        ForEach(allTxs.filter {$0.coin == coin.code}) { tx in
-                            HStack(spacing: 8) {
-                                Text("Sent \(tx.amount ?? 0) \(tx.coin ?? "?")")
-                                    .frame(width: 120)
+                    LazyVStack(alignment: .leading, spacing: 0) {
+                        Rectangle()
+                            .fill(Color.exchangerFieldBorder)
+                            .frame(height: 1)
+                        
+                        ForEach(viewModel.txs, id: \.uid) { tx in
+                            VStack(spacing: 4) {
+                                HStack(spacing: 8) {
+                                    VStack {
+                                        Text(viewModel.title(tx: tx))
+                                    }
                                     .font(.mainFont(size: 12))
                                     .foregroundColor(Color.coinViewRouteButtonActive)
-                                Spacer()
-                                Text("\(tx.timestamp ?? Date())")
-                                    .lineLimit(1)
-                                    .font(.mainFont(size: 12))
-                                    .foregroundColor(Color.coinViewRouteButtonInactive)
-                                Spacer()
+                                    Spacer()
+                                    Text(viewModel.date(tx: tx))
+                                        .lineLimit(1)
+                                        .font(.mainFont(size: 12))
+                                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                                }
+                                
+                                HStack {
+                                    Text(viewModel.confimations(tx: tx))
+                                        .font(.mainFont(size: 12))
+                                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                                    Spacer()
+                                }
                             }
-                            .frame(height: 40)
+                            .frame(height: 56)
+                            
+                            Rectangle()
+                                .fill(Color.exchangerFieldBorder)
+                                .frame(height: 1)
                         }
-                        .font(.mainFont(size: 12))
                     }
                 }
                 .frame(width: 256)
                 
                 PButton(label: "See all transactions", width: 256, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
-                        showAllTxs.toggle()
+                        state.allTransactions.toggle()
                     }
                 }
                 .padding(.bottom, 41)
+                .padding(.top, 20)
             }
         }
     }
@@ -72,6 +86,6 @@ struct RecentTxsView: View {
 
 struct RecentTxsView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentTxsView(coin: Coin.bitcoin(), showAllTxs: .constant(false))
+        RecentTxsView(coin: Coin.bitcoin())
     }
 }

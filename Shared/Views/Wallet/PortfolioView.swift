@@ -8,17 +8,20 @@
 import SwiftUI
 
 struct PortfolioView: View {
-    @StateObject var viewModel: PortfolioViewModel
+    @ObservedObject var viewModel: PortfolioViewModel
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 0) {
                 MarketValueView(
                     timeframe: $viewModel.selectedTimeframe,
-                    totalValue: $viewModel.totalValue,
-                    change: $viewModel.change,
-                    chartDataEntries: $viewModel.chartDataEntries,
                     valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
+                    fiatCurrency: .constant(USD),
+                    totalValue: viewModel.totalValue,
+                    change: viewModel.change,
+                    high: "$0.0",
+                    low: "$0.0",
+                    chartDataEntries: viewModel.chartDataEntries,
                     type: .portfolio
                 )
                 .padding(.top, 12)
@@ -56,7 +59,7 @@ struct PortfolioView: View {
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(2)
                     
-                    AssetAllocationView(assets: self.viewModel.assets, showTotalValue: false)
+                    AssetAllocationView(assets: viewModel.assets, showTotalValue: false)
                         .frame(height: 150)
                 }
             }
@@ -71,67 +74,14 @@ struct PortfolioView: View {
     }		
 }
 
-struct AssetAllocationViewModel: IPieChartModel {
-    var assets: [IAsset]
-    
-    init(assets: [IAsset] = WalletMock().assets.map{ $0 }) {
-        print("Asset allocation view model init")
-        self.assets = assets
-    }
-}
-
-import Charts
-
-struct PieChartUIKitWrapper: UIViewRepresentable {
-    let viewModel: IPieChartModel
-
-    init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel()) {
-        self.viewModel = viewModel
-    }
-    
-    func makeUIView(context: Context) -> PieChartView {
-        let pieChart = PieChartView()
-        pieChart.applyStandardSettings()
-        pieChart.data = viewModel.assetAllocationChartData()
-        return pieChart
-    }
-
-    func updateUIView(_ uiView: PieChartView, context: Context) {}
-}
-
-struct AssetAllocationView: View {
-    let viewModel: AssetAllocationViewModel
-    let showTotalValue: Bool
-    
-    init(
-        assets: [IAsset],
-        showTotalValue: Bool = true
-    ) {
-        print("Asset allocation view init")
-        self.viewModel = AssetAllocationViewModel(assets: assets)
-        self.showTotalValue = showTotalValue
-    }
-    
-    var body: some View {
-        ZStack {
-            if showTotalValue {
-                Text("$" + "\(viewModel.totalPortfolioValue)")
-                    .font(Font.mainFont(size: 16))
-                    .foregroundColor(Color.white)
-            }
-            PieChartUIKitWrapper(viewModel: viewModel)
-        }
-    }
-}
-
 struct PortfolioView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Color.portalGradientBackground
+            Color.portalWalletBackground
             Color.black.opacity(0.58)
             PortfolioView(viewModel: .init(assets: WalletMock().assets))
         }
-        .frame(width: 304, height: 700)
+        .frame(width: 304, height: 900)
         .previewLayout(PreviewLayout.sizeThatFits)
     }
 }

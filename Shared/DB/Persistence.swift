@@ -43,8 +43,7 @@ extension PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        let newWalletModel = NewWalletModel(name: "Wallet for previews", seed: NewWalletModel.randomSeed())
-        let tempWallet = DBWallet.init(model: newWalletModel, context: viewContext)
+        let tempWallet = AccountRecord.init(id: UUID().uuidString, name: "mocked", bip: .bip44, context: viewContext)
         
         do {
             try viewContext.save()

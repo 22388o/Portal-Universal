@@ -7,6 +7,14 @@
 //
 
 import Foundation
+import Coinpaprika
+
+protocol IMarketDataProvider {
+    var fiatCurrencies: [FiatCurrency] { get }
+    var tickers: [Ticker]? { get }
+    func ticker(coin: Coin) -> Ticker?
+    func marketData(coin: Coin) -> CoinMarketData
+}
 
 protocol IMarketChangeProvider {
     var changeString: String { get }
