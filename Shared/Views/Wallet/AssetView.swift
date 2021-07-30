@@ -48,12 +48,12 @@ struct AssetView: View {
                 VStack {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation {
+                            withAnimation(.easeIn(duration: 0.2)) {
                                 state.receiveAsset.toggle()
                             }
                         }
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation {
+                            withAnimation(.easeIn(duration: 0.2)) {
                                 state.sendAsset.toggle()
                             }
                         }

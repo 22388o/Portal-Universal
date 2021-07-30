@@ -26,12 +26,32 @@ class AccountsViewModel: ObservableObject {
     }
     
     func switchAccount(account: Account) {
-        manager.setActiveAccount(id: account.id)
-        activeAcount = manager.activeAccount
+        state.switchWallet = false
+        state.loading = true
+        state.selectedCoin = Coin.bitcoin()
+        
+        setActiveAccount(id: account.id)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            withAnimation {
+                self.state.loading = false
+            }
+        }
+    }
+    
+    func setActiveAccount(id: String) {
+        DispatchQueue.global().async {
+            self.manager.setActiveAccount(id: id)
+            self.activeAcount = self.manager.activeAccount
+        }
     }
     
     func delete(account: Account) {
         manager.delete(account: account)
+    }
+    
+    deinit {
+        print("Deinit")
     }
 }
 
@@ -77,11 +97,12 @@ struct AccountsView: View {
                                 }
                             )
                             .onTapGesture {
-                                withAnimation {
-                                    if account != viewModel.activeAcount {
-                                        viewModel.switchAccount(account: account)
+                                if account != viewModel.activeAcount {
+                                    viewModel.switchAccount(account: account)
+                                } else {
+                                    withAnimation(.easeIn(duration: 0.3)) {
+                                        self.viewModel.state.switchWallet.toggle()
                                     }
-                                    viewModel.state.switchWallet.toggle()
                                 }
                             }
                         }
