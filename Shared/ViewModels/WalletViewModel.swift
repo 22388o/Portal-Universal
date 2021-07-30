@@ -15,7 +15,7 @@ class WalletViewModel: ObservableObject {
     var fiatCurrencies: [FiatCurrency] {
         marketDataProvider.fiatCurrencies
     }
-        
+            
     private var cancellables = Set<AnyCancellable>()
     private var adapterManager: IAdapterManager
     private var walletManager: IWalletManager
@@ -31,20 +31,30 @@ class WalletViewModel: ObservableObject {
     
     private func subscribe() {
         adapterManager.adapterdReadyPublisher
-            .debounce(for: 0.5, scheduler: RunLoop.main)
+            .receive(on: DispatchQueue.global())
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.items = self.walletManager.activeWallets.compactMap({ wallet in
-                    let coin = wallet.coin
-                    guard let adapter = self.adapterManager.balanceAdapter(for: wallet) else { return nil }
-                    return WalletItem(coin: coin, adapter: adapter)
-                })
+                
+                let configuredItems = self.configuredItems()
+                
+                DispatchQueue.main.async {
+                    self.items = configuredItems
+                }
             }
             .store(in: &cancellables)
     }
     
+    private func configuredItems() -> [WalletItem] {
+        walletManager.activeWallets.compactMap({ wallet in
+            let coin = wallet.coin
+            guard let adapter = adapterManager.balanceAdapter(for: wallet) else { return nil }
+            let viewModel = AssetItemViewModel(coin: coin, adapter: adapter, selectedTimeFrame: .day, fiatCurrency: USD, ticker: marketDataProvider.ticker(coin: coin))
+            return WalletItem(coin: coin, viewModel: viewModel)
+        })
+    }
+    
     deinit {
-        print("VM deinited")
+        print("WalletViewModel deinited")
     }
 }
 

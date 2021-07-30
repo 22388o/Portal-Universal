@@ -45,44 +45,43 @@ struct WalletView: View {
                         Spacer()
                     }
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 8) {
-                            if state.searchRequest.isEmpty {
-                                ForEach(viewModel.items, id: \.coin.code) { item in
-                                    AssetItemView(
-                                        coin: item.coin,
-                                        adapter: item.adapter,
-                                        selected: state.selectedCoin.code == item.coin.code,
-                                        fiatCurrency: state.fiatCurrency,
-                                        onTap: {
-                                            if item.coin.code != state.selectedCoin.code {
-                                                state.selectedCoin = item.coin
-                                            }
+                    if state.searchRequest.isEmpty {
+                        List {
+                            ForEach(viewModel.items, id: \.id) { item in
+                                AssetItemView(
+                                    coin: item.coin,
+                                    viewModel: item.viewModel,
+                                    selected: state.selectedCoin.code == item.coin.code,
+                                    onTap: {
+                                        if item.coin.code != state.selectedCoin.code {
+                                            state.selectedCoin = item.coin
                                         }
-                                    )
-                                    .padding(.horizontal, 18)
-                                }
-                            } else {
-                                ForEach(viewModel.items.filter { $0.coin.code.lowercased().contains(state.searchRequest.lowercased()) || $0.coin.name.lowercased().contains(state.searchRequest.lowercased())}, id: \.coin.code) { item in
-                                    AssetItemView(
-                                        coin: item.coin,
-                                        adapter: item.adapter,
-                                        selected: state.selectedCoin.code == item.coin.code,
-                                        fiatCurrency: state.fiatCurrency,
-                                        onTap: {
-                                            if item.coin.code != state.selectedCoin.code {
-                                                state.selectedCoin = item.coin
-                                            }
-                                        }
-                                    )
-                                    .padding(.horizontal, 18)
-                                }
+                                    }
+                                )
+                                .listRowBackground(Color.clear)
                             }
                         }
-                        .offset(y: 20)
-                        .padding(.bottom, 40)
+                    } else {
+                        List {
+                            ForEach(
+                                viewModel.items.filter {
+                                    $0.coin.code.lowercased().contains(state.searchRequest.lowercased()) ||
+                                        $0.coin.name.lowercased().contains(state.searchRequest.lowercased())}, id: \.id)
+                            { item in
+                                AssetItemView(
+                                    coin: item.coin,
+                                    viewModel: item.viewModel,
+                                    selected: state.selectedCoin.code == item.coin.code,
+                                    onTap: {
+                                        if item.coin.code != state.selectedCoin.code {
+                                            state.selectedCoin = item.coin
+                                        }
+                                    }
+                                )
+                                .listRowBackground(Color.clear)
+                            }
+                        }
                     }
-                    .padding(.horizontal, 6)
                 }
             }
         }

@@ -19,6 +19,9 @@ struct PortalApp: App {
         #if os(iOS)
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.lightActiveLabel)], for: .normal)
+        UITableView.appearance().separatorStyle = .none
+        UITableViewCell.appearance().backgroundColor = .clear
+        UITableView.appearance().backgroundColor = .clear
         #endif
     }
 

@@ -13,15 +13,9 @@ struct AssetItemView: View {
     let selected: Bool
     let onTap: () -> ()
             
-    init(coin: Coin, adapter: IBalanceAdapter, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
+    init(coin: Coin, viewModel: AssetItemViewModel, selected: Bool, onTap: @escaping () -> ()) {
         self.coin = coin
-        self.viewModel = .init(
-            coin: coin,
-            adapter: adapter,
-            selectedTimeFrame: .day,
-            fiatCurrency: fiatCurrency,
-            ticker: Portal.shared.marketDataProvider.ticker(coin: coin)
-        )
+        self.viewModel = viewModel
         self.selected = selected
         self.onTap = onTap
     }
@@ -74,17 +68,15 @@ struct AssetItemView_Previews: PreviewProvider {
         Group {
             AssetItemView(
                 coin: Coin.bitcoin(),
-                adapter: MockedBalanceAdapter(),
+                viewModel: AssetItemViewModel(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter(), selectedTimeFrame: .day, fiatCurrency: USD, ticker: nil),
                 selected: true,
-                fiatCurrency: USD,
                 onTap: {}
             )
             
             AssetItemView(
                 coin: Coin.bitcoin(),
-                adapter: MockedBalanceAdapter(),
+                viewModel: AssetItemViewModel(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter(), selectedTimeFrame: .day, fiatCurrency: USD, ticker: nil),
                 selected: false,
-                fiatCurrency: USD,
                 onTap: {}
             )
         }
