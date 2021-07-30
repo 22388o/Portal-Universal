@@ -50,6 +50,8 @@ final class AssetItemViewModel: ObservableObject {
     private let fiatCurrency: FiatCurrency
     
     init(coin: Coin, adapter: IBalanceAdapter, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency, ticker: Ticker?) {
+        print("\(coin.code) view model init")
+        
         self.coin = coin
         self.adapter = adapter
         self.ticker = ticker
@@ -110,5 +112,9 @@ final class AssetItemViewModel: ObservableObject {
         }
         
         totalValue = "\(fiatCurrency.symbol)" + "\((spendable * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
+    }
+    
+    deinit {
+        print("\(coin.code) view model deinit")
     }
 }
