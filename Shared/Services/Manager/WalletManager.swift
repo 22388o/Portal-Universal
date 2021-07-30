@@ -36,6 +36,12 @@ class WalletManager {
                 self?.handleUpdate(activeAccount: account)
             }
             .store(in: &cancellable)
+        
+        storage.onWalletsUpdatePublisher
+            .sink { [weak self] account in
+                self?.handleUpdate(activeAccount: accountManager.activeAccount)
+            }
+            .store(in: &cancellable)
     }
 
     private func notify() {
