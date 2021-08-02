@@ -17,6 +17,10 @@ final class MarketDataProvider: ObservableObject {
 }
 
 extension MarketDataProvider: IMarketDataProvider {
+    func requestHistoricalData(coin: Coin, timeframe: Timeframe) {
+        repository.requestHistoricalData(coin: coin, timeframe: timeframe)
+    }
+    
     var fiatCurrencies: [FiatCurrency] {
         repository.fiatCurrencies
     }
