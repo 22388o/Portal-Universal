@@ -7,10 +7,6 @@
 **/*.playground/**/timeline.xctimeline
 .idea/
 
-# Build
-build/
-DerivedData/
-*.ipa
 
 # CocoaPods
 # Pods/
