@@ -58,9 +58,12 @@ struct WalletView: View {
                                         }
                                     }
                                 )
+                                .id(item.id)
                                 .listRowBackground(Color.clear)
+                                .listRowInsets(.init(top: 4, leading: 4, bottom: 4, trailing: 4))
                             }
                         }
+                        .listStyle(SidebarListStyle())
                     } else {
                         List {
                             ForEach(
@@ -78,9 +81,12 @@ struct WalletView: View {
                                         }
                                     }
                                 )
+                                .id(item.id)
                                 .listRowBackground(Color.clear)
+                                .listRowInsets(.init(top: 4, leading: 4, bottom: 4, trailing: 4))
                             }
                         }
+                        .listStyle(SidebarListStyle())
                     }
                 }
             }
