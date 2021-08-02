@@ -65,11 +65,13 @@ final class Portal: ObservableObject {
         )
         
         marketDataProvider = MarketDataProvider(repository: marketDataRepository)
-                
+                        
         let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: bdStorage)
         accountManager = AccountManager(accountStorage: accountStorage)
         
-        let coinManager: ICoinManager = CoinManager()
+        let coinStorage = CoinStorage(marketData: marketDataRepository)
+        let coinManager: ICoinManager = CoinManager(storage: coinStorage)
+        
         let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)
         walletManager = WalletManager(accountManager: accountManager, storage: walletStorage)
         
@@ -81,19 +83,14 @@ final class Portal: ObservableObject {
         notificationService = NotificationService(adapterManager: adapterManager)
                         
         marketDataRepository.$dataReady
-            .receive(on: RunLoop.current)
             .sink(receiveValue: { [weak self] ready in
-                if ready {
-                    self?.state.loading = false
-                    self?.state.selectedCoin = Coin.bitcoin()
-                } else {
+                if !ready {
                     self?.state.loading = true
                 }
             })
             .store(in: &anyCancellables)
         
         adapterManager.adapterdReadyPublisher
-            .receive(on: RunLoop.current)
             .sink { [weak self] ready in
                 if ready && self?.accountManager.activeAccount != nil {
                     if self?.state.current != .currentAccount {
@@ -101,6 +98,16 @@ final class Portal: ObservableObject {
                     }
                 }
             }
+            .store(in: &anyCancellables)
+        
+        coinManager.onCoinsUpdatePublisher
+            .debounce(for: 2, scheduler: RunLoop.main)
+            .sink(receiveValue: { [weak self] coins in
+                if !coins.isEmpty {
+                    self?.state.loading = false
+                    self?.state.selectedCoin = Coin.bitcoin()
+                }
+            })
             .store(in: &anyCancellables)
     }
     

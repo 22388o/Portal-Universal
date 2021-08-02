@@ -58,9 +58,9 @@ struct ReceiveAssetsView: View {
                         .stroke(Color.black, lineWidth: 8)
                 )
             
-            coin.icon
-                .resizable()
-                .frame(width: 64, height: 64)
+            CoinImageView(size: 64, url: coin.icon, placeholderForegroundColor: .black)
+                .background(Color.white)
+                .cornerRadius(32)
                 .offset(y: -32)
             
             HStack {

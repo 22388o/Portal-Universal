@@ -13,15 +13,9 @@ struct AssetItemView: View {
     let selected: Bool
     let onTap: () -> ()
             
-    init(coin: Coin, adapter: IBalanceAdapter, selected: Bool, fiatCurrency: FiatCurrency, onTap: @escaping () -> ()) {
+    init(coin: Coin, viewModel: AssetItemViewModel, selected: Bool, onTap: @escaping () -> ()) {
         self.coin = coin
-        self.viewModel = .init(
-            coin: coin,
-            adapter: adapter,
-            selectedTimeFrame: .day,
-            fiatCurrency: fiatCurrency,
-            ticker: Portal.shared.marketDataProvider.ticker(coin: coin)
-        )
+        self.viewModel = viewModel
         self.selected = selected
         self.onTap = onTap
     }
@@ -39,9 +33,7 @@ struct AssetItemView: View {
                                 CircularProgressBar(progress: $viewModel.syncProgress)
                                     .frame(width: 26, height: 26)
                             }
-                            coin.icon
-                                .resizable()
-                                .frame(width: 24, height: 24)
+                            CoinImageView(size: 24, url: viewModel.coin.icon)
                         }
                         .frame(width: 26, height: 26)
                         
@@ -74,17 +66,15 @@ struct AssetItemView_Previews: PreviewProvider {
         Group {
             AssetItemView(
                 coin: Coin.bitcoin(),
-                adapter: MockedBalanceAdapter(),
+                viewModel: AssetItemViewModel.config(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter()),
                 selected: true,
-                fiatCurrency: USD,
                 onTap: {}
             )
             
             AssetItemView(
                 coin: Coin.bitcoin(),
-                adapter: MockedBalanceAdapter(),
+                viewModel: AssetItemViewModel.config(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter()),
                 selected: false,
-                fiatCurrency: USD,
                 onTap: {}
             )
         }

@@ -29,9 +29,9 @@ struct SendAssetView: View {
                         .stroke(Color.black.opacity(0.7), lineWidth: 8)
                 )
             
-            viewModel.coin.icon
-                .resizable()
-                .frame(width: 64, height: 64)
+            CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
+                .background(Color.white)
+                .cornerRadius(32)
                 .offset(y: -32)
             
             HStack {

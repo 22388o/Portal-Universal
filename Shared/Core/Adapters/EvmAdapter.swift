@@ -136,7 +136,7 @@ extension EvmAdapter: ISendEthereumAdapter {
 extension EvmAdapter: ITransactionsAdapter {
 
     var coin: Coin {
-        Coin(type: .ethereum, code: "ETH", name: "Etherium", decimal: 18)
+        Coin(type: .ethereum, code: "ETH", name: "Etherium", decimal: 18, iconUrl: String())
     }
     
     var transactionState: AdapterState {

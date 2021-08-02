@@ -71,7 +71,6 @@ final class MarketDataRepository: ObservableObject {
             .store(in: &cancellables)
         
         fcUpdater.onUpdatePublisher
-            .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] currencies in
                 guard let self = self else { return }
                 self.fiatCurrencies = currencies.filter {

@@ -20,24 +20,22 @@ struct Coin {
     let code: String
     let name: String
     let decimal: Int
-    let color: Color
-    let icon: Image
+    let icon: String
     
-    init(type: CoinType, code: String, name: String, decimal: Int, color: Color = .clear, icon: Image = Image("iconBtc")) {
+    init(type: CoinType, code: String, name: String, decimal: Int, iconUrl: String) {
         self.type = type
         self.code = code
         self.name = name
         self.decimal = decimal
-        self.color = color
-        self.icon = icon
+        self.icon = iconUrl
     }
     
     static func bitcoin() -> Self {
-        Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", decimal: 18, color: Color.green)
+        Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", decimal: 18, iconUrl: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Bitcoin-BTC-icon.png")
     }
     
     static func ethereum() -> Self {
-        Coin(type: .ethereum, code: "ETH", name: "Ethereum", decimal: 18, color: Color.blue)
+        Coin(type: .ethereum, code: "ETH", name: "Ethereum", decimal: 18, iconUrl: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Ethereum-ETH-icon.png")
     }
 }
 
