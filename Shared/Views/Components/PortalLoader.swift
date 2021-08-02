@@ -42,7 +42,7 @@ struct LoadingViewModifier: ViewModifier {
                 LoadingAnimationView()
                     .zIndex(1)
                     .transition(
-                        .asymmetric(insertion: .slide, removal: .scale(scale: 15)
+                        .asymmetric(insertion: .identity, removal: .scale(scale: 15)
                         .combined(with: AnyTransition.opacity))
                         .animation(.easeInOut(duration: 0.5))
                     )

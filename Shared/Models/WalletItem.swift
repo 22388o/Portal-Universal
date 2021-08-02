@@ -8,6 +8,18 @@
 import Foundation
 
 struct WalletItem {
+    let id: UUID = UUID()
     let coin: Coin
-    let adapter: IBalanceAdapter
+    let viewModel: AssetItemViewModel
+}
+
+extension WalletItem: Hashable {
+    public static func == (lhs: WalletItem, rhs: WalletItem) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(coin.code)
+        hasher.combine(coin.name)
+    }
 }

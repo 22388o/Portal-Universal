@@ -323,7 +323,7 @@ extension BitcoinBaseAdapter {
 
 extension BitcoinBaseAdapter: ITransactionsAdapter {
     var coin: Coin {
-        Coin(type: .bitcoin, code: "Code", name: "Bitcoin", decimal: 18)
+        Coin(type: .bitcoin, code: "Code", name: "Bitcoin", decimal: 18, iconUrl: String())
     }
 
     var lastBlockInfo: LastBlockInfo? {

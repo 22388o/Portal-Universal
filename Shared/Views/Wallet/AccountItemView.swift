@@ -50,7 +50,7 @@ struct AccountItemView: View {
     }
 }
 
-struct WalletItemView_Previews: PreviewProvider {
+struct AccountItemView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             AccountItemView(name: "Personal", selected: true, onDelete: {})

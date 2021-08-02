@@ -138,7 +138,7 @@ extension Evm20Adapter: IErc20Adapter {
 
 extension Evm20Adapter: ITransactionsAdapter {
     var coin: Coin {
-        Coin(type: .erc20(address: contractAddress.hex), code: "ERC20", name: "ERC20 token", decimal: 0)
+        Coin(type: .erc20(address: contractAddress.hex), code: "ERC20", name: "ERC20 token", decimal: 0, iconUrl: String())
     }
 
     var transactionState: AdapterState {

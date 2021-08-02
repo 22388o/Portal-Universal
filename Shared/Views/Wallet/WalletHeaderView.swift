@@ -19,7 +19,7 @@ struct WalletHeaderView: View {
         ZStack {
             HStack {
                 Button(action: {
-                    withAnimation {
+                    withAnimation(.easeIn(duration: 0.3)) {
                         viewModel.state.switchWallet.toggle()
                     }
                 }, label: {

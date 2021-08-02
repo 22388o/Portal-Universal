@@ -23,6 +23,7 @@ final class AssetItemViewModel: ObservableObject {
     
     private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
     private let disposeBag = DisposeBag()
+    private var subscriptions = Set<AnyCancellable>()
     
     private let ticker: Ticker?
     
@@ -47,15 +48,17 @@ final class AssetItemViewModel: ObservableObject {
     }
     
     private let selectedTimeframe: Timeframe
-    private let fiatCurrency: FiatCurrency
+    private var fiatCurrency: FiatCurrency
     
-    init(coin: Coin, adapter: IBalanceAdapter, selectedTimeFrame: Timeframe, fiatCurrency: FiatCurrency, ticker: Ticker?) {
+    init(coin: Coin, adapter: IBalanceAdapter, state: PortalState, ticker: Ticker?) {
+        print("\(coin.code) view model init")
+        
         self.coin = coin
         self.adapter = adapter
         self.ticker = ticker
         
-        self.selectedTimeframe = selectedTimeFrame
-        self.fiatCurrency = fiatCurrency
+        self.selectedTimeframe = .day
+        self.fiatCurrency = state.fiatCurrency
         
         self.adapterState = adapter.balanceState
         
@@ -95,6 +98,17 @@ final class AssetItemViewModel: ObservableObject {
                 self?.adapterState = state
             })
             .disposed(by: disposeBag)
+        
+        state.$fiatCurrency
+            .sink { [weak self] currency in
+                self?.fiatCurrency = currency
+                if let ticker = self?.ticker {
+                    self?.updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
+                } else {
+                    self?.balance = "\(adapter.balance)"
+                }
+            }
+            .store(in: &subscriptions)
     }
     
     private func updateValues(spendable: Decimal, unspendable: Decimal?, ticker: Ticker) {
@@ -110,5 +124,19 @@ final class AssetItemViewModel: ObservableObject {
         }
         
         totalValue = "\(fiatCurrency.symbol)" + "\((spendable * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
+    }
+    
+    deinit {
+        print("\(coin.code) view model deinit")
+    }
+}
+
+extension AssetItemViewModel {
+    static func config(coin: Coin, adapter: IBalanceAdapter) -> AssetItemViewModel {
+        let state = Portal.shared.state
+        let marketDataProvider = Portal.shared.marketDataProvider
+        let ticker = marketDataProvider.ticker(coin: coin)
+        
+        return AssetItemViewModel(coin: coin, adapter: adapter, state: state, ticker: ticker)
     }
 }

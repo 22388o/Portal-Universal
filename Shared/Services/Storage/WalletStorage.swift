@@ -9,6 +9,8 @@ import Foundation
 import Combine
 
 class WalletStorage: IWalletStorage {
+    var onWalletsUpdatePublisher = PassthroughSubject<[Wallet], Never>()
+    
     private let coinManager: ICoinManager
     private let accountManager: IAccountManager
     var wallets: [Wallet] = []
@@ -29,6 +31,12 @@ class WalletStorage: IWalletStorage {
                 self?.syncWallets()
             }
             .store(in: &cancelabel)
+        
+        coinManager.onCoinsUpdatePublisher
+            .sink { [weak self] _ in
+                self?.syncWallets()
+            }
+            .store(in: &cancelabel)
     }
     
     func syncWallets() {
@@ -39,6 +47,8 @@ class WalletStorage: IWalletStorage {
                 wallets.append(Wallet(coin: coin, account: account))
             }
         }
+        
+        onWalletsUpdatePublisher.send(wallets)
     }
     
     func wallets(account: Account) -> [Wallet] {

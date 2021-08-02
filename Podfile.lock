@@ -79,6 +79,7 @@ PODS:
     - SwiftNIOSSL
     - SwiftNIOWebSocket
   - KeychainAccess (4.2.2)
+  - Kingfisher (7.0.0-beta.1)
   - ObjectMapper (4.2.0)
   - OpenSslKit.swift (1.2.2)
   - RxSwift (5.1.2)
@@ -121,6 +122,7 @@ DEPENDENCIES:
   - Hodler.swift (from `https://github.com/horizontalsystems/bitcoin-kit-ios.git`)
   - HsToolKit.swift (from `https://github.com/horizontalsystems/hs-tool-kit-ios`)
   - KeychainAccess
+  - Kingfisher (from `https://github.com/onevcat/Kingfisher`, commit `8c73044cd5f6754ce605da05e2a4dab891d1aa0a`)
 
 SPEC REPOS:
   trunk:
@@ -172,6 +174,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/horizontalsystems/bitcoin-kit-ios.git
   HsToolKit.swift:
     :git: https://github.com/horizontalsystems/hs-tool-kit-ios
+  Kingfisher:
+    :commit: 8c73044cd5f6754ce605da05e2a4dab891d1aa0a
+    :git: https://github.com/onevcat/Kingfisher
 
 CHECKOUT OPTIONS:
   BitcoinCore.swift:
@@ -198,6 +203,9 @@ CHECKOUT OPTIONS:
   HsToolKit.swift:
     :commit: ff75e00d0812e30a64d5eb74c73262273e96dc5f
     :git: https://github.com/horizontalsystems/hs-tool-kit-ios
+  Kingfisher:
+    :commit: 8c73044cd5f6754ce605da05e2a4dab891d1aa0a
+    :git: https://github.com/onevcat/Kingfisher
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
@@ -223,6 +231,7 @@ SPEC CHECKSUMS:
   Hodler.swift: e59834cd20385e5067cd55a813667ca8fd0778b9
   HsToolKit.swift: 88f5c25dcf2b6fde2370f0125a8864782fbb3d90
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
+  Kingfisher: 486387ab12834247cbede0fa1fea6d0ab9470c84
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   OpenSslKit.swift: 0e2194853fd9ce42006cf18c89743331406a10a9
   RxSwift: 1e2e1f9570186967f617e49128ed26ccf1bafc8e
@@ -236,6 +245,6 @@ SPEC CHECKSUMS:
   SwiftNIOWebSocket: 1833814bfe400c80f5a2205253a4baef84e71179
   UIExtensions.swift: 3ed084c0343ddd0f86c7c558d37759e1fd7d5778
 
-PODFILE CHECKSUM: f88228279f23c593eaa93fc76267c7c426ebc413
+PODFILE CHECKSUM: 994a63677c9997f36e17f48686d66904a7811457
 
 COCOAPODS: 1.10.1

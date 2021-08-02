@@ -28,9 +28,8 @@ struct AssetView: View {
                 Spacer().frame(height: 24)
                 
                 HStack {
-                    viewModel.coin.icon
-                        .resizable()
-                        .frame(width: 24, height: 24)
+                    CoinImageView(size: 24, url: viewModel.coin.icon, placeholderForegroundColor: Color.assetValueLabel)
+                    
                     Text("\(viewModel.coin.name)")
                         .font(.mainFont(size: 15))
                         .foregroundColor(Color.assetValueLabel)
@@ -48,12 +47,12 @@ struct AssetView: View {
                 VStack {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation {
+                            withAnimation(.easeIn(duration: 0.2)) {
                                 state.receiveAsset.toggle()
                             }
                         }
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation {
+                            withAnimation(.easeIn(duration: 0.2)) {
                                 state.sendAsset.toggle()
                             }
                         }
