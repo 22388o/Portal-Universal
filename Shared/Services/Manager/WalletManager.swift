@@ -38,7 +38,7 @@ class WalletManager {
             .store(in: &cancellable)
         
         storage.onWalletsUpdatePublisher
-            .sink { [weak self] account in
+            .sink { [weak self] _ in
                 self?.handleUpdate(activeAccount: accountManager.activeAccount)
             }
             .store(in: &cancellable)
