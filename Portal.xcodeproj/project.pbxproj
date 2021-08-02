@@ -2015,7 +2015,7 @@
 					"@executable_path/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -2046,7 +2046,7 @@
 					"@executable_path/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -2079,7 +2079,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -2106,7 +2106,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
