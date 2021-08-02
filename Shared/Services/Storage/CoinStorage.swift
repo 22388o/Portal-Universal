@@ -34,7 +34,7 @@ final class CoinStorage: ICoinStorage {
                 guard let self = self else { return }
                 if ready {
                     self.coins = self.tokens.compactMap {
-                        Coin(type: .erc20(address: $0.contractAddress), code: $0.symbol, name: $0.name, decimal: $0.decimal)
+                        Coin(type: .erc20(address: $0.contractAddress), code: $0.symbol, name: $0.name, decimal: $0.decimal, iconUrl: $0.iconURL)
                     }
                     .filter{ marketData.ticker(coin: $0) != nil }
                     .sorted(by: { $0.code < $1.code })

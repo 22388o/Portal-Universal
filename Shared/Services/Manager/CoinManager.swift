@@ -22,14 +22,7 @@ class CoinManager: ICoinManager {
         storage.onCoinsUpdatePublisher
             .sink { [weak self] coins in
                 guard let self = self else { return }
-                self.coins =
-                [
-                    Coin(type: .bitcoin, code: "BTC", name: "Bitcoin", decimal: 18, color: Color.green, icon: Image("iconBtc")),
-                    Coin(type: .ethereum, code: "ETH", name: "Ethereum", decimal: 18, color: Color.blue, icon: Image("iconEth"))
-                ]
-                
-                + coins
-                
+                self.coins = [Coin.bitcoin(), Coin.ethereum()] + coins
                 self.onCoinsUpdatePublisher.send(self.coins)
             }
             .store(in: &subscriptions)

@@ -17,7 +17,7 @@ protocol IBarChartViewModel {
 
 extension IBarChartViewModel {
     var colors: [Color] {
-        assets.map{ $0.coin.color }
+        []//assets.map{ $0.coin.color }
     }
     var totalValueCurrency: Currency {
         .fiat(USD)
@@ -41,8 +41,8 @@ extension IBarChartViewModel {
             if size >= minimumValue {
                 assetAllocationValues.append(size)
                 labels.append(asset.coin.code + " \(size)%")
-                colors.append(asset.coin.color)
-                icons.append(asset.coin.icon)
+//                colors.append(asset.coin.color)
+//                icons.append(asset.coin.icon)
             } else {
                 others.append(size)
             }
@@ -109,7 +109,7 @@ extension IPieChartModel {
             if size >= minimumValue {
                 assetAllocationValues.append(size)
                 labels.append(asset.coin.code + " \(size)%")
-                colors.append(asset.coin.color)
+//                colors.append(asset.coin.color)
             } else {
                 others.append(size)
             }
