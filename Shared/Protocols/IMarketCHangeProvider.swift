@@ -14,6 +14,7 @@ protocol IMarketDataProvider {
     var tickers: [Ticker]? { get }
     func ticker(coin: Coin) -> Ticker?
     func marketData(coin: Coin) -> CoinMarketData
+    func requestHistoricalData(coin: Coin, timeframe: Timeframe)
 }
 
 protocol IMarketChangeProvider {
