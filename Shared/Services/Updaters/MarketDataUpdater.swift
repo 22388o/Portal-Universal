@@ -42,7 +42,7 @@ final class MarketDataUpdater {
                 coin.name.lowercased() == ticker.name.lowercased()
             })?.id
         }
-        
+
         for (index, id) in coinPaprikaCoinIds.enumerated() {
             Coinpaprika.API.coinLatestOhlcv(id: id, quote: .usd)
                 .perform { (response) in
@@ -53,51 +53,66 @@ final class MarketDataUpdater {
                         print(error)
                     }
                 }
-            let today = Date()
+        }
+    }
+    
+    func requestHistoricalMarketData(coin: Coin, timeframe: Timeframe) {
+        guard let coinPaprikaId = tickers?.first(where: { (ticker) -> Bool in
+            coin.name.lowercased() == ticker.name.lowercased()
+        })?.id else { return }
+                
+        let today = Date()
+                
+        switch timeframe {
+        case .day:
             if let yesteday = Calendar.current.date(byAdding: .day, value: -1, to: today) {
-                Coinpaprika.API.tickerHistory(id: id, start: yesteday, end: today, limit: 60, quote: .usd, interval: .minutes15)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: yesteday, end: today, limit: 60, quote: .usd, interval: .minutes15)
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPricePublisher.send((.day, [coins[index].code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPricePublisher.send((.day, [coin.code : response.map{ $0.price }]))
                         case .failure(let error):
                             print(error)
                         }
                     }
             }
+        case .week:
             if let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: today) {
-                Coinpaprika.API.tickerHistory(id: id, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours2)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours2)
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPricePublisher.send((.week, [coins[index].code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPricePublisher.send((.week, [coin.code : response.map{ $0.price }]))
                         case .failure(let error):
                             print(error)
                         }
                     }
             }
+        case .month:
             if let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: today) {
-                Coinpaprika.API.tickerHistory(id: id, start: monthAgo, end: today, limit: 60, quote: .usd, interval: .hours12)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: monthAgo, end: today, limit: 60, quote: .usd, interval: .hours12)
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPricePublisher.send((.month, [coins[index].code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPricePublisher.send((.month, [coin.code : response.map{ $0.price }]))
                         case .failure(let error):
                             print(error)
                         }
                     }
             }
+        case .year:
             if let aYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: today) {
-                Coinpaprika.API.tickerHistory(id: id, start: aYearAgo, end: today, limit: 60, quote: .usd, interval: .days7)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: aYearAgo, end: today, limit: 60, quote: .usd, interval: .days7)
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPricePublisher.send((.year, [coins[index].code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPricePublisher.send((.year, [coin.code : response.map{ $0.price }]))
                         case .failure(let error):
                             print(error)
                         }
                     }
             }
+
         }
     }
 }
