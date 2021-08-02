@@ -21,9 +21,9 @@ struct CreateAlertView: View {
                 )
 
             
-            asset.coin.icon
-                .resizable()
-                .frame(width: 64, height: 64)
+            CoinImageView(size: 64, url: asset.coin.icon)
+                .background(Color.white)
+                .cornerRadius(32)
                 .offset(y: -32)
             
             HStack {
@@ -47,7 +47,9 @@ struct CreateAlertView: View {
                             .foregroundColor(Color.coinViewRouteButtonActive)
                     }
                     HStack {
-                        asset.coin.icon
+                        CoinImageView(size: 64, url: asset.coin.icon, placeholderForegroundColor: .black)
+                            .background(Color.white)
+                            .cornerRadius(32)
                         Text("1.00 \(asset.coin.code) is worth $\(/*asset.balanceProvider.price*/0)")
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.coinViewRouteButtonActive)

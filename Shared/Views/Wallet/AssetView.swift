@@ -28,9 +28,8 @@ struct AssetView: View {
                 Spacer().frame(height: 24)
                 
                 HStack {
-                    viewModel.coin.icon
-                        .resizable()
-                        .frame(width: 24, height: 24)
+                    CoinImageView(size: 24, url: viewModel.coin.icon, placeholderForegroundColor: Color.assetValueLabel)
+                    
                     Text("\(viewModel.coin.name)")
                         .font(.mainFont(size: 15))
                         .foregroundColor(Color.assetValueLabel)
