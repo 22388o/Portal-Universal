@@ -48,7 +48,7 @@ class WalletViewModel: ObservableObject {
         walletManager.activeWallets.compactMap({ wallet in
             let coin = wallet.coin
             guard let adapter = adapterManager.balanceAdapter(for: wallet) else { return nil }
-            let viewModel = AssetItemViewModel(coin: coin, adapter: adapter, selectedTimeFrame: .day, fiatCurrency: USD, ticker: marketDataProvider.ticker(coin: coin))
+            let viewModel = AssetItemViewModel.config(coin: coin, adapter: adapter)
             return WalletItem(coin: coin, viewModel: viewModel)
         })
     }
