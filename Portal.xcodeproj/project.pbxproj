@@ -2079,7 +2079,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal.mac;
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -2106,7 +2106,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal.mac;
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
