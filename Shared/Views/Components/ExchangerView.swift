@@ -26,9 +26,7 @@ struct ExchangerView: View {
             
             HStack(spacing: 4) {
                 HStack(spacing: 8) {
-                    viewModel.coin.icon
-                        .resizable()
-                        .frame(width: 24, height: 24)
+                    CoinImageView(size: 24, url: viewModel.coin.icon)
                     
                     TextField(String(), text: $viewModel.assetValue)
                         .foregroundColor(Color.lightActiveLabel)
