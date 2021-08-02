@@ -7,6 +7,7 @@
 
 import Foundation
 import EthereumKit
+import Erc20Kit
 
 class EthereumKitManager {
     private let appConfigProvider: IAppConfigProvider
@@ -41,6 +42,9 @@ class EthereumKitManager {
             walletId: account.id,
             minLogLevel: .error
         )
+        
+        evmKit.add(decorator: Erc20Kit.Kit.decorator(evmKit: evmKit))
+        evmKit.add(transactionSyncer: Erc20Kit.Kit.getTransactionSyncer(evmKit: evmKit))
 
         evmKit.start()
 
