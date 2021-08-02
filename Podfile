@@ -21,7 +21,9 @@ target 'Portal (iOS)' do
   #Charts
   pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :commit => '97587d04ed51f4e38e3057da51867d8805995a56'
   #Keychain
-  pod 'KeychainAccess'	
+  pod 'KeychainAccess'
+  
+  pod 'Kingfisher', :git => 'https://github.com/onevcat/Kingfisher', :commit => '8c73044cd5f6754ce605da05e2a4dab891d1aa0a'
 
 end
 
