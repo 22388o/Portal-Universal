@@ -33,9 +33,7 @@ struct AssetItemView: View {
                                 CircularProgressBar(progress: $viewModel.syncProgress)
                                     .frame(width: 26, height: 26)
                             }
-                            coin.icon
-                                .resizable()
-                                .frame(width: 24, height: 24)
+                            CoinImageView(size: 24, url: viewModel.coin.icon)
                         }
                         .frame(width: 26, height: 26)
                         
@@ -68,14 +66,14 @@ struct AssetItemView_Previews: PreviewProvider {
         Group {
             AssetItemView(
                 coin: Coin.bitcoin(),
-                viewModel: AssetItemViewModel(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter(), selectedTimeFrame: .day, fiatCurrency: USD, ticker: nil),
+                viewModel: AssetItemViewModel.config(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter()),
                 selected: true,
                 onTap: {}
             )
             
             AssetItemView(
                 coin: Coin.bitcoin(),
-                viewModel: AssetItemViewModel(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter(), selectedTimeFrame: .day, fiatCurrency: USD, ticker: nil),
+                viewModel: AssetItemViewModel.config(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter()),
                 selected: false,
                 onTap: {}
             )
