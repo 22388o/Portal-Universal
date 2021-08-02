@@ -58,7 +58,7 @@ final class MarketDataUpdater {
     
     func requestHistoricalMarketData(coin: Coin, timeframe: Timeframe) {
         guard let coinPaprikaId = tickers?.first(where: { (ticker) -> Bool in
-            coin.name.lowercased() == ticker.name.lowercased()
+            coin.code.lowercased() == ticker.symbol.lowercased()
         })?.id else { return }
                 
         let today = Date()
