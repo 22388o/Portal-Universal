@@ -97,11 +97,11 @@ struct AccountsView: View {
                                 }
                             )
                             .onTapGesture {
-                                if account != viewModel.activeAcount {
-                                    viewModel.switchAccount(account: account)
-                                } else {
-                                    withAnimation(.easeIn(duration: 0.3)) {
-                                        self.viewModel.state.switchWallet.toggle()
+                                withAnimation(.easeIn(duration: 0.3)) {
+                                    if account != viewModel.activeAcount {
+                                        viewModel.switchAccount(account: account)
+                                    } else {
+                                        viewModel.state.switchWallet.toggle()
                                     }
                                 }
                             }
