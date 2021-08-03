@@ -19,6 +19,10 @@ class CoinManager: ICoinManager {
     init(storage: ICoinStorage) {
         self.storage = storage
         
+        subscribe()
+    }
+    
+    private func subscribe() {
         storage.onCoinsUpdatePublisher
             .sink { [weak self] coins in
                 guard let self = self else { return }
