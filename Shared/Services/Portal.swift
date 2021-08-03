@@ -55,15 +55,8 @@ final class Portal: ObservableObject {
             interval: TimeInterval(appConfigProvider.fiatCurrenciesUpdateInterval),
             fixerApiKey: appConfigProvider.fixerApiKey
         )
-        
-        let pricesDataUpdater = PricesDataUpdater(interval: TimeInterval(appConfigProvider.pricesUpdateInterval))
-        
-        let marketDataStorage = MarketDataStorage(
-            mdUpdater: marketDataUpdater,
-            fcUpdater: fiatCurrenciesUpdater,
-            pdUpdater: pricesDataUpdater
-        )
-        
+                
+        let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater)
         marketDataProvider = MarketDataProvider(repository: marketDataStorage)
                         
         let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: bdStorage)

@@ -20,7 +20,6 @@ final class MarketDataStorage: ObservableObject {
     
     private var mdUpdater: MarketDataUpdater
     private var fcUpdater: FiatCurrenciesUpdater
-    private var pdUpdater: PricesDataUpdater
     
     private var cancellables: Set<AnyCancellable> = []
     private var repository = Synchronized([CoinCode : CoinMarketData]())
@@ -34,10 +33,9 @@ final class MarketDataStorage: ObservableObject {
     @Published var dataReady: Bool = false
     
         
-    init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater, pdUpdater: PricesDataUpdater) {
+    init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater) {
         self.mdUpdater = mdUpdater
         self.fcUpdater = fcUpdater
-        self.pdUpdater = pdUpdater
         
         bindServices()
     }
@@ -61,6 +59,7 @@ final class MarketDataStorage: ObservableObject {
             .store(in: &cancellables)
         
         mdUpdater.onTickersUpdatePublisher
+            .receive(on: DispatchQueue.global(qos: .userInteractive))
             .sink(receiveValue: { [weak self] tickers in
                 guard let self = self else { return }
                 self.tickers = tickers
