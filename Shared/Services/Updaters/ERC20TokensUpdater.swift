@@ -39,9 +39,10 @@ final class ERC20TokensUpdater {
         URLSession.shared.dataTaskPublisher(for: url)
             .tryMap { $0.data }
             .decode(type: [String : Erc20TokenCodable].self, decoder: jsonDecoder)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case let .failure(error) = completion {
                     print(error.localizedDescription)
+                    self?.loadLocallyStoredTokens()
                 }
             } receiveValue: { [weak self] erc20Tokens in
                 let valildTokens = erc20Tokens.map{ $0.value }.filter { !$0.iconURL.isEmpty }
