@@ -51,7 +51,7 @@ final class AssetItemViewModel: ObservableObject {
     private var fiatCurrency: FiatCurrency
     
     init(coin: Coin, adapter: IBalanceAdapter, state: PortalState, ticker: Ticker?) {
-        print("\(coin.code) view model init")
+//        print("\(coin.code) view model init")
         
         self.coin = coin
         self.adapter = adapter
@@ -89,11 +89,11 @@ final class AssetItemViewModel: ObservableObject {
                     let progress = Float(currentProgress)/100
                     if self?.syncProgress != progress {
                         self?.syncProgress = progress
-                        print("\(coin.code) sync progress = \(currentProgress)")
+                        print("\(coin.code) sync progress: \(currentProgress)")
                     }
                 }
                 if case .synced  = state {
-                    print("\(coin.code) is synced")
+                    print("\(coin.code) synced")
                 }
                 self?.adapterState = state
             })
@@ -127,7 +127,7 @@ final class AssetItemViewModel: ObservableObject {
     }
     
     deinit {
-        print("\(coin.code) view model deinit")
+//        print("\(coin.code) view model deinit")
     }
 }
 
