@@ -69,7 +69,8 @@ final class Portal: ObservableObject {
         let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: bdStorage)
         accountManager = AccountManager(accountStorage: accountStorage)
         
-        let coinStorage = CoinStorage(marketData: marketDataRepository)
+        let erc20Updater = ERC20TokensUpdater()
+        let coinStorage = CoinStorage(updater: erc20Updater, marketData: marketDataRepository)
         let coinManager: ICoinManager = CoinManager(storage: coinStorage)
         
         let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)
@@ -101,7 +102,7 @@ final class Portal: ObservableObject {
             .store(in: &anyCancellables)
         
         coinManager.onCoinsUpdatePublisher
-            .debounce(for: 2, scheduler: RunLoop.main)
+            .debounce(for: 1, scheduler: RunLoop.main)
             .sink(receiveValue: { [weak self] coins in
                 if !coins.isEmpty {
                     self?.state.loading = false
