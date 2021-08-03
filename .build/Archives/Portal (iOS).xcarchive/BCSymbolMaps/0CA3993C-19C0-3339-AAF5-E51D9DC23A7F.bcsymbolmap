@@ -1,0 +1,20 @@
+BCSymbolMap Version: 2.0
+Apple clang version 12.0.5 (clang-1205.0.22.11)
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk
+iPhoneOS14.5.sdk
+/Users/manoj/Documents/Portal/Portal-Universal/.build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Portal (iOS)/IntermediateBuildFilesPath/Pods.build/Release-iphoneos/CNIOBoringSSLShims.build/DerivedSources/CNIOBoringSSLShims_vers.c
+/Users/manoj/Documents/Portal/Portal-Universal/Pods
+__OBJC_METACLASS_RO_$_PodsDummy_CNIOBoringSSLShims
+__OBJC_CLASS_RO_$_PodsDummy_CNIOBoringSSLShims
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/Target Support Files/CNIOBoringSSLShims/CNIOBoringSSLShims-dummy.m
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/CNIOBoringSSLShims/Sources/CNIOBoringSSLShims/shims.c
+CNIOBoringSSLShims_ERR_GET_REASON
+CNIOBoringSSLShims/Sources/CNIOBoringSSLShims/shims.c
+CNIOBoringSSLShims_ERR_GET_LIB
+CNIOBoringSSLShims_SSL_CTX_set_app_data
+CNIOBoringSSLShims_SSL_CTX_get_app_data
+CNIOBoringSSLShims_sk_GENERAL_NAME_num
+CNIOBoringSSL_sk_GENERAL_NAME_num
+CNIOBoringSSL/Sources/CNIOBoringSSL/include/CNIOBoringSSL_x509v3.h
+CNIOBoringSSLShims_sk_GENERAL_NAME_value
+CNIOBoringSSL_sk_GENERAL_NAME_value

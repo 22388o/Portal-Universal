@@ -1,0 +1,18 @@
+BCSymbolMap Version: 2.0
+Apple clang version 12.0.5 (clang-1205.0.22.11)
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk
+iPhoneOS14.5.sdk
+/Users/manoj/Documents/Portal/Portal-Universal/.build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Portal (iOS)/IntermediateBuildFilesPath/Pods.build/Release-iphoneos/CNIOSHA1.build/DerivedSources/CNIOSHA1_vers.c
+/Users/manoj/Documents/Portal/Portal-Universal/Pods
+_sha1_step
+__K
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/CNIOSHA1/Sources/CNIOSHA1/c_nio_sha1.c
+c_nio_sha1_result
+CNIOSHA1/Sources/CNIOSHA1/c_nio_sha1.c
+c_nio_sha1_loop
+sha1_step
+c_nio_sha1_pad
+c_nio_sha1_init
+__OBJC_METACLASS_RO_$_PodsDummy_CNIOSHA1
+__OBJC_CLASS_RO_$_PodsDummy_CNIOSHA1
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/Target Support Files/CNIOSHA1/CNIOSHA1-dummy.m

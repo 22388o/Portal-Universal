@@ -469,6 +469,8 @@
 		75F5CDBA2684CE91005ECA5B /* PieChartUIKitVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB82684CE91005ECA5B /* PieChartUIKitVIew.swift */; };
 		75F5CDBC2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */; };
 		75F5CDBD2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */; };
+		AF6FF3D726B9B824008B05AF /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF6FF3D626B9B824008B05AF /* ExportOptions.plist */; };
+		AF6FF3D826B9B824008B05AF /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF6FF3D626B9B824008B05AF /* ExportOptions.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -671,6 +673,7 @@
 		75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAllocationViewModel.swift; sourceTree = "<group>"; };
 		75F5CDB82684CE91005ECA5B /* PieChartUIKitVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartUIKitVIew.swift; sourceTree = "<group>"; };
 		75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartUIKitView.swift; sourceTree = "<group>"; };
+		AF6FF3D626B9B824008B05AF /* ExportOptions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = ExportOptions.plist; path = Support/ExportOptions.plist; sourceTree = "<group>"; };
 		BC9A9F3CB0318CDC9451AD23 /* Pods_Portal__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E103E7237471B0E12F767D1B /* Pods-Portal (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (iOS).release.xcconfig"; path = "Target Support Files/Pods-Portal (iOS)/Pods-Portal (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		FA893E0FDA0B170BADCB79A5 /* Pods-Portal (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (macOS).release.xcconfig"; path = "Target Support Files/Pods-Portal (macOS)/Pods-Portal (macOS).release.xcconfig"; sourceTree = "<group>"; };
@@ -878,6 +881,7 @@
 		755782BE26087903000E1686 = {
 			isa = PBXGroup;
 			children = (
+				AF6FF3D626B9B824008B05AF /* ExportOptions.plist */,
 				750D63BC2689D9F200643FD3 /* alert.mp3 */,
 				755782C326087903000E1686 /* Shared */,
 				755782D026087904000E1686 /* iOS */,
@@ -1287,6 +1291,7 @@
 				758F3ADD26A81A4700F345E1 /* Launch Screen.storyboard in Resources */,
 				755782F826087905000E1686 /* Assets.xcassets in Resources */,
 				750D63BD2689D9F200643FD3 /* alert.mp3 in Resources */,
+				AF6FF3D726B9B824008B05AF /* ExportOptions.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1297,6 +1302,7 @@
 				758F3ADE26A81A4700F345E1 /* Launch Screen.storyboard in Resources */,
 				755782F926087905000E1686 /* Assets.xcassets in Resources */,
 				750D63BE2689D9F200643FD3 /* alert.mp3 in Resources */,
+				AF6FF3D826B9B824008B05AF /* ExportOptions.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
