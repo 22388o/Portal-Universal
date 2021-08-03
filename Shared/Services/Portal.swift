@@ -58,19 +58,19 @@ final class Portal: ObservableObject {
         
         let pricesDataUpdater = PricesDataUpdater(interval: TimeInterval(appConfigProvider.pricesUpdateInterval))
         
-        let marketDataRepository = MarketDataRepository(
+        let marketDataStorage = MarketDataStorage(
             mdUpdater: marketDataUpdater,
             fcUpdater: fiatCurrenciesUpdater,
             pdUpdater: pricesDataUpdater
         )
         
-        marketDataProvider = MarketDataProvider(repository: marketDataRepository)
+        marketDataProvider = MarketDataProvider(repository: marketDataStorage)
                         
         let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: bdStorage)
         accountManager = AccountManager(accountStorage: accountStorage)
         
         let erc20Updater = ERC20TokensUpdater()
-        let coinStorage = CoinStorage(updater: erc20Updater, marketData: marketDataRepository)
+        let coinStorage = CoinStorage(updater: erc20Updater, marketData: marketDataStorage)
         let coinManager: ICoinManager = CoinManager(storage: coinStorage)
         
         let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)
@@ -83,7 +83,7 @@ final class Portal: ObservableObject {
         
         notificationService = NotificationService(adapterManager: adapterManager)
                         
-        marketDataRepository.$dataReady
+        marketDataStorage.$dataReady
             .sink(receiveValue: { [weak self] ready in
                 if !ready {
                     self?.state.loading = true
