@@ -1,0 +1,15 @@
+BCSymbolMap Version: 2.0
+Apple clang version 12.0.5 (clang-1205.0.22.11)
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk
+iPhoneOS14.5.sdk
+/Users/manoj/Documents/Portal/Portal-Universal/.build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Portal (iOS)/IntermediateBuildFilesPath/Pods.build/Release-iphoneos/CNIOLinux.build/DerivedSources/CNIOLinux_vers.c
+/Users/manoj/Documents/Portal/Portal-Universal/Pods
+__OBJC_METACLASS_RO_$_PodsDummy_CNIOLinux
+__OBJC_CLASS_RO_$_PodsDummy_CNIOLinux
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/Target Support Files/CNIOLinux/CNIOLinux-dummy.m
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/CNIOLinux/Sources/CNIOLinux/liburing_shims.c
+CNIOLinux_i_do_nothing_just_working_around_a_darwin_toolchain_bug2
+CNIOLinux/Sources/CNIOLinux/liburing_shims.c
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/CNIOLinux/Sources/CNIOLinux/shim.c
+CNIOLinux_i_do_nothing_just_working_around_a_darwin_toolchain_bug
+CNIOLinux/Sources/CNIOLinux/shim.c

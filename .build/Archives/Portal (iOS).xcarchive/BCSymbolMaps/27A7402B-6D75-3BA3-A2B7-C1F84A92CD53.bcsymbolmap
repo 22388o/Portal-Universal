@@ -1,0 +1,29 @@
+BCSymbolMap Version: 2.0
+Apple clang version 12.0.5 (clang-1205.0.22.11)
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk
+iPhoneOS14.5.sdk
+/Users/manoj/Documents/Portal/Portal-Universal/.build/DerivedData/Build/Intermediates.noindex/ArchiveIntermediates/Portal (iOS)/IntermediateBuildFilesPath/Pods.build/Release-iphoneos/CNIODarwin.build/DerivedSources/CNIODarwin_vers.c
+/Users/manoj/Documents/Portal/Portal-Universal/Pods
+__OBJC_METACLASS_RO_$_PodsDummy_CNIODarwin
+__OBJC_CLASS_RO_$_PodsDummy_CNIODarwin
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/Target Support Files/CNIODarwin/CNIODarwin-dummy.m
+_CNIODarwin_CMSG_FIRSTHDR.cold.1
+_CNIODarwin_CMSG_NXTHDR.cold.1
+_CNIODarwin_CMSG_NXTHDR.cold.2
+_CNIODarwin_CMSG_DATA.cold.1
+_CNIODarwin_CMSG_DATA_MUTABLE.cold.1
+/Users/manoj/Documents/Portal/Portal-Universal/Pods/CNIODarwin/Sources/CNIODarwin/shim.c
+CNIODarwin_CMSG_DATA_MUTABLE.cold.1
+CNIODarwin/Sources/CNIODarwin/shim.c
+CNIODarwin_CMSG_DATA.cold.1
+CNIODarwin_CMSG_NXTHDR.cold.2
+CNIODarwin_CMSG_NXTHDR.cold.1
+CNIODarwin_CMSG_FIRSTHDR.cold.1
+CNIODarwin_CMSG_SPACE
+CNIODarwin_CMSG_LEN
+CNIODarwin_CMSG_DATA_MUTABLE
+CNIODarwin_CMSG_DATA
+CNIODarwin_CMSG_NXTHDR
+CNIODarwin_CMSG_FIRSTHDR
+CNIODarwin_recvmmsg
+CNIODarwin_sendmmsg

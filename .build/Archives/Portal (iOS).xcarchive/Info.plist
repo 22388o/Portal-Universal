@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ApplicationProperties</key>
+	<dict>
+		<key>ApplicationPath</key>
+		<string>Applications/Portal.app</string>
+		<key>Architectures</key>
+		<array>
+			<string>arm64</string>
+		</array>
+		<key>CFBundleIdentifier</key>
+		<string>com.tides.portal</string>
+		<key>CFBundleShortVersionString</key>
+		<string>1.0</string>
+		<key>CFBundleVersion</key>
+		<string>1</string>
+		<key>SigningIdentity</key>
+		<string>Apple Distribution: Tides.Network Inc. (HBPT8C8527)</string>
+		<key>Team</key>
+		<string>HBPT8C8527</string>
+	</dict>
+	<key>ArchiveVersion</key>
+	<integer>2</integer>
+	<key>CreationDate</key>
+	<date>2021-08-04T19:58:23Z</date>
+	<key>Distributions</key>
+	<array>
+		<dict>
+			<key>certificateSHA1</key>
+			<string>519EDD556F0D4AAD067A80E23AF8B3D5EC73D3E4</string>
+			<key>destination</key>
+			<string>upload</string>
+			<key>identifier</key>
+			<string>26DA7C76-64D4-4027-AE92-04FA8581ECF8</string>
+			<key>preparationEvent</key>
+			<dict>
+				<key>date</key>
+				<string>2021-08-04T19:58:24Z</string>
+				<key>errors</key>
+				<array/>
+				<key>infoMessages</key>
+				<array/>
+				<key>shortTitle</key>
+				<string>Prepared</string>
+				<key>state</key>
+				<string>success</string>
+				<key>title</key>
+				<string>Prepared archive for uploading</string>
+				<key>warnings</key>
+				<array/>
+			</dict>
+			<key>task</key>
+			<string>distribute</string>
+			<key>teamID</key>
+			<string>HBPT8C8527</string>
+			<key>uploadDestination</key>
+			<string>App Store</string>
+			<key>uploadEvent</key>
+			<dict>
+				<key>date</key>
+				<string>2021-08-04T19:59:46Z</string>
+				<key>errors</key>
+				<array>
+					<dict>
+						<key>code</key>
+						<integer>-19208</integer>
+						<key>description</key>
+						<string>App Store Connect Operation Error</string>
+						<key>domain</key>
+						<string>ITunesSoftwareServiceErrorDomain</string>
+						<key>recoverySuggestion</key>
+						<string>Missing required icon file. The bundle does not contain an app icon for iPad of exactly '167x167' pixels, in .png format for iOS versions supporting iPad Pro. To support older operating systems, the icon may be required in the bundle outside of an asset catalog. Make sure the Info.plist file includes appropriate entries referencing the file. See https://developer.apple.com/documentation/bundleresources/information_property_list/user_interface With error code STATE_ERROR.VALIDATION_ERROR.90023 for id 25cb5618-776f-42eb-b9d0-d60298f64c07</string>
+					</dict>
+				</array>
+				<key>infoMessages</key>
+				<array/>
+				<key>shortTitle</key>
+				<string>Upload failed</string>
+				<key>state</key>
+				<string>errors</string>
+				<key>title</key>
+				<string>Upload failed</string>
+				<key>warnings</key>
+				<array/>
+			</dict>
+		</dict>
+	</array>
+	<key>Name</key>
+	<string>Portal (iOS)</string>
+	<key>SchemeName</key>
+	<string>Portal (iOS)</string>
+</dict>
+</plist>
