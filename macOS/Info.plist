@@ -22,5 +22,15 @@
 	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>BtcCoreRpcUrl</key>
+	<string>${btc_core_rpc_url}</string>
+	<key>EtherscanApiKey</key>
+	<string>${etherscan_api_key}</string>
+	<key>FixerApiKey</key>
+	<string>${fixer_api_key}</string>
+	<key>InfuraProjectId</key>
+	<string>${infura_project_id}</string>
+	<key>InfuraProjectSecret</key>
+	<string>${infura_project_secret}</string>
 </dict>
 </plist>
