@@ -29,6 +29,6 @@ struct AccountModel {
     }
     
     static func generateWords() throws -> [String] {
-        try Mnemonic.generate(strength: .veryHigh, language: .english)
+        try Mnemonic.generate(wordCount: .twentyFour, language: .english)
     }
 }

@@ -53,7 +53,7 @@ final class CreateWalletSceneViewModel: ObservableObject {
     }
 
     static func mnemonicAccountType() -> AccountType {
-        let words = try! Mnemonic.generate(strength: .veryHigh, language: .english)
+        let words = try! Mnemonic.generate(wordCount: .twentyFour, language: .english)
         return .mnemonic(words: words, salt: "salty_password")
     }
 }
