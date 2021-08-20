@@ -43,7 +43,7 @@ class PortalState: ObservableObject {
     }
     
     init() {
-        self.sceneState = UIScreen.main.bounds.width > 1180 ? .full : .walletAsset
+        self.sceneState = .full
 
         Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert, $allNotifications)
             .sink { [weak self] output in
