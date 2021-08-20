@@ -77,7 +77,11 @@ extension IBarChartViewModel {
     func assetAllocationBarChartData() -> BarChartData {
         let barData = barChartData()
         let set = BarChartDataSet(values: barData.entries, label: String())
+        #if os(iOS)
         set.colors = barData.colors.map {UIColor($0)}
+        #else
+        set.colors = barData.colors.map {NSColor($0)}
+        #endif
         return BarChartData(dataSet: set)
     }
 }

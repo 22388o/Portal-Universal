@@ -41,11 +41,18 @@ struct RestoreSeedField: View {
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.lightActiveLabel.opacity(0.4))
                     }
+                    #if os(iOS)
                     TextField(String(), text: $text)
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .autocapitalization(upperCase ? .sentences : .none)
                         .padding(.trailing, 8)
+                    #else
+                    TextField(String(), text: $text)
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                        .padding(.trailing, 8)
+                    #endif
                 }
                 .padding(.leading, 15)
             }

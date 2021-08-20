@@ -30,11 +30,18 @@ struct PTextField: View {
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel.opacity(0.4))
                 }
+                #if os(iOS)
                 TextField(String(), text: $text)
                     .font(.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
                     .autocapitalization(upperCase ? .sentences : .none)
                     .disableAutocorrection(true)
+                #else
+                TextField(String(), text: $text)
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.lightActiveLabel)
+                    .disableAutocorrection(true)
+                #endif
             }
             .padding(.horizontal, 24)
         }

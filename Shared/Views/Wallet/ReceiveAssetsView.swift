@@ -101,7 +101,11 @@ struct ReceiveAssetsView: View {
                         HStack(spacing: 12) {
                             PButton(label: "Copy to clipboard", width: 140, height: 32, fontSize: 12, enabled: true) {
                                 print("receiver address = \(viewModel.receiveAddress)")
+                                #if os(iOS)
                                 UIPasteboard.general.string = viewModel.receiveAddress
+                                #else
+                                NSPasteboard.general.setString(viewModel.receiveAddress, forType: NSPasteboard.PasteboardType.string)
+                                #endif
                                 
                                 if viewModel.isCopied != true {
                                     withAnimation {

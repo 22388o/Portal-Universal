@@ -81,6 +81,7 @@ struct CreateAlertView: View {
                                 )
                                 .frame(width: 24, height: 24)
                                 
+                                #if os(iOS)
                                 TextField("", text: .constant(String()))
                                     .foregroundColor(Color.lightActiveLabel)
                                     .modifier(
@@ -91,6 +92,17 @@ struct CreateAlertView: View {
                                     )
                                     .frame(height: 20)
                                     .keyboardType(.numberPad)
+                                #else
+                                TextField("", text: .constant(String()))
+                                    .foregroundColor(Color.lightActiveLabel)
+                                    .modifier(
+                                        PlaceholderStyle(
+                                            showPlaceHolder: true,
+                                            placeholder: "0.0"
+                                        )
+                                    )
+                                    .frame(height: 20)
+                                #endif
                                 
                                 Text("USD")
                                     .font(Font.mainFont(size: 16))
@@ -173,5 +185,30 @@ struct CreateAlertView: View {
 struct CreateAlertView_Previews: PreviewProvider {
     static var previews: some View {
         CreateAlertView(asset: Asset.bitcoin(), presented: .constant(true))
+    }
+}
+
+extension Bool {
+     static var iOS: Bool {
+        #if os(iOS)
+        return true
+        #else
+        return false
+        #endif
+     }
+ }
+
+extension View {
+    /// Applies the given transform if the given condition evaluates to `true`.
+    /// - Parameters:
+    ///   - condition: The condition to evaluate.
+    ///   - transform: The transform to apply to the source `View`.
+    /// - Returns: Either the original `View` or the modified `View` if the condition is `true`.
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
     }
 }
