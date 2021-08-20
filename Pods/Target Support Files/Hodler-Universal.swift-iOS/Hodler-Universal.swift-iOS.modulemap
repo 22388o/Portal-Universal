@@ -1,0 +1,6 @@
+framework module Hodler {
+  umbrella header "Hodler-Universal.swift-iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

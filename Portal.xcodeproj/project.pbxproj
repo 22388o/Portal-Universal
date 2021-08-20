@@ -252,7 +252,6 @@
 		7574C34A2619DCE400299131 /* CreateWalletScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateWalletScene.swift */; };
 		7574C34B2619DCE400299131 /* CreateWalletScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateWalletScene.swift */; };
 		758F3ADD26A81A4700F345E1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */; };
-		758F3ADE26A81A4700F345E1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */; };
 		758F3AE026A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
 		758F3AE126A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
 		758F3AE326A9AA2100F345E1 /* AccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3AE226A9AA2100F345E1 /* AccountStorage.swift */; };
@@ -1175,8 +1174,6 @@
 			dependencies = (
 			);
 			name = "Portal (iOS)";
-			packageProductDependencies = (
-			);
 			productName = "Portal (iOS)";
 			productReference = 755782CE26087904000E1686 /* Portal.app */;
 			productType = "com.apple.product-type.application";
@@ -1189,14 +1186,13 @@
 				755782D226087904000E1686 /* Sources */,
 				755782D326087904000E1686 /* Frameworks */,
 				755782D426087904000E1686 /* Resources */,
+				10CEBEC6934F051D5ECB2109 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Portal (macOS)";
-			packageProductDependencies = (
-			);
 			productName = "Portal (macOS)";
 			productReference = 755782D626087904000E1686 /* Portal.app */;
 			productType = "com.apple.product-type.application";
@@ -1271,8 +1267,6 @@
 				Base,
 			);
 			mainGroup = 755782BE26087903000E1686;
-			packageReferences = (
-			);
 			productRefGroup = 755782CF26087904000E1686 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1300,7 +1294,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				758F3ADE26A81A4700F345E1 /* Launch Screen.storyboard in Resources */,
 				755782F926087905000E1686 /* Assets.xcassets in Resources */,
 				750D63BE2689D9F200643FD3 /* alert.mp3 in Resources */,
 			);
@@ -1323,6 +1316,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		10CEBEC6934F051D5ECB2109 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Portal (macOS)/Pods-Portal (macOS)-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Portal (macOS)/Pods-Portal (macOS)-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Portal (macOS)/Pods-Portal (macOS)-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3707FCCE791ED0C5AE98AEF2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1948,6 +1958,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VALIDATE_WORKSPACE = NO;
 			};
 			name = Debug;
 		};
@@ -2004,6 +2015,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_WORKSPACE = NO;
 			};
 			name = Release;
 		};
@@ -2028,6 +2040,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				btc_core_rpc_url = "https:/$()/btc.horizontalsystems.xyz/rpc";
@@ -2059,6 +2072,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
@@ -2077,6 +2091,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = HBPT8C8527;
@@ -2093,6 +2108,12 @@
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_WORKSPACE = YES;
+				btc_core_rpc_url = "https:/$()/btc.horizontalsystems.xyz/rpc";
+				etherscan_api_key = PYPJHJFA2MUT12KPTT8FCKPAMGHTRDQICB;
+				fixer_api_key = 13af1e52c56117b6c7d513603fb7cee8;
+				infura_project_id = 7bffa4b191da4e9682d4351178c4736e;
+				infura_project_secret = 5dedf9a8a4c4477687cfac3debbc23c6;
 			};
 			name = Debug;
 		};
@@ -2103,6 +2124,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = HBPT8C8527;
@@ -2120,6 +2142,12 @@
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_WORKSPACE = YES;
+				btc_core_rpc_url = "https:/$()/btc.horizontalsystems.xyz/rpc";
+				etherscan_api_key = PYPJHJFA2MUT12KPTT8FCKPAMGHTRDQICB;
+				fixer_api_key = 13af1e52c56117b6c7d513603fb7cee8;
+				infura_project_id = 7bffa4b191da4e9682d4351178c4736e;
+				infura_project_secret = 5dedf9a8a4c4477687cfac3debbc23c6;
 			};
 			name = Release;
 		};

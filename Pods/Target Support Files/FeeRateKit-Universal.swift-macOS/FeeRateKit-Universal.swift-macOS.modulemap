@@ -1,0 +1,6 @@
+framework module FeeRateKit {
+  umbrella header "FeeRateKit-Universal.swift-macOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module EthereumKit {
+  umbrella header "EthereumKit-Universal-macOS-umbrella.h"
+
+  export *
+  module * { export * }
+}
