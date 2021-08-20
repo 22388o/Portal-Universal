@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SeedTestView: View {
     @ObservedObject private var viewModel: CreateWalletSceneViewModel
-    @StateObject private var keyboard = KeyboardResponder()
     private var accountManager = Portal.shared.accountManager
     @ObservedObject private var state = Portal.shared.state
 
@@ -73,7 +72,6 @@ struct SeedTestView: View {
                     accountManager.save(account: viewModel.account!)
                 }
             }
-            .padding(.bottom, keyboard.currentHeight)
         }
     }
 }
