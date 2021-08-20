@@ -10,6 +10,7 @@ import Erc20Kit
 import RxSwift
 import BigInt
 import HsToolKit
+import class Erc20Kit.Transaction
 
 class Evm20Adapter: BaseEvmAdapter {
     private static let approveConfirmationsThreshold: Int? = nil
@@ -120,7 +121,7 @@ extension Evm20Adapter: ISendEthereumAdapter {
 extension Evm20Adapter: IErc20Adapter {
 
     var pendingTransactions: [TransactionRecord] {
-        evm20Kit.pendingTransactions().map { transactionRecord(fromTransaction: $0) }
+        evm20Kit.pendingTransactions().map { transactionRecord(fromTransaction: $0.fullTransaction) }
     }
 
     func allowanceSingle(spenderAddress: EthereumKit.Address, defaultBlockParameter: DefaultBlockParameter = .latest) -> Single<Decimal> {
@@ -151,7 +152,7 @@ extension Evm20Adapter: ITransactionsAdapter {
 
     var transactionRecordsObservable: Observable<[TransactionRecord]> {
         evm20Kit.transactionsObservable.map { [weak self] in
-            $0.compactMap { self?.transactionRecord(fromTransaction: $0) }
+            $0.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
         }
     }
 
@@ -160,9 +161,9 @@ extension Evm20Adapter: ITransactionsAdapter {
             let fromData = from.flatMap { record in
                 Data(hex: record.transactionHash)
             }
-            return try evm20Kit.transactionsSingle(from: fromData, limit: limit)
+            return try evm20Kit.transactionsSingle(from: nil, limit: nil)
                     .map { [weak self] transactions -> [TransactionRecord] in
-                        transactions.compactMap { self?.transactionRecord(fromTransaction: $0) }
+                        transactions.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
                     }
         } catch {
             return Single.error(error)
