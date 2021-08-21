@@ -17,7 +17,7 @@ def portal_shared_pods
   #Keychain
   pod 'KeychainAccess'
   #Async image
-  pod 'Kingfisher', :git => 'https://github.com/onevcat/Kingfisher', :commit => '8c73044cd5f6754ce605da05e2a4dab891d1aa0a'
+  pod 'Kingfisher', '~> 6.3.0'
 end
 
 

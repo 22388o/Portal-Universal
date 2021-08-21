@@ -80,7 +80,7 @@ PODS:
     - SwiftNIOSSL
     - SwiftNIOWebSocket
   - KeychainAccess (4.2.2)
-  - Kingfisher (7.0.0-beta.1)
+  - Kingfisher (6.3.1)
   - ObjectMapper (4.2.0)
   - OpenSslKit-Universal.swift (1.2.2)
   - RxSwift (5.1.3)
@@ -139,7 +139,7 @@ DEPENDENCIES:
   - Hodler-Universal.swift
   - HsToolKit-Universal.swift
   - KeychainAccess
-  - Kingfisher (from `https://github.com/onevcat/Kingfisher`, commit `8c73044cd5f6754ce605da05e2a4dab891d1aa0a`)
+  - Kingfisher (~> 6.3.0)
 
 SPEC REPOS:
   trunk:
@@ -166,6 +166,7 @@ SPEC REPOS:
     - Hodler-Universal.swift
     - HsToolKit-Universal.swift
     - KeychainAccess
+    - Kingfisher
     - ObjectMapper
     - OpenSslKit-Universal.swift
     - RxSwift
@@ -186,17 +187,11 @@ EXTERNAL SOURCES:
   Charts:
     :commit: 97587d04ed51f4e38e3057da51867d8805995a56
     :git: https://github.com/danielgindi/Charts.git
-  Kingfisher:
-    :commit: 8c73044cd5f6754ce605da05e2a4dab891d1aa0a
-    :git: https://github.com/onevcat/Kingfisher
 
 CHECKOUT OPTIONS:
   Charts:
     :commit: 97587d04ed51f4e38e3057da51867d8805995a56
     :git: https://github.com/danielgindi/Charts.git
-  Kingfisher:
-    :commit: 8c73044cd5f6754ce605da05e2a4dab891d1aa0a
-    :git: https://github.com/onevcat/Kingfisher
 
 SPEC CHECKSUMS:
   _NIODataStructures: e63beb6bfebffbd4399e514b7ecaf3f96cd8671c
@@ -223,7 +218,7 @@ SPEC CHECKSUMS:
   Hodler-Universal.swift: bbcb154c188ef48c0c088c513e47f0b8f3f3742d
   HsToolKit-Universal.swift: 1c58aecf9846fcf48164d41e014afc313aaf156e
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
-  Kingfisher: 486387ab12834247cbede0fa1fea6d0ab9470c84
+  Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   OpenSslKit-Universal.swift: 9c17dc8bb84c19b707c81e9f0ef960e563b3ea5a
   RxSwift: 915abbdfb62214aa89ccd0b194d44fb478019b27
@@ -240,6 +235,6 @@ SPEC CHECKSUMS:
   SwiftNIOWebSocket: 9649cc901b956f0e992f69f7138866b349f7638a
   UIExtensions-Stripped.swift: 2ed2ea244fc7e3b16581a8c316f9363179ec1644
 
-PODFILE CHECKSUM: be029a55c21efc6d207941af834525db09e53588
+PODFILE CHECKSUM: 271c1d13278bd8c569e44a145d4afaeddc45e7eb
 
 COCOAPODS: 1.10.1
