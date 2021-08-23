@@ -278,6 +278,13 @@
 		7599A79B2695D66F00562009 /* WalletModalViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599A7992695D66F00562009 /* WalletModalViews.swift */; };
 		759E51212618F81700FA737C /* CreateWalletNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759E51202618F81700FA737C /* CreateWalletNameView.swift */; };
 		759E51222618F81700FA737C /* CreateWalletNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759E51202618F81700FA737C /* CreateWalletNameView.swift */; };
+		75A00BCD26D3F08500ABCA7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A00BCC26D3F08500ABCA7E /* AppDelegate.swift */; };
+		75A00BCF26D3F27500ABCA7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75A00BCE26D3F27500ABCA7E /* Main.storyboard */; };
+		75A00BD126D3F4CC00ABCA7E /* NSTableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A00BD026D3F4CC00ABCA7E /* NSTableView+Extension.swift */; };
+		75A00BD326D3F54000ABCA7E /* PublishedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A00BD226D3F54000ABCA7E /* PublishedObject.swift */; };
+		75A00BD526D3F56E00ABCA7E /* StateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A00BD426D3F56E00ABCA7E /* StateObject.swift */; };
+		75A00BD726D3FC7000ABCA7E /* LazyVStack_.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A00BD626D3FC7000ABCA7E /* LazyVStack_.swift */; };
+		75A00BD826D3FC7000ABCA7E /* LazyVStack_.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A00BD626D3FC7000ABCA7E /* LazyVStack_.swift */; };
 		75A3F52126A57AFF006B1823 /* AdapterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3F52026A57AFF006B1823 /* AdapterManager.swift */; };
 		75A3F52226A57AFF006B1823 /* AdapterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3F52026A57AFF006B1823 /* AdapterManager.swift */; };
 		75A3F52426A57B69006B1823 /* CoinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3F52326A57B69006B1823 /* CoinManager.swift */; };
@@ -606,6 +613,12 @@
 		7599A7962695D63900562009 /* WalletMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMainView.swift; sourceTree = "<group>"; };
 		7599A7992695D66F00562009 /* WalletModalViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletModalViews.swift; sourceTree = "<group>"; };
 		759E51202618F81700FA737C /* CreateWalletNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletNameView.swift; sourceTree = "<group>"; };
+		75A00BCC26D3F08500ABCA7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		75A00BCE26D3F27500ABCA7E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		75A00BD026D3F4CC00ABCA7E /* NSTableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Extension.swift"; sourceTree = "<group>"; };
+		75A00BD226D3F54000ABCA7E /* PublishedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedObject.swift; sourceTree = "<group>"; };
+		75A00BD426D3F56E00ABCA7E /* StateObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateObject.swift; sourceTree = "<group>"; };
+		75A00BD626D3FC7000ABCA7E /* LazyVStack_.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVStack_.swift; sourceTree = "<group>"; };
 		75A3F52026A57AFF006B1823 /* AdapterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdapterManager.swift; sourceTree = "<group>"; };
 		75A3F52326A57B69006B1823 /* CoinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinManager.swift; sourceTree = "<group>"; };
 		75A3F52626A57B99006B1823 /* PortalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalState.swift; sourceTree = "<group>"; };
@@ -811,6 +824,7 @@
 				7599A7902694566800562009 /* PortalLoader.swift */,
 				7517F89F26B802960020AECB /* AsyncImageView.swift */,
 				7517F8A226B802DD0020AECB /* CoinImageView.swift */,
+				75A00BD626D3FC7000ABCA7E /* LazyVStack_.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -931,6 +945,11 @@
 			children = (
 				755782D826087904000E1686 /* Info.plist */,
 				755782D926087904000E1686 /* macOS.entitlements */,
+				75A00BCC26D3F08500ABCA7E /* AppDelegate.swift */,
+				75A00BCE26D3F27500ABCA7E /* Main.storyboard */,
+				75A00BD026D3F4CC00ABCA7E /* NSTableView+Extension.swift */,
+				75A00BD226D3F54000ABCA7E /* PublishedObject.swift */,
+				75A00BD426D3F56E00ABCA7E /* StateObject.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -1288,6 +1307,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75A00BCF26D3F27500ABCA7E /* Main.storyboard in Resources */,
 				755782F926087905000E1686 /* Assets.xcassets in Resources */,
 				750D63BE2689D9F200643FD3 /* alert.mp3 in Resources */,
 			);
@@ -1526,6 +1546,7 @@
 				75C95C222614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
 				750AE91D26149A8C00C45971 /* Asset.swift in Sources */,
 				756A66C12624850A00353635 /* SendAssetView.swift in Sources */,
+				75A00BD726D3FC7000ABCA7E /* LazyVStack_.swift in Sources */,
 				751B6549269D9711001B759C /* TransactionRecord.swift in Sources */,
 				75F5CD882684C541005ECA5B /* TxsViewModel.swift in Sources */,
 				755785A9260F7331000E1686 /* AccounttModel.swift in Sources */,
@@ -1575,6 +1596,7 @@
 				75308AE126A028940024AACD /* EthereumFeeRateProvider.swift in Sources */,
 				751B6556269D9924001B759C /* ITransactionAdapter.swift in Sources */,
 				75F5CD962684C8D6005ECA5B /* CreateWalletSceneViewModel.swift in Sources */,
+				75A00BD826D3FC7000ABCA7E /* LazyVStack_.swift in Sources */,
 				751B6547269CA219001B759C /* BitcoinAdapter.swift in Sources */,
 				75F5CDAA2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
 				755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */,
@@ -1599,6 +1621,7 @@
 				756A66B72624443A00353635 /* PortfolioViewModel.swift in Sources */,
 				75A3F52826A57B99006B1823 /* PortalState.swift in Sources */,
 				750AE8F82614992400C45971 /* MarketDataStorage.swift in Sources */,
+				75A00BCD26D3F08500ABCA7E /* AppDelegate.swift in Sources */,
 				75C95C5F2614CC0400B0EE10 /* Int+Extension.swift in Sources */,
 				758F3AEA26A9B89000F345E1 /* NotificationsView.swift in Sources */,
 				751B6545269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */,
@@ -1673,6 +1696,7 @@
 				7517F89B26B40DBF0020AECB /* ICoinStorage.swift in Sources */,
 				755785B8260F73A2000E1686 /* FiatCurrency.swift in Sources */,
 				750AE9C226149DD900C45971 /* IPricesData.swift in Sources */,
+				75A00BD526D3F56E00ABCA7E /* StateObject.swift in Sources */,
 				75F5CD892684C541005ECA5B /* TxsViewModel.swift in Sources */,
 				75C95C7D2614CC3700B0EE10 /* RepeatingTimer.swift in Sources */,
 				75A3F53A26A57D35006B1823 /* WalletStorage.swift in Sources */,
@@ -1722,7 +1746,9 @@
 				75C95C812614CC3700B0EE10 /* StringFormatter.swift in Sources */,
 				750D63B72689C32B00643FD3 /* NotificationService.swift in Sources */,
 				75C95C9B2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
+				75A00BD326D3F54000ABCA7E /* PublishedObject.swift in Sources */,
 				75F5CD9B2684C904005ECA5B /* SeedTestViewModel.swift in Sources */,
+				75A00BD126D3F4CC00ABCA7E /* NSTableView+Extension.swift in Sources */,
 				75F5CD912684C6AD005ECA5B /* AssetItemViewModel.swift in Sources */,
 				750AE90A26149A8C00C45971 /* Coin.swift in Sources */,
 				750AE9B226149DD900C45971 /* ICoinKit.swift in Sources */,
