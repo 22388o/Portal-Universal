@@ -22,17 +22,39 @@ struct PButton: View {
                 action()
             }
         }) {
-            ZStack {
-                RoundedRectangle(cornerRadius: height/2, style: .continuous)
-                    .fill(enabled ? bgColor! : Color.pButtonDisableBackground)
-                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
-                Text(label)
-                    .font(.mainFont(size: fontSize))
-                    .foregroundColor(.white)
-            }
+            Text(label)
+                .frame(width: width, height: height)
         }
-        .frame(width: width, height: height)
+        .buttonStyle(
+            PortalButtonStyle(
+                fontSize: fontSize,
+                foregroundColor: .white,
+                backgroundColor: bgColor!,
+                pressedColor: bgColor!.opacity(0.5),
+                width: width,
+                height: height,
+                enabled: enabled
+            )
+        )
         .disabled(!enabled)
+    }
+}
+
+struct PortalButtonStyle: ButtonStyle {
+    let fontSize: CGFloat
+    let foregroundColor: Color
+    let backgroundColor: Color
+    let pressedColor: Color
+    let width: CGFloat
+    let height: CGFloat
+    let enabled: Bool
+    
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .font(.mainFont(size: fontSize))
+            .foregroundColor(foregroundColor)
+            .background(enabled ? configuration.isPressed ? pressedColor : backgroundColor : Color.pButtonDisableBackground)
+            .cornerRadius(height/2)
     }
 }
 
