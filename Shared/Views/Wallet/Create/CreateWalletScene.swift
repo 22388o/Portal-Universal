@@ -88,15 +88,6 @@ struct CreateWalletScene: View {
             .cornerRadius(8)
             .padding(EdgeInsets(top: 88, leading: 24, bottom: 24, trailing: 24))
         }
-        .padding(.top, topPadding)
-    }
-    
-    private var topPadding: CGFloat {
-        #if os(macOS)
-        return 30
-        #else
-        return 0
-        #endif
     }
 }
 
