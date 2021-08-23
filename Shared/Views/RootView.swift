@@ -17,12 +17,19 @@ struct RootView: View {
             switch state.current {
             case .currentAccount:
                 WalletScene()
+                    .transition(AnyTransition.move(edge: .leading).combined(with: .opacity))
+                    .zIndex(6)
             case .createAccount:
                 CreateWalletScene()
+                    .transition(AnyTransition.move(edge: .leading).combined(with: .opacity))
+                    .zIndex(2)
             case .restoreAccount:
                 RestoreWalletView()
+                    .transition(AnyTransition.move(edge: .leading).combined(with: .opacity))
+                    .zIndex(3)
             }
         }
+        .isLocked(locked: $state.loading)
     }
 }
 
