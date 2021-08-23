@@ -35,9 +35,8 @@ struct WalletScene: View {
                     .padding([.leading, .bottom, .trailing], 24)
             }
             .blur(radius: state.modalViewIsPresented ? 6 : 0)
-            .scaleEffect(state.scaleEffectRation)
+//            .scaleEffect(state.scaleEffectRation)
             .allowsHitTesting(!state.modalViewIsPresented)
-            .isLocked(locked: $state.loading)
             
             if state.modalViewIsPresented || state.allNotifications {
                 WalletModalViews()

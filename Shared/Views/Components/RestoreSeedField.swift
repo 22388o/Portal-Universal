@@ -52,6 +52,7 @@ struct RestoreSeedField: View {
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .padding(.trailing, 8)
+                        .textFieldStyle(PlainTextFieldStyle())
                     #endif
                 }
                 .padding(.leading, 15)

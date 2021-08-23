@@ -69,8 +69,14 @@ struct SeedTestView: View {
                 Spacer().frame(height: 21)
                 
                 PButton(bgColor: Color(red: 250/255, green: 147/255, blue: 36/255), label: "Create my wallet", width: 203, height: 48, fontSize: 15, enabled: viewModel.test.formIsValid) {
-                    accountManager.save(account: viewModel.account!)
+                    withAnimation {
+                        state.loading = true
+                    }
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        accountManager.save(account: viewModel.account!)
+                    }
                 }
+                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
             }
         }
     }

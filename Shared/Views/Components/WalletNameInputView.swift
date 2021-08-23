@@ -29,6 +29,7 @@ struct WalletNameInputView: View {
                     TextField(String(), text: $name)
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
+                        .textFieldStyle(PlainTextFieldStyle())
                 }
             }
             .padding(.horizontal)

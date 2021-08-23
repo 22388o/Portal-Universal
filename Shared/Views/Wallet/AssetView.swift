@@ -44,29 +44,35 @@ struct AssetView: View {
                     Spacer()
                 }
                 
-                VStack {
+                VStack(spacing: 8) {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation(.easeIn(duration: 0.2)) {
+                            withAnimation(.linear(duration: 0.4)) {
                                 state.receiveAsset.toggle()
                             }
                         }
+                        .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                        
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation(.easeIn(duration: 0.2)) {
+                            withAnimation(.linear(duration: 0.5)) {
                                 state.sendAsset.toggle()
                             }
                         }
+                        .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     }
                     PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
                         withAnimation(.easeIn(duration: 0.2)) {
                             
                         }
                     }
+//                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                    
                     PButton(label: "Withdraw from exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
                         withAnimation(.easeIn(duration: 0.2)) {
                             
                         }
                     }
+//                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 }
                 
                 Spacer().frame(height: 10)

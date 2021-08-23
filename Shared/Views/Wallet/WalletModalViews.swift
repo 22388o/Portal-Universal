@@ -29,7 +29,7 @@ struct WalletModalViews: View {
 //                CreateAlertView(asset: state.selectedAsset, presented: $state.createAlert)
             }
         }
-        .transition(.scale)
+        .transition(AnyTransition.identity)
         
         if state.switchWallet {
             AccountsView()
@@ -39,7 +39,7 @@ struct WalletModalViews: View {
         
         if state.allNotifications {
             NotificationsView(presented: $state.allNotifications)
-                .padding(.top, 70)
+                .padding(.top, 79)
                 .padding(.leading, 20)
         }
     }

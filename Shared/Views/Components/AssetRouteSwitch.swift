@@ -43,6 +43,7 @@ struct AssetRouteSwitch: View {
                 }
                 .frame(width: 75)
             }
+            .buttonStyle(BorderlessButtonStyle())
             .font(Font.mainFont(size: 12))
             .padding(.vertical, 12)
             

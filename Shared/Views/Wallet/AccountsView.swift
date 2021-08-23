@@ -31,12 +31,6 @@ class AccountsViewModel: ObservableObject {
         state.selectedCoin = Coin.bitcoin()
         
         setActiveAccount(id: account.id)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            withAnimation {
-                self.state.loading = false
-            }
-        }
     }
     
     func setActiveAccount(id: String) {
@@ -87,7 +81,7 @@ struct AccountsView: View {
                 }
                 
                 ScrollView {
-                    LazyVStack(spacing: 0) {
+                    LazyVStack_(spacing: 0) {
                         ForEach(viewModel.accounts, id: \.id) { account in
                             AccountItemView(
                                 name: account.name,
@@ -116,6 +110,7 @@ struct AccountsView: View {
                         viewModel.state.switchWallet.toggle()
                     }
                 }
+                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                                 
                 PButton(label: "Restore account", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
@@ -123,17 +118,19 @@ struct AccountsView: View {
                         viewModel.state.switchWallet.toggle()
                     }
                 }
+                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 .padding(.top, 8)
                 .padding(.bottom, 16)
             }
             .alert(isPresented: $viewModel.showDeletionAlert) {
                 Alert(title: Text("This cannot be undone"), message: Text("Want to delete the account?"), primaryButton: .destructive(Text("Delete")) {
                     if let account = viewModel.accountToDelete {
-                        withAnimation {
-                            viewModel.delete(account: account)
-                            viewModel.state.switchWallet.toggle()
-                        }
+                        viewModel.state.loading = true
                         viewModel.accountToDelete = nil
+                        viewModel.state.switchWallet.toggle()
+                        DispatchQueue.global(qos: .userInitiated).async {
+                            viewModel.delete(account: account)
+                        }
                     }
                 },secondaryButton: .cancel())
             }

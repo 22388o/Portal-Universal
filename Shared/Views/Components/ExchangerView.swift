@@ -49,6 +49,7 @@ struct ExchangerView: View {
                             )
                         )
                         .frame(height: 20)
+                        .textFieldStyle(PlainTextFieldStyle())
                     #endif
                     
                     Text(viewModel.coin.code)
@@ -92,6 +93,7 @@ struct ExchangerView: View {
                             )
                         )
                         .frame(height: 20)
+                        .textFieldStyle(PlainTextFieldStyle())
                     #endif
                     
                     Text(viewModel.fiat.code)

@@ -98,14 +98,18 @@ struct RestoreWalletView: View {
                     
                     HStack {
                         PButton(bgColor: Color(red: 250/255, green: 147/255, blue: 36/255), label: "Restore", width: 203, height: 48, fontSize: 15, enabled: viewModel.restoreReady) {
-                            withAnimation {
+                            state.loading = true
+                            DispatchQueue.global(qos: .userInitiated).async {
                                 accountManager.save(account: viewModel.account)
                             }
                         }
+                        .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                         
                         if !viewModel.restoreReady {
                             HStack {
-                                Image(systemName: "exclamationmark.circle").font(.system(size: 16, weight: .regular))
+                                Image("exclamationmark.circle")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
                                 Text(viewModel.errorMessage)
                                     .font(.mainFont(size: 14))
                             }
@@ -122,6 +126,7 @@ struct RestoreWalletView: View {
                                 state.current = .createAccount
                             }
                         }
+                        .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     }
                     .frame(width: 725)
                     .padding(.top, 20)
@@ -130,6 +135,15 @@ struct RestoreWalletView: View {
             .cornerRadius(8)
             .padding(EdgeInsets(top: 88, leading: 24, bottom: 24, trailing: 24))
         }
+        .padding(.top, topPadding)
+    }
+    
+    private var topPadding: CGFloat {
+        #if os(macOS)
+        return 30
+        #else
+        return 0
+        #endif
     }
 }
 

@@ -70,7 +70,7 @@ extension Array where Element == Color {
     }
     #elseif os(macOS)
     func nsColors() -> [NSColor] {
-        self.map{ NSColor($0) }
+        self.map{ $0.nsColor }
     }
     #endif
 }

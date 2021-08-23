@@ -21,6 +21,7 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .day)
                     )
             }
+            .frame(width: 60)
             
             Button(action: {
                 timeframe = .week
@@ -30,6 +31,8 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .week)
                     )
             }
+            .frame(width: 60)
+
             Button(action: {
                 timeframe = .month
             }) {
@@ -38,6 +41,7 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .month)
                     )
             }
+            .frame(width: 60)
             
             Button(action: {
                 timeframe = .year
@@ -47,7 +51,9 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .year)
                     )
             }
+            .frame(width: 60)
         }
+        .buttonStyle(BorderlessButtonStyle())
     }
 }
 
@@ -56,3 +62,12 @@ struct TimeframeButtonsView_Previews: PreviewProvider {
         TimeframeButtonsView(type: .asset, timeframe: .constant(.day))
     }
 }
+
+#if os(macOS)
+extension NSTextField {
+    open override var focusRingType: NSFocusRingType {
+        get { .none }
+        set { }
+    }
+}
+#endif

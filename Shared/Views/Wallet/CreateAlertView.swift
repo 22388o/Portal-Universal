@@ -149,7 +149,7 @@ struct CreateAlertView: View {
                         .fill(Color.exchangerFieldBackground)
                     
                     ScrollView {
-                        LazyVStack(alignment: .leading) {
+                        LazyVStack_(alignment: .leading) {
                             Spacer().frame(height: 8)
                             
 //                            ForEach(allTxs.filter {$0.coin == coin.code}) { tx in

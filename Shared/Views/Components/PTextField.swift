@@ -20,6 +20,7 @@ struct PTextField: View {
         ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: height/2, style: .continuous)
                 .fill(Color.exchangerFieldBackground)
+                .frame(width: width, height: height)
                 .overlay(
                     RoundedRectangle(cornerRadius: height/2)
                         .stroke(Color.exchangerFieldBorder, lineWidth: 1)
@@ -41,6 +42,7 @@ struct PTextField: View {
                     .font(.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
                     .disableAutocorrection(true)
+                    .textFieldStyle(PlainTextFieldStyle())
                 #endif
             }
             .padding(.horizontal, 24)

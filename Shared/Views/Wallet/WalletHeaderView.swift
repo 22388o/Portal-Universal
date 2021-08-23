@@ -24,12 +24,16 @@ struct WalletHeaderView: View {
                     }
                 }, label: {
                     HStack {
-                        Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
+                        Image("switchAccountsIcon")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            
                         Text("\(viewModel.accountName)")
                             .font(.mainFont(size: 14))
                     }
                     .foregroundColor(Color.white.opacity(0.82))
                 })
+                .buttonStyle(PlainButtonStyle())
                 
                 Text("|")
                     .font(.mainFont(size: 12))
@@ -59,11 +63,15 @@ struct WalletHeaderView: View {
 //                            .foregroundColor(Color.white.opacity(0.6))
                 
                 Button(action: {
-                    viewModel.markAllNotificationsViewed()
-                    viewModel.state.allNotifications.toggle()
+                    withAnimation(.easeIn(duration: 0.2)) {
+                        viewModel.markAllNotificationsViewed()
+                        viewModel.state.allNotifications.toggle()
+                    }
                 }, label: {
                     ZStack(alignment: .topTrailing) {
-                        Image(systemName: "bell")
+                        Image("bellIcon")
+                            .resizable()
+                            .frame(width: 15, height: 18)
                         if viewModel.hasBadge {
                             Text("\(viewModel.newAlerts)")
                                 .lineLimit(1)
@@ -80,6 +88,7 @@ struct WalletHeaderView: View {
                     .foregroundColor(Color.white.opacity(0.82))
                     .frame(minWidth: 30)
                 })
+                .buttonStyle(PlainButtonStyle())
                 
                 Spacer()
                 

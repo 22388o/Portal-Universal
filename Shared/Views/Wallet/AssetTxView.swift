@@ -41,6 +41,7 @@ struct AssetTxView: View {
                             selectedTx = nil
                         }
                     }
+                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 }
                 Spacer()
                 PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
@@ -79,7 +80,7 @@ struct AssetTxView: View {
                             .fill(Color.exchangerFieldBorder)
                         
                         ScrollView {
-                            LazyVStack(alignment: .leading, spacing: 0) {
+                            LazyVStack_(alignment: .leading, spacing: 0) {
                                 Divider()
                                 ForEach(viewModel.txs, id:\.uid) { tx in
                                     TxPreviewView(coin: viewModel.coin, lastBlockInfo: viewModel.lastBlockInfo, transaction: tx) { tx in
