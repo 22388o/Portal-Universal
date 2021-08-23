@@ -37,6 +37,10 @@ struct Coin {
     static func ethereum() -> Self {
         Coin(type: .ethereum, code: "ETH", name: "Ethereum", decimal: 18, iconUrl: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Ethereum-ETH-icon.png")
     }
+    
+    static func portal() -> Self {
+        Coin(type: .erc20(address: "0x83Fc886c260C1FAfEd46A14a0b524B9Fe3C1FaAD"), code: "WHALE", name: "Portal whale token", decimal: 18, iconUrl: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Ethereum-ETH-icon.png")
+    }
 }
 
 extension Coin: Hashable {
