@@ -103,6 +103,7 @@ struct AssetView: View {
             .padding(.horizontal, 24)
         }
         .frame(width: 304)
+        .frame(minHeight: 650)
     }
 }
 

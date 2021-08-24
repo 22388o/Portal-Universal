@@ -104,6 +104,7 @@ struct WalletHeaderView: View {
             
             AppSceneSwitch(state: $viewModel.state.mainScene)
         }
+        .frame(minWidth: 600)
     }
 }
 
