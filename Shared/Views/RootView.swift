@@ -15,6 +15,8 @@ struct RootView: View {
             Color.portalWalletBackground
             
             switch state.current {
+            case .starting:
+                Color.clear
             case .currentAccount:
                 WalletScene()
                     .transition(AnyTransition.opacity)
