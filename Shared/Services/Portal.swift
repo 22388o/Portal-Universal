@@ -92,6 +92,9 @@ final class Portal: ObservableObject {
                     if self?.state.current != .currentAccount {
                         self?.state.current = .currentAccount
                     }
+                } else if self?.accountManager.activeAccount == nil {
+                    self?.state.loading = false
+                    self?.state.current = .createAccount
                 }
             }
             .store(in: &anyCancellables)
