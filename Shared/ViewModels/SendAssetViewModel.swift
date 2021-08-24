@@ -158,10 +158,8 @@ final class SendAssetViewModel: ObservableObject {
         switch coin.type {
         case .bitcoin:
             try sendBtcAdapter?.validate(address: address, pluginData: [:])
-        case .ethereum:
+        case .ethereum, .erc20( _):
             _ = try EthereumKit.Address.init(hex: address)
-        case .erc20( _):
-            break
         }
     }
     
