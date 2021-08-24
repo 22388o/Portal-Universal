@@ -26,21 +26,21 @@ struct WalletModalViews: View {
                 AssetTxView(coin: state.selectedCoin)
             }
             if state.createAlert {
-                //                CreateAlertView(asset: state.selectedAsset, presented: $state.createAlert)
+                //CreateAlertView(asset: state.selectedAsset, presented: $state.createAlert)
             }
             
             if state.switchWallet {
                 AccountsView()
                     .animation(nil)
-                    .padding(.top, 25)
+                    .padding(.top, 24)
                     .padding(.leading, 24)
             }
             
             if state.allNotifications {
                 NotificationsView(presented: $state.allNotifications)
                     .animation(nil)
-                    .padding(.top, 25)
-                    .padding(.leading, 20)
+                    .padding(.top, 24)
+                    .padding(.leading, 24)
             }
             
         }
