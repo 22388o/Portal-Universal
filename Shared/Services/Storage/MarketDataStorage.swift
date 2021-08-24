@@ -1,5 +1,5 @@
 //
-//  MarketDataRepository.swift
+//  MarketDataStorage.swift
 //  Portal
 //
 //  Created by Farid on 14.04.2020.
@@ -11,7 +11,7 @@ import SwiftUI
 import Combine
 import Coinpaprika
 
-final class MarketDataRepository: ObservableObject {
+final class MarketDataStorage: ObservableObject {
     typealias CoinCode = String
     typealias CurrencyCode = String
     typealias Rate = Double
@@ -20,7 +20,6 @@ final class MarketDataRepository: ObservableObject {
     
     private var mdUpdater: MarketDataUpdater
     private var fcUpdater: FiatCurrenciesUpdater
-    private var pdUpdater: PricesDataUpdater
     
     private var cancellables: Set<AnyCancellable> = []
     private var repository = Synchronized([CoinCode : CoinMarketData]())
@@ -34,10 +33,9 @@ final class MarketDataRepository: ObservableObject {
     @Published var dataReady: Bool = false
     
         
-    init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater, pdUpdater: PricesDataUpdater) {
+    init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater) {
         self.mdUpdater = mdUpdater
         self.fcUpdater = fcUpdater
-        self.pdUpdater = pdUpdater
         
         bindServices()
     }
@@ -53,20 +51,21 @@ final class MarketDataRepository: ObservableObject {
         mdUpdater.onUpdateHistoricalDataPublisher
             .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
+                self.update(range, data)
                 if !self.historicalDataReady {
                     self.historicalDataReady = true
                 }
-                self.update(range, data)
             })
             .store(in: &cancellables)
         
         mdUpdater.onTickersUpdatePublisher
+            .receive(on: DispatchQueue.global(qos: .userInteractive))
             .sink(receiveValue: { [weak self] tickers in
                 guard let self = self else { return }
+                self.tickers = tickers
                 if !self.tickersReady {
                     self.tickersReady = true
                 }
-                self.tickers = tickers
             })
             .store(in: &cancellables)
         
@@ -75,8 +74,8 @@ final class MarketDataRepository: ObservableObject {
                 guard let self = self else { return }
                 self.fiatCurrencies = currencies.filter {
                     self.supportedFiatCurrenciesSymbols.contains($0.code)}.sorted(by: {$0.code < $1.code})
-            })
-            .store(in: &cancellables)
+                })
+                .store(in: &cancellables)
         
         Publishers.MergeMany($historicalDataReady, $tickersReady, $marketDataReady)
             .sink { [weak self] ready in
@@ -150,7 +149,7 @@ final class MarketDataRepository: ObservableObject {
     }
 }
 
-extension MarketDataRepository: IMarketDataProvider {
+extension MarketDataStorage: IMarketDataProvider {
     func requestHistoricalData(coin: Coin, timeframe: Timeframe) {
         mdUpdater.requestHistoricalMarketData(coin: coin, timeframe: timeframe)
     }
