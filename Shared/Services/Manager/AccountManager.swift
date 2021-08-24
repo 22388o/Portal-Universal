@@ -21,7 +21,10 @@ final class AccountManager {
         if let newWalletId = accounts.first?.id {
             setActiveAccount(id: newWalletId)
         } else {
-            Portal.shared.state.current = .createAccount
+            DispatchQueue.main.async {
+                Portal.shared.state.loading = false
+                Portal.shared.state.current = .createAccount
+            }
         }
     }
 }
