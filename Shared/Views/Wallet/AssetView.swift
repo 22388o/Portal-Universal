@@ -47,21 +47,21 @@ struct AssetView: View {
                 VStack(spacing: 8) {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation(.linear(duration: 0.4)) {
+                            withAnimation(.easeIn(duration: 1.2)) {
                                 state.receiveAsset.toggle()
                             }
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                         
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation(.linear(duration: 0.5)) {
+                            withAnimation(.easeIn(duration: 1.2)) {
                                 state.sendAsset.toggle()
                             }
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     }
                     PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
-                        withAnimation(.easeIn(duration: 0.2)) {
+                        withAnimation(.easeInOut(duration: 0.4)) {
                             
                         }
                     }

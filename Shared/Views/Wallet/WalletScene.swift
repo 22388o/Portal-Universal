@@ -30,7 +30,7 @@ struct WalletScene: View {
                     .padding(.vertical, 24)
                 
                 WalletMainView()
-                    .transition(.slide)
+                    .transition(.opacity)
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
             }
