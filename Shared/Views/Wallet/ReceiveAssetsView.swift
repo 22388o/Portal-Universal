@@ -7,38 +7,6 @@
 
 import SwiftUI
 
-class ReceiveAssetViewModel: ObservableObject {
-    private let qrCodeProvider: IQRCodeProvider
-    let receiveAddress: String
-    
-    @Published var qrCode: Image? = nil
-    @Published var isCopied: Bool = false
-    
-    init(address: String) {
-        receiveAddress = address
-        qrCodeProvider = QRCodeProvider()
-    }
-    
-    func update() {
-        qrCode = qrCodeProvider.code(for: receiveAddress)
-    }
-}
-
-extension ReceiveAssetViewModel {
-    static func config(coin: Coin) -> ReceiveAssetViewModel {
-        let walletManager = Portal.shared.walletManager
-        let adapterManager = Portal.shared.adapterManager
-        
-        var address = String()
-        
-        if let wallet = walletManager.activeWallets.first(where: { $0.coin == coin }), let adapter = adapterManager.depositAdapter(for: wallet) {
-            address = adapter.receiveAddress
-        }
-       
-        return ReceiveAssetViewModel(address: address)
-    }
-}
-
 struct ReceiveAssetsView: View {
     private let coin: Coin
     @ObservedObject private var viewModel: ReceiveAssetViewModel
@@ -107,12 +75,7 @@ struct ReceiveAssetsView: View {
                         
                         HStack(spacing: 12) {
                             PButton(label: "Copy to clipboard", width: 140, height: 32, fontSize: 12, enabled: true) {
-                                print("receiver address = \(viewModel.receiveAddress)")
-                                #if os(iOS)
-                                UIPasteboard.general.string = viewModel.receiveAddress
-                                #else
-                                NSPasteboard.general.setString(viewModel.receiveAddress, forType: NSPasteboard.PasteboardType.string)
-                                #endif
+                                viewModel.copyToClipboard()
                                 
                                 if viewModel.isCopied != true {
                                     withAnimation {
