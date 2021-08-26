@@ -966,6 +966,7 @@
 			isa = PBXGroup;
 			children = (
 				755782D126087904000E1686 /* Info.plist */,
+				758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */,
 				755782C626087903000E1686 /* PortalApp.swift */,
 				7555640326D7943D001B1C1A /* Components */,
 			);
@@ -1029,7 +1030,6 @@
 				755782C726087903000E1686 /* RootView.swift */,
 				750C36AF261F2B4B0088CCED /* Wallet */,
 				750C3696261F291E0088CCED /* Components */,
-				758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";
