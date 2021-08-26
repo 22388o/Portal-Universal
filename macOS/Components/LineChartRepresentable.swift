@@ -5,7 +5,7 @@
 //  Created by Farid on 26.08.2021.
 //
 
-import SwftUI
+import SwiftUI
 import Charts
 
 struct LineChartRepresentable: NSViewRepresentable {
