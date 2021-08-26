@@ -218,7 +218,7 @@
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
 		755563FF26D79390001B1C1A /* LineChartRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FE26D79390001B1C1A /* LineChartRepresentable.swift */; };
-		7555640126D793C6001B1C1A /* LineChartRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555640026D793C6001B1C1A /* LineChartRepresentable.swift */; };
+		7555640626D798D5001B1C1A /* LineChartRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555640526D798D5001B1C1A /* LineChartRepresentable.swift */; };
 		75568BF0262D9F810010C7E6 /* ReceiveAssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75568BEF262D9F810010C7E6 /* ReceiveAssetsView.swift */; };
 		75568BF1262D9F810010C7E6 /* ReceiveAssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75568BEF262D9F810010C7E6 /* ReceiveAssetsView.swift */; };
 		7556940126A6B13F00EE5CC4 /* WalletItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556940026A6B13F00EE5CC4 /* WalletItem.swift */; };
@@ -230,7 +230,6 @@
 		755782F026087905000E1686 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 755782C426087903000E1686 /* Portal.xcdatamodeld */; };
 		755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 755782C426087903000E1686 /* Portal.xcdatamodeld */; };
 		755782F226087905000E1686 /* PortalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755782C626087903000E1686 /* PortalApp.swift */; };
-		755782F326087905000E1686 /* PortalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755782C626087903000E1686 /* PortalApp.swift */; };
 		755782F426087905000E1686 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755782C726087903000E1686 /* RootView.swift */; };
 		755782F526087905000E1686 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755782C726087903000E1686 /* RootView.swift */; };
 		755782F626087905000E1686 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755782C826087903000E1686 /* Persistence.swift */; };
@@ -576,7 +575,7 @@
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FE26D79390001B1C1A /* LineChartRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartRepresentable.swift; sourceTree = "<group>"; };
-		7555640026D793C6001B1C1A /* LineChartRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartRepresentable.swift; sourceTree = "<group>"; };
+		7555640526D798D5001B1C1A /* LineChartRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartRepresentable.swift; sourceTree = "<group>"; };
 		75568BEF262D9F810010C7E6 /* ReceiveAssetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAssetsView.swift; sourceTree = "<group>"; };
 		7556940026A6B13F00EE5CC4 /* WalletItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletItem.swift; sourceTree = "<group>"; };
 		7556940326A6B15C00EE5CC4 /* WalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewModel.swift; sourceTree = "<group>"; };
@@ -895,7 +894,7 @@
 			children = (
 				755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */,
 				755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */,
-				7555640026D793C6001B1C1A /* LineChartRepresentable.swift */,
+				7555640526D798D5001B1C1A /* LineChartRepresentable.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -938,7 +937,6 @@
 		755782C326087903000E1686 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				755782C626087903000E1686 /* PortalApp.swift */,
 				751F07132697082D000647FD /* Core */,
 				750AE8DC2614990500C45971 /* Services */,
 				7557857A260F6143000E1686 /* Views */,
@@ -968,6 +966,7 @@
 			isa = PBXGroup;
 			children = (
 				755782D126087904000E1686 /* Info.plist */,
+				755782C626087903000E1686 /* PortalApp.swift */,
 				7555640326D7943D001B1C1A /* Components */,
 			);
 			path = iOS;
@@ -1639,6 +1638,7 @@
 				75B151512622FA7D00542415 /* TimeframeSwitch.swift in Sources */,
 				75110D6A26A1FAE000BDD6C0 /* IErc20Adapter.swift in Sources */,
 				75984F2F2648219B002CD1EA /* RestoreWalletView.swift in Sources */,
+				7555640626D798D5001B1C1A /* LineChartRepresentable.swift in Sources */,
 				751B655C269D999F001B759C /* LastBlockInfo.swift in Sources */,
 				75BEB20C26B96AE200C99F50 /* ERC20TokensUpdater.swift in Sources */,
 				750AE90E26149A8C00C45971 /* CoinMarketData.swift in Sources */,
@@ -1661,7 +1661,6 @@
 				751B6545269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */,
 				750D63C7268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */,
 				750AE9CA26149DD900C45971 /* IAsset.swift in Sources */,
-				7555640126D793C6001B1C1A /* LineChartRepresentable.swift in Sources */,
 				750AE9DE26149DD900C45971 /* IChartDataProvider.swift in Sources */,
 				751B6550269D98E8001B759C /* IAdapter.swift in Sources */,
 				75C95C172614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
@@ -1762,7 +1761,6 @@
 				75F5CD842684C4D1005ECA5B /* PortalTx.swift in Sources */,
 				75A3F54926A59F72006B1823 /* IAccount.swift in Sources */,
 				750AE9AE26149DD900C45971 /* IWalletsService.swift in Sources */,
-				755782F326087905000E1686 /* PortalApp.swift in Sources */,
 				75B151432622EC0F00542415 /* AssetRouteSwitch.swift in Sources */,
 				75B151342622D68F00542415 /* FiatCurrencyButton.swift in Sources */,
 				755785B1260F7363000E1686 /* Enums.swift in Sources */,

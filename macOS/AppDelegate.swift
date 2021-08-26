@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-#if os(macOS)
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow?
@@ -39,4 +38,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.window = NSApp.mainWindow
     }
 }
-#endif
