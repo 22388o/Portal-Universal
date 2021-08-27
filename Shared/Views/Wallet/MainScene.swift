@@ -25,7 +25,7 @@ struct MainScene: View {
             }
             
             VStack(spacing: 0) {
-                PortalHeaderView(viewModel: headerViewModel)
+                HeaderView(viewModel: headerViewModel)
                     .padding(.horizontal, 48)
                     .padding(.vertical, 24)
                 
