@@ -851,26 +851,13 @@
 		750C36AF261F2B4B0088CCED /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
+				750C36C3261F3AEE0088CCED /* WalletView.swift */,
+				75D476D2262DAC2B0006FD91 /* RecentTxsView.swift */,
 				757E08F226165BC5006ABEC2 /* Create */,
 				75984F34264821A1002CD1EA /* Restore */,
-				750C369F261F298B0088CCED /* MainScene.swift */,
-				7599A7932695D5E300562009 /* HeaderView.swift */,
-				7599A7962695D63900562009 /* MainView.swift */,
-				7599A7992695D66F00562009 /* WalletModalViews.swift */,
-				750C36C3261F3AEE0088CCED /* WalletView.swift */,
-				75B151012621DAB700542415 /* AssetView.swift */,
-				750C36CA261F44BF0088CCED /* AssetItemView.swift */,
-				756A66C02624850A00353635 /* SendAssetView.swift */,
-				75568BEF262D9F810010C7E6 /* ReceiveAssetsView.swift */,
-				756A66AE262441B500353635 /* PortfolioView.swift */,
-				75D476D2262DAC2B0006FD91 /* RecentTxsView.swift */,
-				75D476D9262DB81C0006FD91 /* AssetTxView.swift */,
-				75DBD2BC26359D080050AE08 /* AccountsView.swift */,
-				7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */,
-				756C66B32640363500CD22B2 /* AlertsView.swift */,
-				756C66BA264038E900CD22B2 /* CreateAlertView.swift */,
-				758F3AE526A9B84F00F345E1 /* NotificationView.swift */,
-				758F3AE826A9B89000F345E1 /* NotificationsView.swift */,
+				7555641C26D8EFD6001B1C1A /* ModalViews */,
+				7555641F26D8F023001B1C1A /* Asset */,
+				7555642026D8F031001B1C1A /* Alerts */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -934,6 +921,63 @@
 				7555641426D8E915001B1C1A /* NSTextField+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		7555641C26D8EFD6001B1C1A /* ModalViews */ = {
+			isa = PBXGroup;
+			children = (
+				7599A7992695D66F00562009 /* WalletModalViews.swift */,
+				756A66C02624850A00353635 /* SendAssetView.swift */,
+				75568BEF262D9F810010C7E6 /* ReceiveAssetsView.swift */,
+				75D476D9262DB81C0006FD91 /* AssetTxView.swift */,
+				7555641E26D8EFF9001B1C1A /* Accounts */,
+				7555641D26D8EFED001B1C1A /* Notifications */,
+			);
+			path = ModalViews;
+			sourceTree = "<group>";
+		};
+		7555641D26D8EFED001B1C1A /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				758F3AE526A9B84F00F345E1 /* NotificationView.swift */,
+				758F3AE826A9B89000F345E1 /* NotificationsView.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		7555641E26D8EFF9001B1C1A /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				75DBD2BC26359D080050AE08 /* AccountsView.swift */,
+				7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		7555641F26D8F023001B1C1A /* Asset */ = {
+			isa = PBXGroup;
+			children = (
+				75B151012621DAB700542415 /* AssetView.swift */,
+				750C36CA261F44BF0088CCED /* AssetItemView.swift */,
+			);
+			path = Asset;
+			sourceTree = "<group>";
+		};
+		7555642026D8F031001B1C1A /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				756C66B32640363500CD22B2 /* AlertsView.swift */,
+				756C66BA264038E900CD22B2 /* CreateAlertView.swift */,
+			);
+			path = Alerts;
+			sourceTree = "<group>";
+		};
+		7555642126D8F038001B1C1A /* Portfolio */ = {
+			isa = PBXGroup;
+			children = (
+				756A66AE262441B500353635 /* PortfolioView.swift */,
+			);
+			path = Portfolio;
 			sourceTree = "<group>";
 		};
 		755782BE26087903000E1686 = {
@@ -1047,7 +1091,11 @@
 			isa = PBXGroup;
 			children = (
 				755782C726087903000E1686 /* RootView.swift */,
+				750C369F261F298B0088CCED /* MainScene.swift */,
+				7599A7962695D63900562009 /* MainView.swift */,
+				7599A7932695D5E300562009 /* HeaderView.swift */,
 				750C36AF261F2B4B0088CCED /* Wallet */,
+				7555642126D8F038001B1C1A /* Portfolio */,
 				750C3696261F291E0088CCED /* Components */,
 			);
 			path = Views;
