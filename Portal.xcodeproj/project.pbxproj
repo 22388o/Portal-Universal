@@ -763,14 +763,14 @@
 		750AE8DC2614990500C45971 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				75308AB226A0215C0024AACD /* Portal.swift */,
+				75A3F52626A57B99006B1823 /* PortalState.swift */,
 				750D63B52689C32B00643FD3 /* NotificationService.swift */,
 				75A3F53B26A57D5C006B1823 /* Storage */,
 				75A3F53C26A57D70006B1823 /* Manager */,
 				75A3F53D26A57D83006B1823 /* Updaters */,
 				75C95C2E2614CBC000B0EE10 /* Providers */,
-				75308AB226A0215C0024AACD /* Portal.swift */,
-				75A3F52626A57B99006B1823 /* PortalState.swift */,
-				75A3F52926A57BEA006B1823 /* AdapterFactory.swift */,
+				7555642626D8F6C9001B1C1A /* Factories */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -989,6 +989,14 @@
 				7555642226D8F0DD001B1C1A /* ExchangeScene.swift */,
 			);
 			path = Exchange;
+			sourceTree = "<group>";
+		};
+		7555642626D8F6C9001B1C1A /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				75A3F52926A57BEA006B1823 /* AdapterFactory.swift */,
+			);
+			path = Factories;
 			sourceTree = "<group>";
 		};
 		755782BE26087903000E1686 = {
