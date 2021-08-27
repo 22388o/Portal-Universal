@@ -1,5 +1,5 @@
 //
-//  RestoreWalletViewModel.swift
+//  RestoreAccountViewModel.swift
 //  Portal
 //
 //  Created by Farid on 24.06.2021.
@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-final class RestoreWalletViewModel: ObservableObject {
+final class RestoreAccountViewModel: ObservableObject {
     private let seeedLength = 24
     private var anyCancellable = Set<AnyCancellable>()
 

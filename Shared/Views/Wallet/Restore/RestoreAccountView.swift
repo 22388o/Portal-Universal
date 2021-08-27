@@ -1,5 +1,5 @@
 //
-//  RestoreWalletView.swift
+//  RestoreAccountView.swift
 //  Portal
 //
 //  Created by Farid on 09.05.2021.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct RestoreWalletView: View {
-    @ObservedObject var viewModel: RestoreWalletViewModel
+struct RestoreAccountView: View {
+    @ObservedObject var viewModel: RestoreAccountViewModel
     private var accountManager = Portal.shared.accountManager
     @ObservedObject private var state = Portal.shared.state
     
@@ -138,9 +138,9 @@ struct RestoreWalletView: View {
     }
 }
 
-struct RestoreWalletView_Previews: PreviewProvider {
+struct RestoreAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        RestoreWalletView()
+        RestoreAccountView()
             .iPadLandscapePreviews()
     }
 }

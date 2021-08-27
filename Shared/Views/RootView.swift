@@ -22,11 +22,11 @@ struct RootView: View {
                     .transition(AnyTransition.opacity)
                     .zIndex(6)
             case .createAccount:
-                CreateWalletScene()
+                CreateAccountScene()
                     .transition(AnyTransition.opacity)
                     .zIndex(2)
             case .restoreAccount:
-                RestoreWalletView()
+                RestoreAccountView()
                     .transition(AnyTransition.opacity)
                     .zIndex(3)
             }
