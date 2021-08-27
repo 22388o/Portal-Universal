@@ -15,7 +15,7 @@ struct RootView: View {
             Color.portalWalletBackground
             
             switch state.current {
-            case .starting:
+            case .idle:
                 Color.clear
             case .currentAccount:
                 MainScene()
