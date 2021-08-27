@@ -18,7 +18,7 @@ struct RootView: View {
             case .starting:
                 Color.clear
             case .currentAccount:
-                WalletScene()
+                MainScene()
                     .transition(AnyTransition.opacity)
                     .zIndex(6)
             case .createAccount:

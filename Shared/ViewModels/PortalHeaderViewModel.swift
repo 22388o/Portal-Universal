@@ -1,5 +1,5 @@
 //
-//  WalletHeaderViewModel.swift
+//  PortalHeaderViewModel.swift
 //  Portal
 //
 //  Created by Farid on 22.07.2021.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class WalletHeaderViewModel: ObservableObject {
+class PortalHeaderViewModel: ObservableObject {
     @Published var accountName = String()
     @Published var state = Portal.shared.state
     
@@ -41,12 +41,12 @@ class WalletHeaderViewModel: ObservableObject {
     }
 }
 
-extension WalletHeaderViewModel {
-    static func config() -> WalletHeaderViewModel {
+extension PortalHeaderViewModel {
+    static func config() -> PortalHeaderViewModel {
         let accountManager = Portal.shared.accountManager
         let notificationService = Portal.shared.notificationService
         
-        return WalletHeaderViewModel(
+        return PortalHeaderViewModel(
             accountManager: accountManager,
             notificationService: notificationService
         )

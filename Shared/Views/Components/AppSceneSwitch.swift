@@ -44,13 +44,13 @@ struct AppSceneSwitch: View {
                         Text("Exchange")
                             .font(.mainFont(size: 12))
                             .foregroundColor(
-                                state == .swap ? Color.walletExchangeSwitchActentLabel : Color.white.opacity(0.82)
+                                state == .exchange ? Color.walletExchangeSwitchActentLabel : Color.white.opacity(0.82)
                             )
                         Spacer()
                     }
                     .onTapGesture {
                         withAnimation {
-                            state = .swap
+                            state = .exchange
                         }
                     }
                 }

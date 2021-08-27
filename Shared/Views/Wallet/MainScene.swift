@@ -1,5 +1,5 @@
 //
-//  WalletScene.swift
+//  MainScene.swift
 //  Portal
 //
 //  Created by Farid on 08.04.2021.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct WalletScene: View {
+struct MainScene: View {
     @ObservedObject var state = Portal.shared.state
-    @StateObject var headerViewModel = WalletHeaderViewModel.config()
+    @StateObject var headerViewModel = PortalHeaderViewModel.config()
     
     var containerZStackAlignment: Alignment {
         return state.switchWallet || state.allNotifications ? .topLeading : .center
@@ -20,16 +20,16 @@ struct WalletScene: View {
             switch state.mainScene {
             case .wallet:
                 Color.portalWalletBackground.allowsHitTesting(false)
-            case .swap:
+            case .exchange:
                 Color.portalSwapBackground.allowsHitTesting(false)
             }
             
             VStack(spacing: 0) {
-                WalletHeaderView(viewModel: headerViewModel)
+                PortalHeaderView(viewModel: headerViewModel)
                     .padding(.horizontal, 48)
                     .padding(.vertical, 24)
                 
-                WalletMainView()
+                MainView()
                     .transition(.opacity)
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
@@ -48,7 +48,7 @@ struct WalletScene: View {
 
 struct MainScene_Previews: PreviewProvider {
     static var previews: some View {
-        WalletScene()
+        MainScene()
             .iPadLandscapePreviews()
     }
 }
