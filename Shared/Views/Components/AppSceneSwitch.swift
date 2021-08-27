@@ -60,7 +60,7 @@ struct AppSceneSwitch: View {
     }
 }
 
-struct WalletExchangeSwitch_Previews: PreviewProvider {
+struct AppSceneSwitch_Previews: PreviewProvider {
     static var previews: some View {
         AppSceneSwitch(state: .constant(.wallet))
             .previewLayout(PreviewLayout.sizeThatFits)
