@@ -25,7 +25,7 @@ class ReceiveAssetViewModel: ObservableObject {
     
     func copyToClipboard() {
         #if os(iOS)
-        UIPasteboard.general.string = viewModel.receiveAddress
+        UIPasteboard.general.string = receiveAddress
         #else
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(receiveAddress, forType: NSPasteboard.PasteboardType.string)
