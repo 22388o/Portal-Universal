@@ -30,7 +30,11 @@ class EthereumKitManager {
         
         let networkType = self.networkType
 
-        guard let syncSource = EthereumKit.Kit.infuraWebsocketSyncSource(networkType: networkType, projectId: appConfigProvider.infuraCredentials.id, projectSecret: appConfigProvider.infuraCredentials.secret) else {
+        guard let syncSource = EthereumKit.Kit.infuraWebsocketSyncSource(
+            networkType: networkType,
+            projectId: appConfigProvider.infuraCredentials.id,
+            projectSecret: appConfigProvider.infuraCredentials.secret
+        ) else {
             throw AdapterError.wrongParameters
         }
         
