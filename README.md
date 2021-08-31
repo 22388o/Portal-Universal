@@ -4,7 +4,6 @@ Portal wallet universal for iOS &amp; macOS
 ## nomenclature
 - xcode = apple IDE
 - cocoaPods = dependency manager for swift (written in ruby)
-- branch: exchange-swiftui
 
 ## repo structure (names below ending in “/” are directories)
 - .github/workflows/
