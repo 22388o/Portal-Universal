@@ -1,0 +1,6 @@
+framework module UIExtensions {
+  umbrella header "UIExtensions-Stripped.swift-iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

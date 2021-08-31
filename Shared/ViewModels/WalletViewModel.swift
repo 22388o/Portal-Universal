@@ -11,6 +11,7 @@ import Combine
 
 class WalletViewModel: ObservableObject {
     @Published var items: [WalletItem] = []
+    @Published var uuid: UUID = UUID()
     
     var fiatCurrencies: [FiatCurrency] {
         marketDataProvider.fiatCurrencies
@@ -39,6 +40,7 @@ class WalletViewModel: ObservableObject {
                 
                 DispatchQueue.main.async {
                     self.items = configuredItems
+                    self.uuid = UUID()
                 }
             }
             .store(in: &cancellables)

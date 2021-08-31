@@ -77,6 +77,7 @@ final class Portal: ObservableObject {
         notificationService = NotificationService(adapterManager: adapterManager)
                         
         marketDataStorage.$dataReady
+            .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] ready in
                 if !ready {
                     self?.state.loading = true
@@ -85,17 +86,30 @@ final class Portal: ObservableObject {
             .store(in: &anyCancellables)
         
         adapterManager.adapterdReadyPublisher
+            .receive(on: RunLoop.main)
             .sink { [weak self] ready in
                 if ready && self?.accountManager.activeAccount != nil {
                     if self?.state.current != .currentAccount {
                         self?.state.current = .currentAccount
                     }
+                } else if self?.accountManager.activeAccount == nil {
+                    self?.state.loading = false
+                    self?.state.current = .createAccount
+                }
+            }
+            .store(in: &anyCancellables)
+        
+        accountManager.onActiveAccountUpdatePublisher
+            .debounce(for: 2, scheduler: RunLoop.main)
+            .sink { [weak self] account in
+                if account != nil {
+                    self?.state.loading = false
                 }
             }
             .store(in: &anyCancellables)
         
         coinManager.onCoinsUpdatePublisher
-            .debounce(for: 1, scheduler: RunLoop.main)
+            .debounce(for: 3, scheduler: RunLoop.main)
             .sink(receiveValue: { [weak self] coins in
                 if !coins.isEmpty {
                     self?.state.loading = false

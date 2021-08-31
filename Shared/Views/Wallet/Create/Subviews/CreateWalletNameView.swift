@@ -37,6 +37,7 @@ struct CreateWalletNameView: View {
                         viewModel.walletCreationStep = .seed
                     }
                 }
+                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
             }
             
             Divider()

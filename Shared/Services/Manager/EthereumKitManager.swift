@@ -43,7 +43,7 @@ class EthereumKitManager {
             minLogLevel: .error
         )
         
-        evmKit.add(decorator: Erc20Kit.Kit.decorator(evmKit: evmKit))
+        evmKit.add(decorator: Erc20Kit.Kit.getDecorator())
         evmKit.add(transactionSyncer: Erc20Kit.Kit.getTransactionSyncer(evmKit: evmKit))
 
         evmKit.start()

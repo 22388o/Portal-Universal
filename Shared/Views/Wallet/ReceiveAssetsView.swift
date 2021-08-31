@@ -55,12 +55,16 @@ struct ReceiveAssetsView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black, lineWidth: 8)
+                        .stroke(Color.black, lineWidth: 6)
                 )
             
             CoinImageView(size: 64, url: coin.icon, placeholderForegroundColor: .black)
                 .background(Color.white)
                 .cornerRadius(32)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 32)
+                        .stroke(Color.black, lineWidth: 1)
+                )
                 .offset(y: -32)
             
             HStack {
@@ -98,10 +102,17 @@ struct ReceiveAssetsView: View {
                         Text(viewModel.receiveAddress)
                             .font(.mainFont(size: 16))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
+                        
+                        Spacer().frame(height: 25)
+                        
                         HStack(spacing: 12) {
                             PButton(label: "Copy to clipboard", width: 140, height: 32, fontSize: 12, enabled: true) {
                                 print("receiver address = \(viewModel.receiveAddress)")
+                                #if os(iOS)
                                 UIPasteboard.general.string = viewModel.receiveAddress
+                                #else
+                                NSPasteboard.general.setString(viewModel.receiveAddress, forType: NSPasteboard.PasteboardType.string)
+                                #endif
                                 
                                 if viewModel.isCopied != true {
                                     withAnimation {
@@ -109,6 +120,7 @@ struct ReceiveAssetsView: View {
                                     }
                                 }
                             }
+                            .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                             
                             if viewModel.isCopied {
                                 Text("Copied to clipboard!")

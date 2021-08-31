@@ -28,6 +28,7 @@ struct ExchangerView: View {
                 HStack(spacing: 8) {
                     CoinImageView(size: 24, url: viewModel.coin.icon)
                     
+                    #if os(iOS)
                     TextField(String(), text: $viewModel.assetValue)
                         .foregroundColor(Color.lightActiveLabel)
                         .modifier(
@@ -38,6 +39,18 @@ struct ExchangerView: View {
                         )
                         .frame(height: 20)
                         .keyboardType(.numberPad)
+                    #else
+                    TextField(String(), text: $viewModel.assetValue)
+                        .foregroundColor(Color.lightActiveLabel)
+                        .modifier(
+                            PlaceholderStyle(
+                                showPlaceHolder: viewModel.assetValue.isEmpty,
+                                placeholder: "0"
+                            )
+                        )
+                        .frame(height: 20)
+                        .textFieldStyle(PlainTextFieldStyle())
+                    #endif
                     
                     Text(viewModel.coin.code)
                         .foregroundColor(Color.lightActiveLabelNew)
@@ -59,6 +72,7 @@ struct ExchangerView: View {
                     )
                     .frame(width: 24, height: 24)
                     
+                    #if os(iOS)
                     TextField(String(), text: $viewModel.fiatValue)
                         .foregroundColor(Color.lightActiveLabel)
                         .modifier(
@@ -69,6 +83,18 @@ struct ExchangerView: View {
                         )
                         .frame(height: 20)
                         .keyboardType(.numberPad)
+                    #else
+                    TextField(String(), text: $viewModel.fiatValue)
+                        .foregroundColor(Color.lightActiveLabel)
+                        .modifier(
+                            PlaceholderStyle(
+                                showPlaceHolder: viewModel.fiatValue.isEmpty,
+                                placeholder: "0"
+                            )
+                        )
+                        .frame(height: 20)
+                        .textFieldStyle(PlainTextFieldStyle())
+                    #endif
                     
                     Text(viewModel.fiat.code)
                         .foregroundColor(Color.lightActiveLabelNew)

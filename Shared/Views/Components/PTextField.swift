@@ -20,6 +20,7 @@ struct PTextField: View {
         ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: height/2, style: .continuous)
                 .fill(Color.exchangerFieldBackground)
+                .frame(width: width, height: height)
                 .overlay(
                     RoundedRectangle(cornerRadius: height/2)
                         .stroke(Color.exchangerFieldBorder, lineWidth: 1)
@@ -30,11 +31,19 @@ struct PTextField: View {
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel.opacity(0.4))
                 }
+                #if os(iOS)
                 TextField(String(), text: $text)
                     .font(.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
                     .autocapitalization(upperCase ? .sentences : .none)
                     .disableAutocorrection(true)
+                #else
+                TextField(String(), text: $text)
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.lightActiveLabel)
+                    .disableAutocorrection(true)
+                    .textFieldStyle(PlainTextFieldStyle())
+                #endif
             }
             .padding(.horizontal, 24)
         }

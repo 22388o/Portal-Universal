@@ -26,22 +26,25 @@ struct WalletModalViews: View {
                 AssetTxView(coin: state.selectedCoin)
             }
             if state.createAlert {
-//                CreateAlertView(asset: state.selectedAsset, presented: $state.createAlert)
+                //CreateAlertView(asset: state.selectedAsset, presented: $state.createAlert)
             }
+            
+            if state.switchWallet {
+                AccountsView()
+                    .animation(nil)
+                    .padding(.top, 24)
+                    .padding(.leading, 24)
+            }
+            
+            if state.allNotifications {
+                NotificationsView(presented: $state.allNotifications)
+                    .animation(nil)
+                    .padding(.top, 24)
+                    .padding(.leading, 24)
+            }
+            
         }
-        .transition(.scale)
-        
-        if state.switchWallet {
-            AccountsView()
-                .padding(.top, 78)
-                .padding(.leading, 24)
-        }
-        
-        if state.allNotifications {
-            NotificationsView(presented: $state.allNotifications)
-                .padding(.top, 70)
-                .padding(.leading, 20)
-        }
+        .transition(AnyTransition.identity)
     }
 }
 

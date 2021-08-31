@@ -15,7 +15,7 @@ protocol IQRCodeProvider {
 
 extension IQRCodeProvider {
     func code(for address: String?) -> Image {
-        guard let message = address?.data(using: .utf8) else { return Image(systemName: "cloud") }
+        guard let message = address?.data(using: .utf8) else { return Image("cloud") }
         
         let parameters: [String : Any] = [
                     "inputMessage": message,
@@ -23,11 +23,11 @@ extension IQRCodeProvider {
                 ]
         let filter = CIFilter(name: "CIQRCodeGenerator", parameters: parameters)
         
-        guard let outputImage = filter?.outputImage else { return Image(systemName: "cloud") }
+        guard let outputImage = filter?.outputImage else { return Image("cloud") }
                
         let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 6, y: 6))
         guard let cgImage = CIContext().createCGImage(scaledImage, from: scaledImage.extent) else {
-            return Image(systemName: "cloud")
+            return Image("cloud")
         }
         
         #if os(iOS)

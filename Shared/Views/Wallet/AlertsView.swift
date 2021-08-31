@@ -15,6 +15,8 @@ struct AlertsView: View {
         VStack {
             VStack {
                 Image("bellIcon")
+                    .resizable()
+                    .frame(width: 30, height:36)
                 Text("Recent changes in \(coin.code)")
                     .font(.mainFont(size: 14))
                     .foregroundColor(Color.coinViewRouteButtonInactive)

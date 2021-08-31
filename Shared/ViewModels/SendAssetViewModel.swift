@@ -113,7 +113,7 @@ final class SendAssetViewModel: ObservableObject {
     }
     
     private func validate(address: String, amount: Decimal) {
-        let fee = fee(amount: amount, address: address)
+        let fee = self.fee(amount: amount, address: address)
         
         if fee > 0 {
             switch coin.type {
@@ -158,10 +158,8 @@ final class SendAssetViewModel: ObservableObject {
         switch coin.type {
         case .bitcoin:
             try sendBtcAdapter?.validate(address: address, pluginData: [:])
-        case .ethereum:
+        case .ethereum, .erc20( _):
             _ = try EthereumKit.Address.init(hex: address)
-        case .erc20( _):
-            break
         }
     }
     

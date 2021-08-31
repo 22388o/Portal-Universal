@@ -1,0 +1,6 @@
+framework module NIOTLS {
+  umbrella header "SwiftNIOTLS-iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

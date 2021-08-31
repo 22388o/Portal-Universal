@@ -19,17 +19,21 @@ struct WalletHeaderView: View {
         ZStack {
             HStack {
                 Button(action: {
-                    withAnimation(.easeIn(duration: 0.3)) {
+                    withAnimation(.easeIn(duration: 1.2)) {
                         viewModel.state.switchWallet.toggle()
                     }
                 }, label: {
                     HStack {
-                        Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
+                        Image("switchAccountsIcon")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            
                         Text("\(viewModel.accountName)")
                             .font(.mainFont(size: 14))
                     }
                     .foregroundColor(Color.white.opacity(0.82))
                 })
+                .buttonStyle(PlainButtonStyle())
                 
                 Text("|")
                     .font(.mainFont(size: 12))
@@ -59,11 +63,15 @@ struct WalletHeaderView: View {
 //                            .foregroundColor(Color.white.opacity(0.6))
                 
                 Button(action: {
-                    viewModel.markAllNotificationsViewed()
-                    viewModel.state.allNotifications.toggle()
+                    withAnimation(.easeIn(duration: 0.4)) {
+                        viewModel.markAllNotificationsViewed()
+                        viewModel.state.allNotifications.toggle()
+                    }
                 }, label: {
                     ZStack(alignment: .topTrailing) {
-                        Image(systemName: "bell")
+                        Image("bellIcon")
+                            .resizable()
+                            .frame(width: 15, height: 18)
                         if viewModel.hasBadge {
                             Text("\(viewModel.newAlerts)")
                                 .lineLimit(1)
@@ -80,6 +88,7 @@ struct WalletHeaderView: View {
                     .foregroundColor(Color.white.opacity(0.82))
                     .frame(minWidth: 30)
                 })
+                .buttonStyle(PlainButtonStyle())
                 
                 Spacer()
                 
@@ -95,6 +104,7 @@ struct WalletHeaderView: View {
             
             AppSceneSwitch(state: $viewModel.state.mainScene)
         }
+        .frame(minWidth: 600)
     }
 }
 

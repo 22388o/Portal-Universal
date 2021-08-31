@@ -26,12 +26,16 @@ struct SendAssetView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black.opacity(0.7), lineWidth: 8)
+                        .stroke(Color.black, lineWidth: 6)
                 )
             
             CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
                 .background(Color.white)
                 .cornerRadius(32)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 32)
+                        .stroke(Color.black, lineWidth: 1)
+                )
                 .offset(y: -32)
             
             HStack {
@@ -104,6 +108,7 @@ struct SendAssetView: View {
                 PButton(label: "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.canSend) {
                     viewModel.send()
                 }
+                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 .padding(.top, 16)
                 .padding(.bottom, 27)
                 
@@ -128,7 +133,7 @@ struct SendAssetView: View {
                         .fill(Color.exchangerFieldBackground)
                     
                     ScrollView {
-                        LazyVStack(alignment: .leading) {
+                        LazyVStack_(alignment: .leading) {
                             ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.uid) { tx in
                                 VStack(spacing: 0) {
                                     HStack(spacing: 0) {

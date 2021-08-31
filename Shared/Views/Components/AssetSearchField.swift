@@ -17,15 +17,20 @@ struct AssetSearchField: View {
                 .opacity(0.14)
                 .frame(height: 40)
             
+            HStack {
+                Image("magnifyingglass")
+                    .resizable()
+                    .frame(width: 18, height: 18)
+            }
+            .padding(.horizontal, 21)
+            
             if search.isEmpty {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                    Text("Find asset...")
-                }
-                .padding(.horizontal, 21)
+                Text("Find asset...")
+                    .padding(.horizontal, 50)
             }
             TextField(String(), text: $search)
-                .padding(.horizontal, 21)
+                .padding(.horizontal, 50)
+                .textFieldStyle(PlainTextFieldStyle())
         }
         .font(.mainFont(size: 15))
         .foregroundColor(Color.white.opacity(0.5))

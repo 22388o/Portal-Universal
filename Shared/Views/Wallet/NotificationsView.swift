@@ -42,7 +42,7 @@ struct NotificationsView: View {
                         .foregroundColor(Color.lightActiveLabel)
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: 0) {
+                        LazyVStack_(spacing: 0) {
                             ForEach(service.notifications, id: \.id) { notification in
                                 NotificationView(notification: notification)
                                 Divider()
@@ -54,8 +54,11 @@ struct NotificationsView: View {
                 Spacer()
                 
                 PButton(label: "Close", width: 80, height: 30, fontSize: 12, enabled: true) {
-                    Portal.shared.state.allNotifications.toggle()
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        Portal.shared.state.allNotifications.toggle()
+                    }
                 }
+                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 .padding()
             }
         }

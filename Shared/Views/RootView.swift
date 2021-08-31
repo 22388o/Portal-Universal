@@ -15,14 +15,23 @@ struct RootView: View {
             Color.portalWalletBackground
             
             switch state.current {
+            case .starting:
+                Color.clear
             case .currentAccount:
                 WalletScene()
+                    .transition(AnyTransition.opacity)
+                    .zIndex(6)
             case .createAccount:
                 CreateWalletScene()
+                    .transition(AnyTransition.opacity)
+                    .zIndex(2)
             case .restoreAccount:
                 RestoreWalletView()
+                    .transition(AnyTransition.opacity)
+                    .zIndex(3)
             }
         }
+        .isLocked(locked: $state.loading)
     }
 }
 

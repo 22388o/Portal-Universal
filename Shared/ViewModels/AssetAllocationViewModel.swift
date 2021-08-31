@@ -14,6 +14,6 @@ struct AssetAllocationViewModel: IPieChartModel, IBarChartViewModel {
     init(assets: [IAsset] = WalletMock().assets.map{ $0 }) {
         print("Asset allocation view model init")
         self.assets = assets
-        self.isLineChart = UIScreen.main.bounds.height < 1024 ? false : true
+        self.isLineChart = false
     }
 }

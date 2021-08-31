@@ -35,7 +35,7 @@ struct RecentTxsView: View {
                     .padding(.vertical)
                 
                 ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 0) {
+                    LazyVStack_(alignment: .leading, spacing: 0) {
                         Rectangle()
                             .fill(Color.exchangerFieldBorder)
                             .frame(height: 1)
@@ -77,6 +77,7 @@ struct RecentTxsView: View {
                         state.allTransactions.toggle()
                     }
                 }
+                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 .padding(.bottom, 41)
                 .padding(.top, 20)
             }

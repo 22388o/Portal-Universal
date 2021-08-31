@@ -13,7 +13,7 @@ struct WalletItem {
     let viewModel: AssetItemViewModel
 }
 
-extension WalletItem: Hashable {
+extension WalletItem: Hashable, Identifiable {
     public static func == (lhs: WalletItem, rhs: WalletItem) -> Bool {
         return lhs.id == rhs.id
     }

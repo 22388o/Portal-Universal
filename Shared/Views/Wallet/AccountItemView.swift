@@ -36,8 +36,12 @@ struct AccountItemView: View {
                         Button(action: {
                             onDelete()
                         }) {
-                            Image(systemName: "trash")
+                            Image("trash")
+                                .resizable()
+                                .frame(width: 18, height: 18)
                         }
+                        .foregroundColor(.red)
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 .padding(.trailing, 12)

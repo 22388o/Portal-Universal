@@ -25,6 +25,7 @@ struct WalletView: View {
                     Text("Asset")
                     Spacer()
                     Text("Value")
+                        .offset(x: 17)
                     Spacer()
                     Text("24h Change")
                 }
@@ -46,50 +47,47 @@ struct WalletView: View {
                     }
                 } else {
                     if state.searchRequest.isEmpty {
-                        List {
-                            ForEach(viewModel.items, id: \.id) { item in
-                                AssetItemView(
-                                    coin: item.coin,
-                                    viewModel: item.viewModel,
-                                    selected: state.selectedCoin.code == item.coin.code,
-                                    onTap: {
-                                        if item.coin.code != state.selectedCoin.code {
-                                            state.selectedCoin = item.coin
-                                        }
+                        List(viewModel.items) { item in
+                            AssetItemView(
+                                coin: item.coin,
+                                viewModel: item.viewModel,
+                                selected: state.selectedCoin.code == item.coin.code,
+                                onTap: {
+                                    if item.coin.code != state.selectedCoin.code {
+                                        state.selectedCoin = item.coin
                                     }
-                                )
-                                .id(item.id)
-                                .listRowBackground(Color.clear)
-                                .listRowInsets(.init(top: 4, leading: 4, bottom: 4, trailing: 4))
-                            }
+                                }
+                            )
+                            .id(item.id)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(.init(top: 4, leading: 4, bottom: 4, trailing: 4))
                         }
+                        .id(viewModel.uuid)
                         .listStyle(SidebarListStyle())
                     } else {
-                        List {
-                            ForEach(
-                                viewModel.items.filter {
-                                    $0.coin.code.lowercased().contains(state.searchRequest.lowercased()) ||
-                                        $0.coin.name.lowercased().contains(state.searchRequest.lowercased())}, id: \.id)
-                            { item in
-                                AssetItemView(
-                                    coin: item.coin,
-                                    viewModel: item.viewModel,
-                                    selected: state.selectedCoin.code == item.coin.code,
-                                    onTap: {
-                                        if item.coin.code != state.selectedCoin.code {
-                                            state.selectedCoin = item.coin
-                                        }
+                        List(viewModel.items.filter {
+                                $0.coin.code.lowercased().contains(state.searchRequest.lowercased()) ||
+                                    $0.coin.name.lowercased().contains(state.searchRequest.lowercased())}) { item in
+                            AssetItemView(
+                                coin: item.coin,
+                                viewModel: item.viewModel,
+                                selected: state.selectedCoin.code == item.coin.code,
+                                onTap: {
+                                    if item.coin.code != state.selectedCoin.code {
+                                        state.selectedCoin = item.coin
                                     }
-                                )
-                                .id(item.id)
-                                .listRowBackground(Color.clear)
-                                .listRowInsets(.init(top: 4, leading: 4, bottom: 4, trailing: 4))
-                            }
+                                }
+                            )
+                            .id(item.id)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(.init(top: 4, leading: 4, bottom: 4, trailing: 4))
                         }
+                        .id(viewModel.uuid)
                         .listStyle(SidebarListStyle())
                     }
                 }
             }
+            .frame(minWidth: 600)
         }
     }
 }
