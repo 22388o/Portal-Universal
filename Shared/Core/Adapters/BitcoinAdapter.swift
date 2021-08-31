@@ -22,7 +22,7 @@ final class BitcoinAdapter: BitcoinBaseAdapter {
             throw AdapterError.wrongParameters
         }
 
-        let networkType: Kit.NetworkType = .mainNet
+        let networkType: Kit.NetworkType = testMode ? .testNet : .mainNet
         let bip: Bip = BitcoinBaseAdapter.bip(from: wallet.account.mnemonicDereviation)
         let syncMode = BitcoinBaseAdapter.kitMode(from: walletSyncMode)
         
