@@ -10,8 +10,6 @@ import Charts
 import Coinpaprika
 
 struct AssetView: View {
-    @State private var route: AssetViewRoute = .value
-    
     @ObservedObject private var viewModel: AssetViewModel
     @ObservedObject private var state = Portal.shared.state
         
@@ -77,9 +75,9 @@ struct AssetView: View {
                 
                 Spacer().frame(height: 10)
                 
-                AssetRouteSwitch(route: $route)
+                AssetRouteSwitch(route: $viewModel.route)
                 
-                switch route {
+                switch viewModel.route {
                 case .value:
                     MarketValueView(
                         timeframe: $viewModel.selectedTimeframe,
