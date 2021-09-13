@@ -49,7 +49,6 @@ struct RestoreAccountView: View {
             
             ZStack {
                 Color.black.opacity(0.58)
-                
                 Color.white.cornerRadius(5).padding(8)
                                 
                 VStack(alignment: .leading, spacing: 0) {
@@ -135,6 +134,8 @@ struct RestoreAccountView: View {
             .cornerRadius(8)
             .padding(EdgeInsets(top: 88, leading: 24, bottom: 24, trailing: 24))
         }
+        .frame(minWidth: 850)
+        .frame(minHeight: 700)
     }
 }
 

@@ -100,7 +100,8 @@ struct TopCoinView: View {
             }
             .foregroundColor(.white)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: 312)
+        .frame(minHeight: 600)
         .padding(.horizontal, 24)
     }
 }

@@ -84,6 +84,8 @@ struct CreateWalletNameView: View {
                     .frame(width: 500)
             }
         }
+        .frame(minWidth: 450)
+        .frame(minHeight: 600)
     }
 }
 

@@ -89,6 +89,8 @@ struct StoreSeedView: View {
                 }
             }
         }
+        .frame(minWidth: 650)
+        .frame(minHeight: 550)
     }
 }
 

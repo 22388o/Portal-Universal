@@ -79,6 +79,8 @@ struct SeedTestView: View {
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
             }
         }
+        .frame(minWidth: 600)
+        .frame(minHeight: 550)
     }
 }
 
