@@ -25,6 +25,7 @@ final class AssetViewModel: ObservableObject {
     @Published private(set) var chartDataEntries = [ChartDataEntry]()
     @Published private(set) var currency: Currency = .fiat(USD)
     @Published var loadingData: Bool = false
+    @Published var route: AssetViewRoute = .value
         
     private let queue = DispatchQueue.main
     private var subscriptions = Set<AnyCancellable>()
@@ -51,20 +52,12 @@ final class AssetViewModel: ObservableObject {
         self.coin = state.selectedCoin
         self.walletManager = walletManager
         self.adapterManager = adapterManager
-        
-        if let wallet = Portal.shared.walletManager.activeWallets.first(where: { $0.coin == state.selectedCoin }),
-           let adapter = Portal.shared.adapterManager.balanceAdapter(for: wallet) {
-            self.adapter = adapter
-        } else {
-            self.adapter = nil
-        }
-        
-        self.balance = "\(adapter?.balance ?? 0)"
         self.fiatCurrency = state.fiatCurrency
         self.marketDataProvider = marketDataProvider
         
-        updateValues()
-        
+        self.updateAdapter()
+        self.updateValues()
+                
         $selectedTimeframe
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
@@ -96,8 +89,11 @@ final class AssetViewModel: ObservableObject {
             .store(in: &subscriptions)
         
         state.$selectedCoin
+            .receive(on: RunLoop.main)
             .sink { [weak self] coin in
+                self?.route = .value
                 self?.coin = coin
+                self?.updateAdapter()
                 self?.updateValues()
             }
             .store(in: &subscriptions)
@@ -107,18 +103,34 @@ final class AssetViewModel: ObservableObject {
         print("Deinit - \(coin.code)")
     }
     
+    private func updateAdapter() {
+        if let wallet = Portal.shared.walletManager.activeWallets.first(where: { $0.coin == self.coin }),
+           let adapter = Portal.shared.adapterManager.balanceAdapter(for: wallet) {
+            self.adapter = adapter
+        } else {
+            self.adapter = nil
+        }
+    }
+    
     private func updateValues() {
         guard let ticker = marketDataProvider.ticker(coin: coin) else { return }
         
-        self.balance = "\(adapter?.balance ?? 0)"
+        let symbol = fiatCurrency.symbol
+        let isInteger = adapter?.balance.rounded(toPlaces: 6).isInteger ?? true
         
-        price = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
+        if isInteger {
+            self.balance = "\(adapter?.balance ?? 0)"
+        } else {
+            self.balance = "\(adapter?.balance.rounded(toPlaces: 6) ?? 0)"
+        }
+        
+        price = "\(symbol)\((ticker[.usd].price * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
         
         let currentPrice: Decimal
         
         switch valueCurrencySwitchState {
         case .fiat:
-            totalValue = "\(fiatCurrency.symbol)" + "\((ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
+            totalValue = "\(symbol)\((ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
             currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
         case .btc:
             totalValue = "\((ticker[.btc].price).rounded(toPlaces: 2)) BTC"
