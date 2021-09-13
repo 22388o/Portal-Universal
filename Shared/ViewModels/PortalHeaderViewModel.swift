@@ -11,17 +11,11 @@ import Combine
 class PortalHeaderViewModel: ObservableObject {
     @Published var accountName = String()
     @Published var state = Portal.shared.state
+    @Published var hasBadge: Bool = false
+    @Published var newAlerts: Int = 0
     
     private var notificationService: NotificationService
-    private var cancellable = Set<AnyCancellable>()
-    
-    var hasBadge: Bool {
-        !notificationService.alertsBeenSeen && notificationService.newAlerts > 0
-    }
-    
-    var newAlerts: Int {
-        notificationService.newAlerts
-    }
+    private var cancellables = Set<AnyCancellable>()
     
     init(accountManager: IAccountManager, notificationService: NotificationService) {
         self.accountName = accountManager.activeAccount?.name ?? "-"
@@ -32,8 +26,15 @@ class PortalHeaderViewModel: ObservableObject {
             .sink { [weak self] account in
                 self?.accountName = account?.name ?? "-"
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
             
+        notificationService.$newAlerts.combineLatest(notificationService.$alertsBeenSeen)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newAlerts, alertsBeenSeen in
+                self?.newAlerts = newAlerts
+                self?.hasBadge = !alertsBeenSeen && newAlerts > 0
+            }
+            .store(in: &cancellables)
     }
     
     func markAllNotificationsViewed() {
