@@ -41,6 +41,25 @@ final class CreateWalletSceneViewModel: ObservableObject {
         Account(id: UUID().uuidString, name: walletName, bip: mnemonicDereviation, type: type)
     }
     
+    func formattedIndexString(_ index: Int) -> String {
+        switch index {
+        case 1:
+            return "1st word"
+        case 2:
+            return "2nd word"
+        case 3:
+            return "3rd word"
+        case 21:
+            return "21st word"
+        case 22:
+            return "22nd word"
+        case 23:
+            return "23rd word"
+        default:
+            return "\(index)th word"
+        }
+    }
+    
     private var mnemonicDereviation: MnemonicDerivation {
         switch btcAddressFormat {
         case 1:
