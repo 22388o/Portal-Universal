@@ -67,7 +67,7 @@ final class AssetItemViewModel: ObservableObject {
             updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
         }
         
-        adapter.balanceStateUpdatedObservable
+        adapter.balanceUpdatedObservable
             .subscribeOn(serialQueueScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
