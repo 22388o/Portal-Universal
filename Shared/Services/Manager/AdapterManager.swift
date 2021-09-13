@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import Combine
 
-class AdapterManager {
+final class AdapterManager {
     private let disposeBag = DisposeBag()
     private var cancellable = Set<AnyCancellable>()
 

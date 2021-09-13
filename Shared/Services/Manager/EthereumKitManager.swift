@@ -9,7 +9,7 @@ import Foundation
 import EthereumKit
 import Erc20Kit
 
-class EthereumKitManager {
+final class EthereumKitManager {
     private let appConfigProvider: IAppConfigProvider
     weak var evmKit: EthereumKit.Kit?
 

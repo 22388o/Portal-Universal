@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class CoinManager: ICoinManager {
+final class CoinManager: ICoinManager {
     var onCoinsUpdatePublisher = PassthroughSubject<[Coin], Never>()
     
     private var storage: ICoinStorage
@@ -26,7 +26,7 @@ class CoinManager: ICoinManager {
         storage.onCoinsUpdatePublisher
             .sink { [weak self] coins in
                 guard let self = self else { return }
-                self.coins = [Coin.bitcoin(), Coin.ethereum(), Coin.portal()] + coins
+                self.coins = [Coin.bitcoin(), Coin.ethereum(), Coin.portal()]// + coins
                 self.onCoinsUpdatePublisher.send(self.coins)
             }
             .store(in: &subscriptions)
