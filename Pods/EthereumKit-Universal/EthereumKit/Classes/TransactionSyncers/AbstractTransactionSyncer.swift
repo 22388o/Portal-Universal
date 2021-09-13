@@ -3,6 +3,7 @@ import BigInt
 
 open class AbstractTransactionSyncer: ITransactionSyncer {
     let stateSubject = PublishSubject<SyncState>()
+    let lock = NSRecursiveLock()
 
     public let disposeBag = DisposeBag()
     public let id: String
@@ -11,7 +12,9 @@ open class AbstractTransactionSyncer: ITransactionSyncer {
     public var state: SyncState = .notSynced(error: Kit.SyncError.notStarted) {
         didSet {
             if state != oldValue {
+                lock.lock()
                 stateSubject.onNext(state)
+                lock.unlock()
             }
         }
     }
