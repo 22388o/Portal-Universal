@@ -2264,9 +2264,10 @@
 			baseConfigurationReference = 6BE4BC6DBECEE51F6477650A /* Pods-Portal (iOS).debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-iOS";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -2277,7 +2278,7 @@
 					"@executable_path/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -2296,9 +2297,10 @@
 			baseConfigurationReference = E103E7237471B0E12F767D1B /* Pods-Portal (iOS).release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-iOS";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -2309,7 +2311,7 @@
 					"@executable_path/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -2344,7 +2346,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -2378,7 +2380,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = tides.universal.Portal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.portal;
 				PRODUCT_NAME = Portal;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
