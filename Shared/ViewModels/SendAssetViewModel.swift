@@ -181,7 +181,7 @@ final class SendAssetViewModel: ObservableObject {
         case .ethereum:
             return sendEthAdapter?.balance ?? 0
         case .erc20( _):
-            return 0
+            return balanceAdapter.balance
         }
     }
     
@@ -200,14 +200,14 @@ final class SendAssetViewModel: ObservableObject {
         case .bitcoin:
             sendBtcAdapter?
                 .sendSingle(amount: amount, address: receiverAddress, feeRate: feeRate, pluginData: [:], sortMode: .shuffle)
-                .subscribe(onSuccess: { _ in
+                .subscribe(onSuccess: { [weak self] _ in
                     print("Btc tx sent")
+                    self?.reset()
                 }, onError: { error in
                     print("Sending btc error: \(error.localizedDescription)")
                 })
                 .disposed(by: disposeBag)
         case .ethereum:
-            
             guard
                 let amountToSend = BigUInt(amount.roundedString(decimal: coin.decimal)),
                 let recepientAddress = try? Address(hex: receiverAddress),
@@ -216,22 +216,38 @@ final class SendAssetViewModel: ObservableObject {
                 return
             }
             
-            let gasPrice = feeRate
-            
-            provider
-                .evmKit
-                .estimateGas(to: recepientAddress, amount: amountToSend, gasPrice: gasPrice)
-                .flatMap({ gasLimit in
-                    return provider.evmKit.sendSingle(address: recepientAddress, value: amountToSend, gasPrice: gasPrice, gasLimit: gasLimit)
-                })
-                .subscribe(onSuccess: { transaction in
+            Portal.shared.feeRateProvider.ethereumGasPrice
+                .flatMap { gasPrice in
+                    return provider.evmKit.sendSingle(address: recepientAddress, value: amountToSend, gasPrice: gasPrice, gasLimit: 21000)
+                }
+                .subscribe(onSuccess: { [weak self] transaction in
                     print(transaction.transaction.hash.hex)
+                    self?.reset()
                 }, onError: { error in
                     print("Sending ether error: \(error.localizedDescription)")
                 })
                 .disposed(by: disposeBag)
         case .erc20(_ ):
-            break
+            guard
+                let amountToSend = BigUInt(amount.roundedString(decimal: coin.decimal)),
+                let recepientAddress = try? Address(hex: receiverAddress),
+                let provider = sendEthAdapter
+            else {
+                return
+            }
+            
+            let transactionData = provider.transactionData(amount: amountToSend, address: recepientAddress)
+            
+            Portal.shared.feeRateProvider.ethereumGasPrice
+                .flatMap { gasPrice in
+                    return provider.evmKit.sendSingle(transactionData: transactionData, gasPrice: gasPrice, gasLimit: 21000)
+                }
+                .subscribe(onSuccess: { transaction in
+                    print(transaction.transaction.hash.hex)
+                }, onError: { error in
+                    print("Sending erc20 error: \(error)")
+                })
+                .disposed(by: disposeBag)
         }
     }
     
