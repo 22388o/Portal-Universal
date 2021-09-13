@@ -175,13 +175,14 @@ struct TxDetailsView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .stroke(Color.exchangerFieldBorder, lineWidth: 1)
+                        .frame(width: 230, height: 32)
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     Text("View transaction in block explorer")
                         .font(.mainFont(size: 12))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                 }
             }
-            .frame(width: 230, height: 32)
+            .buttonStyle(BorderlessButtonStyle())
             .padding(.bottom, 21)
             
             ZStack(alignment: .topLeading) {

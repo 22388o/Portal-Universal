@@ -64,6 +64,7 @@ struct CreateWalletNameView: View {
                 
                 Text("Bitcoin address format")
                     .font(.mainFont(size: 14))
+                    .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
                 
                 Spacer().frame(height: 14)
                 

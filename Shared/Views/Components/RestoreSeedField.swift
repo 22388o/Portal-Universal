@@ -50,6 +50,7 @@ struct RestoreSeedField: View {
                     #else
                     TextField(String(), text: $text)
                         .font(.mainFont(size: 14))
+                        .colorMultiply(.lightInactiveLabel)
                         .foregroundColor(Color.lightActiveLabel)
                         .padding(.trailing, 8)
                         .textFieldStyle(PlainTextFieldStyle())

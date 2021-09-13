@@ -12,18 +12,19 @@ import Combine
 public struct PlaceholderStyle: ViewModifier {
     var showPlaceHolder: Bool
     var placeholder: String
+    var padding: CGFloat = 5
 
     public func body(content: Content) -> some View {
         ZStack(alignment: .leading) {
             if showPlaceHolder {
                 Text(placeholder)
-                    .foregroundColor(Color.lightActiveLabelNew)
+                    .foregroundColor(Color.lightInactiveLabel)
                     .font(Font.mainFont(size: 16))
-                    .padding(.horizontal, 5)
+                    .padding(.horizontal, padding)
             }
             content
                 .foregroundColor(Color.white)
-                .padding(5.0)
+                .padding(padding)
         }
     }
 }
@@ -69,14 +70,30 @@ struct PButtonEnabledStyle: ViewModifier {
 }
 
 struct TextFieldModifier: ViewModifier {
+    let cornerRadius: CGFloat
+    
     func body(content: Content) -> some View {
         content
             .padding()
             .background(Color.exchangerFieldBackground)
-            .cornerRadius(26)
+            .cornerRadius(cornerRadius)
             .overlay(
-                RoundedRectangle(cornerRadius: 26)
+                RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(Color.exchangerFieldBorder, lineWidth: 1)
+            )
+    }
+}
+
+struct SmallTextFieldModifier: ViewModifier {
+    let cornerRadius: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(height: 32)
+            .cornerRadius(cornerRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(Color(red: 222/255, green: 223/255, blue: 229/255), lineWidth: 1)
             )
     }
 }

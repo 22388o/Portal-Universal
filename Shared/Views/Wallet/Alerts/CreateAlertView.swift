@@ -94,6 +94,7 @@ struct CreateAlertView: View {
                                     .keyboardType(.numberPad)
                                 #else
                                 TextField("", text: .constant(String()))
+                                    .colorMultiply(.lightInactiveLabel)
                                     .foregroundColor(Color.lightActiveLabel)
                                     .modifier(
                                         PlaceholderStyle(
@@ -108,7 +109,7 @@ struct CreateAlertView: View {
                                     .font(Font.mainFont(size: 16))
                                     .foregroundColor(Color.lightActiveLabelNew)
                             }
-                            .modifier(TextFieldModifier())
+                            .modifier(TextFieldModifier(cornerRadius: 26))
                             .frame(width: 224, height: 48)
                         }
                     }

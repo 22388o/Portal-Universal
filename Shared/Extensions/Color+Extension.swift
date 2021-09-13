@@ -97,6 +97,18 @@ extension Color {
     static var doneButtonBg: Color {
         Color(red: 50.0/255.0, green: 65.0/255.0, blue: 72.0/255.0)
     }
+    static var exchangeBuyButtonColor: Color {
+        Color(red: 5.0/255.0, green: 191.0/255.0, blue: 103.0/255.0).opacity(0.94)
+    }
+    static var exchangeSellButtonColor: Color {
+        Color(red: 226.0/255.0, green: 70.0/255.0, blue: 105.0/255.0).opacity(0.94)
+    }
+    static var exchangeBorderColor: Color {
+        Color(red: 225.0/255.0, green: 223.0/255.0, blue: 239.0/255.0)
+    }
+    static var exchangeBorderColorDark: Color {
+        Color(red: 67.0/255.0, green: 63.0/255.0, blue: 35.0/255.0)
+    }
     static var portalWalletBackground: some View {
         LinearGradient(gradient: Gradient(colors: [Color.walletGradientTop, Color.wallerGradientBottom]), startPoint: .top, endPoint: .bottom)
     }

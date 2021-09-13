@@ -48,6 +48,7 @@ struct AccountItemView: View {
 
                 Divider()
                     .background(Color.black.opacity(0.09))
+                    .offset(y: 1)
             }
         }
         .background(selected ? Color.black.opacity(0.04) : Color.white.opacity(0.94))

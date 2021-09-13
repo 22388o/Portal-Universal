@@ -41,6 +41,7 @@ struct ExchangerView: View {
                         .keyboardType(.numberPad)
                     #else
                     TextField(String(), text: $viewModel.assetValue)
+                        .colorMultiply(.lightInactiveLabel)
                         .foregroundColor(Color.lightActiveLabel)
                         .modifier(
                             PlaceholderStyle(
@@ -55,7 +56,7 @@ struct ExchangerView: View {
                     Text(viewModel.coin.code)
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
-                .modifier(TextFieldModifier())
+                .modifier(TextFieldModifier(cornerRadius: 26))
                 .frame(width: 224)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
@@ -85,6 +86,7 @@ struct ExchangerView: View {
                         .keyboardType(.numberPad)
                     #else
                     TextField(String(), text: $viewModel.fiatValue)
+                        .colorMultiply(.lightInactiveLabel)
                         .foregroundColor(Color.lightActiveLabel)
                         .modifier(
                             PlaceholderStyle(
@@ -99,7 +101,7 @@ struct ExchangerView: View {
                     Text(viewModel.fiat.code)
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
-                .modifier(TextFieldModifier())
+                .modifier(TextFieldModifier(cornerRadius: 26))
                 .frame(width: 224)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
