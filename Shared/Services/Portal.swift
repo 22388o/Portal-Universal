@@ -74,7 +74,7 @@ final class Portal: ObservableObject {
         let adapterFactory = AdapterFactory(appConfigProvider: appConfigProvider, ethereumKitManager: ethereumKitManager)
         adapterManager = AdapterManager(adapterFactory: adapterFactory, ethereumKitManager: ethereumKitManager, walletManager: walletManager)
         
-        notificationService = NotificationService(adapterManager: adapterManager)
+        notificationService = NotificationService()
                         
         marketDataStorage.$dataReady
             .receive(on: RunLoop.main)
