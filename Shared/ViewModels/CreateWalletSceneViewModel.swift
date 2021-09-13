@@ -29,7 +29,7 @@ final class CreateWalletSceneViewModel: ObservableObject {
         }
         
         cancalable = $walletName.sink { [weak self] name in
-            self?.nameIsValid = name.count >= 3
+            self?.nameIsValid = !name.isEmpty
         }
     }
     
