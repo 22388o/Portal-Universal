@@ -41,11 +41,8 @@ struct LoadingViewModifier: ViewModifier {
             if locked {
                 LoadingAnimationView()
                     .zIndex(1)
-                    .transition(
-                        .asymmetric(insertion: .identity, removal: .scale(scale: 15)
-                        .combined(with: AnyTransition.opacity))
-                        .animation(.easeInOut(duration: 0.5))
-                    )
+                    .transition(AnyTransition.asymmetric(insertion: AnyTransition.identity, removal: AnyTransition.scale(scale: 15).combined(with: AnyTransition.opacity)).animation(.easeInOut(duration: 0.5))
+                                        )
             }
         }
     }

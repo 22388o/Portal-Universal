@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -473,6 +473,15 @@
 		75F5CDBA2684CE91005ECA5B /* PieChartUIKitVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB82684CE91005ECA5B /* PieChartUIKitVIew.swift */; };
 		75F5CDBC2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */; };
 		75F5CDBD2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */; };
+		FA3FD80D26F1194200953727 /* web3.swift in Frameworks */ = {isa = PBXBuildFile; productRef = FA3FD80C26F1194200953727 /* web3.swift */; };
+		FA70527126CEB4BD000EE935 /* SwapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70527026CEB4BD000EE935 /* SwapperView.swift */; };
+		FA70527226CEB4BD000EE935 /* SwapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70527026CEB4BD000EE935 /* SwapperView.swift */; };
+		FA70527C26CEB536000EE935 /* SwapperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70527B26CEB536000EE935 /* SwapperModel.swift */; };
+		FA70527D26CEB536000EE935 /* SwapperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70527B26CEB536000EE935 /* SwapperModel.swift */; };
+		FA70528326CEB582000EE935 /* SwapperViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70528226CEB582000EE935 /* SwapperViewModel.swift */; };
+		FA70528426CEB582000EE935 /* SwapperViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70528226CEB582000EE935 /* SwapperViewModel.swift */; };
+		FA70528A26D54D06000EE935 /* TokenCurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70528926D54D06000EE935 /* TokenCurrencyView.swift */; };
+		FA70528B26D54D06000EE935 /* TokenCurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70528926D54D06000EE935 /* TokenCurrencyView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -678,6 +687,10 @@
 		75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartUIKitView.swift; sourceTree = "<group>"; };
 		BC9A9F3CB0318CDC9451AD23 /* Pods_Portal__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E103E7237471B0E12F767D1B /* Pods-Portal (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (iOS).release.xcconfig"; path = "Target Support Files/Pods-Portal (iOS)/Pods-Portal (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		FA70527026CEB4BD000EE935 /* SwapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapperView.swift; sourceTree = "<group>"; };
+		FA70527B26CEB536000EE935 /* SwapperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapperModel.swift; sourceTree = "<group>"; };
+		FA70528226CEB582000EE935 /* SwapperViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapperViewModel.swift; sourceTree = "<group>"; };
+		FA70528926D54D06000EE935 /* TokenCurrencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenCurrencyView.swift; sourceTree = "<group>"; };
 		FA893E0FDA0B170BADCB79A5 /* Pods-Portal (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (macOS).release.xcconfig"; path = "Target Support Files/Pods-Portal (macOS)/Pods-Portal (macOS).release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -686,6 +699,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3FD80D26F1194200953727 /* web3.swift in Frameworks */,
 				5943885CDFB1C0DCB277A5D6 /* Pods_Portal__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -818,6 +832,8 @@
 				7599A7902694566800562009 /* PortalLoader.swift */,
 				7517F89F26B802960020AECB /* AsyncImageView.swift */,
 				7517F8A226B802DD0020AECB /* CoinImageView.swift */,
+				FA70527026CEB4BD000EE935 /* SwapperView.swift */,
+				FA70528926D54D06000EE935 /* TokenCurrencyView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1015,6 +1031,7 @@
 				751B6548269D9711001B759C /* TransactionRecord.swift */,
 				751B655A269D999F001B759C /* LastBlockInfo.swift */,
 				7556940026A6B13F00EE5CC4 /* WalletItem.swift */,
+				FA70527B26CEB536000EE935 /* SwapperModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1142,6 +1159,7 @@
 				75F5CDAD2684CBF7005ECA5B /* SendAssetViewModel.swift */,
 				75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */,
 				7556940326A6B15C00EE5CC4 /* WalletViewModel.swift */,
+				FA70528226CEB582000EE935 /* SwapperViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1176,6 +1194,7 @@
 			);
 			name = "Portal (iOS)";
 			packageProductDependencies = (
+				FA3FD80C26F1194200953727 /* web3.swift */,
 			);
 			productName = "Portal (iOS)";
 			productReference = 755782CE26087904000E1686 /* Portal.app */;
@@ -1272,6 +1291,7 @@
 			);
 			mainGroup = 755782BE26087903000E1686;
 			packageReferences = (
+				FA3FD80B26F1194200953727 /* XCRemoteSwiftPackageReference "web3" */,
 			);
 			productRefGroup = 755782CF26087904000E1686 /* Products */;
 			projectDirPath = "";
@@ -1403,6 +1423,7 @@
 				75A3F54526A57EBB006B1823 /* Wallet.swift in Sources */,
 				75F5CDBC2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */,
 				75B151502622FA7D00542415 /* TimeframeSwitch.swift in Sources */,
+				FA70527126CEB4BD000EE935 /* SwapperView.swift in Sources */,
 				750AE90D26149A8C00C45971 /* CoinMarketData.swift in Sources */,
 				75F5CD9F2684CA04005ECA5B /* KeyboardResponder.swift in Sources */,
 				75A3F52426A57B69006B1823 /* CoinManager.swift in Sources */,
@@ -1413,6 +1434,7 @@
 				75308AC726A022570024AACD /* IBDStorage.swift in Sources */,
 				75271303261B5378008C962C /* PButton.swift in Sources */,
 				75B151492622F96800542415 /* MarketValueView.swift in Sources */,
+				FA70528326CEB582000EE935 /* SwapperViewModel.swift in Sources */,
 				75C95C842614CC3700B0EE10 /* MockData.swift in Sources */,
 				750C36C4261F3AEE0088CCED /* WalletView.swift in Sources */,
 				75308AD626A0280E0024AACD /* FeeRateProvider.swift in Sources */,
@@ -1457,6 +1479,7 @@
 				7546CFCC2636980A00E8A8B7 /* AccountItemView.swift in Sources */,
 				7556940426A6B15C00EE5CC4 /* WalletViewModel.swift in Sources */,
 				750AE9B926149DD900C45971 /* IKeyChainStorage.swift in Sources */,
+				FA70527C26CEB536000EE935 /* SwapperModel.swift in Sources */,
 				75F5CD9A2684C904005ECA5B /* SeedTestViewModel.swift in Sources */,
 				753471F6262C2E97005CD93C /* ExchangerView.swift in Sources */,
 				75A3F54B26A59F95006B1823 /* IWalletManager.swift in Sources */,
@@ -1549,6 +1572,7 @@
 				75308AB826A021900024AACD /* LocalStorage.swift in Sources */,
 				750AE8EB2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */,
 				75C95C802614CC3700B0EE10 /* StringFormatter.swift in Sources */,
+				FA70528A26D54D06000EE935 /* TokenCurrencyView.swift in Sources */,
 				75C95C9A2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
 				750AE90926149A8C00C45971 /* Coin.swift in Sources */,
 				75308AE026A028940024AACD /* EthereumFeeRateProvider.swift in Sources */,
@@ -1575,6 +1599,7 @@
 				751B6547269CA219001B759C /* BitcoinAdapter.swift in Sources */,
 				75F5CDAA2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
 				755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */,
+				FA70527226CEB4BD000EE935 /* SwapperView.swift in Sources */,
 				75C95C472614CC0400B0EE10 /* PieChart+Extension.swift in Sources */,
 				75B151512622FA7D00542415 /* TimeframeSwitch.swift in Sources */,
 				75110D6A26A1FAE000BDD6C0 /* IErc20Adapter.swift in Sources */,
@@ -1585,6 +1610,7 @@
 				75271304261B5378008C962C /* PButton.swift in Sources */,
 				75110D6D26A1FB3100BDD6C0 /* ISendEthereumAdapter.swift in Sources */,
 				75A3F52B26A57BEA006B1823 /* AdapterFactory.swift in Sources */,
+				FA70528426CEB582000EE935 /* SwapperViewModel.swift in Sources */,
 				75B1514A2622F96800542415 /* MarketValueView.swift in Sources */,
 				75C95C852614CC3700B0EE10 /* MockData.swift in Sources */,
 				750C36C5261F3AEE0088CCED /* WalletView.swift in Sources */,
@@ -1629,6 +1655,7 @@
 				75308AC826A022570024AACD /* IBDStorage.swift in Sources */,
 				7556940526A6B15C00EE5CC4 /* WalletViewModel.swift in Sources */,
 				756C66B52640363500CD22B2 /* AlertsView.swift in Sources */,
+				FA70527D26CEB536000EE935 /* SwapperModel.swift in Sources */,
 				750AE8E82614992400C45971 /* MarketDataUpdater.swift in Sources */,
 				756A66B0262441B500353635 /* PortfolioView.swift in Sources */,
 				750AE9BA26149DD900C45971 /* IKeyChainStorage.swift in Sources */,
@@ -1721,6 +1748,7 @@
 				750D63B72689C32B00643FD3 /* NotificationService.swift in Sources */,
 				75C95C9B2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
 				75F5CD9B2684C904005ECA5B /* SeedTestViewModel.swift in Sources */,
+				FA70528B26D54D06000EE935 /* TokenCurrencyView.swift in Sources */,
 				75F5CD912684C6AD005ECA5B /* AssetItemViewModel.swift in Sources */,
 				750AE90A26149A8C00C45971 /* Coin.swift in Sources */,
 				750AE9B226149DD900C45971 /* ICoinKit.swift in Sources */,
@@ -2261,6 +2289,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA3FD80B26F1194200953727 /* XCRemoteSwiftPackageReference "web3" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/argentlabs/web3.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA3FD80C26F1194200953727 /* web3.swift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA3FD80B26F1194200953727 /* XCRemoteSwiftPackageReference "web3" */;
+			productName = web3.swift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		755782C426087903000E1686 /* Portal.xcdatamodeld */ = {
