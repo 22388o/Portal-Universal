@@ -9,12 +9,13 @@ import SwiftUI
 import Combine
 
 struct SwapperView: View {
+    @ObservedObject var state: PortalState
     @ObservedObject var viewModel: SwapperViewModel
-    @Binding var isValid: Bool
     
-    init(viewModel: SwapperViewModel, isValid: Binding<Bool>) {
+    
+    init(state: PortalState, viewModel: SwapperViewModel) {
+        self.state = state
         self.viewModel = viewModel
-        self._isValid = isValid
     }
 
     var body: some View {
@@ -26,7 +27,7 @@ struct SwapperView: View {
             
             VStack(spacing: 4) {
                 HStack(spacing: 8) {
-                    CoinImageView(size: 24, url: viewModel.coin.icon)
+                    CoinImageView(size: 24, url: "https://cryptologos.cc/logos/ethereum-eth-logo.png")
                     
                     TextField(String(), text: $viewModel.assetValue)
                         .foregroundColor(Color.lightActiveLabel)
@@ -39,25 +40,20 @@ struct SwapperView: View {
                         .frame(height: 20)
                         .keyboardType(.numberPad)
                     
-                    Text(viewModel.coin.code)
+                    Text("WETH")
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
                 .modifier(TextFieldModifier())
                 .frame(width: 224)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
-                        .stroke(isValid ? Color.clear : Color.red, lineWidth: 1)
+                        .stroke(Color.clear, lineWidth: 1)
                 )
                 
                 Text("↓").foregroundColor(Color.coinViewRouteButtonInactive)
                 
                 HStack(spacing: 8) {
-                    FiatCurrencyView(
-                        size: 24,
-                        state: .constant(.btc),
-                        currency: .constant(.fiat(viewModel.fiat))
-                    )
-                    .frame(width: 24, height: 24)
+                    CoinImageView(size: 24, url: "https://cryptologos.cc/logos/chainlink-link-logo.png")
                     
                     TextField(String(), text: $viewModel.fiatValue)
                         .foregroundColor(Color.lightActiveLabel)
@@ -70,14 +66,14 @@ struct SwapperView: View {
                         .frame(height: 20)
                         .keyboardType(.numberPad)
                     
-                    Text(viewModel.fiat.code)
+                    Text("LINK")
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
                 .modifier(TextFieldModifier())
                 .frame(width: 224)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
-                        .stroke(isValid ? Color.clear : Color.red, lineWidth: 1)
+                        .stroke(Color.clear, lineWidth: 1)
                 )
             }
             .font(Font.mainFont(size: 16))
@@ -87,7 +83,7 @@ struct SwapperView: View {
 
 struct SwapperView_Previews: PreviewProvider {
     static var previews: some View {
-        SwapperView(viewModel: .init(coin: Coin.bitcoin(), fiat: USD), isValid: .constant(true))
+        SwapperView(state: PortalState(), viewModel: .init())
             .frame(width: 550, height: 200)
             .previewLayout(PreviewLayout.sizeThatFits)
     }

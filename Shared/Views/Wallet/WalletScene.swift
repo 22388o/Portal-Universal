@@ -22,6 +22,8 @@ struct WalletScene: View {
                 Color.portalWalletBackground.allowsHitTesting(false)
             case .swap:
                 Color.portalSwapBackground.allowsHitTesting(false)
+            case .dex:
+                Color.portalSwapBackground.allowsHitTesting(false)
             }
             
             VStack(spacing: 0) {

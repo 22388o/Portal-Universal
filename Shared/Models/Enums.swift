@@ -290,7 +290,7 @@ enum WalletSceneState {
 }
 
 enum Scenes {
-    case wallet, swap
+    case wallet, swap, dex
 }
 
 enum AssetViewRoute {

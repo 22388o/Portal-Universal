@@ -11,12 +11,20 @@ struct WalletMainView: View {
     @ObservedObject private var state = Portal.shared.state
     @StateObject private var walletViewModel = WalletViewModel.config()
     @StateObject private var assetViewModel = AssetViewModel.config()
+    @StateObject private var swapperViewModel = SwapperViewModel.config()
+    
+    @State private var swapperValid = true
+
     
     var body: some View {
         ZStack {
             Color.black.opacity(0.58).allowsHitTesting(false)
             
             switch state.mainScene {
+            
+            case .dex:
+                SwapperView(state: state, viewModel: swapperViewModel)
+            
             case .wallet:
                 HStack(spacing: 0) {
                     switch state.sceneState {
