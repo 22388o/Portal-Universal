@@ -62,12 +62,3 @@ struct TimeframeButtonsView_Previews: PreviewProvider {
         TimeframeButtonsView(type: .asset, timeframe: .constant(.day))
     }
 }
-
-#if os(macOS)
-extension NSTextField {
-    open override var focusRingType: NSFocusRingType {
-        get { .none }
-        set { }
-    }
-}
-#endif

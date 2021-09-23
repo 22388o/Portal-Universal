@@ -13,7 +13,7 @@ import RxSwift
 import HsToolKit
 
 class BitcoinBaseAdapter {
-    static let confirmationsThreshold = 3
+    static let confirmationsThreshold = 0
 
     private let abstractKit: AbstractKit
     private let coinRate: Decimal = pow(10, 8)

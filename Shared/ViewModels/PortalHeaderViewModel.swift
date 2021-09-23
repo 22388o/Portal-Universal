@@ -1,5 +1,5 @@
 //
-//  WalletHeaderViewModel.swift
+//  PortalHeaderViewModel.swift
 //  Portal
 //
 //  Created by Farid on 22.07.2021.
@@ -8,20 +8,14 @@
 import Foundation
 import Combine
 
-class WalletHeaderViewModel: ObservableObject {
+class PortalHeaderViewModel: ObservableObject {
     @Published var accountName = String()
     @Published var state = Portal.shared.state
+    @Published var hasBadge: Bool = false
+    @Published var newAlerts: Int = 0
     
     private var notificationService: NotificationService
-    private var cancellable = Set<AnyCancellable>()
-    
-    var hasBadge: Bool {
-        !notificationService.alertsBeenSeen && notificationService.newAlerts > 0
-    }
-    
-    var newAlerts: Int {
-        notificationService.newAlerts
-    }
+    private var cancellables = Set<AnyCancellable>()
     
     init(accountManager: IAccountManager, notificationService: NotificationService) {
         self.accountName = accountManager.activeAccount?.name ?? "-"
@@ -32,8 +26,15 @@ class WalletHeaderViewModel: ObservableObject {
             .sink { [weak self] account in
                 self?.accountName = account?.name ?? "-"
             }
-            .store(in: &cancellable)
+            .store(in: &cancellables)
             
+        notificationService.$newAlerts.combineLatest(notificationService.$alertsBeenSeen)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newAlerts, alertsBeenSeen in
+                self?.newAlerts = newAlerts
+                self?.hasBadge = !alertsBeenSeen && newAlerts > 0
+            }
+            .store(in: &cancellables)
     }
     
     func markAllNotificationsViewed() {
@@ -41,12 +42,12 @@ class WalletHeaderViewModel: ObservableObject {
     }
 }
 
-extension WalletHeaderViewModel {
-    static func config() -> WalletHeaderViewModel {
+extension PortalHeaderViewModel {
+    static func config() -> PortalHeaderViewModel {
         let accountManager = Portal.shared.accountManager
         let notificationService = Portal.shared.notificationService
         
-        return WalletHeaderViewModel(
+        return PortalHeaderViewModel(
             accountManager: accountManager,
             notificationService: notificationService
         )

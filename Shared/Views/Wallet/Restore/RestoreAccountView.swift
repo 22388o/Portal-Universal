@@ -1,5 +1,5 @@
 //
-//  RestoreWalletView.swift
+//  RestoreAccountView.swift
 //  Portal
 //
 //  Created by Farid on 09.05.2021.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct RestoreWalletView: View {
-    @ObservedObject var viewModel: RestoreWalletViewModel
+struct RestoreAccountView: View {
+    @ObservedObject var viewModel: RestoreAccountViewModel
     private var accountManager = Portal.shared.accountManager
     @ObservedObject private var state = Portal.shared.state
     
@@ -49,7 +49,6 @@ struct RestoreWalletView: View {
             
             ZStack {
                 Color.black.opacity(0.58)
-                
                 Color.white.cornerRadius(5).padding(8)
                                 
                 VStack(alignment: .leading, spacing: 0) {
@@ -135,12 +134,14 @@ struct RestoreWalletView: View {
             .cornerRadius(8)
             .padding(EdgeInsets(top: 88, leading: 24, bottom: 24, trailing: 24))
         }
+        .frame(minWidth: 850)
+        .frame(minHeight: 700)
     }
 }
 
-struct RestoreWalletView_Previews: PreviewProvider {
+struct RestoreAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        RestoreWalletView()
+        RestoreAccountView()
             .iPadLandscapePreviews()
     }
 }

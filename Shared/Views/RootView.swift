@@ -15,18 +15,18 @@ struct RootView: View {
             Color.portalWalletBackground
             
             switch state.current {
-            case .starting:
+            case .idle:
                 Color.clear
             case .currentAccount:
-                WalletScene()
+                MainScene()
                     .transition(AnyTransition.opacity)
                     .zIndex(6)
             case .createAccount:
-                CreateWalletScene()
+                CreateAccountScene()
                     .transition(AnyTransition.opacity)
                     .zIndex(2)
             case .restoreAccount:
-                RestoreWalletView()
+                RestoreAccountView()
                     .transition(AnyTransition.opacity)
                     .zIndex(3)
             }

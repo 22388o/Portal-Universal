@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class CoinManager: ICoinManager {
+final class CoinManager: ICoinManager {
     var onCoinsUpdatePublisher = PassthroughSubject<[Coin], Never>()
     
     private var storage: ICoinStorage

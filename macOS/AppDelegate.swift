@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-#if os(macOS)
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow?
@@ -18,17 +17,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
 
         window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 800, height: 500),
+            contentRect: NSRect(x: 0, y: 0, width: 935, height: 768),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false
         )
         
         window?.title = "Portal"
-        window?.isReleasedWhenClosed = false
+        window?.hasShadow = false
+        window?.isReleasedWhenClosed = true
         window?.center()
         window?.setFrameAutosaveName("Main Window")
         window?.contentView = NSHostingView(rootView: contentView)
         window?.makeKeyAndOrderFront(nil)
+        
+        NSApp.appearance = NSAppearance(named: .aqua)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -39,4 +41,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.window = NSApp.mainWindow
     }
 }
-#endif

@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import Combine
 
-class WalletManager {
+final class WalletManager {
     var onWalletsUpdatePublisher = PassthroughSubject<[Wallet], Never>()
     
     private let accountManager: IAccountManager

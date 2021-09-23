@@ -34,20 +34,20 @@ struct SeedTestView: View {
             VStack(spacing: 0) {
                 HStack(spacing: 26) {
                     VStack(alignment: .leading, spacing: 9) {
-                        Text("\(viewModel.test.testIndices[0])) word")
+                        Text(viewModel.formattedIndexString(viewModel.test.testIndices[0]))
                             .font(.mainFont(size: 14))
                         PTextField(text: $viewModel.test.testString1, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
-                        Text("\(viewModel.test.testIndices[1])) word")
+                        Text(viewModel.formattedIndexString(viewModel.test.testIndices[1]))
                             .font(.mainFont(size: 14))
                         PTextField(text: $viewModel.test.testString2, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
                     }
                     .foregroundColor(.createWalletLabel)
                     
                     VStack(alignment: .leading, spacing: 9) {
-                        Text("\(viewModel.test.testIndices[2])) word")
+                        Text(viewModel.formattedIndexString(viewModel.test.testIndices[2]))
                             .font(.mainFont(size: 14))
                         PTextField(text: $viewModel.test.testString3, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
-                        Text("\(viewModel.test.testIndices[3])) word")
+                        Text(viewModel.formattedIndexString(viewModel.test.testIndices[3]))
                             .font(.mainFont(size: 14))
                         PTextField(text: $viewModel.test.testString4, placeholder: "Enter word", upperCase: false, width: 192, height: 48)
                     }
@@ -79,6 +79,8 @@ struct SeedTestView: View {
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
             }
         }
+        .frame(minWidth: 600)
+        .frame(minHeight: 550)
     }
 }
 

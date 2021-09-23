@@ -1,5 +1,5 @@
 //
-//  WalletHeaderView.swift
+//  HeaderView.swift
 //  Portal
 //
 //  Created by Farid on 07.07.2021.
@@ -8,10 +8,10 @@
 import SwiftUI
 import Combine
 
-struct WalletHeaderView: View {
-    @ObservedObject private var viewModel: WalletHeaderViewModel
+struct HeaderView: View {
+    @ObservedObject private var viewModel: PortalHeaderViewModel
     
-    init(viewModel: WalletHeaderViewModel) {
+    init(viewModel: PortalHeaderViewModel) {
         self.viewModel = viewModel
     }
     
@@ -108,8 +108,8 @@ struct WalletHeaderView: View {
     }
 }
 
-struct WalletHeaderView_Previews: PreviewProvider {
+struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletHeaderView(viewModel: WalletHeaderViewModel.config())
+        HeaderView(viewModel: PortalHeaderViewModel.config())
     }
 }

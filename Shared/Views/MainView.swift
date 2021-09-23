@@ -1,5 +1,5 @@
 //
-//  WalletMainView.swift
+//  MainView.swift
 //  Portal
 //
 //  Created by Farid on 07.07.2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WalletMainView: View {
+struct MainView: View {
     @ObservedObject private var state = Portal.shared.state
     @StateObject private var walletViewModel = WalletViewModel.config()
     @StateObject private var assetViewModel = AssetViewModel.config()
@@ -39,7 +39,7 @@ struct WalletMainView: View {
                         }
                     }
                 }
-            case .swap:
+            case .exchange:
                 HStack {
                     Spacer()
                         .frame(width: 320)
@@ -54,8 +54,8 @@ struct WalletMainView: View {
     }
 }
 
-struct WalletMainView_Previews: PreviewProvider {
+struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        WalletMainView()
+        MainView()
     }
 }

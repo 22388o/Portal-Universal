@@ -94,6 +94,7 @@ struct CreateAlertView: View {
                                     .keyboardType(.numberPad)
                                 #else
                                 TextField("", text: .constant(String()))
+                                    .colorMultiply(.lightInactiveLabel)
                                     .foregroundColor(Color.lightActiveLabel)
                                     .modifier(
                                         PlaceholderStyle(
@@ -108,7 +109,7 @@ struct CreateAlertView: View {
                                     .font(Font.mainFont(size: 16))
                                     .foregroundColor(Color.lightActiveLabelNew)
                             }
-                            .modifier(TextFieldModifier())
+                            .modifier(TextFieldModifier(cornerRadius: 26))
                             .frame(width: 224, height: 48)
                         }
                     }
@@ -185,30 +186,5 @@ struct CreateAlertView: View {
 struct CreateAlertView_Previews: PreviewProvider {
     static var previews: some View {
         CreateAlertView(asset: Asset.bitcoin(), presented: .constant(true))
-    }
-}
-
-extension Bool {
-     static var iOS: Bool {
-        #if os(iOS)
-        return true
-        #else
-        return false
-        #endif
-     }
- }
-
-extension View {
-    /// Applies the given transform if the given condition evaluates to `true`.
-    /// - Parameters:
-    ///   - condition: The condition to evaluate.
-    ///   - transform: The transform to apply to the source `View`.
-    /// - Returns: Either the original `View` or the modified `View` if the condition is `true`.
-    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
-        if condition {
-            transform(self)
-        } else {
-            self
-        }
     }
 }

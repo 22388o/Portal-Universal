@@ -23,12 +23,12 @@ struct AssetAllocationView: View {
     var body: some View {
         ZStack {
             if viewModel.isLineChart {
-                BarChartUIKitView(viewModel: viewModel)
+                BarChartRepresentableView(viewModel: viewModel)
                     .frame(height: 350)
                     .offset(y: 100)
                     
             } else {
-                PieChartUIKitView(viewModel: viewModel)
+                PieChartRepresentableView(viewModel: viewModel)
             }
         }
     }

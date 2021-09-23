@@ -68,7 +68,7 @@ struct MarketValueView: View {
                 }
             }
             
-            LineChartUIKitWrapper(chartDataEntries: chartDataEntries)
+            LineChartRepresentable(chartDataEntries: chartDataEntries)
                 .frame(height: 106)
                 .padding(.top, 20)
             
@@ -118,72 +118,6 @@ struct MarketValueView: View {
         }
     }
 }
-
-#if os(iOS)
-struct LineChartUIKitWrapper: UIViewRepresentable {
-    let chartDataEntries: [ChartDataEntry]
-    
-    func makeUIView(context: Context) -> LineChartView {
-        let lineChart = LineChartView()
-        lineChart.applyStandardSettings()
-                
-        updateChartData(lineChart: lineChart)
-        
-        return lineChart
-    }
-
-    func updateUIView(_ lineChart: LineChartView, context: Context) {
-        updateChartData(lineChart: lineChart)
-    }
-    
-    func updateChartData(lineChart: LineChartView) {
-        let data = LineChartData()
-        let dataSet = chartDataEntries.dataSet()
-        
-        data.dataSets = [dataSet]
-                
-        let maxValue = chartDataEntries.map{$0.y}.max()
-        
-        if maxValue != nil {
-//            dataSet.gradientPositions = [0, CGFloat(maxValue!)]
-            lineChart.data = data
-            lineChart.notifyDataSetChanged()
-        }
-    }
-}
-#else
-struct LineChartUIKitWrapper: NSViewRepresentable {
-    let chartDataEntries: [ChartDataEntry]
-    
-    func makeNSView(context: Context) -> LineChartView {
-        let lineChart = LineChartView()
-        lineChart.applyStandardSettings()
-                
-        updateChartData(lineChart: lineChart)
-        
-        return lineChart
-    }
-
-    func updateNSView(_ lineChart: LineChartView, context: Context) {
-        updateChartData(lineChart: lineChart)
-    }
-    
-    func updateChartData(lineChart: LineChartView) {
-        let data = LineChartData()
-        let dataSet = chartDataEntries.dataSet()
-        
-        data.dataSets = [dataSet]
-                
-        let maxValue = chartDataEntries.map{$0.y}.max()
-        
-        if maxValue != nil {
-//            dataSet.gradientPositions = [0, CGFloat(maxValue!)]
-            lineChart.data = data
-            lineChart.notifyDataSetChanged()
-        }
-    }
-}
-#endif
 
 struct AssetMarketValueView_Previews: PreviewProvider {
     static var previews: some View {

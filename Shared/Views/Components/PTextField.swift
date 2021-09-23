@@ -41,6 +41,7 @@ struct PTextField: View {
                 TextField(String(), text: $text)
                     .font(.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
+                    .colorMultiply(.lightInactiveLabel)
                     .disableAutocorrection(true)
                     .textFieldStyle(PlainTextFieldStyle())
                 #endif

@@ -14,7 +14,7 @@ struct CoinImageView: View {
     
     var body: some View {
         if let color = placeholderForegroundColor {
-            AsyncImageView(width: size, height: size, url: url) {
+            AsyncImageView(url: url) {
                 Image("dollarsign.circle")
                     .resizable()
                     .scaledToFit()
@@ -24,7 +24,7 @@ struct CoinImageView: View {
             .frame(width: size, height: size)
             .cornerRadius(size/2)
         } else {
-            AsyncImageView(width: size, height: size, url: url) {
+            AsyncImageView(url: url) {
                 Image("dollarsign.circle")
                     .resizable()
                     .scaledToFit()

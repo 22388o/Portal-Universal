@@ -1,5 +1,5 @@
 //
-//  CreateWalletScene.swift
+//  CreateAccountScene.swift
 //  Portal
 //
 //  Created by Farid on 04.04.2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CreateWalletScene: View {
+struct CreateAccountScene: View {
     @StateObject private var viewModel = CreateWalletSceneViewModel(
         type: CreateWalletSceneViewModel.mnemonicAccountType()
     )
@@ -91,9 +91,9 @@ struct CreateWalletScene: View {
     }
 }
 
-struct CreateWalletScene_Previews: PreviewProvider {
+struct CreateAccountScene_Previews: PreviewProvider {
     static var previews: some View {
-        CreateWalletScene()
+        CreateAccountScene()
             .iPadLandscapePreviews()
     }
 }

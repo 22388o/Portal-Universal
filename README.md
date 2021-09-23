@@ -4,7 +4,6 @@ Portal wallet universal for iOS &amp; macOS
 ## nomenclature
 - xcode = apple IDE
 - cocoaPods = dependency manager for swift (written in ruby)
-- branch: exchange-swiftui
 
 ## repo structure (names below ending in “/” are directories)
 - .github/workflows/
@@ -41,4 +40,10 @@ Portal wallet universal for iOS &amp; macOS
   - output by cocoaPods
 - altert.mp3
   - sounds used by the app
-  
+
+## control flow (dynamic paths of execution)
+- boot
+  - execution starts in:
+    - for iOS: iOS/PortalApp.swift
+    - for macOS: macOS/AppDelegate.swift
+  - both of the above end up in Shared/Views/RootView.swift

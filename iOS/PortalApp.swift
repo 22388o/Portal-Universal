@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-#if os(iOS)
 @main
 struct PortalApp: App {
 
@@ -27,4 +26,3 @@ struct PortalApp: App {
         }
     }
 }
-#endif

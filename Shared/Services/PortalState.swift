@@ -10,10 +10,10 @@ import Combine
 
 class PortalState: ObservableObject {
     enum State {
-        case starting, currentAccount, createAccount, restoreAccount
+        case idle, currentAccount, createAccount, restoreAccount
     }
     
-    @Published var current: State = .starting
+    @Published var current: State = .idle
     @Published var receiveAsset: Bool = false
     @Published var sendAsset: Bool = false
     @Published var switchWallet: Bool = false

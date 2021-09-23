@@ -82,6 +82,7 @@ struct TxSortSwitch: View {
             
             Spacer()
         }
+        .buttonStyle(BorderlessButtonStyle())
         .font(.mainFont(size: 14))
         .padding(.horizontal, 32)
     }

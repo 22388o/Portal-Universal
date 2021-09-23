@@ -290,11 +290,19 @@ enum WalletSceneState {
 }
 
 enum Scenes {
-    case wallet, swap
+    case wallet, exchange
 }
 
 enum AssetViewRoute {
     case value, transactions, alerts
+}
+
+enum OrderBookRoute {
+    case buying, selling
+}
+
+enum MyOrdersRoute {
+    case open, history
 }
 
 enum ValueCurrencySwitchState: Int {

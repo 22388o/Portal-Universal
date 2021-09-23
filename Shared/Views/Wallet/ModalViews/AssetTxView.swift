@@ -139,55 +139,6 @@ struct TxHeaderView: View {
     }
 }
 
-struct TxDetailsViewModel {
-    let coin: Coin
-    let transaction: TransactionRecord
-    let lastBlockInfo: LastBlockInfo?
-    
-    var title: String {
-        "\(transaction.type == .incoming ? "Received" : "Sent") \(transaction.amount.double) \(coin.code)"
-    }
-    
-    var date: String {
-        "\(transaction.date)"
-    }
-    
-    var from: String {
-        "\(transaction.from ?? "Unknown")"
-    }
-    
-    var to: String {
-        "\(transaction.to ?? "Unknown")"
-    }
-    
-    var txHash: String {
-        "\(transaction.transactionHash)"
-    }
-    
-    var amount: String {
-        "\(transaction.amount.double) \(coin.code)"
-    }
-    
-    var blockHeight: String {
-        "\(transaction.blockHeight ?? 0) (\(transaction.confirmations(lastBlockHeight: lastBlockInfo?.height)) block confirmations)"
-    }
-    
-    var completed: Bool {
-        transaction.status(lastBlockHeight: lastBlockInfo?.height) == .completed
-    }
-    
-    var explorerUrl: URL? {
-        switch coin.type {
-        case .bitcoin:
-            return URL(string: "https://blockstream.info/testnet/tx/\(transaction.transactionHash)")
-        case .ethereum:
-            return URL(string: "https://ropsten.etherscan.io/tx/\(transaction.transactionHash)")
-        default:
-            return nil
-        }
-    }
-}
-
 struct TxDetailsView: View {
     private var viewModel: TxDetailsViewModel
     
@@ -224,13 +175,14 @@ struct TxDetailsView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .stroke(Color.exchangerFieldBorder, lineWidth: 1)
+                        .frame(width: 230, height: 32)
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     Text("View transaction in block explorer")
                         .font(.mainFont(size: 12))
                         .foregroundColor(Color.coinViewRouteButtonActive)
                 }
             }
-            .frame(width: 230, height: 32)
+            .buttonStyle(BorderlessButtonStyle())
             .padding(.bottom, 21)
             
             ZStack(alignment: .topLeading) {

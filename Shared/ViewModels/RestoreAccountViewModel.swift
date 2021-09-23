@@ -1,5 +1,5 @@
 //
-//  RestoreWalletViewModel.swift
+//  RestoreAccountViewModel.swift
 //  Portal
 //
 //  Created by Farid on 24.06.2021.
@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-final class RestoreWalletViewModel: ObservableObject {
+final class RestoreAccountViewModel: ObservableObject {
     private let seeedLength = 24
     private var anyCancellable = Set<AnyCancellable>()
 
@@ -22,10 +22,8 @@ final class RestoreWalletViewModel: ObservableObject {
     }
     
     var errorMessage: String {
-        if accountName.isEmpty {
-            return "Enter account name"
-        } else if accountName.count < 3 {
-            return "Account name must be at least 3 symbols long"
+         if accountName.isEmpty {
+            return "Account name must be at least 1 symbols long"
         } else {
             let filteredSeedArray = seed.filter { $0.count >= 3 }
             return filteredSeedArray.count != seeedLength ? "Invalid seed! Please try again." : String()
@@ -56,7 +54,7 @@ final class RestoreWalletViewModel: ObservableObject {
             .sink(receiveValue: { [weak self] name in
                 guard let self = self else { return }
                 let filteredSeedArray = self.seed.filter { $0.count >= 3 }
-                self.restoreReady = name.count >= 3 && filteredSeedArray.count == self.seeedLength
+                self.restoreReady = !name.isEmpty && filteredSeedArray.count == self.seeedLength
             })
             .store(in: &anyCancellable)
         

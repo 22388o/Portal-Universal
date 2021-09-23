@@ -16,7 +16,7 @@ final class NotificationService: ObservableObject {
     @Published private(set) var newAlerts: Int = 0
     @Published private(set) var alertsBeenSeen: Bool = false
         
-    init(adapterManager: IAdapterManager) {
+    init() {
         if let url = Bundle.main.url(forResource: "alert", withExtension: "mp3") {
             player = AVPlayer.init(url: url)
         } else {
