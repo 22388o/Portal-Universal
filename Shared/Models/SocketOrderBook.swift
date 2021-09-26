@@ -8,13 +8,16 @@
 import Foundation
 
 struct SocketOrderBook {
-    let bids: [SocketOrderBookItem]
-    let asks: [SocketOrderBookItem]
+    let tradingPair: TradingPairModel?
+    var bids: [SocketOrderBookItem]
+    var asks: [SocketOrderBookItem]
     
-    init(dataDict: NSDictionary) {
+    init(tradingPair: TradingPairModel?, data: NSDictionary) {
+        self.tradingPair = tradingPair
+
         guard
-            let rawBids = dataDict["bids"] as? [[String : String]],
-            let rawAsks = dataDict["asks"] as? [[String : String]]
+            let rawBids = data["bids"] as? [[String : String]],
+            let rawAsks = data["asks"] as? [[String : String]]
         else {
             bids = []
             asks = []
@@ -29,12 +32,16 @@ struct SocketOrderBook {
             SocketOrderBookItem(
                 price: Double($0[price] ?? empty) ?? 0.0,
                 amount: Double($0[size] ?? empty) ?? 0.0
-            )}.filter{$0.amount > 0.0}//.unique{$0.price}
+            )
+        }
+        .filter{$0.amount > 0.0}//.unique{$0.price}
         
         asks = rawAsks.map{
             SocketOrderBookItem(
                 price: Double($0[price] ?? empty) ?? 0.0,
                 amount: Double($0[size]  ?? empty)  ?? 0.0
-            )}.filter{$0.amount > 0.0}//.unique{$0.price}
+            )
+        }
+        .filter{$0.amount > 0.0}//.unique{$0.price}
     }
 }
