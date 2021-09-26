@@ -8,34 +8,37 @@
 import SwiftUI
 
 struct OrderBookItemView: View {
+    let item: SocketOrderBookItem
+    
     var body: some View {
         VStack(spacing: 0) {
             Rectangle()
                 .frame(height: 1)
-                .foregroundColor(.gray)
+                .foregroundColor(Color.exchangeBorderColor)
                 .offset(y: -1)
             
             HStack(spacing: 0) {
-                Text("0.00022421")
+                Text(item.price.toString())
                 Spacer()
-                Text("10")
+                Text(item.amount.toString())
                 Spacer()
-                Text("0.00224")
+                Text(item.total.toString())
             }
+            .lineLimit(1)
             .font(.mainFont(size: 12))
-            .foregroundColor(Color.gray)
+            .foregroundColor(Color(red: 7.0/255.0, green: 191.0/255.0, blue: 104.0/255.0).opacity(0.94))
             .frame(height: 32)
             .padding(.horizontal, 32)
             
             Rectangle()
                 .frame(height: 1)
-                .foregroundColor(.gray)
+                .foregroundColor(Color.exchangeBorderColor)
         }
     }
 }
 
 struct OrderBookItem_Previews: PreviewProvider {
     static var previews: some View {
-        OrderBookItemView()
+        OrderBookItemView(item: SocketOrderBookItem(price: 0.000021, amount: 10))
     }
 }
