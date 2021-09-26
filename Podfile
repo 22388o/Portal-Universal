@@ -18,6 +18,8 @@ def portal_shared_pods
   pod 'KeychainAccess'
   #Async image
   pod 'Kingfisher', '~> 6.3.0'
+  #Soket framework
+  pod 'Socket.IO-Client-Swift', '~> 15.2.0'
 end
 
 

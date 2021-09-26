@@ -27,6 +27,8 @@ ${BUILT_PRODUCTS_DIR}/ObjectMapper-iOS/ObjectMapper.framework
 ${BUILT_PRODUCTS_DIR}/OpenSslKit-Universal.swift-iOS/OpenSslKit.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework
 ${BUILT_PRODUCTS_DIR}/Secp256k1Kit-Universal.swift-iOS/Secp256k1Kit.framework
+${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift-iOS/SocketIO.framework
+${BUILT_PRODUCTS_DIR}/Starscream-iOS/Starscream.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIO-iOS/NIO.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIOConcurrencyHelpers-iOS/NIOConcurrencyHelpers.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIOCore-iOS/NIOCore.framework
