@@ -7,18 +7,25 @@
 
 import SwiftUI
 
+class OrderBookViewModel: ObservableObject {
+    @Published private var asks: [SocketOrderBookItem] = []
+    @Published private var bids: [SocketOrderBookItem] = []
+
+    init(orderBook: SocketOrderBook, tradingPair: TradingPairModel) {
+        
+    }
+}
+
 struct OrderBookView: View {
-    @State private var route: OrderBookRoute = .buying
-    @State private var items = [
-        SocketOrderBookItem(price: 10.15, amount: 2),
-        SocketOrderBookItem(price: 0.1233, amount: 200),
-        SocketOrderBookItem(price: 15.16, amount: 35)
-    ]
+    let orderBook: SocketOrderBook
+    let tradingPair: TradingPairModel
+
+    @State private var route: OrderBookRoute = .buy
     
     var body: some View {
         ZStack(alignment: .leading) {
             Rectangle()
-                .foregroundColor(.gray)
+                .foregroundColor(Color.exchangeBorderColor)
                 .frame(width: 1)
             
             VStack(spacing: 0) {
@@ -33,22 +40,31 @@ struct OrderBookView: View {
                 .padding(.bottom, 12)
                 
                 HStack(spacing: 0) {
-                    OrderBookSwitch(route: $route)
+                    OrderBookRouteSwitch(route: $route)
                         .frame(width: 87)
                         .padding(.leading, 32)
                     Spacer()
                 }
                 
                 Rectangle()
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color.exchangeBorderColor)
                     .frame(height: 1)
 
                 HStack {
-                    Text("Price")
+                    HStack {
+                        CoinImageView(size: 16, url: tradingPair.quote_icon)
+                        Text("Price")
+                    }
                     Spacer()
-                    Text("Amount")
+                    HStack {
+                        CoinImageView(size: 16, url: tradingPair.icon)
+                        Text("Amount")
+                    }
                     Spacer()
-                    Text("Total")
+                    HStack {
+                        CoinImageView(size: 16, url: tradingPair.quote_icon)
+                        Text("Total")
+                    }
                 }
                 .font(.mainFont(size: 12))
                 .foregroundColor(Color.gray)
@@ -56,16 +72,27 @@ struct OrderBookView: View {
                 .padding(.horizontal, 32)
                 
                 Rectangle()
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color.exchangeBorderColor)
                     .frame(height: 1)
                 
                 ScrollView {
                     LazyVStack_(spacing: 0) {
-                        ForEach(items, id:\.id) { item in
-                            OrderBookItemView()
+                        switch route {
+                        case .buy:
+                            ForEach(orderBook.bids, id:\.id) { item in
+                                OrderBookItemView(item: item)
+                            }
+                        case .sell:
+                            ForEach(orderBook.asks, id:\.id) { item in
+                                OrderBookItemView(item: item)
+                            }
                         }
                     }
                 }
+                
+                Rectangle()
+                    .foregroundColor(Color.exchangeBorderColor)
+                    .frame(height: 1)
             }
         }
     }
@@ -73,6 +100,6 @@ struct OrderBookView: View {
 
 struct OrderBookView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderBookView()
+        OrderBookView(orderBook: SocketOrderBook(tradingPair: TradingPairModel.mltBtc(), data: NSDictionary()), tradingPair: TradingPairModel.mltBtc())
     }
 }
