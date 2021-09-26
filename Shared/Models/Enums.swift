@@ -293,12 +293,21 @@ enum Scenes {
     case wallet, exchange
 }
 
+enum MarketLimitSwitchState {
+    case market, limit
+}
+
+enum ExchangeSelectorState {
+    case merged, selected(exchange: ExchangeModel)
+}
+
+
 enum AssetViewRoute {
     case value, transactions, alerts
 }
 
 enum OrderBookRoute {
-    case buying, selling
+    case buy, sell
 }
 
 enum MyOrdersRoute {
@@ -452,6 +461,19 @@ enum AccountType {
     var mnemonicSeed: Data? {
         switch self {
         case let .mnemonic(words, salt): return Mnemonic.seed(mnemonic: words, passphrase: salt)
+        }
+    }
+}
+
+enum ExchangeButtonType {
+    case buy, sell
+    
+    var description: String {
+        switch self {
+        case .buy:
+            return "Buy"
+        case .sell:
+            return "Sell"
         }
     }
 }
