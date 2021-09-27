@@ -335,16 +335,20 @@ enum TxSortState {
     }
 }
 
-enum NetworkError: Error, LocalizedError {
-    case parsing
-    case inconsistentBehavior
-    case networkError
-    
-    var errorDescription: String? {
-        return "Something went wrong, we will fix it!"
-    }
+enum NetworkResponse: String {
+    case success
+    case authenticationError = "You need to be authenticated first."
+    case badRequest = "Bad request"
+    case outdated = "The url you requested is outdated."
+    case failed = "Network request failed."
+    case noData = "Response returned with no data to decode."
+    case unableToDecode = "We could not decode the response."
 }
 
+enum _Result<String> {
+    case success
+    case failure(String)
+}
 enum AdapterError: Error {
     case wrongParameters
     case unsupportedAccount
