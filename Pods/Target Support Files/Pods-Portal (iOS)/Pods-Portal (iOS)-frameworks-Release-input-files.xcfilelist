@@ -14,6 +14,7 @@ ${BUILT_PRODUCTS_DIR}/CNIOSHA1-iOS/CNIOSHA1.framework
 ${BUILT_PRODUCTS_DIR}/CNIOWindows-iOS/CNIOWindows.framework
 ${BUILT_PRODUCTS_DIR}/Charts-iOS/Charts.framework
 ${BUILT_PRODUCTS_DIR}/CoinpaprikaAPI-iOS/Coinpaprika.framework
+${BUILT_PRODUCTS_DIR}/CryptoSwift-iOS/CryptoSwift.framework
 ${BUILT_PRODUCTS_DIR}/Erc20Kit-Universal-iOS/Erc20Kit.framework
 ${BUILT_PRODUCTS_DIR}/EthereumKit-Universal-iOS/EthereumKit.framework
 ${BUILT_PRODUCTS_DIR}/FeeRateKit-Universal.swift-iOS/FeeRateKit.framework

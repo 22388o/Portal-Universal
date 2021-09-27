@@ -10,6 +10,7 @@ def portal_shared_pods
   pod 'HsToolKit-Universal.swift'
   pod 'Hodler-Universal.swift'
   pod 'FeeRateKit-Universal.swift'
+  pod 'CryptoSwift', '~> 1.4.1'
   #MarketData
   pod 'CoinpaprikaAPI'
   #Charts
