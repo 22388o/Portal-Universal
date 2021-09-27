@@ -157,16 +157,12 @@
 		75271304261B5378008C962C /* PButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271302261B5378008C962C /* PButton.swift */; };
 		7527130A261BAAE8008C962C /* StoreSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271309261BAAE8008C962C /* StoreSeedView.swift */; };
 		7527130B261BAAE8008C962C /* StoreSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271309261BAAE8008C962C /* StoreSeedView.swift */; };
-		752E530B26FDDE6300FCDB0C /* PortalApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F226FDDE6300FCDB0C /* PortalApi.swift */; };
-		752E530C26FDDE6300FCDB0C /* PortalApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F226FDDE6300FCDB0C /* PortalApi.swift */; };
 		752E530D26FDDE6300FCDB0C /* BinancePrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */; };
 		752E530E26FDDE6300FCDB0C /* BinancePrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */; };
 		752E531126FDDE6300FCDB0C /* KrakenPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F626FDDE6300FCDB0C /* KrakenPrivateApi.swift */; };
 		752E531226FDDE6300FCDB0C /* KrakenPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F626FDDE6300FCDB0C /* KrakenPrivateApi.swift */; };
 		752E531326FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F726FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift */; };
 		752E531426FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F726FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift */; };
-		752E531526FDDE6400FCDB0C /* FixerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F826FDDE6300FCDB0C /* FixerApi.swift */; };
-		752E531626FDDE6400FCDB0C /* FixerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F826FDDE6300FCDB0C /* FixerApi.swift */; };
 		752E531726FDDE6400FCDB0C /* PortalExchangePublicApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F926FDDE6300FCDB0C /* PortalExchangePublicApi.swift */; };
 		752E531826FDDE6400FCDB0C /* PortalExchangePublicApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F926FDDE6300FCDB0C /* PortalExchangePublicApi.swift */; };
 		752E531B26FDDE6400FCDB0C /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52FC26FDDE6300FCDB0C /* ParameterEncoding.swift */; };
@@ -716,11 +712,9 @@
 		752712FB261B48A7008C962C /* WalletNameInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletNameInputView.swift; sourceTree = "<group>"; };
 		75271302261B5378008C962C /* PButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PButton.swift; sourceTree = "<group>"; };
 		75271309261BAAE8008C962C /* StoreSeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSeedView.swift; sourceTree = "<group>"; };
-		752E52F226FDDE6300FCDB0C /* PortalApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortalApi.swift; sourceTree = "<group>"; };
 		752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinancePrivateApi.swift; sourceTree = "<group>"; };
 		752E52F626FDDE6300FCDB0C /* KrakenPrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KrakenPrivateApi.swift; sourceTree = "<group>"; };
 		752E52F726FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinbaseProPrivateApi.swift; sourceTree = "<group>"; };
-		752E52F826FDDE6300FCDB0C /* FixerApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixerApi.swift; sourceTree = "<group>"; };
 		752E52F926FDDE6300FCDB0C /* PortalExchangePublicApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortalExchangePublicApi.swift; sourceTree = "<group>"; };
 		752E52FC26FDDE6300FCDB0C /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 		752E52FD26FDDE6300FCDB0C /* URLParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLParameterEncoding.swift; sourceTree = "<group>"; };
@@ -1112,9 +1106,7 @@
 		752E52F126FDDE6300FCDB0C /* EndPoints */ = {
 			isa = PBXGroup;
 			children = (
-				752E52F226FDDE6300FCDB0C /* PortalApi.swift */,
 				752E52F326FDDE6300FCDB0C /* Exchanges */,
-				752E52F826FDDE6300FCDB0C /* FixerApi.swift */,
 				752E52F926FDDE6300FCDB0C /* PortalExchangePublicApi.swift */,
 			);
 			path = EndPoints;
@@ -1899,7 +1891,6 @@
 				75C95C662614CC0400B0EE10 /* Array+Extension.swift in Sources */,
 				7555644126DCF7F7001B1C1A /* OrderBookItemView.swift in Sources */,
 				750D63C9268B2B9500643FD3 /* FiatCurrencyView.swift in Sources */,
-				752E530B26FDDE6300FCDB0C /* PortalApi.swift in Sources */,
 				75984F46264833E5002CD1EA /* RestoreSeedField.swift in Sources */,
 				75308AE526A028F30024AACD /* IFeeRateProvider.swift in Sources */,
 				751B655B269D999F001B759C /* LastBlockInfo.swift in Sources */,
@@ -2035,7 +2026,6 @@
 				752E531F26FDDE6400FCDB0C /* JSONParameterEncoder.swift in Sources */,
 				7517F89D26B40DD50020AECB /* ICoinManager.swift in Sources */,
 				750AE91526149A8C00C45971 /* MarketPrice.swift in Sources */,
-				752E531526FDDE6400FCDB0C /* FixerApi.swift in Sources */,
 				7537DEE52701A25100B862AB /* ExchangeBalanceInfo.swift in Sources */,
 				75B1512C26222B2700542415 /* AssetSearchField.swift in Sources */,
 				75F5CD952684C8D6005ECA5B /* CreateWalletSceneViewModel.swift in Sources */,
@@ -2200,7 +2190,6 @@
 				7556940526A6B15C00EE5CC4 /* WalletViewModel.swift in Sources */,
 				756C66B52640363500CD22B2 /* AlertsView.swift in Sources */,
 				750AE8E82614992400C45971 /* MarketDataUpdater.swift in Sources */,
-				752E530C26FDDE6300FCDB0C /* PortalApi.swift in Sources */,
 				756A66B0262441B500353635 /* PortfolioView.swift in Sources */,
 				750AE9BA26149DD900C45971 /* IKeyChainStorage.swift in Sources */,
 				75308ADC26A0284A0024AACD /* BitcoinFeeRateProvider.swift in Sources */,
@@ -2299,7 +2288,6 @@
 				750AE9AE26149DD900C45971 /* IWalletsService.swift in Sources */,
 				75B151432622EC0F00542415 /* AssetRouteSwitch.swift in Sources */,
 				7555642926D8FA91001B1C1A /* ExchangeSelectorView.swift in Sources */,
-				752E531626FDDE6400FCDB0C /* FixerApi.swift in Sources */,
 				752E531C26FDDE6400FCDB0C /* ParameterEncoding.swift in Sources */,
 				755785B1260F7363000E1686 /* Enums.swift in Sources */,
 				751B654D269D978C001B759C /* ISendBitcoinAdapter.swift in Sources */,
