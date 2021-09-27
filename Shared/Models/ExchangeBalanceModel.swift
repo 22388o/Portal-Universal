@@ -7,20 +7,45 @@
 
 import Foundation
 
-struct ExchangeBalanceModel: Identifiable {
+struct ExchangeBalanceModel: Identifiable, Codable {
     let id: UUID
     let asset: String
-    let free: Float
-    let locked: Float
-    let icon: String
+    let free: String
+    let locked: String
+    
+    enum Keys: String, CodingKey {
+        case asset
+        case free
+        case locked
+    }
+    
+    init(asset: String, free: String, locked: String) {
+        self.id = UUID()
+        self.asset = asset
+        self.free = free
+        self.locked = locked
+    }
+    
+    init(_ balance: KrakenBalance) {
+        self.id = UUID()
+        self.asset = balance.asset
+        self.free = String(balance.free)
+        self.locked = String(balance.locked)
+    }
+    
+    init(_ balance: CoinbaseBalancesResponse) {
+        self.id = UUID()
+        self.asset = balance.currency
+        self.free = balance.available
+        self.locked = balance.hold
+    }
 }
 
 extension ExchangeBalanceModel {
     static func BTC() -> ExchangeBalanceModel {
-        ExchangeBalanceModel(id: UUID(), asset: "BTC", free: 0.001876, locked: 0, icon: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Bitcoin-BTC-icon.png")
+        ExchangeBalanceModel(asset: "BTC", free: "0.001876", locked: "0"/*, icon: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Bitcoin-BTC-icon.png"*/)
     }
     static func ETH() -> ExchangeBalanceModel {
-        ExchangeBalanceModel(id: UUID(), asset: "ETH", free: 0.0216, locked: 0, icon: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Ethereum-ETH-icon.png")
+        ExchangeBalanceModel(asset: "ETH", free: "0.0216", locked: "0"/*, icon: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Ethereum-ETH-icon.png"*/)
     }
 }
-
