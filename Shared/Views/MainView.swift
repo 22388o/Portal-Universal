@@ -40,14 +40,7 @@ struct MainView: View {
                     }
                 }
             case .exchange:
-                HStack {
-                    Spacer()
-                        .frame(width: 320)
-                    
-                    RoundedRectangle(cornerRadius: 5)
-                        .fill(Color.white.opacity(0.94))
-                        .padding(8)
-                }
+                ExchangeScene()
             }
         }
         .zIndex(0)
