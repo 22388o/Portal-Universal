@@ -163,8 +163,6 @@
 		752E531226FDDE6300FCDB0C /* KrakenPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F626FDDE6300FCDB0C /* KrakenPrivateApi.swift */; };
 		752E531326FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F726FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift */; };
 		752E531426FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F726FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift */; };
-		752E531726FDDE6400FCDB0C /* PortalExchangePublicApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F926FDDE6300FCDB0C /* PortalExchangePublicApi.swift */; };
-		752E531826FDDE6400FCDB0C /* PortalExchangePublicApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F926FDDE6300FCDB0C /* PortalExchangePublicApi.swift */; };
 		752E531B26FDDE6400FCDB0C /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52FC26FDDE6300FCDB0C /* ParameterEncoding.swift */; };
 		752E531C26FDDE6400FCDB0C /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52FC26FDDE6300FCDB0C /* ParameterEncoding.swift */; };
 		752E531D26FDDE6400FCDB0C /* URLParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52FD26FDDE6300FCDB0C /* URLParameterEncoding.swift */; };
@@ -295,6 +293,14 @@
 		7537DEFA2701CFA300B862AB /* CoinbaseAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DEF82701CFA300B862AB /* CoinbaseAccount.swift */; };
 		7537DEFB2701CFA300B862AB /* CoinbaseAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DEF82701CFA300B862AB /* CoinbaseAccount.swift */; };
 		7537DEFC2701CFA300B862AB /* CoinbaseAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DEF82701CFA300B862AB /* CoinbaseAccount.swift */; };
+		7537DEFE2701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DEFD2701D6B000B862AB /* ExchangeVolumeDataModel.swift */; };
+		7537DEFF2701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DEFD2701D6B000B862AB /* ExchangeVolumeDataModel.swift */; };
+		7537DF002701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DEFD2701D6B000B862AB /* ExchangeVolumeDataModel.swift */; };
+		7537DF012701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DEFD2701D6B000B862AB /* ExchangeVolumeDataModel.swift */; };
+		7537DF03270309CF00B862AB /* SocketTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DF02270309CF00B862AB /* SocketTicker.swift */; };
+		7537DF04270309CF00B862AB /* SocketTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DF02270309CF00B862AB /* SocketTicker.swift */; };
+		7537DF05270309CF00B862AB /* SocketTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DF02270309CF00B862AB /* SocketTicker.swift */; };
+		7537DF06270309CF00B862AB /* SocketTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DF02270309CF00B862AB /* SocketTicker.swift */; };
 		7546CFCC2636980A00E8A8B7 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */; };
 		7546CFCD2636980A00E8A8B7 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */; };
 		75503C5F264FFA250043FDEC /* MarketDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75503C5E264FFA250043FDEC /* MarketDataProvider.swift */; };
@@ -403,10 +409,6 @@
 		7581901026E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */; };
 		7581901226EA753E00E0691B /* ExchangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901126EA753D00E0691B /* ExchangeManager.swift */; };
 		7581901326EA753E00E0691B /* ExchangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901126EA753D00E0691B /* ExchangeManager.swift */; };
-		7581901626EA7DE000E0691B /* Exchange+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901426EA7DE000E0691B /* Exchange+CoreDataProperties.swift */; };
-		7581901726EA7DE000E0691B /* Exchange+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901426EA7DE000E0691B /* Exchange+CoreDataProperties.swift */; };
-		7581901826EA7DE000E0691B /* Exchange+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901526EA7DE000E0691B /* Exchange+CoreDataClass.swift */; };
-		7581901926EA7DE000E0691B /* Exchange+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901526EA7DE000E0691B /* Exchange+CoreDataClass.swift */; };
 		758F3ADD26A81A4700F345E1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */; };
 		758F3AE026A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
 		758F3AE126A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
@@ -715,7 +717,6 @@
 		752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinancePrivateApi.swift; sourceTree = "<group>"; };
 		752E52F626FDDE6300FCDB0C /* KrakenPrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KrakenPrivateApi.swift; sourceTree = "<group>"; };
 		752E52F726FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinbaseProPrivateApi.swift; sourceTree = "<group>"; };
-		752E52F926FDDE6300FCDB0C /* PortalExchangePublicApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortalExchangePublicApi.swift; sourceTree = "<group>"; };
 		752E52FC26FDDE6300FCDB0C /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
 		752E52FD26FDDE6300FCDB0C /* URLParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLParameterEncoding.swift; sourceTree = "<group>"; };
 		752E52FE26FDDE6300FCDB0C /* JSONParameterEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParameterEncoder.swift; sourceTree = "<group>"; };
@@ -758,6 +759,8 @@
 		7537DEEE2701A70D00B862AB /* KrakenBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrakenBalance.swift; sourceTree = "<group>"; };
 		7537DEF32701C51D00B862AB /* CoinbaseBalanceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinbaseBalanceResponse.swift; sourceTree = "<group>"; };
 		7537DEF82701CFA300B862AB /* CoinbaseAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinbaseAccount.swift; sourceTree = "<group>"; };
+		7537DEFD2701D6B000B862AB /* ExchangeVolumeDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeVolumeDataModel.swift; sourceTree = "<group>"; };
+		7537DF02270309CF00B862AB /* SocketTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketTicker.swift; sourceTree = "<group>"; };
 		7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItemView.swift; sourceTree = "<group>"; };
 		75503C5E264FFA250043FDEC /* MarketDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataProvider.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -823,8 +826,6 @@
 		7574C3492619DCE400299131 /* CreateAccountScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountScene.swift; sourceTree = "<group>"; };
 		7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersRouteSwitch.swift; sourceTree = "<group>"; };
 		7581901126EA753D00E0691B /* ExchangeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeManager.swift; sourceTree = "<group>"; };
-		7581901426EA7DE000E0691B /* Exchange+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Exchange+CoreDataProperties.swift"; path = "/Users/farid/Work/Portal/Shared/DB/CoreData Objects/Exchange+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
-		7581901526EA7DE000E0691B /* Exchange+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Exchange+CoreDataClass.swift"; path = "/Users/farid/Work/Portal/Shared/DB/CoreData Objects/Exchange+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAccountStorage.swift; sourceTree = "<group>"; };
 		758F3AE226A9AA2100F345E1 /* AccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStorage.swift; sourceTree = "<group>"; };
@@ -1107,7 +1108,6 @@
 			isa = PBXGroup;
 			children = (
 				752E52F326FDDE6300FCDB0C /* Exchanges */,
-				752E52F926FDDE6300FCDB0C /* PortalExchangePublicApi.swift */,
 			);
 			path = EndPoints;
 			sourceTree = "<group>";
@@ -1420,8 +1420,6 @@
 			children = (
 				75A3F55826A5A775006B1823 /* AccountRecord+CoreDataClass.swift */,
 				75A3F55726A5A775006B1823 /* AccountRecord+CoreDataProperties.swift */,
-				7581901526EA7DE000E0691B /* Exchange+CoreDataClass.swift */,
-				7581901426EA7DE000E0691B /* Exchange+CoreDataProperties.swift */,
 			);
 			path = "CoreData Objects";
 			sourceTree = "<group>";
@@ -1458,6 +1456,8 @@
 				7537DEEE2701A70D00B862AB /* KrakenBalance.swift */,
 				7537DEF32701C51D00B862AB /* CoinbaseBalanceResponse.swift */,
 				7537DEF82701CFA300B862AB /* CoinbaseAccount.swift */,
+				7537DEFD2701D6B000B862AB /* ExchangeVolumeDataModel.swift */,
+				7537DF02270309CF00B862AB /* SocketTicker.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1997,7 +1997,6 @@
 				75C95C522614CC0400B0EE10 /* View+Extension.swift in Sources */,
 				7592DD462618D18700918ED2 /* TopCoinView.swift in Sources */,
 				75DBD2BD26359D080050AE08 /* AccountsView.swift in Sources */,
-				7581901626EA7DE000E0691B /* Exchange+CoreDataProperties.swift in Sources */,
 				7537DEEA2701A29A00B862AB /* BinanceAssetInfo.swift in Sources */,
 				755785B7260F73A2000E1686 /* FiatCurrency.swift in Sources */,
 				7599A79A2695D66F00562009 /* WalletModalViews.swift in Sources */,
@@ -2017,7 +2016,6 @@
 				75308AEA26A0291F0024AACD /* BitcoinCore + Holder.swift in Sources */,
 				756C3C7626EA9B84009530A9 /* ExchangeBalanceModel.swift in Sources */,
 				750AE8E32614992400C45971 /* PricesDataUpdater.swift in Sources */,
-				7581901826EA7DE000E0691B /* Exchange+CoreDataClass.swift in Sources */,
 				7537DEF92701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
 				752E531326FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */,
 				752E532B26FDDE6400FCDB0C /* KrakenRequestConfig.swift in Sources */,
@@ -2034,6 +2032,7 @@
 				7599A7912694566800562009 /* PortalLoader.swift in Sources */,
 				750AE9D526149DD900C45971 /* IPieChartModel.swift in Sources */,
 				75308ADB26A0284A0024AACD /* BitcoinFeeRateProvider.swift in Sources */,
+				7537DF03270309CF00B862AB /* SocketTicker.swift in Sources */,
 				7555643726D8FB51001B1C1A /* BuySellView.swift in Sources */,
 				750AE91126149A8C00C45971 /* MarketSnapshot.swift in Sources */,
 				75C95C222614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
@@ -2073,7 +2072,6 @@
 				750AE8EB2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */,
 				75C95C802614CC3700B0EE10 /* StringFormatter.swift in Sources */,
 				75C95C9A2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
-				752E531726FDDE6400FCDB0C /* PortalExchangePublicApi.swift in Sources */,
 				750AE90926149A8C00C45971 /* Coin.swift in Sources */,
 				75308AE026A028940024AACD /* EthereumFeeRateProvider.swift in Sources */,
 				750AE9B126149DD900C45971 /* ICoinKit.swift in Sources */,
@@ -2084,6 +2082,7 @@
 				75C95C562614CC0400B0EE10 /* Double+Extension.swift in Sources */,
 				7537DEDB2700B17200B862AB /* CoinbaseProApi.swift in Sources */,
 				7555641026D8E8AB001B1C1A /* AccountsViewModel.swift in Sources */,
+				7537DEFE2701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */,
 				75308ABD26A021C10024AACD /* ILocalStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2124,6 +2123,7 @@
 				750AE90E26149A8C00C45971 /* CoinMarketData.swift in Sources */,
 				75271304261B5378008C962C /* PButton.swift in Sources */,
 				75110D6D26A1FB3100BDD6C0 /* ISendEthereumAdapter.swift in Sources */,
+				7537DF04270309CF00B862AB /* SocketTicker.swift in Sources */,
 				75A3F52B26A57BEA006B1823 /* AdapterFactory.swift in Sources */,
 				752E532E26FDDE6400FCDB0C /* BinanceRequestConfig.swift in Sources */,
 				75B1514A2622F96800542415 /* MarketValueView.swift in Sources */,
@@ -2170,7 +2170,7 @@
 				75308AB926A021900024AACD /* LocalStorage.swift in Sources */,
 				75BBC733261C3E2D00032A90 /* SeedTestView.swift in Sources */,
 				7555642426D8F0DD001B1C1A /* ExchangeScene.swift in Sources */,
-				7581901926EA7DE000E0691B /* Exchange+CoreDataClass.swift in Sources */,
+				7537DEFF2701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */,
 				75F5CD7F2684C418005ECA5B /* Data+Extension.swift in Sources */,
 				75308B0926A19D7A0024AACD /* BaseEvmAdapter.swift in Sources */,
 				756C66BC264038E900CD22B2 /* CreateAlertView.swift in Sources */,
@@ -2207,7 +2207,6 @@
 				75A3F54F26A59FFC006B1823 /* IWalletStorage.swift in Sources */,
 				758F3AE426A9AA2100F345E1 /* AccountStorage.swift in Sources */,
 				75A3F54C26A59F95006B1823 /* IWalletManager.swift in Sources */,
-				752E531826FDDE6400FCDB0C /* PortalExchangePublicApi.swift in Sources */,
 				75C95C432614CC0400B0EE10 /* Publisher+Extension.swift in Sources */,
 				753364A326F339510073B0A4 /* TradingPairModel.swift in Sources */,
 				753471FE262C2ECA005CD93C /* ExchangerViewModel.swift in Sources */,
@@ -2281,7 +2280,6 @@
 				756A66C22624850A00353635 /* SendAssetView.swift in Sources */,
 				755785AA260F7331000E1686 /* AccounttModel.swift in Sources */,
 				752E533226FDDE6400FCDB0C /* NetworkLogger.swift in Sources */,
-				7581901726EA7DE000E0691B /* Exchange+CoreDataProperties.swift in Sources */,
 				7581901326EA753E00E0691B /* ExchangeManager.swift in Sources */,
 				75F5CD842684C4D1005ECA5B /* PortalTx.swift in Sources */,
 				75A3F54926A59F72006B1823 /* IAccount.swift in Sources */,
@@ -2333,6 +2331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				755782E326087904000E1686 /* Tests_iOS.swift in Sources */,
+				7537DF002701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */,
 				75308AD826A0280E0024AACD /* FeeRateProvider.swift in Sources */,
 				75C95C242614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
 				75308AD326A027E60024AACD /* IAppConfigProvider.swift in Sources */,
@@ -2371,6 +2370,7 @@
 				75E5E09026EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */,
 				75C95C542614CC0400B0EE10 /* View+Extension.swift in Sources */,
 				75C95C8A2614CC3700B0EE10 /* Syncronized.swift in Sources */,
+				7537DF05270309CF00B862AB /* SocketTicker.swift in Sources */,
 				750AE9AB26149DD900C45971 /* IMarketDataMockable.swift in Sources */,
 				7537DECE27009F9900B862AB /* Dictionary+Extension.swift in Sources */,
 				75308AE726A028F30024AACD /* IFeeRateProvider.swift in Sources */,
@@ -2464,6 +2464,7 @@
 				7537DEE32701A22000B862AB /* StringProtocol+Extension.swift in Sources */,
 				75F5CD8B2684C541005ECA5B /* TxsViewModel.swift in Sources */,
 				75C95C652614CC0400B0EE10 /* Color+Extension.swift in Sources */,
+				7537DF06270309CF00B862AB /* SocketTicker.swift in Sources */,
 				7537DEF72701C51D00B862AB /* CoinbaseBalanceResponse.swift in Sources */,
 				750AE8EA2614992400C45971 /* MarketDataUpdater.swift in Sources */,
 				750AE8FA2614992400C45971 /* MarketDataStorage.swift in Sources */,
@@ -2495,6 +2496,7 @@
 				750AE9C026149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
 				750AE8F62614992400C45971 /* KeychainStorage.swift in Sources */,
 				7555641326D8E8AB001B1C1A /* AccountsViewModel.swift in Sources */,
+				7537DF012701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */,
 				75308AC026A021C10024AACD /* ILocalStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
