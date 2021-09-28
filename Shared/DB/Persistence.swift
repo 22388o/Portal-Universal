@@ -44,6 +44,7 @@ extension PersistenceController {
         let viewContext = result.container.viewContext
         
         let tempWallet = AccountRecord.init(id: UUID().uuidString, name: "mocked", bip: .bip44, context: viewContext)
+        viewContext.insert(tempWallet)
         
         do {
             try viewContext.save()
