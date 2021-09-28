@@ -23,7 +23,7 @@ extension BinancePrivateApi: EndPointType {
     var headers: HTTPHeaders? { return nil }
     
     var environmentBaseURL: String {
-        "https://api.binance.com/"
+        "https://testnet.binance.vision/api"
     }
     
     var baseURL: URL {

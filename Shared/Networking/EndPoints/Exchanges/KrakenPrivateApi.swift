@@ -24,7 +24,7 @@ extension KrakenPrivateApi: EndPointType {
     var headers: HTTPHeaders? { nil }
     
     var environmentBaseURL: String {
-        "https://api.kraken.com"
+        "https://demo-futures.kraken.com"
     }
     
     var baseURL: URL {

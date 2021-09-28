@@ -20,7 +20,7 @@ public enum CoinbaseProPrivateApi {
 
 extension CoinbaseProPrivateApi: EndPointType {
     var environmentBaseURL : String {
-        "https://api.pro.coinbase.com"
+        "https://api-public.sandbox.pro.coinbase.com"
     }
     
     var baseURL: URL {
