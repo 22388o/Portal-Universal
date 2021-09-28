@@ -40,7 +40,7 @@ target 'Portal (macOS)' do
   platform :osx, '10.15'
   use_frameworks!
   inhibit_all_warnings!
-
+  
   # Pods for Portal (macOS)
   portal_shared_pods
 
