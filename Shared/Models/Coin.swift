@@ -39,7 +39,7 @@ struct Coin {
     }
     
     static func portal() -> Self {
-        Coin(type: .erc20(address: "0x83Fc886c260C1FAfEd46A14a0b524B9Fe3C1FaAD"), code: "WHALE", name: "Portal whale token", decimal: 18, iconUrl: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Ethereum-ETH-icon.png")
+        Coin(type: .erc20(address: "0xC3Ce6148B680D0DB3AdD8504A78340AA471C4190"), code: "WHALE", name: "Portal whale token", decimal: 18, iconUrl: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/96/Ethereum-ETH-icon.png")
     }
 }
 

@@ -516,6 +516,10 @@
 		75F5CDB72684CD7F005ECA5B /* AssetAllocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */; };
 		75F5CDB92684CE91005ECA5B /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB82684CE91005ECA5B /* PieChartRepresentableView.swift */; };
 		75F5CDBC2684CEB3005ECA5B /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartRepresentableView.swift */; };
+		AF1AF4492702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
+		AF1AF44A2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
+		AF1AF44B2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
+		AF1AF44C2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -747,6 +751,8 @@
 		75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAllocationViewModel.swift; sourceTree = "<group>"; };
 		75F5CDB82684CE91005ECA5B /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		75F5CDBB2684CEB3005ECA5B /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
+		AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extension.swift"; sourceTree = "<group>"; };
+		AF22D6B3270392E2000AAEB2 /* Build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Build.sh; sourceTree = "<group>"; };
 		BC9A9F3CB0318CDC9451AD23 /* Pods_Portal__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E103E7237471B0E12F767D1B /* Pods-Portal (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (iOS).release.xcconfig"; path = "Target Support Files/Pods-Portal (iOS)/Pods-Portal (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		FA893E0FDA0B170BADCB79A5 /* Pods-Portal (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (macOS).release.xcconfig"; path = "Target Support Files/Pods-Portal (macOS)/Pods-Portal (macOS).release.xcconfig"; sourceTree = "<group>"; };
@@ -1058,6 +1064,7 @@
 		755782BE26087903000E1686 = {
 			isa = PBXGroup;
 			children = (
+				AF22D6B3270392E2000AAEB2 /* Build.sh */,
 				750D63BC2689D9F200643FD3 /* alert.mp3 */,
 				755782C326087903000E1686 /* Shared */,
 				755782D026087904000E1686 /* iOS */,
@@ -1303,6 +1310,7 @@
 		75C95C372614CBF300B0EE10 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */,
 				75C95C412614CC0400B0EE10 /* Array+Extension.swift */,
 				75C95C402614CC0400B0EE10 /* Color+Extension.swift */,
 				75C95C3A2614CC0400B0EE10 /* Date+Extension.swift */,
@@ -1604,6 +1612,7 @@
 				75C95C4A2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
 				750D63C6268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */,
 				75C95C4E2614CC0400B0EE10 /* LineChart+Extension.swift in Sources */,
+				AF1AF4492702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
 				75C95C1A2614CBB500B0EE10 /* QRCodeProvider.swift in Sources */,
 				755782F026087905000E1686 /* Portal.xcdatamodeld in Sources */,
 				75C95C462614CC0400B0EE10 /* PieChart+Extension.swift in Sources */,
@@ -1894,6 +1903,7 @@
 				750AE9AA26149DD900C45971 /* IMarketDataMockable.swift in Sources */,
 				75D476D4262DAC2B0006FD91 /* RecentTxsView.swift in Sources */,
 				7517F8A426B802DD0020AECB /* CoinImageView.swift in Sources */,
+				AF1AF44A2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
 				75A3F52E26A57C3B006B1823 /* IAdapterManager.swift in Sources */,
 				75C95C1F2614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
 				750D63C4268B2B0800643FD3 /* ValueCurrencySwitchView.swift in Sources */,
@@ -2012,6 +2022,7 @@
 				750AE8E52614992400C45971 /* PricesDataUpdater.swift in Sources */,
 				750AE9B726149DD900C45971 /* IHistoricalData.swift in Sources */,
 				750AE9DB26149DD900C45971 /* IQRCodeProvider.swift in Sources */,
+				AF1AF44B2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
 				75C95C542614CC0400B0EE10 /* View+Extension.swift in Sources */,
 				75C95C8A2614CC3700B0EE10 /* Syncronized.swift in Sources */,
 				750AE9AB26149DD900C45971 /* IMarketDataMockable.swift in Sources */,
@@ -2065,6 +2076,7 @@
 				75308AB626A0215C0024AACD /* Portal.swift in Sources */,
 				75308ADE26A0284A0024AACD /* BitcoinFeeRateProvider.swift in Sources */,
 				75C95C9D2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
+				AF1AF44C2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
 				75F5CD982684C8D6005ECA5B /* CreateWalletSceneViewModel.swift in Sources */,
 				75C95C8F2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
 				750AE9B026149DD900C45971 /* IWalletsService.swift in Sources */,
@@ -2267,7 +2279,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-iOS";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -2300,7 +2312,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-iOS";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -2336,6 +2348,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2369,6 +2382,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

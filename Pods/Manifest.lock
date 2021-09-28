@@ -85,6 +85,7 @@ PODS:
   - OpenSslKit-Universal.swift (1.2.2)
   - RxSwift (5.1.3)
   - Secp256k1Kit-Universal.swift (1.1)
+  - Sparkle (1.26.0)
   - SwiftNIO (2.32.0):
     - SwiftNIOCore (= 2.32.0)
     - SwiftNIOEmbedded (= 2.32.0)
@@ -140,6 +141,7 @@ DEPENDENCIES:
   - HsToolKit-Universal.swift
   - KeychainAccess
   - Kingfisher (~> 6.3.0)
+  - Sparkle
 
 SPEC REPOS:
   trunk:
@@ -171,6 +173,7 @@ SPEC REPOS:
     - OpenSslKit-Universal.swift
     - RxSwift
     - Secp256k1Kit-Universal.swift
+    - Sparkle
     - SwiftNIO
     - SwiftNIOConcurrencyHelpers
     - SwiftNIOCore
@@ -223,6 +226,7 @@ SPEC CHECKSUMS:
   OpenSslKit-Universal.swift: 9c17dc8bb84c19b707c81e9f0ef960e563b3ea5a
   RxSwift: 915abbdfb62214aa89ccd0b194d44fb478019b27
   Secp256k1Kit-Universal.swift: 31f631f8796ee06dfd7df9687a83a1123dec7045
+  Sparkle: d56d028f4b0c123577825f5d1004f6140d77f90e
   SwiftNIO: 75035e9e47345716eb6f01effaa4e14b9564ae4a
   SwiftNIOConcurrencyHelpers: cdc0919908b59ae643e6924f57030dacdea0499d
   SwiftNIOCore: 33d188a3d66eb65010bba8c4e7ea3efeabf757f7
@@ -235,6 +239,6 @@ SPEC CHECKSUMS:
   SwiftNIOWebSocket: 9649cc901b956f0e992f69f7138866b349f7638a
   UIExtensions-Stripped.swift: 2ed2ea244fc7e3b16581a8c316f9363179ec1644
 
-PODFILE CHECKSUM: c5d58cb55443cd36f3a2153f0d3021f0f5d4c1b5
+PODFILE CHECKSUM: 769d022a23b1e929fe12925b41ba87d678a905fd
 
 COCOAPODS: 1.10.1

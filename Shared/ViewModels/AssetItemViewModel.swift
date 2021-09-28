@@ -156,3 +156,5 @@ extension AssetItemViewModel {
         return AssetItemViewModel(coin: coin, adapter: adapter, state: state, ticker: ticker, notificationService: notificationService)
     }
 }
+
+
