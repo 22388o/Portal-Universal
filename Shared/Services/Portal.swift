@@ -25,6 +25,7 @@ final class Portal: ObservableObject {
     let feeRateProvider: FeeRateProvider
     let ethereumKitManager: EthereumKitManager
     let adapterManager: AdapterManager
+    let exchangeManager: ExchangeManager
     
     @Published var state = PortalState()
         
@@ -48,6 +49,9 @@ final class Portal: ObservableObject {
         localStorage.incrementAppLaunchesCouner()
         
         feeRateProvider = FeeRateProvider(appConfigProvider: appConfigProvider)
+        
+        let exchangeDataUpdater = ExchangeDataUpdater()
+        exchangeManager = ExchangeManager(exchangeDataUpdater: exchangeDataUpdater)
         
         let marketDataUpdater = MarketDataUpdater()
         
