@@ -32,6 +32,12 @@ class ExchangeModel: Codable, Identifiable {
     }
 }
 
+extension ExchangeModel: Equatable {
+    static func == (lhs: ExchangeModel, rhs: ExchangeModel) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 extension ExchangeModel {
     static func binanceMock() -> ExchangeModel {
         ExchangeModel(
