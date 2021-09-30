@@ -23,12 +23,45 @@ final class ExchangeSetupViewModel: ObservableObject {
     }
     
     @Published var exchanges: [ExchangeModel]
-    @Published var currentExchangeIndex: Int = 0
+    @Published var exchangeToSync: ExchangeModel?
     @Published var step: SetupStep = .first
     @Published var selectedExchanges: [ExchangeModel] = []
+    @Published var secret: String = String()
+    @Published var key: String = String()
+    @Published var passphrase: String = String()
+    @Published var syncButtonEnabled: Bool = false
+    
+    private var subscriptions = Set<AnyCancellable>()
     
     init(exchanges: [ExchangeModel]) {
         self.exchanges = exchanges
+        self.exchangeToSync = exchanges.first
+        
+        setupSubscriptions()
+    }
+    
+    private func setupSubscriptions() {
+        $secret.combineLatest($key, $passphrase).sink { [weak self] secret, key, passphrase in
+            self?.syncButtonEnabled = !secret.isEmpty && !key.isEmpty && !passphrase.isEmpty
+        }
+        .store(in: &subscriptions)
+        
+        $exchangeToSync.sink { [weak self] exchange in
+            self?.secret = String()
+            self?.key = String()
+            self?.passphrase = exchange?.id == "coinbasepro" ? String() : " "
+        }
+        .store(in: &subscriptions)
+    }
+    
+    func syncExchange() {
+        if let exchange = exchangeToSync, let index = selectedExchanges.firstIndex(of: exchange) {
+            if selectedExchanges.indices.contains(index + 1) {
+                exchangeToSync = selectedExchanges  [index + 1]
+            } else {
+                print("All exchanges synced!")
+            }
+        }
     }
 }
 
