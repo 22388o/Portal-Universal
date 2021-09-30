@@ -98,9 +98,11 @@ struct ExchangeSetup: View {
                                         
                                         Spacer()
                                         
-                                        Divider()
-                                            .frame(width: 3)
-                                            .background(Color.green)
+                                        if exchange == viewModel.exchangeToSync {
+                                            Divider()
+                                                .frame(width: 3)
+                                                .background(Color.green)
+                                        }
                                     }
                                     .padding(.leading, 20)
                                     .frame(width: 200, height: 48)
@@ -123,7 +125,7 @@ struct ExchangeSetup: View {
                             Spacer()
                         }
                         
-                        ExchangeCredentialsView(exchange: viewModel.selectedExchanges[viewModel.currentExchangeIndex])
+                        ExchangeCredentialsView(viewModel: viewModel)
                             .offset(y: 21)
                     }
                     .frame(height: 244)
