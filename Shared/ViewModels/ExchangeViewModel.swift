@@ -23,7 +23,7 @@ final class ExchangeViewModel: ObservableObject {
     @Published var currentPair: TradingPairModel?
     @Published var searchRequest: String = String()
     
-    @Published private(set) var isLoggedIn: Bool = true
+    @Published private(set) var isLoggedIn: Bool = false
     @Published private(set) var tradingPairsForSelectedExchange: [TradingPairModel] = []
     @Published private(set) var tradingData: TradingData?
     @Published private(set) var tradingPairBaseIndex: Int = 0
@@ -143,9 +143,9 @@ final class ExchangeViewModel: ObservableObject {
             }
         }
         
-        socketClient?.on(clientEvent: .disconnect) { [weak self] data, ack in
-            print("socket diiiiiisconnected")
-        }
+//        socketClient?.on(clientEvent: .disconnect) { [weak self] data, ack in
+//            print("socket diiiiiisconnected")
+//        }
 
         socketClient?.connect()
     }
