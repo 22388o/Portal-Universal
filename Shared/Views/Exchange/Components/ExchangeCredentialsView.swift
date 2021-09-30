@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ExchangeCredentialsView: View {
-    let exchange: ExchangeModel
+    @ObservedObject var viewModel: ExchangeSetupViewModel
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -18,22 +18,22 @@ struct ExchangeCredentialsView: View {
             
             VStack(spacing: 16) {
                 VStack(spacing: 21) {
-                    CoinImageView(size: 48, url: exchange.icon)
+                    CoinImageView(size: 48, url: viewModel.exchangeToSync?.icon ?? String())
                     
-                    Text("Sync \(exchange.name) account")
+                    Text("Sync \(viewModel.exchangeToSync?.name ?? "Undefined") account")
                         .font(.mainFont(size: 18, bold: false))
                         .foregroundColor(Color.gray)
                 }
                 
-                PTextField(text: .constant(String()), placeholder: "Secret", upperCase: false, width: 284, height: 48)
-                PTextField(text: .constant(String()), placeholder: "Key", upperCase: false, width: 284, height: 48)
+                PTextField(text: $viewModel.secret, placeholder: "Secret", upperCase: false, width: 284, height: 48)
+                PTextField(text: $viewModel.key, placeholder: "Key", upperCase: false, width: 284, height: 48)
                 
-                if exchange.id == "coinbasepro" {
-                    PTextField(text: .constant(String()), placeholder: "Passphrase", upperCase: false, width: 284, height: 48)
+                if viewModel.exchangeToSync?.id == "coinbasepro" {
+                    PTextField(text: $viewModel.passphrase, placeholder: "Passphrase", upperCase: false, width: 284, height: 48)
                 }
                 
-                PButton(bgColor: Color.gray, label: "Sync", width: 284, height: 48, fontSize: 14, enabled: true) {
-                    
+                PButton(bgColor: Color.gray, label: "Sync", width: 284, height: 48, fontSize: 14, enabled: viewModel.syncButtonEnabled) {
+                    viewModel.syncExchange()
                 }
             }
             .padding(.leading, 24)
@@ -43,10 +43,7 @@ struct ExchangeCredentialsView: View {
 
 struct ExchangeCredentialsView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ExchangeCredentialsView(exchange: ExchangeModel.binanceMock())
-            ExchangeCredentialsView(exchange: ExchangeModel.coinbaseMock())
-        }
+        ExchangeCredentialsView(viewModel: ExchangeSetupViewModel.config())
     }
 }
 
