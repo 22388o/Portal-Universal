@@ -30,6 +30,9 @@ class ExchangeModel: Codable, Identifiable {
     var configured: Bool {
         false
     }
+    
+    var balances: [ExchangeBalanceModel] = []
+    var orders: [ExchangeOrderModel] = []
 }
 
 extension ExchangeModel: Equatable {
