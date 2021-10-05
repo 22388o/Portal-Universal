@@ -57,20 +57,22 @@ struct ExchangeSelectorView: View {
             .padding(.leading, 10)
             .padding(.trailing, 16)
             
-            MenuButton(
-                label: EmptyView(),
-                content: {
-                    Button("All exchange merged") {
-                        state = .merged
-                    }
-                    ForEach(exchanges, id: \.id) { exchange in
-                        Button("\(exchange.name)") {
-                            state = .selected(exchange: exchange)
+            if exchanges.count > 1 {
+                MenuButton(
+                    label: EmptyView(),
+                    content: {
+                        Button("All exchange merged") {
+                            state = .merged
+                        }
+                        ForEach(exchanges, id: \.id) { exchange in
+                            Button("\(exchange.name)") {
+                                state = .selected(exchange: exchange)
+                            }
                         }
                     }
-                }
-            )
-            .menuButtonStyle(BorderlessButtonMenuButtonStyle())
+                )
+                .menuButtonStyle(BorderlessButtonMenuButtonStyle())
+            }
         }
         .padding(.bottom, 12)
     }
