@@ -9,13 +9,9 @@ import SwiftUI
 
 struct MyOrdersView: View {
     let tradingPair: TradingPairModel
+    let orders: [ExchangeOrderModel]
     
     @State private var route: MyOrdersRoute = .open
-    @State private var items = [
-        SocketOrderBookItem(price: 10.15, amount: 2),
-        SocketOrderBookItem(price: 0.1233, amount: 200),
-        SocketOrderBookItem(price: 15.16, amount: 35)
-    ]
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -70,13 +66,13 @@ struct MyOrdersView: View {
                 
                 Spacer()
                 
-//                ScrollView {
-//                    LazyVStack_(spacing: 0) {
-//                        ForEach(items, id:\.id) { item in
-//                            OrderBookItemView(item: item)
-//                        }
-//                    }
-//                }
+                ScrollView {
+                    LazyVStack_(spacing: 0) {
+                        ForEach(orders, id:\.id) { order in
+                            OrderItemView(order: order)
+                        }
+                    }
+                }
             }
         }
     }
@@ -84,6 +80,6 @@ struct MyOrdersView: View {
 
 struct MyOrdersView_Previews: PreviewProvider {
     static var previews: some View {
-        MyOrdersView(tradingPair: TradingPairModel.mltBtc())
+        MyOrdersView(tradingPair: TradingPairModel.mltBtc(), orders: [])
     }
 }
