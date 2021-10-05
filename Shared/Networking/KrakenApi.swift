@@ -10,6 +10,15 @@ import Foundation
 
 public enum OrderSide: String {
     case sell, buy
+    
+    var description: String {
+        switch self {
+        case .buy:
+            return "Buy"
+        case .sell:
+            return "Sell"
+        }
+    }
 }
 public enum OrderType: String {
     case market, limit
