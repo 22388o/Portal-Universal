@@ -51,7 +51,7 @@ final class Portal: ObservableObject {
         feeRateProvider = FeeRateProvider(appConfigProvider: appConfigProvider)
         
         let exchangeDataUpdater = ExchangeDataUpdater()
-        exchangeManager = ExchangeManager(exchangeDataUpdater: exchangeDataUpdater)
+        exchangeManager = ExchangeManager(localStorage: localStorage, secureStorage: secureStorage, exchangeDataUpdater: exchangeDataUpdater)
         
         let marketDataUpdater = MarketDataUpdater()
         
