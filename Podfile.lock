@@ -88,8 +88,8 @@ PODS:
   - Secp256k1Kit-Universal.swift (1.1)
   - Socket.IO-Client-Swift (15.2.0):
     - Starscream (~> 3.1)
-  - Starscream (3.1.1)
   - Sparkle (1.26.0)
+  - Starscream (3.1.1)
   - SwiftNIO (2.32.0):
     - SwiftNIOCore (= 2.32.0)
     - SwiftNIOEmbedded (= 2.32.0)
@@ -181,8 +181,8 @@ SPEC REPOS:
     - RxSwift
     - Secp256k1Kit-Universal.swift
     - Socket.IO-Client-Swift
-    - Starscream
     - Sparkle
+    - Starscream
     - SwiftNIO
     - SwiftNIOConcurrencyHelpers
     - SwiftNIOCore
@@ -237,8 +237,8 @@ SPEC CHECKSUMS:
   RxSwift: 915abbdfb62214aa89ccd0b194d44fb478019b27
   Secp256k1Kit-Universal.swift: 31f631f8796ee06dfd7df9687a83a1123dec7045
   Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
-  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   Sparkle: d56d028f4b0c123577825f5d1004f6140d77f90e
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftNIO: 75035e9e47345716eb6f01effaa4e14b9564ae4a
   SwiftNIOConcurrencyHelpers: cdc0919908b59ae643e6924f57030dacdea0499d
   SwiftNIOCore: 33d188a3d66eb65010bba8c4e7ea3efeabf757f7
@@ -251,6 +251,6 @@ SPEC CHECKSUMS:
   SwiftNIOWebSocket: 9649cc901b956f0e992f69f7138866b349f7638a
   UIExtensions-Stripped.swift: 2ed2ea244fc7e3b16581a8c316f9363179ec1644
 
-PODFILE CHECKSUM: 769d022a23b1e929fe12925b41ba87d678a905fd
+PODFILE CHECKSUM: 44101b301aaaddd517f4ed0abdcb8d294124944e
 
 COCOAPODS: 1.10.1
