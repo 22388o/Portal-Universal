@@ -41,6 +41,8 @@ target 'Portal (macOS)' do
   use_frameworks!
   inhibit_all_warnings!
   
+  pod 'Sparkle'
+  
   # Pods for Portal (macOS)
   portal_shared_pods
 

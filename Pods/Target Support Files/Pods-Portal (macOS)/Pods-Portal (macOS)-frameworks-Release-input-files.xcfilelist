@@ -42,4 +42,5 @@ ${BUILT_PRODUCTS_DIR}/SwiftNIOTLS-macOS/NIOTLS.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-macOS/NIOWebSocket.framework
 ${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-macOS/UIExtensions.framework
 ${BUILT_PRODUCTS_DIR}/_NIODataStructures-macOS/_NIODataStructures.framework
+${PODS_ROOT}/Sparkle/Sparkle.framework
 ${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL

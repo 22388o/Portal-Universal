@@ -21,7 +21,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>EtherscanApiKey</key>
 	<string>${etherscan_api_key}</string>
 	<key>FixerApiKey</key>
@@ -38,5 +38,7 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUFeedURL</key>
+	<string>https://cryptomarket-api.herokuapp.com/appcast.xml</string>
 </dict>
 </plist>

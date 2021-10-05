@@ -218,6 +218,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-macOS/NIOWebSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-macOS/UIExtensions.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/_NIODataStructures-macOS/_NIODataStructures.framework"
+  install_framework "${PODS_ROOT}/Sparkle/Sparkle.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -264,6 +265,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-macOS/NIOWebSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-macOS/UIExtensions.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/_NIODataStructures-macOS/_NIODataStructures.framework"
+  install_framework "${PODS_ROOT}/Sparkle/Sparkle.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
