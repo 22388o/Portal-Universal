@@ -468,16 +468,3 @@ enum AccountType {
         }
     }
 }
-
-enum ExchangeButtonType {
-    case buy, sell
-    
-    var description: String {
-        switch self {
-        case .buy:
-            return "Buy"
-        case .sell:
-            return "Sell"
-        }
-    }
-}
