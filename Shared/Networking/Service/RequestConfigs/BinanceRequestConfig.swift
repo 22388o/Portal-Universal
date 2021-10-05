@@ -35,8 +35,7 @@ public struct ExchangeCredentials {
 
 public enum ExchangeService: String {
     case binance
-    case bittrex
-    case coinbase = "coinbase pro"
+    case coinbasepro
     case kraken
 
     static func with(name: String) -> ExchangeService? {
