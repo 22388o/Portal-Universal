@@ -10,18 +10,12 @@ import Combine
 import SocketIO
 
 final class ExchangeViewModel: ObservableObject {
-    let syncedExchanges: [ExchangeModel]
-    let allTraidingPairs: [TradingPairModel]
-    
+    private let manager: ExchangeManager
+    private let maxOrderBookItems = 30
     private let socketURL = URL(string: "https://portalex.herokuapp.com")
     private var socketMannager: SocketManager?
     private var socketClient: SocketIOClient?
-    
-    @ObservedObject var setup: ExchangeSetupViewModel
-    
-    @Published var exchangeSelectorState: ExchangeSelectorState = .merged
-    @Published var currentPair: TradingPairModel?
-    @Published var searchRequest: String = String()
+    private var subscriptions = Set<AnyCancellable>()
     
     @Published private(set) var isLoggedIn: Bool = false
     @Published private(set) var tradingPairsForSelectedExchange: [TradingPairModel] = []
@@ -29,23 +23,27 @@ final class ExchangeViewModel: ObservableObject {
     @Published private(set) var tradingPairBaseIndex: Int = 0
     @Published private(set) var orderBook: SocketOrderBook? = nil
     @Published private(set) var currentPairTicker: SocketTicker = SocketTicker(data: nil, base: String(), quote: String())
+        
+    @ObservedObject var setup: ExchangeSetupViewModel
     
-    private var subscriptions = Set<AnyCancellable>()
+    @Published var exchangeSelectorState: ExchangeSelectorState = .merged
+    @Published var exchangeBalancesSelectorState: BalaceSelectorState = .merged
+    @Published var currentPair: TradingPairModel?
+    @Published var searchRequest: String = String()
     
-    init(exchanges: [ExchangeModel], tradingPairs: [TradingPairModel]) {
+    var syncedExchanges: [ExchangeModel] {
+        manager.syncedExchanges
+    }
+    var allTraidingPairs: [TradingPairModel] {
+        manager.tradingPairs
+    }
+    
+    init(manager: ExchangeManager) {
+        self.manager = manager
         self.setup = ExchangeSetupViewModel.config()
-        
-        self.syncedExchanges = exchanges
-        self.allTraidingPairs = tradingPairs
-        self.currentPair = allTraidingPairs.compactMap{$0.supported(by: syncedExchanges)}.first
-        
-        if exchanges.count > 1 {
-            exchangeSelectorState = .merged
-        } else {
-            if let ex = exchanges.first {
-                exchangeSelectorState = .selected(exchange: ex)
-            }
-        }
+        self.isLoggedIn = !syncedExchanges.isEmpty
+        self.setDefaultTradingPair()
+        self.updateSelectorsState()
         
         $exchangeSelectorState
             .delay(for: .seconds(0.01), scheduler: DispatchQueue.main)
@@ -60,6 +58,36 @@ final class ExchangeViewModel: ObservableObject {
                 self?.onTradingPairUpdate(tradingPair)
             }
             .store(in: &subscriptions)
+        
+        setup
+            .$allExchangesSynced
+            .sink(receiveValue: { [weak self] in
+                guard let self = self else { return }
+                if !self.isLoggedIn {
+                    self.setDefaultTradingPair()
+                    self.updateSelectorsState()
+                    self.isLoggedIn = $0
+                }
+            })
+            .store(in: &subscriptions)
+        
+        manager.fetchOpenOrders()
+    }
+        
+    private func updateSelectorsState() {
+        if syncedExchanges.count > 1 {
+            exchangeSelectorState = .merged
+            exchangeBalancesSelectorState = .merged
+        } else {
+            if let ex = syncedExchanges.first {
+                exchangeSelectorState = .selected(exchange: ex)
+                exchangeBalancesSelectorState = .selected(exchange: ex)
+            }
+        }
+    }
+    
+    private func setDefaultTradingPair() {
+        currentPair = allTraidingPairs.compactMap{$0.supported(by: syncedExchanges)}.first
     }
     
     private func onExchangeSelectorStateUpdate(_ state: ExchangeSelectorState) {
@@ -143,10 +171,6 @@ final class ExchangeViewModel: ObservableObject {
             }
         }
         
-//        socketClient?.on(clientEvent: .disconnect) { [weak self] data, ack in
-//            print("socket diiiiiisconnected")
-//        }
-
         socketClient?.connect()
     }
     
@@ -163,18 +187,19 @@ final class ExchangeViewModel: ObservableObject {
     
     private func onOrderBookUpdate(_ book: NSDictionary) {
         let newOrderBook = SocketOrderBook(tradingPair: currentPair, data: book)
+        let firstIndex = 0
         
         if newOrderBook.tradingPair == currentPair, var updatedBook = orderBook {
-            updatedBook.bids.insert(contentsOf: newOrderBook.bids, at: 0)
+            updatedBook.bids.insert(contentsOf: newOrderBook.bids, at: firstIndex)
             
-            if updatedBook.bids.count > 30 {
-                updatedBook.bids.removeLast(10)
+            if updatedBook.bids.count > maxOrderBookItems {
+                updatedBook.bids.removeLast(maxOrderBookItems/3)
             }
             
-            updatedBook.asks.insert(contentsOf: newOrderBook.asks, at: 0)
+            updatedBook.asks.insert(contentsOf: newOrderBook.asks, at: firstIndex)
             
-            if updatedBook.asks.count > 30 {
-                updatedBook.asks.removeLast(10)
+            if updatedBook.asks.count > maxOrderBookItems {
+                updatedBook.asks.removeLast(maxOrderBookItems/3)
             }
             
             orderBook = updatedBook
@@ -182,14 +207,16 @@ final class ExchangeViewModel: ObservableObject {
             orderBook = newOrderBook
         }
     }
+    
+    func placeOrder(type: OrderType, side: OrderSide, amount: String, price: String) {
+        guard let td = tradingData else { return }
+        manager.placeOrder(tradingData: td, type: type, side: side, amount: amount, price: price)
+    }
 }
 
 extension ExchangeViewModel {
     static func config() -> ExchangeViewModel {
         let manager = Portal.shared.exchangeManager
-        let exchanges = manager.exchanges
-        let tradingPairs = manager.traidingPairs
-        
-        return ExchangeViewModel(exchanges: exchanges, tradingPairs: tradingPairs)
+        return ExchangeViewModel(manager: manager)
     }
 }
