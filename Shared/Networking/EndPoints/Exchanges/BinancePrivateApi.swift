@@ -23,7 +23,7 @@ extension BinancePrivateApi: EndPointType {
     var headers: HTTPHeaders? { return nil }
     
     var environmentBaseURL: String {
-        "https://testnet.binance.vision/api"
+        "https://testnet.binance.vision/"
     }
     
     var baseURL: URL {
@@ -108,8 +108,10 @@ extension BinancePrivateApi: EndPointType {
                 "quantity": quantity
             ]
             
-            if price > 0 { parameters["price"] = price }
-            if type == "LIMIT" { parameters["timeInForce"] = "GTC" }
+            if type == "LIMIT" {
+                parameters["price"] = price
+                parameters["timeInForce"] = "GTC"
+            }
             
         case .withdraw(let credentials, let asset, let address, let amount):
             
