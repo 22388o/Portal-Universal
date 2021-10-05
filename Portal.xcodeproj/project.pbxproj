@@ -235,6 +235,8 @@
 		75308B0926A19D7A0024AACD /* BaseEvmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0626A19D7A0024AACD /* BaseEvmAdapter.swift */; };
 		75308B0A26A19D7A0024AACD /* EvmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0726A19D7A0024AACD /* EvmAdapter.swift */; };
 		75308B0B26A19D7A0024AACD /* EvmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0726A19D7A0024AACD /* EvmAdapter.swift */; };
+		75327D51270C92CB00F4484B /* BinanceBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75327D50270C92CB00F4484B /* BinanceBalance.swift */; };
+		75327D52270C92CB00F4484B /* BinanceBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75327D50270C92CB00F4484B /* BinanceBalance.swift */; };
 		753364A226F339510073B0A4 /* TradingPairModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753364A126F339510073B0A4 /* TradingPairModel.swift */; };
 		753364A326F339510073B0A4 /* TradingPairModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753364A126F339510073B0A4 /* TradingPairModel.swift */; };
 		753364A526F339780073B0A4 /* TradingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753364A426F339780073B0A4 /* TradingData.swift */; };
@@ -744,6 +746,7 @@
 		75308AE926A0291F0024AACD /* BitcoinCore + Holder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinCore + Holder.swift"; sourceTree = "<group>"; };
 		75308B0626A19D7A0024AACD /* BaseEvmAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseEvmAdapter.swift; sourceTree = "<group>"; };
 		75308B0726A19D7A0024AACD /* EvmAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvmAdapter.swift; sourceTree = "<group>"; };
+		75327D50270C92CB00F4484B /* BinanceBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinanceBalance.swift; sourceTree = "<group>"; };
 		753364A126F339510073B0A4 /* TradingPairModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingPairModel.swift; sourceTree = "<group>"; };
 		753364A426F339780073B0A4 /* TradingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingData.swift; sourceTree = "<group>"; };
 		753364A726F339990073B0A4 /* ExchangeSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeSetupViewModel.swift; sourceTree = "<group>"; };
@@ -1434,6 +1437,7 @@
 			isa = PBXGroup;
 			children = (
 				750AE90326149A8B00C45971 /* Coin.swift */,
+				75327D50270C92CB00F4484B /* BinanceBalance.swift */,
 				75E7BD1C26DFA28C00AA6A3F /* ExchangeOrderModel.swift */,
 				7517F89626B40D430020AECB /* Erc20TokenCodable.swift */,
 				75A3F54426A57EBB006B1823 /* Wallet.swift */,
@@ -2073,6 +2077,7 @@
 				75F5CDA42684CA76005ECA5B /* RestoreAccountViewModel.swift in Sources */,
 				75A3F52A26A57BEA006B1823 /* AdapterFactory.swift in Sources */,
 				75F5CD832684C4D1005ECA5B /* PortalTx.swift in Sources */,
+				75327D51270C92CB00F4484B /* BinanceBalance.swift in Sources */,
 				7581901226EA753E00E0691B /* ExchangeManager.swift in Sources */,
 				755782F426087905000E1686 /* RootView.swift in Sources */,
 				75308AB826A021900024AACD /* LocalStorage.swift in Sources */,
@@ -2267,6 +2272,7 @@
 				750AE9B626149DD900C45971 /* IHistoricalData.swift in Sources */,
 				7517F89E26B40DD50020AECB /* ICoinManager.swift in Sources */,
 				7555644B26DD0E17001B1C1A /* SocketOrderBookItem.swift in Sources */,
+				75327D52270C92CB00F4484B /* BinanceBalance.swift in Sources */,
 				7555643B26D8FB7A001B1C1A /* ExchangeMarketView.swift in Sources */,
 				750AE9DA26149DD900C45971 /* IQRCodeProvider.swift in Sources */,
 				75F5CDB42684CD49005ECA5B /* AssetAllocationView.swift in Sources */,

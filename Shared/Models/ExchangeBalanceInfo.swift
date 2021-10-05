@@ -42,6 +42,7 @@ extension ExchangeBalanceInfo {
         canTrade =  try container.decode(Bool.self, forKey: .canTrade)
         canWithdraw = try container.decode(Bool.self, forKey: .canWithdraw)
         canDeposit = try container.decode(Bool.self, forKey: .canDeposit)
-        balances = try container.decode([ExchangeBalanceModel].self, forKey: .balances).filter{$0.free != "0.00000000"}
+        let balancesModels = try container.decode([BinanceBalance].self, forKey: .balances).filter{$0.free != "0.00000000"}
+        balances = balancesModels.map{ ExchangeBalanceModel($0) }
     }
 }

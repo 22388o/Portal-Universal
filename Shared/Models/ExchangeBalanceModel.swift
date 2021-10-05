@@ -26,6 +26,13 @@ struct ExchangeBalanceModel: Identifiable, Codable {
         self.locked = locked
     }
     
+    init(_ balance: BinanceBalance) {
+        self.id = UUID()
+        self.asset = balance.asset
+        self.free = balance.free
+        self.locked = balance.locked
+    }
+    
     init(_ balance: KrakenBalance) {
         self.id = UUID()
         self.asset = balance.asset
