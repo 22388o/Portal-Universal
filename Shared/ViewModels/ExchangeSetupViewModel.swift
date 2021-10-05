@@ -30,11 +30,14 @@ final class ExchangeSetupViewModel: ObservableObject {
     @Published var key: String = String()
     @Published var passphrase: String = String()
     @Published var syncButtonEnabled: Bool = false
+    @Published var allExchangesSynced: Bool = false
     
     private var subscriptions = Set<AnyCancellable>()
+    private let manager: ExchangeManager
     
-    init(exchanges: [ExchangeModel]) {
-        self.exchanges = exchanges
+    init(manager: ExchangeManager) {
+        self.manager = manager
+        self.exchanges = manager.allSupportedExchanges
         self.exchangeToSync = exchanges.first
         
         setupSubscriptions()
@@ -55,19 +58,28 @@ final class ExchangeSetupViewModel: ObservableObject {
     }
     
     func syncExchange() {
-        if let exchange = exchangeToSync, let index = selectedExchanges.firstIndex(of: exchange) {
-            if selectedExchanges.indices.contains(index + 1) {
-                exchangeToSync = selectedExchanges  [index + 1]
-            } else {
-                print("All exchanges synced!")
-            }
+        if
+            let exchange = exchangeToSync,
+            let index = selectedExchanges.firstIndex(of: exchange)
+        {
+            manager.sync(exchange: exchange, secret: secret, key: key, passphrase: passphrase)
+            onNextExchange(index: index)
+        }
+    }
+    
+    private func onNextExchange(index: Int) {
+        let nextIndex = index + 1
+        if selectedExchanges.indices.contains(nextIndex) {
+            exchangeToSync = selectedExchanges[nextIndex]
+        } else {
+            allExchangesSynced = true
         }
     }
 }
 
 extension ExchangeSetupViewModel {
     static func config() -> ExchangeSetupViewModel {
-        let exchanges = Portal.shared.exchangeManager.exchanges
-        return ExchangeSetupViewModel(exchanges: exchanges)
+        let manager = Portal.shared.exchangeManager
+        return ExchangeSetupViewModel(manager: manager)
     }
 }
