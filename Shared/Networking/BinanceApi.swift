@@ -149,6 +149,7 @@ struct BinanceApi {
         }
         let errorTitle = "[\(exchangeName)] error:"
         if let message = json["msg"] as? String, let code = json["code"] as? Int {
+            print("\(errorTitle) \(message) \(code)")
             throw NetworkError.error("\(errorTitle) \(message) \(code)")
         } else {
             throw NetworkError.error("\(errorTitle) \(error)")
