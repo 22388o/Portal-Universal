@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MarketLimitSwitch: View {
-    @Binding var state: MarketLimitSwitchState
+    @Binding var state: OrderType
     
     var body: some View {
         HStack(spacing: 0) {
@@ -23,7 +23,7 @@ struct MarketLimitSwitch: View {
                 Spacer()
             }
             .frame(maxHeight: .infinity)
-            .background(state == .market ? Color(red: 238/255, green: 235/255, blue: 239/255) : Color(red: 243/255, green: 240/255, blue: 242/255))
+            .background(state == .market ? Color(red: 238/255, green: 235/255, blue: 239/255) : Color.white)
             .onTapGesture {
                 withAnimation {
                     state = .market
@@ -40,7 +40,7 @@ struct MarketLimitSwitch: View {
                 Spacer()
             }
             .frame(maxHeight: .infinity)
-            .background(state == .limit ? Color(red: 238/255, green: 235/255, blue: 239/255) : Color(red: 243/255, green: 240/255, blue: 242/255))
+            .background(state == .limit ? Color(red: 238/255, green: 235/255, blue: 239/255) : Color.white)
             .onTapGesture {
                 withAnimation {
                     state = .limit
