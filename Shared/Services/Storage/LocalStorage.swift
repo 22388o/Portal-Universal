@@ -11,6 +11,7 @@ final class LocalStorage: ILocalStorage {
     private let storage: UserDefaults
     private let appLaunchesCountKey = "APP_LAUNCHES_COUNTER"
     private let currentAccountIDKey = "CURRENT_WALLET_ID"
+    private let syncedExchangesIDsKey = "SYNCED_EXCHANGES_IDS"
     private var appLaunchesCounter: Int {
         storage.integer(forKey: appLaunchesCountKey)
     }
@@ -18,6 +19,9 @@ final class LocalStorage: ILocalStorage {
     var currentAccountID: String?
     var isFirstLaunch: Bool {
         storage.integer(forKey: appLaunchesCountKey) == 0
+    }
+    var syncedExchangesIds: [String] {
+        storage.object(forKey: syncedExchangesIDsKey) as? [String] ?? []
     }
         
     init() {
@@ -42,5 +46,23 @@ final class LocalStorage: ILocalStorage {
     
     func removeCurrentAccountID() {
         storage.removeObject(forKey: currentAccountIDKey)
+    }
+    
+    func addSyncedExchange(id: String) {
+        var exchangesIds = syncedExchangesIds
+        
+        if !exchangesIds.contains(id) {
+            exchangesIds.append(id)
+            storage.set(exchangesIds, forKey: syncedExchangesIDsKey)
+        }
+    }
+    
+    func removeSyncedExchange(id: String) {
+        var exchangesIds = syncedExchangesIds
+        
+        if let index = exchangesIds.firstIndex(of: id) {
+            exchangesIds.remove(at: index)
+            storage.set(exchangesIds, forKey: syncedExchangesIDsKey)
+        }
     }
 }
