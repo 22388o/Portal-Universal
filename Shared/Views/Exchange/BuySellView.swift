@@ -8,25 +8,44 @@
 import SwiftUI
 
 struct BuySellView: View {
-    let type: ExchangeButtonType
+    let orderSide: OrderSide
+    let exchange: ExchangeModel?
     let tradingPair: TradingPairModel
     let ticker: SocketTicker
     let title: String
+    let actionButtonEnabled: Bool
+    let onOrderCreate: (_ type: OrderType, _ side: OrderSide, _ price: String, _ amount: String) -> ()
     
-    @State var price: String = String()
+    @State var price = String()
+    @State var amount = String()
+    @State var orderType: OrderType = .market
     
-    init(type: ExchangeButtonType, tradingPair: TradingPairModel, ticker: SocketTicker) {
-        self.type = type
+    init(side: OrderSide, exchange: ExchangeModel?, tradingPair: TradingPairModel, ticker: SocketTicker, onOrderCreate: @escaping (_ type: OrderType, _ side: OrderSide, _ price: String, _ amount: String) -> ()) {
+        self.orderSide = side
+        self.exchange = exchange
         self.tradingPair = tradingPair
         self.ticker = ticker
+        self.onOrderCreate = onOrderCreate
         
-        switch type {
+        switch orderSide {
         case .buy:
             title = "Buy " + tradingPair.base
+            
+            if ((exchange?.balances.filter({ $0.asset == tradingPair.quote }).first) != nil) {
+                actionButtonEnabled = true
+            } else {
+                actionButtonEnabled = false
+            }
         case .sell:
             title = "Sell " + tradingPair.base
+            
+            if ((exchange?.balances.filter({ $0.asset == tradingPair.base }).first) != nil) {
+                actionButtonEnabled = true
+            } else {
+                actionButtonEnabled = false
+            }
         }
-        
+
         price = ticker.last
     }
     
@@ -53,7 +72,7 @@ struct BuySellView: View {
                             .padding(8)
 
                         #if os(iOS)
-                        TextField(String(), text: .constant(""))
+                        TextField(String(), text: $amount)
                             .foregroundColor(Color.lightActiveLabel)
                             .modifier(
                                 PlaceholderStyle(
@@ -64,12 +83,12 @@ struct BuySellView: View {
                             .frame(height: 20)
                             .keyboardType(.numberPad)
                         #else
-                        TextField(String(), text: .constant(""))
+                        TextField(String(), text: $amount)
                             .colorMultiply(.lightInactiveLabel)
                             .foregroundColor(Color.lightActiveLabel)
                             .modifier(
                                 PlaceholderStyle(
-                                    showPlaceHolder: true,
+                                    showPlaceHolder: amount.isEmpty,
                                     placeholder: "0",
                                     padding: 0
                                 )
@@ -91,24 +110,24 @@ struct BuySellView: View {
                             .padding(8)
                         
                         #if os(iOS)
-                        TextField(String(), text: .constant(String()))
+                        TextField(String(), text: $price)
                             .foregroundColor(Color.lightActiveLabel)
                             .modifier(
                                 PlaceholderStyle(
-                                    showPlaceHolder: true,
-                                    placeholder: "0"
+                                    showPlaceHolder: price.isEmpty,
+                                    placeholder: "\(ticker.last)"
                                 )
                             )
                             .frame(height: 20)
                             .keyboardType(.numberPad)
                         #else
-                        TextField(String(), text: .constant(ticker.last))
+                        TextField(String(), text: $price)
                             .colorMultiply(.lightInactiveLabel)
                             .foregroundColor(Color.lightActiveLabel)
                             .modifier(
                                 PlaceholderStyle(
-                                    showPlaceHolder: ticker.last.isEmpty,
-                                    placeholder: "0",
+                                    showPlaceHolder: price.isEmpty,
+                                    placeholder: "\(ticker.last)",
                                     padding: 0
                                 )
                             )
@@ -128,11 +147,11 @@ struct BuySellView: View {
             .padding(.top, 14)
             .padding(.bottom, 6)
             
-            MarketLimitSwitch(state: .constant(.market))
+            MarketLimitSwitch(state: $orderType)
                 .padding(.bottom, 16)
             
-            BuySellButton(title: title, type: type, enabled: true) {
-                
+            BuySellButton(title: title, side: orderSide, enabled: actionButtonEnabled) {
+                onOrderCreate(orderType, orderSide, amount, price)
             }
         }
         .padding(.vertical)
@@ -141,8 +160,16 @@ struct BuySellView: View {
 
 struct BuySellView_Previews: PreviewProvider {
     static var previews: some View {
-        BuySellView(type: .buy, tradingPair: TradingPairModel.mltBtc(), ticker: SocketTicker.init(data: nil, base: nil, quote: nil))
-            .padding()
-            .background(Color.white)
+        BuySellView(
+            side: .buy,
+            exchange: ExchangeModel.binanceMock(),
+            tradingPair: TradingPairModel.mltBtc(),
+            ticker: SocketTicker.init(data: nil, base: nil, quote: nil),
+            onOrderCreate: { type, side, price, amount in
+                
+            }
+        )
+        .padding()
+        .background(Color.white)
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BuySellButton: View {
     let title: String
-    let type: ExchangeButtonType
+    let side: OrderSide
     let height: CGFloat = 32
     let enabled: Bool
     let action: () -> Void
@@ -36,7 +36,7 @@ struct BuySellButton: View {
     }
     
     var bgColor: Color {
-        switch type {
+        switch side {
         case .buy:
             return Color.exchangeBuyButtonColor
         case .sell:
@@ -48,8 +48,8 @@ struct BuySellButton: View {
 struct BuySellButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            BuySellButton(title: "Buy BTC", type: .buy, enabled: false, action: {})
-            BuySellButton(title: "Sell USDT", type: .sell, enabled: true, action: {})
+            BuySellButton(title: "Buy BTC", side: .buy, enabled: false, action: {})
+            BuySellButton(title: "Sell USDT", side: .sell, enabled: true, action: {})
         }
         .previewLayout(PreviewLayout.sizeThatFits)
         .padding()
