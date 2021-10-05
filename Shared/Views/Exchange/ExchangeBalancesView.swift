@@ -22,11 +22,16 @@ enum BalaceSelectorState {
 
 struct ExchangeBalancesView: View {
     let exchanges: [ExchangeModel]
-    @State private var state: BalaceSelectorState = .merged
-    @State private var balances = [
-        ExchangeBalanceModel.BTC(),
-        ExchangeBalanceModel.ETH(),
-    ]
+    @Binding var state: BalaceSelectorState
+    
+    private var balances: [ExchangeBalanceModel] {
+        switch state {
+        case .merged:
+            return exchanges.map{ $0.balances }.reduce([ExchangeBalanceModel](), { $0 + $1 })
+        case .selected(let exchange):
+            return exchange.balances
+        }
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -44,33 +49,21 @@ struct ExchangeBalancesView: View {
                 }
                 .padding(.top, 25)
                 .padding(.bottom, 12)
+                .padding(.horizontal, 32)
                 
                 Selector
+                    .padding(.horizontal, 32)
                 
-                switch state {
-                case .merged:
-                    ScrollView {
-                        LazyVStack_(spacing: 0) {
-                            ForEach(balances, id:\.id) { item in
-                                ExchangeBalanceItem(balanceItem: item, selected: false)
-                            }
-                        }
-                    }
-                case .selected(let exchange):
-                    if exchange.id == "binance" {
-                        ScrollView {
-                            LazyVStack_(spacing: 0) {
-                                ForEach(balances, id:\.id) { item in
-                                    ExchangeBalanceItem(balanceItem: item, selected: false)
-                                }
-                            }
-                        }
-                    }
+                List(balances, id:\.id) { item in
+                    ExchangeBalanceItem(balanceItem: item, selected: false)
+                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        .contentShape(Rectangle())
                 }
+                .listStyle(SidebarListStyle())
+                .padding(.horizontal, 15)
                 
                 Spacer()
             }
-            .padding(.horizontal, 32)
         }
         .frame(height: 256)
     }
@@ -100,27 +93,29 @@ struct ExchangeBalancesView: View {
             .padding(.leading, 10)
             .padding(.trailing, 16)
             
-            MenuButton(
-                label: EmptyView(),
-                content: {
-                    Button("All exchange merged") {
-                        state = .merged
-                    }
-                    ForEach(exchanges, id: \.id) { exchange in
-                        Button("\(exchange.name)") {
-                            state = .selected(exchange: exchange)
+            if exchanges.count > 1 {
+                MenuButton(
+                    label: EmptyView(),
+                    content: {
+                        Button("All exchange merged") {
+                            state = .merged
+                        }
+                        ForEach(exchanges, id: \.id) { exchange in
+                            Button("\(exchange.name)") {
+                                state = .selected(exchange: exchange)
+                            }
                         }
                     }
-                }
-            )
-            .menuButtonStyle(BorderlessButtonMenuButtonStyle())
+                )
+                .menuButtonStyle(BorderlessButtonMenuButtonStyle())
+            }
         }
-        .padding(.bottom, 12)
+        .padding(.bottom, 6)
     }
 }
 
 struct ExchangeBalancesView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangeBalancesView(exchanges: [])
+        ExchangeBalancesView(exchanges: [], state: .constant(.merged))
     }
 }
