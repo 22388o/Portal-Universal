@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct ExchangeScene: View {
-    @StateObject private var viewModel = ExchangeViewModel.config()
-    @State private var showAlert: Bool = false
-    @State private var errorMessage: String = String()
+    @ObservedObject var viewModel: ExchangeViewModel
     
     var body: some View {
         if viewModel.isLoggedIn {
@@ -27,7 +25,7 @@ struct ExchangeScene: View {
                         searchRequest: $viewModel.searchRequest
                     )
                     
-                    ExchangeBalancesView(exchanges: viewModel.syncedExchanges, state: $viewModel.exchangeBalancesSelectorState)
+                    ExchangeBalancesView(exchanges: viewModel.syncedExchanges, tradingPairs: viewModel.allTraidingPairs, state: $viewModel.exchangeBalancesSelectorState)
                     
                     Spacer()
                 }
@@ -41,11 +39,12 @@ struct ExchangeScene: View {
                         VStack(spacing: 0) {
                             ExchangeMarketView(
                                 tradingPair: viewModel.currentPair!,
-                                tradingData: viewModel.tradingData,
-                                ticker: viewModel.currentPairTicker
+                                tradingData: viewModel.tradingData
                             )
-                            .frame(minWidth: 606, minHeight: 374)
+                            .frame(minWidth: 606, minHeight: 224)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            
+                            ExchangeMarketDataView(ticker: viewModel.currentPairTicker)
 
                             HStack(spacing: 32) {
                                 BuySellView(
@@ -54,18 +53,6 @@ struct ExchangeScene: View {
                                     tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
                                     ticker: viewModel.currentPairTicker,
                                     onOrderCreate: { type, side, amount, price in
-                                        print("amount: \(amount), price: \(price), side: \(side), type: \(type)")
-                                        guard !amount.isEmpty else {
-                                            errorMessage = "Invalid amount"
-                                            showAlert = true
-                                            return
-                                        }
-                                        
-                                        if type == .limit, price.isEmpty {
-                                            errorMessage = "Invalid amount"
-                                            showAlert = true
-                                            return
-                                        }
                                         viewModel.placeOrder(type: type, side: side, amount: amount, price: price)
                                     }
                                 )
@@ -78,18 +65,6 @@ struct ExchangeScene: View {
                                     tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
                                     ticker: viewModel.currentPairTicker,
                                     onOrderCreate: { type, side, amount, price in
-                                        print("amount: \(amount), price: \(price), side: \(side), type: \(type)")
-                                        guard !amount.isEmpty else {
-                                            errorMessage = "Invalid amount"
-                                            showAlert = true
-                                            return
-                                        }
-                                        
-                                        if type == .limit, price.isEmpty {
-                                            errorMessage = "Invalid amount"
-                                            showAlert = true
-                                            return
-                                        }
                                         viewModel.placeOrder(type: type, side: side, amount: amount, price: price)
                                     }
                                 )
@@ -97,6 +72,11 @@ struct ExchangeScene: View {
                                 .frame(height: 256)
                             }
                             .padding(.horizontal, 32)
+                            .alert(isPresented: $viewModel.showAlert) {
+                                Alert(title: Text("Somethings went wrong"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Dismiss"), action: {
+                                    viewModel.showAlert = false
+                                }))
+                            }
                         }
 
                         VStack(spacing: 0) {
@@ -117,13 +97,6 @@ struct ExchangeScene: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 .padding([.vertical, .trailing], 8)
-                .alert(isPresented: $showAlert) {
-                    Alert(title: Text("Cannot process order"), message: Text(errorMessage), dismissButton: .default(Text("Dismiss"), action: {
-                        withAnimation {
-                            showAlert.toggle()
-                        }
-                    }))
-                }
             }
         } else {
             ExchangeSetup(viewModel: viewModel.setup)
@@ -133,6 +106,6 @@ struct ExchangeScene: View {
 
 struct ExchangeScene_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangeScene()
+        ExchangeScene(viewModel: ExchangeViewModel.config())
     }
 }

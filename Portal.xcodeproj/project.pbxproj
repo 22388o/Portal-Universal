@@ -263,7 +263,9 @@
 		7537DECF27009F9900B862AB /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DECB27009F9900B862AB /* Dictionary+Extension.swift */; };
 		7537DED32700B17200B862AB /* BinanceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DED02700B17100B862AB /* BinanceApi.swift */; };
 		7537DED42700B17200B862AB /* BinanceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DED02700B17100B862AB /* BinanceApi.swift */; };
+		7537DED4270F3A0100B0EBFF /* ExchangeMarketDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DED3270F3A0100B0EBFF /* ExchangeMarketDataView.swift */; };
 		7537DED52700B17200B862AB /* BinanceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DED02700B17100B862AB /* BinanceApi.swift */; };
+		7537DED5270F3A0100B0EBFF /* ExchangeMarketDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DED3270F3A0100B0EBFF /* ExchangeMarketDataView.swift */; };
 		7537DED62700B17200B862AB /* BinanceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DED02700B17100B862AB /* BinanceApi.swift */; };
 		7537DED72700B17200B862AB /* KrakenApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DED12700B17100B862AB /* KrakenApi.swift */; };
 		7537DED82700B17200B862AB /* KrakenApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7537DED12700B17100B862AB /* KrakenApi.swift */; };
@@ -594,8 +596,6 @@
 		75DBD2BE26359D080050AE08 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DBD2BC26359D080050AE08 /* AccountsView.swift */; };
 		75E5E08E26EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E5E08D26EF8FF500C05568 /* FloatingPoint+Extension.swift */; };
 		75E5E08F26EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E5E08D26EF8FF500C05568 /* FloatingPoint+Extension.swift */; };
-		75E5E09026EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E5E08D26EF8FF500C05568 /* FloatingPoint+Extension.swift */; };
-		75E5E09126EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E5E08D26EF8FF500C05568 /* FloatingPoint+Extension.swift */; };
 		75E7BD1D26DFA28C00AA6A3F /* ExchangeOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E7BD1C26DFA28C00AA6A3F /* ExchangeOrderModel.swift */; };
 		75E7BD1E26DFA28C00AA6A3F /* ExchangeOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E7BD1C26DFA28C00AA6A3F /* ExchangeOrderModel.swift */; };
 		75F5CD7E2684C418005ECA5B /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CD7D2684C418005ECA5B /* Data+Extension.swift */; };
@@ -765,6 +765,7 @@
 		7537DED02700B17100B862AB /* BinanceApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinanceApi.swift; sourceTree = "<group>"; };
 		7537DED12700B17100B862AB /* KrakenApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KrakenApi.swift; sourceTree = "<group>"; };
 		7537DED22700B17100B862AB /* CoinbaseProApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinbaseProApi.swift; sourceTree = "<group>"; };
+		7537DED3270F3A0100B0EBFF /* ExchangeMarketDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeMarketDataView.swift; sourceTree = "<group>"; };
 		7537DEDF2701A22000B862AB /* StringProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringProtocol+Extension.swift"; sourceTree = "<group>"; };
 		7537DEE42701A25100B862AB /* ExchangeBalanceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeBalanceInfo.swift; sourceTree = "<group>"; };
 		7537DEE92701A29A00B862AB /* BinanceAssetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinanceAssetInfo.swift; sourceTree = "<group>"; };
@@ -1281,6 +1282,7 @@
 				7555643326D8FB1A001B1C1A /* MyOrdersView.swift */,
 				7555643626D8FB51001B1C1A /* BuySellView.swift */,
 				7555643926D8FB7A001B1C1A /* ExchangeMarketView.swift */,
+				7537DED3270F3A0100B0EBFF /* ExchangeMarketDataView.swift */,
 				7555643F26DCED28001B1C1A /* Components */,
 			);
 			path = Exchange;
@@ -2096,6 +2098,7 @@
 				755782F426087905000E1686 /* RootView.swift in Sources */,
 				75308AB826A021900024AACD /* LocalStorage.swift in Sources */,
 				750AE8EB2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */,
+				7537DED4270F3A0100B0EBFF /* ExchangeMarketDataView.swift in Sources */,
 				75C95C802614CC3700B0EE10 /* StringFormatter.swift in Sources */,
 				75C95C9A2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
 				750AE90926149A8C00C45971 /* Coin.swift in Sources */,
@@ -2304,6 +2307,7 @@
 				750AE9D626149DD900C45971 /* IPieChartModel.swift in Sources */,
 				750AE91226149A8C00C45971 /* MarketSnapshot.swift in Sources */,
 				75C95C232614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
+				7537DED5270F3A0100B0EBFF /* ExchangeMarketDataView.swift in Sources */,
 				75503C60264FFA250043FDEC /* MarketDataProvider.swift in Sources */,
 				750AE91E26149A8C00C45971 /* Asset.swift in Sources */,
 				75E5E08F26EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */,
