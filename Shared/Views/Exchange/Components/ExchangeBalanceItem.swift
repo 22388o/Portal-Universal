@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ExchangeBalanceItem: View {
     let balanceItem: ExchangeBalanceModel
+    let iconUrl: String?
     let selected: Bool
     
     var body: some View {
@@ -19,7 +20,7 @@ struct ExchangeBalanceItem: View {
             }
             
             HStack {
-                CoinImageView(size: 16, url: "balanceItem.icon")
+                CoinImageView(size: 16, url: iconUrl ?? String())
                 
                 Text("\(balanceItem.free) \(balanceItem.asset)")
                 
@@ -36,8 +37,8 @@ struct ExchangeBalanceItem: View {
 struct ExchangeBalanceItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ExchangeBalanceItem(balanceItem: ExchangeBalanceModel.BTC(), selected: true)
-            ExchangeBalanceItem(balanceItem: ExchangeBalanceModel.ETH(), selected: false)
+            ExchangeBalanceItem(balanceItem: ExchangeBalanceModel.BTC(), iconUrl: nil, selected: true)
+            ExchangeBalanceItem(balanceItem: ExchangeBalanceModel.ETH(), iconUrl: nil, selected: false)
         }
     }
 }

@@ -22,6 +22,7 @@ enum BalaceSelectorState {
 
 struct ExchangeBalancesView: View {
     let exchanges: [ExchangeModel]
+    let tradingPairs: [TradingPairModel]
     @Binding var state: BalaceSelectorState
     
     private var balances: [ExchangeBalanceModel] {
@@ -54,10 +55,14 @@ struct ExchangeBalancesView: View {
                 Selector
                     .padding(.horizontal, 32)
                 
-                List(balances, id:\.id) { item in
-                    ExchangeBalanceItem(balanceItem: item, selected: false)
-                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        .contentShape(Rectangle())
+                List(balances, id:\.id) { balance in
+                    ExchangeBalanceItem(
+                        balanceItem: balance,
+                        iconUrl: tradingPairs.first(where: {$0.base == balance.asset})?.icon,
+                        selected: false
+                    )
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .contentShape(Rectangle())
                 }
                 .listStyle(SidebarListStyle())
                 .padding(.horizontal, 15)
@@ -116,6 +121,6 @@ struct ExchangeBalancesView: View {
 
 struct ExchangeBalancesView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangeBalancesView(exchanges: [], state: .constant(.merged))
+        ExchangeBalancesView(exchanges: [], tradingPairs: [], state: .constant(.merged))
     }
 }
