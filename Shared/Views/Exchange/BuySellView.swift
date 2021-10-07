@@ -8,19 +8,27 @@
 import SwiftUI
 
 struct BuySellView: View {
+    typealias OnOrderCreateCompetion = (_ type: OrderType, _ side: OrderSide, _ price: String, _ amount: String) -> ()
+    
     let orderSide: OrderSide
     let exchange: ExchangeModel?
     let tradingPair: TradingPairModel
     let ticker: SocketTicker
     let title: String
-    let actionButtonEnabled: Bool
-    let onOrderCreate: (_ type: OrderType, _ side: OrderSide, _ price: String, _ amount: String) -> ()
+    let canTrade: Bool
+    let onOrderCreate: OnOrderCreateCompetion
     
     @State var price = String()
     @State var amount = String()
     @State var orderType: OrderType = .market
     
-    init(side: OrderSide, exchange: ExchangeModel?, tradingPair: TradingPairModel, ticker: SocketTicker, onOrderCreate: @escaping (_ type: OrderType, _ side: OrderSide, _ price: String, _ amount: String) -> ()) {
+    init(
+        side: OrderSide,
+        exchange: ExchangeModel?,
+        tradingPair: TradingPairModel,
+        ticker: SocketTicker,
+        onOrderCreate: @escaping OnOrderCreateCompetion
+    ) {
         self.orderSide = side
         self.exchange = exchange
         self.tradingPair = tradingPair
@@ -32,17 +40,17 @@ struct BuySellView: View {
             title = "Buy " + tradingPair.base
             
             if ((exchange?.balances.filter({ $0.asset == tradingPair.quote }).first) != nil) {
-                actionButtonEnabled = true
+                canTrade = true
             } else {
-                actionButtonEnabled = false
+                canTrade = false
             }
         case .sell:
             title = "Sell " + tradingPair.base
             
             if ((exchange?.balances.filter({ $0.asset == tradingPair.base }).first) != nil) {
-                actionButtonEnabled = true
+                canTrade = true
             } else {
-                actionButtonEnabled = false
+                canTrade = false
             }
         }
 
@@ -82,6 +90,7 @@ struct BuySellView: View {
                             )
                             .frame(height: 20)
                             .keyboardType(.numberPad)
+                            .disabled(!canTrade)
                         #else
                         TextField(String(), text: $amount)
                             .colorMultiply(.lightInactiveLabel)
@@ -94,6 +103,7 @@ struct BuySellView: View {
                                 )
                             )
                             .textFieldStyle(PlainTextFieldStyle())
+                            .disabled(!canTrade)
                         #endif
                     }
                     .modifier(SmallTextFieldModifier(cornerRadius: 16))
@@ -115,11 +125,12 @@ struct BuySellView: View {
                             .modifier(
                                 PlaceholderStyle(
                                     showPlaceHolder: price.isEmpty,
-                                    placeholder: "\(ticker.last)"
+                                    placeholder: orderType == .market ? "\(ticker.last)" : "0"
                                 )
                             )
                             .frame(height: 20)
                             .keyboardType(.numberPad)
+                            .disabled(orderType == .market)
                         #else
                         TextField(String(), text: $price)
                             .colorMultiply(.lightInactiveLabel)
@@ -127,11 +138,12 @@ struct BuySellView: View {
                             .modifier(
                                 PlaceholderStyle(
                                     showPlaceHolder: price.isEmpty,
-                                    placeholder: "\(ticker.last)",
+                                    placeholder: orderType == .market ? "\(ticker.last)" : "0",
                                     padding: 0
                                 )
                             )
                             .textFieldStyle(PlainTextFieldStyle())
+                            .disabled(orderType == .market)
                         #endif
                     }
                     .modifier(SmallTextFieldModifier(cornerRadius: 16))
@@ -149,9 +161,12 @@ struct BuySellView: View {
             
             MarketLimitSwitch(state: $orderType)
                 .padding(.bottom, 16)
+                .disabled(!canTrade)
             
-            BuySellButton(title: title, side: orderSide, enabled: actionButtonEnabled) {
+            BuySellButton(title: title, side: orderSide, enabled: canTrade) {
                 onOrderCreate(orderType, orderSide, amount, price)
+                amount = String()
+                price = String()
             }
         }
         .padding(.vertical)
