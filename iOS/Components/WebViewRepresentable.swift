@@ -22,7 +22,6 @@ struct WebView: UIViewRepresentable {
         
         webView.allowsBackForwardNavigationGestures = true
         return webView
-    
     }
     
     func updateUIView(_ webView: WKWebView, context: Context) {

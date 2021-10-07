@@ -112,7 +112,7 @@ struct HeaderView: View {
                 }
             }
             
-            AppSceneSwitch(state: $viewModel.state.mainScene)
+            AppSceneSwitch(state: $viewModel.state.mainScene)            
         }
         .frame(minWidth: 600)
     }

@@ -35,7 +35,6 @@ struct MainScene: View {
                     .padding([.leading, .bottom, .trailing], 24)
             }
             .blur(radius: state.modalViewIsPresented ? 6 : 0)
-//            .scaleEffect(state.scaleEffectRation)
             .allowsHitTesting(!state.modalViewIsPresented)
             
             if state.modalViewIsPresented || state.allNotifications {

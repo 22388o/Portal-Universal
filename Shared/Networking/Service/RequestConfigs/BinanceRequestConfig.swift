@@ -24,13 +24,7 @@ public struct ExchangeCredentials {
         self.passphrase = passphrase
         
         self.service = ExchangeService.with(name: self.name)
-    }
-    
-    func balances(completion: @escaping (_ balances: [ExchangeBalanceModel], _ error: String?)->()) {
-//        api.fetchBalance(credentials: self) { (balances, error) in
-//            completion(balances, error)
-//        }
-    }
+    }    
 }
 
 public enum ExchangeService: String {
