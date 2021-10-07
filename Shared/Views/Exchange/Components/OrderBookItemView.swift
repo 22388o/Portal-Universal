@@ -18,11 +18,11 @@ struct OrderBookItemView: View {
                 .offset(y: -1)
             
             HStack(spacing: 0) {
-                Text(item.price.toString())
+                Text(String(format: StringFormatter.format(number: item.price), item.price))
                 Spacer()
                 Text(item.amount.toString())
                 Spacer()
-                Text(item.total.toString())
+                Text(String(format: StringFormatter.format(number: item.amount), item.amount))
             }
             .lineLimit(1)
             .font(.mainFont(size: 12))
