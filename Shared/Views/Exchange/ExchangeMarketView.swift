@@ -10,7 +10,6 @@ import SwiftUI
 struct ExchangeMarketView: View {
     let tradingPair: TradingPairModel
     let tradingData: TradingData?
-    let ticker: SocketTicker
     @State var exchnageIndex: Int = 0
     
     var body: some View {
@@ -53,42 +52,9 @@ struct ExchangeMarketView: View {
             .padding(.horizontal, 32)
             
             WebView(symbol: tradingPair.exchanger(tradingData?.exchange?.id.lowercased() ?? "")?.sym ?? "")
-                .frame(minHeight: 224)
+//                .frame(minHeight: 224)
                 .padding(.horizontal, 20)
                 .padding(.bottom, 22)
-            
-            HStack(spacing: 50) {
-                VStack(alignment: .leading) {
-                    Text("Change")
-                    Text(ticker.change)
-                }
-                VStack(alignment: .leading) {
-                    Text("Last price")
-                    Text(ticker.last)
-                }
-                VStack(alignment: .leading) {
-                    Text("Highest")
-                    Text(ticker.high)
-                }
-                VStack(alignment: .leading) {
-                    Text("Lowest")
-                    Text(ticker.low)
-                }
-                VStack(alignment: .leading) {
-                    Text("Volume")
-                    Text(ticker.volume)
-                }
-                
-                Spacer()
-            }
-            .font(.mainFont(size: 12, bold: false))
-            .foregroundColor(Color.gray)
-            .padding(.horizontal, 32)
-            .padding(.bottom, 28)
-                        
-            Rectangle()
-                .foregroundColor(Color.exchangeBorderColor)
-                .frame(height: 1)
         }
     }
 }
@@ -97,8 +63,7 @@ struct ExchangeMarketView_Previews: PreviewProvider {
     static var previews: some View {
         ExchangeMarketView(
             tradingPair: TradingPairModel.mltBtc(),
-            tradingData: TradingData(exchangeSelectorState: .merged, exchanges: [], supportedByExchanges: [], pairs: [], currentPair: TradingPairModel.mltBtc()),
-            ticker: SocketTicker(data: nil, base: nil, quote: nil)
+            tradingData: TradingData(exchangeSelectorState: .merged, exchanges: [], supportedByExchanges: [], pairs: [], currentPair: TradingPairModel.mltBtc())
         )
     }
 }
