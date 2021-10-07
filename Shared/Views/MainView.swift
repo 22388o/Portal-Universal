@@ -11,6 +11,7 @@ struct MainView: View {
     @ObservedObject private var state = Portal.shared.state
     @StateObject private var walletViewModel = WalletViewModel.config()
     @StateObject private var assetViewModel = AssetViewModel.config()
+    @StateObject private var exchangeViewModel = ExchangeViewModel.config()
     
     var body: some View {
         ZStack {
@@ -40,7 +41,7 @@ struct MainView: View {
                     }
                 }
             case .exchange:
-                ExchangeScene()
+                ExchangeScene(viewModel: exchangeViewModel)
             }
         }
         .zIndex(0)
