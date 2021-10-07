@@ -66,6 +66,14 @@ extension Double {
         formatter.minimumIntegerDigits = 1
         return formatter.string(from: NSNumber(value: self)) ?? "#"
     }
+    
+    func precisionString() -> String {
+        let formatter = NumberFormatter()
+        let number = NSNumber(value: self)
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 18
+        return String(formatter.string(from: number) ?? "")
+    }
 }
 
 
