@@ -20,7 +20,8 @@ struct BinanceApi {
             })
             .decode(type: ExchangeBalanceInfo.self, decoder: JSONDecoder())
             .mapError { error in
-                NetworkError.error(error.localizedDescription)
+                guard let networkError = error as? NetworkError else { return NetworkError.error("\(error)") }
+                return networkError
             }
             .map{ $0.balances }
             .eraseToAnyPublisher()
@@ -35,7 +36,8 @@ struct BinanceApi {
             })
             .decode(type: [BinanceOrder].self, decoder: JSONDecoder())
             .mapError { error in
-                NetworkError.error(error.localizedDescription)
+                guard let networkError = error as? NetworkError else { return NetworkError.error("\(error)") }
+                return networkError
             }
             .map{ $0.reversed().map{ExchangeOrderModel.init(order: $0)} }
             .eraseToAnyPublisher()
@@ -49,13 +51,14 @@ struct BinanceApi {
             })
             .decode(type: [BinanceOrder].self, decoder: JSONDecoder())
             .mapError { error in
-                NetworkError.error(error.localizedDescription)
+                guard let networkError = error as? NetworkError else { return NetworkError.error("\(error)") }
+                return networkError
             }
             .map{ $0.reversed().map{ExchangeOrderModel.init(order: $0)} }
             .eraseToAnyPublisher()
     }
     
-    func placeOrder(credentials: ExchangeCredentials, type: String, side: String, symbol: String, price: Double, quantity: Double) -> AnyPublisher<BinanceNewOrderACK, NetworkError>? {
+    func placeOrder(credentials: ExchangeCredentials, type: String, side: String, symbol: String, price: Double, quantity: Double) -> AnyPublisher<Bool, NetworkError>? {
         let symbol = symbol.replacingOccurrences(of: "/", with: "")
         
         return api
@@ -65,8 +68,10 @@ struct BinanceApi {
             })
             .decode(type: BinanceNewOrderACK.self, decoder: JSONDecoder())
             .mapError { error in
-                NetworkError.error(error.localizedDescription)
+                guard let networkError = error as? NetworkError else { return NetworkError.error("\(error)") }
+                return networkError
             }
+            .map { order in return true }
             .eraseToAnyPublisher()
     }
     
@@ -79,7 +84,8 @@ struct BinanceApi {
                 try handleResponse(data: data, response: response, exchangeName: credentials.name.firstUppercased)
             })
             .mapError { error in
-                NetworkError.error(error.localizedDescription)
+                guard let networkError = error as? NetworkError else { return NetworkError.error("\(error)") }
+                return networkError
             }
             .eraseToAnyPublisher()
     }
@@ -91,7 +97,8 @@ struct BinanceApi {
                 try handleResponse(data: data, response: response, exchangeName: credentials.name.firstUppercased)
             })
             .mapError { error in
-                NetworkError.error(error.localizedDescription)
+                guard let networkError = error as? NetworkError else { return NetworkError.error("\(error)") }
+                return networkError
             }
             .map({ data in
                 return true
@@ -107,7 +114,8 @@ struct BinanceApi {
             })
             .decode(type: DepositAddressInfo.self, decoder: JSONDecoder())
             .mapError { error in
-                NetworkError.error(error.localizedDescription)
+                guard let networkError = error as? NetworkError else { return NetworkError.error("\(error)") }
+                return networkError
             }
             .map{ $0.address }
             .eraseToAnyPublisher()
@@ -121,7 +129,8 @@ struct BinanceApi {
             })
             .decode(type: BinanceAssetInfo.self, decoder: JSONDecoder())
             .mapError { error in
-                NetworkError.error(error.localizedDescription)
+                guard let networkError = error as? NetworkError else { return NetworkError.error("\(error)") }
+                return networkError
             }
             .compactMap{ $0.assetDetail }
             .eraseToAnyPublisher()
@@ -137,7 +146,6 @@ struct BinanceApi {
             case .failure(let networkFailureError):
                 throw try handleFailureResponse(exchangeName: exchangeName, data: data, error: networkFailureError)
             }
-
         } else {
             throw NetworkError.parsingError
         }
@@ -147,10 +155,10 @@ struct BinanceApi {
         guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] else {
             throw NetworkError.parsingError
         }
-        let errorTitle = "[\(exchangeName)] error:"
+        let errorTitle = "[\(exchangeName)]:"
         if let message = json["msg"] as? String, let code = json["code"] as? Int {
-            print("\(errorTitle) \(message) \(code)")
-            throw NetworkError.error("\(errorTitle) \(message) \(code)")
+            let errorMessage = "\(errorTitle) \(message) (\(code))"
+            throw NetworkError.error(errorMessage)
         } else {
             throw NetworkError.error("\(errorTitle) \(error)")
         }

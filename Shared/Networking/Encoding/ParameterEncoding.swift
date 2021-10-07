@@ -54,7 +54,7 @@ public enum NetworkError: Error {
     case inconsistentBehavior
     case parsingError
     case networkError
-    case error(_ string: String)
+    case error(String)
     
     var description: String {
         switch  self {
@@ -71,7 +71,7 @@ public enum NetworkError: Error {
         case .networkError:
             return "Network error."
         case .error(let error):
-            return "\(error)"
+            return error
         }
     }
     

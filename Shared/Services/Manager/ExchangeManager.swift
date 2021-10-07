@@ -56,7 +56,7 @@ final class ExchangeManager {
             .store(in: &subscriptions)
     }
     
-    private func updateBalances() {
+    func updateBalances() {
         for exchange in syncedExchanges {
             if let credentials = credentials(exchange: exchange) {
                 switch credentials.service {
@@ -164,8 +164,10 @@ final class ExchangeManager {
         }
     }
     
-    func placeOrder(tradingData: TradingData, type: OrderType, side: OrderSide, amount: String, price: String) {
-        guard let exchange = tradingData.exchange else { return }
+    func placeOrder(tradingData: TradingData, type: OrderType, side: OrderSide, amount: String, price: String) -> AnyPublisher<Bool, NetworkError>? {
+        guard let exchange = tradingData.exchange else {
+            return Fail(outputType: Bool.self, failure: NetworkError.error("Cannot find exchange")).eraseToAnyPublisher()
+        }
         
         let orderType: String = type.rawValue.uppercased()
         let orderSide: String = side.rawValue.uppercased()
@@ -174,40 +176,24 @@ final class ExchangeManager {
         guard
             let quantityValue = Double(amount),
             let symbol = tradingData.currentPair.exchange.filter({ $0.id == exchange.id }).first?.sym
-        else { return }
+        else {
+            return Fail(outputType: Bool.self, failure: NetworkError.error("Cannot find trading pair symbol")).eraseToAnyPublisher()
+        }
                 
         if let credentials = credentials(exchange: exchange) {
             switch credentials.service {
             case .binance:
-                    binanceApi.placeOrder(credentials: credentials, type: orderType, side: orderSide, symbol: symbol, price: priceValue, quantity: quantityValue)?
-                        .sink(receiveCompletion: { [weak self] completion in
-                            print(completion)
-                            switch completion {
-                            case .failure(let error):
-                                print(error)
-                            case .finished:
-                                self?.updateBalances()
-                                self?.fetchOpenOrders()
-                            }
-                        }, receiveValue: { order in
-                            print(order)
-                        })
-                        .store(in: &subscriptions)
+                return binanceApi.placeOrder(credentials: credentials, type: orderType, side: orderSide, symbol: symbol, price: priceValue, quantity: quantityValue)
             case .coinbasepro:
-                coinbaseApi.orders(credentials: credentials, symbol: "")?
-                    .sink(receiveCompletion: { completion in
-                        print(completion)
-                    }, receiveValue: { orders in
-                        exchange.orders = orders ?? []
-                    })
-                    .store(in: &subscriptions)
+                return coinbaseApi.placeOrder(credentials: credentials, type: orderType, side: orderSide, symbol: symbol, price: priceValue, quantity: quantityValue)
             case .kraken:
-                break
+                return Fail(outputType: Bool.self, failure: NetworkError.error("Kraken not supported yet")).eraseToAnyPublisher()
             case .none:
-                break
+                return Fail(outputType: Bool.self, failure: NetworkError.error("Unsupported exchange")).eraseToAnyPublisher()
             }
+        } else {
+            return Fail(outputType: Bool.self, failure: NetworkError.error("Cannot find exchange credentials")).eraseToAnyPublisher()
         }
-        
     }
 }
 

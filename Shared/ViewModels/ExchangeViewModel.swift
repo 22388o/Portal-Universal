@@ -30,6 +30,8 @@ final class ExchangeViewModel: ObservableObject {
     @Published var exchangeBalancesSelectorState: BalaceSelectorState = .merged
     @Published var currentPair: TradingPairModel?
     @Published var searchRequest: String = String()
+    @Published var showAlert: Bool = false
+    @Published var errorMessage: String = String()
     
     var syncedExchanges: [ExchangeModel] {
         manager.syncedExchanges
@@ -160,9 +162,13 @@ final class ExchangeViewModel: ObservableObject {
         socketClient?.on(clientEvent: .connect) { [weak self] data, ack in
             print("socket connected")
             
-            self?.socketClient?.on("ticker") { data, ack in
-                guard let tickerDict = data[0] as? NSDictionary else { return }
-                self?.currentPairTicker = SocketTicker.init(data: tickerDict, base: self?.currentPair?.base, quote: self?.currentPair?.quote)
+            self?.socketClient?.on("ticker") { [weak self] data, ack in
+                guard let self = self, let tickerDict = data[0] as? NSDictionary else { return }
+                let ticker = SocketTicker.init(data: tickerDict, base: self.currentPair?.base, quote: self.currentPair?.quote)
+                
+                if self.currentPairTicker != ticker && !self.showAlert {
+                    self.currentPairTicker = ticker
+                }
             }
 
             self?.socketClient?.on("orderbook") { [weak self] data, ack in
@@ -186,6 +192,8 @@ final class ExchangeViewModel: ObservableObject {
     }
     
     private func onOrderBookUpdate(_ book: NSDictionary) {
+        guard !showAlert else { return }
+        
         let newOrderBook = SocketOrderBook(tradingPair: currentPair, data: book)
         let firstIndex = 0
         
@@ -193,13 +201,13 @@ final class ExchangeViewModel: ObservableObject {
             updatedBook.bids.insert(contentsOf: newOrderBook.bids, at: firstIndex)
             
             if updatedBook.bids.count > maxOrderBookItems {
-                updatedBook.bids.removeLast(maxOrderBookItems/3)
+                updatedBook.bids.removeLast(maxOrderBookItems/2)
             }
             
             updatedBook.asks.insert(contentsOf: newOrderBook.asks, at: firstIndex)
             
             if updatedBook.asks.count > maxOrderBookItems {
-                updatedBook.asks.removeLast(maxOrderBookItems/3)
+                updatedBook.asks.removeLast(maxOrderBookItems/2)
             }
             
             orderBook = updatedBook
@@ -210,7 +218,34 @@ final class ExchangeViewModel: ObservableObject {
     
     func placeOrder(type: OrderType, side: OrderSide, amount: String, price: String) {
         guard let td = tradingData else { return }
-        manager.placeOrder(tradingData: td, type: type, side: side, amount: amount, price: price)
+        
+        guard !amount.isEmpty else {
+            errorMessage = "Invalid amount"
+            showAlert = true
+            return
+        }
+
+        if type == .limit, price.isEmpty {
+            errorMessage = "Invalid price"
+            showAlert = true
+            return
+        }
+        
+        manager
+            .placeOrder(tradingData: td, type: type, side: side, amount: amount, price: price)?
+            .sink(receiveCompletion: { [weak self] result in
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self?.errorMessage = error.description
+                        self?.showAlert = true
+                    }
+                case .finished:
+                    self?.manager.updateBalances()
+                    self?.manager.fetchOpenOrders()
+                }
+            }, receiveValue: { _ in })
+            .store(in: &subscriptions)
     }
 }
 

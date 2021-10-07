@@ -44,7 +44,7 @@ struct CoinbaseProApi {
             .eraseToAnyPublisher()
     }
     
-    func placeOrder(credentials: ExchangeCredentials, type: String, side: String, symbol: String, price: Double, quantity: Double) -> AnyPublisher<CoinbaseOrder, NetworkError>? {
+    func placeOrder(credentials: ExchangeCredentials, type: String, side: String, symbol: String, price: Double, quantity: Double) -> AnyPublisher<Bool, NetworkError>? {
         api
             .dispatch(.placeOrder(credentials: credentials, symbol: symbol, type: type, side: side, price: price, quantity: quantity))?
             .tryMap({ data, response in
@@ -53,6 +53,9 @@ struct CoinbaseProApi {
             .decode(type: CoinbaseOrder.self, decoder: JSONDecoder())
             .mapError { error in
                 NetworkError.error(error.localizedDescription)
+            }
+            .map { order in
+                return true
             }
             .eraseToAnyPublisher()
     }
