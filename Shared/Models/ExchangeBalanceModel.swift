@@ -29,7 +29,13 @@ struct ExchangeBalanceModel: Identifiable, Codable {
     init(_ balance: BinanceBalance) {
         self.id = UUID()
         self.asset = balance.asset
-        self.free = balance.free
+        
+        if let doubleBalance = Double(balance.free) {
+            self.free = doubleBalance.precisionString()
+        } else {
+            self.free = balance.free
+        }
+        
         self.locked = balance.locked
     }
     
