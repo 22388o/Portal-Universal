@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SocketTicker {
+struct SocketTicker: Equatable {
     let change: String
     let last: String
     let high: String
