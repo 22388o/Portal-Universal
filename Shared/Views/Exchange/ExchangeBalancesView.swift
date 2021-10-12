@@ -23,6 +23,7 @@ enum BalaceSelectorState {
 struct ExchangeBalancesView: View {
     let exchanges: [ExchangeModel]
     let tradingPairs: [TradingPairModel]
+//    let balances: [ExchangeBalanceModel]
     @Binding var state: BalaceSelectorState
     
     private var balances: [ExchangeBalanceModel] {
@@ -52,8 +53,9 @@ struct ExchangeBalancesView: View {
                 .padding(.bottom, 12)
                 .padding(.horizontal, 32)
                 
-                Selector
+                ExchangeBalancePicker(state: $state, exchanges: exchanges)
                     .padding(.horizontal, 32)
+                    .padding(.bottom, 6)
                 
                 List(balances, id:\.id) { balance in
                     ExchangeBalanceItem(
@@ -71,51 +73,6 @@ struct ExchangeBalancesView: View {
             }
         }
         .frame(height: 256)
-    }
-    
-    private var Selector: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(red: 88/255, green: 106/255, blue: 130/255, opacity: 0.3))
-                .frame(height: 32)
-            
-            HStack {
-                switch state {
-                case .merged:
-                    Image("iconAllExchangesMergedDark")
-                    Text("All exchanges merged")
-                case .selected(let exchange):
-                    CoinImageView(size: 12, url: exchange.icon)
-                    Text(exchange.name)
-                }
-                Spacer()
-                if exchanges.count > 1 {
-                    Image("optionArrowDownDark")
-                }
-            }
-            .font(.mainFont(size: 12, bold: false))
-            .foregroundColor(.gray)
-            .padding(.leading, 10)
-            .padding(.trailing, 16)
-            
-            if exchanges.count > 1 {
-                MenuButton(
-                    label: EmptyView(),
-                    content: {
-                        Button("All exchange merged") {
-                            state = .merged
-                        }
-                        ForEach(exchanges, id: \.id) { exchange in
-                            Button("\(exchange.name)") {
-                                state = .selected(exchange: exchange)
-                            }
-                        }
-                    }
-                )
-                .menuButtonStyle(BorderlessButtonMenuButtonStyle())
-            }
-        }
-        .padding(.bottom, 6)
     }
 }
 

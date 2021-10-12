@@ -24,7 +24,8 @@ struct TradingPairView: View {
                 .padding(.top, 25)
                 .padding(.bottom, 12)
                 
-                Selector
+                TradingPairPicker(selectedPair: $selectedPair, traidingPairs: traidingPairs)
+                    .padding(.bottom, 20)
                 
                 HStack {
                     Text("Pair with")
@@ -38,72 +39,29 @@ struct TradingPairView: View {
             }
             .padding(.horizontal, 32)
             
-            if searchRequest.isEmpty {
-                List(traidingPairs.filter{ selectedPair?.quote == $0.quote }.sorted{$0.change > $1.change}, id:\.id) { tradingPair in
-                    TradingPairItem(traidingPair: tradingPair, selected: isSelected(tradingPair))
-                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            selectedPair = tradingPair
-                        }
-                }
-                .listStyle(SidebarListStyle())
-                .padding(.horizontal, 15)
-            } else {
-                List(traidingPairs.filter{ selectedPair?.quote == $0.quote && $0.base.lowercased().contains(searchRequest.lowercased()) }.sorted{$0.change > $1.change}, id:\.id) { tradingPair in
-                    TradingPairItem(traidingPair: tradingPair, selected: isSelected(tradingPair))
-                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            selectedPair = tradingPair
-                        }
-                }
-                .listStyle(SidebarListStyle())
-                .padding(.horizontal, 15)
-            }
-        }
-    }
-    
-    private var Selector: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white)
-                .frame(height: 32)
-            
-            HStack {
-                if let tradingPair = selectedPair {
-                    CoinImageView(size: 12, url: tradingPair.quote_icon)
-                    Text(tradingPair.quote)
-                    Spacer()
-                    if traidingPairs.filter{ selectedPair?.base == $0.base }.count > 1 {
-                        Image("optionArrowDown")
+            List(tradingPairsToShow(), id:\.id) { tradingPair in
+                TradingPairItem(traidingPair: tradingPair, selected: isSelected(tradingPair))
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        selectedPair = tradingPair
                     }
-                }
             }
-            .font(.mainFont(size: 12, bold: false))
-            .foregroundColor(.gray)
-            .padding(.leading, 10)
-            .padding(.trailing, 16)
-            
-            if traidingPairs.filter{ selectedPair?.base == $0.base }.count > 1 {
-                MenuButton(
-                    label: EmptyView(),
-                    content: {
-                        ForEach(traidingPairs.filter{ selectedPair?.base == $0.base }.sorted(by: {$1.symbol > $0.symbol}), id: \.id) { tradingPair in
-                            Button("\(tradingPair.quote)") {
-                                selectedPair = tradingPair
-                            }
-                        }
-                    }
-                )
-                .menuButtonStyle(BorderlessButtonMenuButtonStyle())
-            }
+            .listStyle(SidebarListStyle())
+            .padding(.horizontal, 15)
         }
-        .padding(.bottom, 20)
     }
     
     private func isSelected(_ tradingPair: TradingPairModel) -> Bool {
         selectedPair?.quote == tradingPair.quote && selectedPair?.base == tradingPair.base
+    }
+    
+    private func tradingPairsToShow() -> [TradingPairModel] {
+        if searchRequest.isEmpty {
+            return traidingPairs.filter{ selectedPair?.quote == $0.quote }.sorted{$0.change > $1.change}
+        } else {
+            return traidingPairs.filter{ selectedPair?.quote == $0.quote && $0.base.lowercased().contains(searchRequest.lowercased()) }.sorted{$0.change > $1.change}
+        }
     }
 }
 
