@@ -35,34 +35,9 @@ struct HeaderView: View {
                         .foregroundColor(Color.white.opacity(0.82))
                     })
                     .buttonStyle(PlainButtonStyle())
-                    
-                    Text("|")
-                        .font(.mainFont(size: 12))
-                        .foregroundColor(Color.white.opacity(0.6))
-                    
-    //                        if state != .swap && viewModel.sceneState != .full {
-    //                            Button(action: {
-    //                                withAnimation {
-    //                                    if viewModel.sceneState == .walletPortfolio {
-    //                                        viewModel.sceneState = .walletAsset
-    //                                    } else {
-    //                                        viewModel.sceneState = .walletPortfolio
-    //                                    }
-    //                                }
-    //                            }, label: {
-    //                                HStack {
-    //                                    Image(systemName: "aqi.medium")
-    //                                    Text("Portfolio")
-    //                                        .font(.mainFont(size: 14))
-    //                                }
-    //                                .foregroundColor(Color.white.opacity(0.82))
-    //                            })
-    //                        }
-    //
-    //                        Text("|")
-    //                            .font(.mainFont(size: 12))
-    //                            .foregroundColor(Color.white.opacity(0.6))
                 }
+                
+                Spacer()
                 
                 Button(action: {
                     withAnimation(.easeIn(duration: 0.4)) {
@@ -91,25 +66,6 @@ struct HeaderView: View {
                     .frame(minWidth: 30)
                 })
                 .buttonStyle(PlainButtonStyle())
-                
-                Spacer()
-                
-                switch viewModel.state.mainScene {
-                case .wallet:
-                    HStack(spacing: 2) {
-                        Image("securityOn")
-                        Text("Your wallet is stored locally")
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.white.opacity(0.6))
-                    }
-                case .exchange:
-                    HStack(spacing: 2) {
-                        Image("iconOnline")
-                        Text("Your are in online exchange")
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.white.opacity(0.6))
-                    }
-                }
             }
             
             AppSceneSwitch(state: $viewModel.state.mainScene)            
