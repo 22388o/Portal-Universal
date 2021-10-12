@@ -9,6 +9,11 @@ import SwiftUI
 import Combine
 import SocketIO
 
+struct PortalAlert {
+    let title: String
+    let message: String
+}
+
 final class ExchangeViewModel: ObservableObject {
     private let manager: ExchangeManager
     private let maxOrderBookItems = 30
@@ -31,7 +36,12 @@ final class ExchangeViewModel: ObservableObject {
     @Published var currentPair: TradingPairModel?
     @Published var searchRequest: String = String()
     @Published var showAlert: Bool = false
-    @Published var errorMessage: String = String()
+    
+    var alert: PortalAlert = PortalAlert(title: String(), message: String())
+    
+    @Published var balances: [ExchangeBalanceModel] = []
+    @Published var orders: [ExchangeOrderModel] = []
+    @ObservedObject var state: PortalState
     
     var syncedExchanges: [ExchangeModel] {
         manager.syncedExchanges
@@ -40,8 +50,9 @@ final class ExchangeViewModel: ObservableObject {
         manager.tradingPairs
     }
     
-    init(manager: ExchangeManager) {
-        self.manager = manager
+    init(state: PortalState, exchangeManager: ExchangeManager) {
+        self.state = state
+        self.manager = exchangeManager
         self.setup = ExchangeSetupViewModel.config()
         self.isLoggedIn = !syncedExchanges.isEmpty
         self.setDefaultTradingPair()
@@ -68,12 +79,32 @@ final class ExchangeViewModel: ObservableObject {
                 if !self.isLoggedIn {
                     self.setDefaultTradingPair()
                     self.updateSelectorsState()
+                    self.manager.updateBalances()
                     self.isLoggedIn = $0
                 }
             })
             .store(in: &subscriptions)
         
-        manager.fetchOpenOrders()
+        Publishers.Merge(manager.$tradingPairs, manager.$tradingPairs)
+            .delay(for: .seconds(0.01), scheduler: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] _ in
+                guard let self = self else { return }
+                self.isLoggedIn = !self.syncedExchanges.isEmpty
+                self.updateSelectorsState()
+                self.setDefaultTradingPair()
+            })
+            .store(in: &subscriptions)
+        
+        state
+            .$mainScene.sink { [weak self] scene in
+                switch scene {
+                case .wallet:
+                    self?.resetSocketIfNeeded()
+                case .exchange:
+                    self?.updateSocket()
+                }
+            }
+            .store(in: &subscriptions)
     }
         
     private func updateSelectorsState() {
@@ -121,6 +152,17 @@ final class ExchangeViewModel: ObservableObject {
             pairs: [tradingPair],
             currentPair: tradingPair
         )
+        
+        if let td = tradingData {
+            manager.fetchOrders(tradingData: td, onFetch: { [weak self] in
+                guard let self = self else { return }
+                if let exchange = self.tradingData?.exchange {
+                    DispatchQueue.main.async {
+                        self.orders = exchange.orders
+                    }
+                }
+            })
+        }
         
         updateSocket()
     }
@@ -220,38 +262,88 @@ final class ExchangeViewModel: ObservableObject {
         guard let td = tradingData else { return }
         
         guard !amount.isEmpty else {
-            errorMessage = "Invalid amount"
+            alert = PortalAlert(title: "Something went wrong", message: "Invalid amount")
             showAlert = true
             return
         }
 
         if type == .limit, price.isEmpty {
-            errorMessage = "Invalid price"
+            alert = PortalAlert(title: "Something went wrong", message: "Invalid price")
             showAlert = true
             return
         }
-        
+                
         manager
             .placeOrder(tradingData: td, type: type, side: side, amount: amount, price: price)?
             .sink(receiveCompletion: { [weak self] result in
                 switch result {
                 case .failure(let error):
                     DispatchQueue.main.async {
-                        self?.errorMessage = error.description
+                        self?.alert = PortalAlert(title: "Something went wrong", message: error.description)
                         self?.showAlert = true
                     }
                 case .finished:
+                    self?.notify(type: type, side: side, amount: amount, price: price)
                     self?.manager.updateBalances()
-                    self?.manager.fetchOpenOrders()
+                    if let td = self?.tradingData {
+                        self?.manager.fetchOrders(tradingData: td, onFetch: { [weak self] in
+                            guard let self = self else { return }
+                            if let exchange = self.tradingData?.exchange {
+                                DispatchQueue.main.async {
+                                    self.orders = exchange.orders
+                                }
+                            }
+                        })
+                    }
                 }
             }, receiveValue: { _ in })
             .store(in: &subscriptions)
+    }
+    
+    func cancel(order: ExchangeOrderModel) {
+        guard let td = tradingData, let exchange = td.exchange else { return }
+        
+        manager.cancel(exchange: exchange, order: order)?
+            .sink(receiveCompletion: { [weak self] result in
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self?.alert = PortalAlert(title: "Something went wrong", message: error.description)
+                        self?.showAlert = true
+                    }
+                case .finished:
+                    if let td = self?.tradingData {
+                        self?.manager.fetchOrders(tradingData: td, onFetch: { [weak self] in
+                            guard let self = self else { return }
+                            if let exchange = self.tradingData?.exchange {
+                                DispatchQueue.main.async {
+                                    self.orders = exchange.orders
+                                }
+                            }
+                        })
+                    }
+                }
+            }, receiveValue: { _ in })
+            .store(in: &subscriptions)
+    }
+    
+    private func notify(type: OrderType, side: OrderSide, amount: String, price: String) {
+        if let exchange = tradingData?.exchange, let base = tradingData?.currentPair.base, let quote = tradingData?.currentPair.quote {
+            let title = "\(exchange.name) order created:"
+            let message = "\(type) \(side) \(amount) \(base) \(price.isEmpty ? "" : "for \(price) \(quote)")"
+            
+            DispatchQueue.main.async {
+                self.alert = PortalAlert(title: title, message: message)
+                self.showAlert = true
+            }
+        }
     }
 }
 
 extension ExchangeViewModel {
     static func config() -> ExchangeViewModel {
         let manager = Portal.shared.exchangeManager
-        return ExchangeViewModel(manager: manager)
+        let state = Portal.shared.state
+        return ExchangeViewModel(state: state, exchangeManager: manager)
     }
 }
