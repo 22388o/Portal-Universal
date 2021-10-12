@@ -7,19 +7,11 @@
 
 import SwiftUI
 
-class OrderBookViewModel: ObservableObject {
-    @Published private var asks: [SocketOrderBookItem] = []
-    @Published private var bids: [SocketOrderBookItem] = []
-
-    init(orderBook: SocketOrderBook, tradingPair: TradingPairModel) {
-        
-    }
-}
-
 struct OrderBookView: View {
     let orderBook: SocketOrderBook
     let tradingPair: TradingPairModel
 
+    @Binding var state: PortalExchangeSceneState
     @State private var route: OrderBookRoute = .buy
     
     var body: some View {
@@ -33,8 +25,22 @@ struct OrderBookView: View {
                     Text("Order book")
                         .font(.mainFont(size: 15, bold: false))
                         .foregroundColor(Color.gray)
-                        .padding(.leading, 32)
+                        .padding(.leading, 20)
                     Spacer()
+                    if state != .full {
+                        Image("hidePanelIcon")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                            .rotationEffect(Angle.init(degrees: 180))
+                            .padding(.trailing, 20)
+                            .foregroundColor(Color.gray)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                withAnimation {
+                                    state = .compactRight
+                                }
+                            }
+                    }
                 }
                 .padding(.top, 25)
                 .padding(.bottom, 12)
@@ -42,7 +48,7 @@ struct OrderBookView: View {
                 HStack(spacing: 0) {
                     OrderBookRouteSwitch(route: $route)
                         .frame(width: 87)
-                        .padding(.leading, 32)
+                        .padding(.leading, 20)
                     Spacer()
                 }
                 
@@ -69,7 +75,7 @@ struct OrderBookView: View {
                 .font(.mainFont(size: 12))
                 .foregroundColor(Color.gray)
                 .frame(height: 26)
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 20)
                 
                 Rectangle()
                     .foregroundColor(Color.exchangeBorderColor)
@@ -100,6 +106,10 @@ struct OrderBookView: View {
 
 struct OrderBookView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderBookView(orderBook: SocketOrderBook(tradingPair: TradingPairModel.mltBtc(), data: NSDictionary()), tradingPair: TradingPairModel.mltBtc())
+        OrderBookView(
+            orderBook: SocketOrderBook(tradingPair: TradingPairModel.mltBtc(), data: NSDictionary()),
+            tradingPair: TradingPairModel.mltBtc(),
+            state: .constant(.compactRight)
+        )
     }
 }

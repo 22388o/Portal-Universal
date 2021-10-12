@@ -285,8 +285,8 @@ enum WalletCreationSteps {
     case createWalletName, seed, test, confirmation
 }
 
-enum WalletSceneState {
-    case full, walletPortfolio, walletAsset
+enum PortalExchangeSceneState {
+    case full, compactLeft, compactRight
 }
 
 enum Scenes {
