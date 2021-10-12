@@ -13,23 +13,30 @@ struct ExchangeScene: View {
     var body: some View {
         if viewModel.isLoggedIn {
             HStack(spacing: 0) {
-                VStack(spacing: 0) {
-                    ExchangeSelectorView(
-                        state: $viewModel.exchangeSelectorState,
-                        exchanges: viewModel.syncedExchanges
-                    )
-                    
-                    TradingPairView(
-                        traidingPairs: viewModel.tradingPairsForSelectedExchange,
-                        selectedPair: $viewModel.currentPair,
-                        searchRequest: $viewModel.searchRequest
-                    )
-                    
-                    ExchangeBalancesView(exchanges: viewModel.syncedExchanges, tradingPairs: viewModel.allTraidingPairs, state: $viewModel.exchangeBalancesSelectorState)
-                    
-                    Spacer()
+                if viewModel.state.exchangeSceneState != .compactLeft {
+                    VStack(spacing: 0) {
+                        ExchangeSelectorView(
+                            state: $viewModel.state.exchangeSceneState,
+                            selectorState: $viewModel.exchangeSelectorState,
+                            exchanges: viewModel.syncedExchanges
+                        )
+                        
+                        TradingPairView(
+                            traidingPairs: viewModel.tradingPairsForSelectedExchange,
+                            selectedPair: $viewModel.currentPair,
+                            searchRequest: $viewModel.searchRequest
+                        )
+                        
+                        ExchangeBalancesView(
+                            exchanges: viewModel.syncedExchanges,
+                            tradingPairs: viewModel.allTraidingPairs,
+                            state: $viewModel.exchangeBalancesSelectorState
+                        )
+                        
+                        Spacer()
+                    }
+                    .frame(width: 320)
                 }
-                .frame(width: 320)
 
                 ZStack {
                     RoundedRectangle(cornerRadius: 5)
@@ -38,7 +45,7 @@ struct ExchangeScene: View {
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
                             ExchangeMarketView(
-                                tradingPair: viewModel.currentPair!,
+                                tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
                                 tradingData: viewModel.tradingData
                             )
                             .frame(minWidth: 606, minHeight: 224)
@@ -73,33 +80,50 @@ struct ExchangeScene: View {
                             }
                             .padding(.horizontal, 32)
                             .alert(isPresented: $viewModel.showAlert) {
-                                Alert(title: Text("Somethings went wrong"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Dismiss"), action: {
+                                Alert(title: Text(viewModel.alert.title), message: Text(viewModel.alert.message), dismissButton: .default(Text("Dismiss"), action: {
                                     viewModel.showAlert = false
                                 }))
                             }
                         }
+                        
+                        if viewModel.state.exchangeSceneState != .compactRight {
+                            VStack(spacing: 0) {
+                                OrderBookView(
+                                    orderBook: viewModel.orderBook ?? SocketOrderBook(tradingPair: TradingPairModel.mltBtc(), data: NSDictionary()),
+                                    tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
+                                    state: $viewModel.state.exchangeSceneState
+                                )
+                                .frame(width: 350)
+                                .frame(minHeight: 374, maxHeight: .infinity)
 
-                        VStack(spacing: 0) {
-                            OrderBookView(
-                                orderBook: viewModel.orderBook ?? SocketOrderBook(tradingPair: TradingPairModel.mltBtc(), data: NSDictionary()),
-                                tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc()
-                            )
-                            .frame(width: 296)
-                            .frame(minHeight: 374, maxHeight: .infinity)
-                            
-                            MyOrdersView(
-                                tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
-                                orders: viewModel.tradingData?.exchange?.orders.filter{ $0.symbol?.contains(viewModel.currentPair?.base ?? "") ?? false && $0.symbol?.contains(viewModel.currentPair?.quote ?? "") ?? false} ?? []
-                            )
-                            .frame(width: 296, height: 256)
+                                MyOrdersView(
+                                    tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
+                                    orders: viewModel.orders, onOrderCancel: { order in
+                                        viewModel.cancel(order: order)
+                                    }
+                                )
+                                .frame(width: 350, height: 256)
+                            }
+
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .padding([.vertical, .trailing], 8)
+                .padding(paddingForState(), 8)
             }
         } else {
             ExchangeSetup(viewModel: viewModel.setup)
+        }
+    }
+    
+    private func paddingForState() -> Edge.Set {
+        switch viewModel.state.exchangeSceneState {
+        case .full:
+            return [.vertical, .trailing]
+        case .compactLeft:
+            return .all
+        case .compactRight:
+            return [.vertical, .trailing]
         }
     }
 }
