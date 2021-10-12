@@ -6,12 +6,16 @@
 //
 
 import Foundation
+import Combine
 
-class ExchangeModel: Codable, Identifiable {
+class ExchangeModel: ObservableObject, Codable, Identifiable {
     let name: String
     let id: String
     let icon: String
     let howToGetApiKeys: String
+    
+    @Published var balances: [ExchangeBalanceModel] = []
+    @Published var orders: [ExchangeOrderModel] = []
         
     enum CodingKeys: String, CodingKey {
         case name = "exchange"
@@ -26,13 +30,6 @@ class ExchangeModel: Codable, Identifiable {
         self.icon = icon
         self.howToGetApiKeys = howToGetApiKeys
     }
-    
-    var configured: Bool {
-        false
-    }
-    
-    var balances: [ExchangeBalanceModel] = []
-    var orders: [ExchangeOrderModel] = []
 }
 
 extension ExchangeModel: Equatable {

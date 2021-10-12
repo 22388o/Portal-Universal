@@ -22,7 +22,7 @@ final class ExchangeSetupViewModel: ObservableObject {
         }
     }
     
-    @Published var exchanges: [ExchangeModel]
+    @Published var exchanges: [ExchangeModel] = []
     @Published var exchangeToSync: ExchangeModel?
     @Published var step: SetupStep = .first
     @Published var selectedExchanges: [ExchangeModel] = []
@@ -37,8 +37,6 @@ final class ExchangeSetupViewModel: ObservableObject {
     
     init(manager: ExchangeManager) {
         self.manager = manager
-        self.exchanges = manager.allSupportedExchanges
-        self.exchangeToSync = exchanges.first
         
         setupSubscriptions()
     }
@@ -53,6 +51,12 @@ final class ExchangeSetupViewModel: ObservableObject {
             self?.secret = String()
             self?.key = String()
             self?.passphrase = exchange?.id == "coinbasepro" ? String() : " "
+        }
+        .store(in: &subscriptions)
+        
+        manager.$allSupportedExchanges.sink { [weak self] exchanges in
+            self?.exchanges = exchanges
+            self?.exchangeToSync = exchanges.first
         }
         .store(in: &subscriptions)
     }
