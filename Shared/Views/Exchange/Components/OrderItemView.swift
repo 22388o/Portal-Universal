@@ -12,9 +12,15 @@ struct OrderItemView: View {
     private let price: String
     private let amount: String
     private let timestamp: String
+    private let isOpen: Bool
+    private let onCancel: () -> Void
     
-    init(order: ExchangeOrderModel) {
+    @State private var onMouseOver = false
+    
+    init(order: ExchangeOrderModel, isOpen: Bool, onCancel: @escaping () -> Void) {
         self.order = order
+        self.isOpen = isOpen
+        self.onCancel = onCancel
         
         let price = Double(order.price) ?? 0.0
         let amount = Double(order.amount) ?? 0.0
@@ -44,17 +50,32 @@ struct OrderItemView: View {
                 .offset(y: -1)
             
             HStack(spacing: 0) {
-                Text(price)
-                Spacer()
-                Text(amount)
-                Spacer()
-                Text(timestamp)
+                if onMouseOver {
+                    Text("Cancel")
+                        .foregroundColor(Color.red)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            onCancel()
+                        }
+                } else {
+                    Text(order.side)
+                    Spacer()
+                    Text(price == "0.00000" ? "MARKET" : price)
+                    Spacer()
+                    Text(amount)
+                    Spacer()
+                    Text(timestamp)
+                    Spacer()
+                    Text(order.status.uppercased())
+                        .frame(width: 30)
+                        .font(.mainFont(size: 8))
+                }
             }
             .lineLimit(1)
             .font(.mainFont(size: 12))
             .foregroundColor(Color(red: 7.0/255.0, green: 191.0/255.0, blue: 104.0/255.0).opacity(0.94))
             .frame(height: 32)
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 20)
             
             Rectangle()
                 .frame(height: 1)
@@ -62,6 +83,12 @@ struct OrderItemView: View {
                 .onTapGesture {
                     print("Cancel")
                 }
+        }
+        .contentShape(Rectangle())
+        .onHover { over in
+            if isOpen {
+                onMouseOver = over
+            }
         }
     }
 }
@@ -85,6 +112,6 @@ struct OrderItemView_Previews: PreviewProvider {
                             time: 123123,
                             isWorking: true
                         )
-        ))
+        ), isOpen: true, onCancel: {})
     }
 }
