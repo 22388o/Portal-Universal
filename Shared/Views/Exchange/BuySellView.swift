@@ -18,9 +18,9 @@ struct BuySellView: View {
     let canTrade: Bool
     let onOrderCreate: OnOrderCreateCompetion
     
-    @State var price = String()
-    @State var amount = String()
-    @State var orderType: OrderType = .market
+    @State private var price = String()
+    @State private var amount = String()
+    @State private var orderType: OrderType = .market
     
     init(
         side: OrderSide,

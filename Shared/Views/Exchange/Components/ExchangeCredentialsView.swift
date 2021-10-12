@@ -25,14 +25,14 @@ struct ExchangeCredentialsView: View {
                         .foregroundColor(Color.gray)
                 }
                 
-                PTextField(text: $viewModel.secret, placeholder: "Secret", upperCase: false, width: 284, height: 48)
-                PTextField(text: $viewModel.key, placeholder: "Key", upperCase: false, width: 284, height: 48)
+                PTextField(text: $viewModel.secret, placeholder: "Secret", upperCase: false, width: 500, height: 48)
+                PTextField(text: $viewModel.key, placeholder: "Key", upperCase: false, width: 500, height: 48)
                 
                 if viewModel.exchangeToSync?.id == "coinbasepro" {
-                    PTextField(text: $viewModel.passphrase, placeholder: "Passphrase", upperCase: false, width: 284, height: 48)
+                    PTextField(text: $viewModel.passphrase, placeholder: "Passphrase", upperCase: false, width: 500, height: 48)
                 }
                 
-                PButton(bgColor: Color.gray, label: "Sync", width: 284, height: 48, fontSize: 14, enabled: viewModel.syncButtonEnabled) {
+                PButton(bgColor: Color.gray, label: "Sync", width: 350, height: 48, fontSize: 14, enabled: viewModel.syncButtonEnabled) {
                     viewModel.syncExchange()
                 }
             }

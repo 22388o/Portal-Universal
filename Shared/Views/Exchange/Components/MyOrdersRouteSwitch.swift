@@ -31,7 +31,7 @@ struct MyOrdersRouteSwitch: View {
                     Text("History")
                         .foregroundColor(route == .history ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
                 }
-                .frame(width: 38)
+                .frame(width: 40)
             }
             .buttonStyle(BorderlessButtonStyle())
             .font(Font.mainFont(size: 12))

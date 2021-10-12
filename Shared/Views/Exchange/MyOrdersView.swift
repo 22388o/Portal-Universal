@@ -8,10 +8,17 @@
 import SwiftUI
 
 struct MyOrdersView: View {
-    let tradingPair: TradingPairModel
-    let orders: [ExchangeOrderModel]
+    private let tradingPair: TradingPairModel
+    private let orders: [ExchangeOrderModel]
+    private let onOrderCancel: (_ order: ExchangeOrderModel) -> Void
     
     @State private var route: MyOrdersRoute = .open
+    
+    init(tradingPair: TradingPairModel, orders: [ExchangeOrderModel], onOrderCancel: @escaping (_ order: ExchangeOrderModel) -> Void) {
+        self.tradingPair = tradingPair
+        self.orders = orders
+        self.onOrderCancel = onOrderCancel
+    }
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -24,7 +31,7 @@ struct MyOrdersView: View {
                     Text("My orders")
                         .font(.mainFont(size: 15, bold: false))
                         .foregroundColor(Color.gray)
-                        .padding(.leading, 32)
+                        .padding(.leading, 20)
                     Spacer()
                 }
                 .padding(.top, 25)
@@ -32,8 +39,8 @@ struct MyOrdersView: View {
                 
                 HStack(spacing: 0) {
                     MyOrdersRouteSwitch(route: $route)
-                        .frame(width: 87)
-                        .padding(.leading, 32)
+                        .frame(width: 90)
+                        .padding(.leading, 20)
                     Spacer()
                 }
                 
@@ -42,6 +49,8 @@ struct MyOrdersView: View {
                     .frame(height: 1)
 
                 HStack {
+                    Text("Side")
+                    Spacer()
                     HStack {
                         CoinImageView(size: 16, url: tradingPair.quote_icon)
                         Text("Price")
@@ -54,25 +63,38 @@ struct MyOrdersView: View {
                     Spacer()
                     
                     Text("Time")
+                    
+                    Spacer()
+                    
+                    Text("Status")
                 }
                 .font(.mainFont(size: 12))
                 .foregroundColor(Color.gray)
                 .frame(height: 26)
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 20)
                 
                 Rectangle()
                     .foregroundColor(Color.exchangeBorderColor)
                     .frame(height: 1)
-                
-                Spacer()
-                
+                                
                 ScrollView {
                     LazyVStack_(spacing: 0) {
-                        ForEach(orders, id:\.id) { order in
-                            OrderItemView(order: order)
+                        switch route {
+                        case .open:
+                            ForEach(orders.filter{ $0.status == "open"}, id:\.id) { order in
+                                OrderItemView(order: order, isOpen: true, onCancel: {
+                                    onOrderCancel(order)
+                                })
+                            }
+                        case .history:
+                            ForEach(orders.filter{ $0.status == "closed" || $0.status == "FILLED" || $0.status == "CANCELED"}, id:\.id) { order in
+                                OrderItemView(order: order, isOpen: false, onCancel: {})
+                            }
                         }
                     }
                 }
+                
+                Spacer()
             }
         }
     }
@@ -80,6 +102,6 @@ struct MyOrdersView: View {
 
 struct MyOrdersView_Previews: PreviewProvider {
     static var previews: some View {
-        MyOrdersView(tradingPair: TradingPairModel.mltBtc(), orders: [])
+        MyOrdersView(tradingPair: TradingPairModel.mltBtc(), orders: [], onOrderCancel: { _ in })
     }
 }

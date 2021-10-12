@@ -12,7 +12,13 @@ struct MainScene: View {
     @StateObject var headerViewModel = PortalHeaderViewModel.config()
     
     var containerZStackAlignment: Alignment {
-        return state.switchWallet || state.allNotifications ? .topLeading : .center
+        if state.switchWallet {
+            return .topLeading
+        } else if state.allNotifications {
+            return .topTrailing
+        } else {
+            return .center
+        }
     }
                 
     var body: some View {

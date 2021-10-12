@@ -28,7 +28,7 @@ struct OrderBookItemView: View {
             .font(.mainFont(size: 12))
             .foregroundColor(Color(red: 7.0/255.0, green: 191.0/255.0, blue: 104.0/255.0).opacity(0.94))
             .frame(height: 32)
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 20)
             
             Rectangle()
                 .frame(height: 1)
