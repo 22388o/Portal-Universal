@@ -48,10 +48,18 @@ final class Portal: ObservableObject {
         
         localStorage.incrementAppLaunchesCouner()
         
+        notificationService = NotificationService()
+        
         feeRateProvider = FeeRateProvider(appConfigProvider: appConfigProvider)
         
         let exchangeDataUpdater = ExchangeDataUpdater()
-        exchangeManager = ExchangeManager(localStorage: localStorage, secureStorage: secureStorage, exchangeDataUpdater: exchangeDataUpdater)
+        
+        exchangeManager = ExchangeManager(
+            localStorage: localStorage,
+            secureStorage: secureStorage,
+            exchangeDataUpdater: exchangeDataUpdater,
+            notificationService: notificationService
+        )
         
         let marketDataUpdater = MarketDataUpdater()
         
@@ -77,9 +85,7 @@ final class Portal: ObservableObject {
         
         let adapterFactory = AdapterFactory(appConfigProvider: appConfigProvider, ethereumKitManager: ethereumKitManager)
         adapterManager = AdapterManager(adapterFactory: adapterFactory, ethereumKitManager: ethereumKitManager, walletManager: walletManager)
-        
-        notificationService = NotificationService()
-                        
+                                
         marketDataStorage.$dataReady
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] ready in
