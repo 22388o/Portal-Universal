@@ -151,6 +151,12 @@
 		751B6559269D994D001B759C /* IDepositAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6557269D994D001B759C /* IDepositAdapter.swift */; };
 		751B655B269D999F001B759C /* LastBlockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B655A269D999F001B759C /* LastBlockInfo.swift */; };
 		751B655C269D999F001B759C /* LastBlockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B655A269D999F001B759C /* LastBlockInfo.swift */; };
+		752229F5271433FC00003D3F /* TradingPairPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752229F4271433FC00003D3F /* TradingPairPicker.swift */; };
+		752229F72714343400003D3F /* TradingPairPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752229F62714343400003D3F /* TradingPairPicker.swift */; };
+		752229F9271434CC00003D3F /* ExchangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752229F8271434CC00003D3F /* ExchangePicker.swift */; };
+		752229FB271435C900003D3F /* ExchangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752229FA271435C900003D3F /* ExchangePicker.swift */; };
+		752229FD27145B1400003D3F /* ExchangeBalancePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752229FC27145B1400003D3F /* ExchangeBalancePicker.swift */; };
+		752229FF27145BA200003D3F /* ExchangeBalancePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752229FE27145BA200003D3F /* ExchangeBalancePicker.swift */; };
 		752712FC261B48A7008C962C /* WalletNameInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752712FB261B48A7008C962C /* WalletNameInputView.swift */; };
 		752712FD261B48A7008C962C /* WalletNameInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752712FB261B48A7008C962C /* WalletNameInputView.swift */; };
 		75271303261B5378008C962C /* PButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271302261B5378008C962C /* PButton.swift */; };
@@ -721,6 +727,12 @@
 		751B6554269D9924001B759C /* ITransactionAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITransactionAdapter.swift; sourceTree = "<group>"; };
 		751B6557269D994D001B759C /* IDepositAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDepositAdapter.swift; sourceTree = "<group>"; };
 		751B655A269D999F001B759C /* LastBlockInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBlockInfo.swift; sourceTree = "<group>"; };
+		752229F4271433FC00003D3F /* TradingPairPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingPairPicker.swift; sourceTree = "<group>"; };
+		752229F62714343400003D3F /* TradingPairPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingPairPicker.swift; sourceTree = "<group>"; };
+		752229F8271434CC00003D3F /* ExchangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangePicker.swift; sourceTree = "<group>"; };
+		752229FA271435C900003D3F /* ExchangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangePicker.swift; sourceTree = "<group>"; };
+		752229FC27145B1400003D3F /* ExchangeBalancePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeBalancePicker.swift; sourceTree = "<group>"; };
+		752229FE27145BA200003D3F /* ExchangeBalancePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeBalancePicker.swift; sourceTree = "<group>"; };
 		752712FB261B48A7008C962C /* WalletNameInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletNameInputView.swift; sourceTree = "<group>"; };
 		75271302261B5378008C962C /* PButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PButton.swift; sourceTree = "<group>"; };
 		75271309261BAAE8008C962C /* StoreSeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSeedView.swift; sourceTree = "<group>"; };
@@ -1188,6 +1200,9 @@
 				7555640526D798D5001B1C1A /* LineChartRepresentable.swift */,
 				7555640D26D8E7B8001B1C1A /* FiatCurrencyButton.swift */,
 				7537DF0727035F7800B862AB /* WebViewRepresentalble.swift */,
+				752229F62714343400003D3F /* TradingPairPicker.swift */,
+				752229FA271435C900003D3F /* ExchangePicker.swift */,
+				752229FE27145BA200003D3F /* ExchangeBalancePicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1200,6 +1215,9 @@
 				75F5CDBB2684CEB3005ECA5B /* BarChartRepresentableView.swift */,
 				755563FE26D79390001B1C1A /* LineChartRepresentable.swift */,
 				7537DF0927035FA100B862AB /* WebViewRepresentable.swift */,
+				752229F4271433FC00003D3F /* TradingPairPicker.swift */,
+				752229F8271434CC00003D3F /* ExchangePicker.swift */,
+				752229FC27145B1400003D3F /* ExchangeBalancePicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2013,6 +2031,7 @@
 				752E532326FDDE6400FCDB0C /* HTTPTask.swift in Sources */,
 				759E51212618F81700FA737C /* CreateWalletNameView.swift in Sources */,
 				750AE9A926149DD900C45971 /* IMarketDataMockable.swift in Sources */,
+				752229FD27145B1400003D3F /* ExchangeBalancePicker.swift in Sources */,
 				751B6552269D9902001B759C /* IBalanceAdapter.swift in Sources */,
 				7555642326D8F0DD001B1C1A /* ExchangeScene.swift in Sources */,
 				75C95C1E2614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
@@ -2075,6 +2094,7 @@
 				755782F226087905000E1686 /* PortalApp.swift in Sources */,
 				753364A226F339510073B0A4 /* TradingPairModel.swift in Sources */,
 				75B151422622EC0F00542415 /* AssetRouteSwitch.swift in Sources */,
+				752229F5271433FC00003D3F /* TradingPairPicker.swift in Sources */,
 				75B151332622D68F00542415 /* FiatCurrencyButton.swift in Sources */,
 				75F5CD7E2684C418005ECA5B /* Data+Extension.swift in Sources */,
 				751B6555269D9924001B759C /* ITransactionAdapter.swift in Sources */,
@@ -2093,6 +2113,7 @@
 				75F5CDA42684CA76005ECA5B /* RestoreAccountViewModel.swift in Sources */,
 				75A3F52A26A57BEA006B1823 /* AdapterFactory.swift in Sources */,
 				75F5CD832684C4D1005ECA5B /* PortalTx.swift in Sources */,
+				752229F9271434CC00003D3F /* ExchangePicker.swift in Sources */,
 				75327D51270C92CB00F4484B /* BinanceBalance.swift in Sources */,
 				7581901226EA753E00E0691B /* ExchangeManager.swift in Sources */,
 				755782F426087905000E1686 /* RootView.swift in Sources */,
@@ -2124,6 +2145,7 @@
 				7537DEFA2701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
 				75327D55270C940400F4484B /* OrderItemView.swift in Sources */,
 				75C95C632614CC0400B0EE10 /* Color+Extension.swift in Sources */,
+				752229FB271435C900003D3F /* ExchangePicker.swift in Sources */,
 				756C3C6826EA8F55009530A9 /* ExchangeModel.swift in Sources */,
 				75C95C4B2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
 				75C95C4F2614CC0400B0EE10 /* LineChart+Extension.swift in Sources */,
@@ -2135,6 +2157,7 @@
 				752E532826FDDE6400FCDB0C /* CoinbaseProRequestConfig.swift in Sources */,
 				751B6556269D9924001B759C /* ITransactionAdapter.swift in Sources */,
 				753364AE26F339C00073B0A4 /* ExchangeViewModel.swift in Sources */,
+				752229F72714343400003D3F /* TradingPairPicker.swift in Sources */,
 				75F5CD962684C8D6005ECA5B /* CreateWalletSceneViewModel.swift in Sources */,
 				75A00BD826D3FC7000ABCA7E /* LazyVStack_.swift in Sources */,
 				751B6547269CA219001B759C /* BitcoinAdapter.swift in Sources */,
@@ -2227,6 +2250,7 @@
 				75A3F52226A57AFF006B1823 /* AdapterManager.swift in Sources */,
 				756C3C8326EA9CC3009530A9 /* PairsSearchField.swift in Sources */,
 				753471F7262C2E97005CD93C /* ExchangerView.swift in Sources */,
+				752229FF27145BA200003D3F /* ExchangeBalancePicker.swift in Sources */,
 				7556940226A6B13F00EE5CC4 /* WalletItem.swift in Sources */,
 				753364A626F339780073B0A4 /* TradingData.swift in Sources */,
 				75A3F54026A57E02006B1823 /* EthereumKitManager.swift in Sources */,
