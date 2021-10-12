@@ -18,37 +18,12 @@ struct ExchangeOrderModel: Codable {
     let amount: String
     let cost: Decimal?
     let status: String
-    let base: String
-    let quote: String
     
     enum Keys: String, CodingKey {
         case id, timestamp, symbol, type, side
         case price, amount, cost, status
     }
-    
-//    init(order: ExchangeOrder) {
-//        id = order.id
-//        timestamp = order.timestamp
-//        price = order.price
-//        side = order.side
-//        amount = order.amount
-//
-//        symbol = order.symbol
-//        type = order.type
-//
-//        status = order.status
-//        service = order.service
-//
-//        base = order.base
-//        quote = order.quote
-//
-//        if let orderCost = order.cost {
-//            cost = Decimal(orderCost.doubleValue)
-//        } else {
-//            cost = nil
-//        }
-//    }
-    
+        
     init(order: BinanceOrder) {
         id = String(order.orderId)
         //binance timstamp is in milliseconds, so devide by 1000
@@ -60,11 +35,14 @@ struct ExchangeOrderModel: Codable {
         symbol = order.symbol
         type = order.type
         cost = nil
-        status = order.status == "NEW" ? "open" : "closed"
-        service = "binance"
         
-        base = String(symbol?.prefix(3) ?? "")
-        quote = String(symbol?.suffix(3) ?? "")
+        if order.status == "NEW" {
+            status = "open"
+        } else {
+            status = order.status
+        }
+        
+        service = "binance"
     }
     
     init(order: BittrexOpenOrder) {
@@ -89,9 +67,6 @@ struct ExchangeOrderModel: Codable {
         cost = nil
         status = order.closed == nil ? "open" : "closed"
         service = "bittrex"
-        
-        base = String(symbol?.prefix(3) ?? "")
-        quote = String(symbol?.suffix(3) ?? "")
     }
     
     init(order: CoinbaseOrder) {
@@ -126,9 +101,6 @@ struct ExchangeOrderModel: Codable {
         type = order.type
         cost = nil
         service = "coinbasepro"
-        
-        base = String(symbol?.prefix(3) ?? "")
-        quote = String(symbol?.suffix(3) ?? "")
     }
     
     init(order: KrakenOrderHistoryTrade) {
@@ -143,9 +115,6 @@ struct ExchangeOrderModel: Codable {
         cost = Decimal(order.cost.doubleValue)
         status = "closed"
         service = "kraken"
-        
-        base = String(symbol?.prefix(3) ?? "")
-        quote = String(symbol?.suffix(3) ?? "")
     }
     
     init(order: KrakenOpenOrdersTrade, txid:String) {
@@ -160,9 +129,6 @@ struct ExchangeOrderModel: Codable {
         cost = Decimal(order.cost.doubleValue)
         status = "open"
         service = "kraken"
-        
-        base = String(symbol?.prefix(3) ?? "")
-        quote = String(symbol?.suffix(3) ?? "")
     }
 }
 
