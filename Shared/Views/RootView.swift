@@ -22,7 +22,7 @@ struct RootView: View {
                     .transition(AnyTransition.opacity)
                     .zIndex(6)
             case .createAccount:
-                CreateAccountScene()
+                CreateAccountScene(state: $state.current)
                     .transition(AnyTransition.opacity)
                     .zIndex(2)
             case .restoreAccount:
