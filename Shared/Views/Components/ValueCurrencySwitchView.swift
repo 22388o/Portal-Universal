@@ -13,21 +13,37 @@ struct ValueCurrencySwitchView: View {
     let type: AssetMarketValueViewType
     
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 12) {
             FiatCurrencyView(
-                size: 16,
+                size: 20,
                 state: $state,
                 currency: .constant(.fiat(fiatCurrency))
             )
+            .contentShape(Rectangle())
+            .onTapGesture {
+                guard state != .fiat else { return }
+                state = .fiat
+            }
+            
             Group {
                 Image("btcIconLight")
                     .resizable()
                     .opacity(state == .btc ? 0.78 : 0.38)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        guard state != .btc else { return }
+                        state = .btc
+                    }
                 Image("ethIconLight")
                     .resizable()
                     .opacity(state == .eth ? 0.78 : 0.38)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        guard state != .eth else { return }
+                        state = .eth
+                    }
             }
-            .frame(width: 16, height: 16)
+            .frame(width: 20, height: 20)
             .foregroundColor(.assetValueLabel)
         }
         

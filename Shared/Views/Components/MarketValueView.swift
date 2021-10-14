@@ -28,7 +28,7 @@ struct MarketValueView: View {
                 .padding(.top)
             
             VStack {
-                VStack(spacing: 4) {
+                VStack(spacing: 6) {
                     Text(type == .asset ? "Current value" : "Total value")
                         .font(Font.mainFont(size: 12))
                         .foregroundColor(type == .asset ? Color.coinViewRouteButtonActive : Color.white.opacity(0.5))
@@ -36,31 +36,11 @@ struct MarketValueView: View {
                     
                     ValueCurrencySwitchView(state: $valueCurrencyViewSate, fiatCurrency: fiatCurrency, type: type)
                     
-                    HStack {
-                        Button(action: {
-                            previousCurrency()
-                        }) {
-                            Image("arrowLeftLight")
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        
-                        Spacer()
-                        
-                        Text(totalValue)
-                            .lineLimit(1)
-                            .font(Font.mainFont(size: 26))
-                            .foregroundColor(type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            nextCurrency()
-                        }) {
-                            Image("arrowRightLight")
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                    .padding(.horizontal, 6)
+                    Text(totalValue)
+                        .lineLimit(1)
+                        .font(Font.mainFont(size: 26))
+                        .foregroundColor(type == .asset ? Color.assetValueLabel : Color.white.opacity(0.8))
+                        .padding(.horizontal, 6)
                     
                     Text(change)
                         .font(Font.mainFont(size: 15))
@@ -95,27 +75,6 @@ struct MarketValueView: View {
             .padding(.top, 20)
         }
         .frame(maxWidth: .infinity)
-    }
-    
-    private func previousCurrency() {
-        switch valueCurrencyViewSate {
-        case .fiat:
-            valueCurrencyViewSate = .eth
-        case .btc:
-            valueCurrencyViewSate = .fiat
-        case .eth:
-            valueCurrencyViewSate = .btc
-        }
-    }
-    private func nextCurrency() {
-        switch valueCurrencyViewSate {
-        case .fiat:
-            valueCurrencyViewSate = .btc
-        case .btc:
-            valueCurrencyViewSate = .eth
-        case .eth:
-            valueCurrencyViewSate = .fiat
-        }
     }
 }
 
