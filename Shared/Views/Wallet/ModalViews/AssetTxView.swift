@@ -44,11 +44,6 @@ struct AssetTxView: View {
                     .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 }
                 Spacer()
-                PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        state.allTransactions.toggle()
-                    }
-                }
             }
             .padding([.top, .horizontal], 16)
             
