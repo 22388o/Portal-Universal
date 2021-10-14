@@ -9,12 +9,9 @@ import SwiftUI
 import Combine
 
 struct CreateWalletNameView: View {
-    @ObservedObject private var viewModel: CreateWalletSceneViewModel
-    
-    init(viewModel: CreateWalletSceneViewModel) {
-        self.viewModel = viewModel
-    }
-    
+    @Binding var state: PortalState.State
+    @ObservedObject var viewModel: CreateWalletSceneViewModel
+        
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -61,6 +58,23 @@ struct CreateWalletNameView: View {
                     .font(.mainFont(size: 16))
                     .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
                 
+                Spacer().frame(height: 17)
+                
+                HStack {
+                    Text("Already have a wallet?")
+                        .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
+                    
+                    Text("Restore it")
+                        .underline()
+                        .foregroundColor(Color.txListTxType)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            state = .restoreAccount
+                        }
+                }
+                .font(.mainFont(size: 16))
+
+                
                 Spacer()
             }
         }
@@ -71,7 +85,7 @@ struct CreateWalletNameView: View {
 
 struct CreateWalletNameView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateWalletNameView(viewModel: CreateWalletSceneViewModel(type: .mnemonic(words: [], salt: "")))
+        CreateWalletNameView(state: .constant(.createAccount), viewModel: CreateWalletSceneViewModel(type: .mnemonic(words: [], salt: "")))
             .frame(width: 656, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()
