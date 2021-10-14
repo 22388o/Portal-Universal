@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CreateAccountScene: View {
+    @Binding var state: PortalState.State
+    
     @StateObject private var viewModel = CreateWalletSceneViewModel(
         type: CreateWalletSceneViewModel.mnemonicAccountType()
     )
@@ -63,7 +65,7 @@ struct CreateAccountScene: View {
                         Group {
                             switch viewModel.walletCreationStep {
                             case .createWalletName:
-                                CreateWalletNameView(viewModel: viewModel)
+                                CreateWalletNameView(state: $state, viewModel: viewModel)
                             case .seed:
                                 StoreSeedView(viewModel: viewModel)
                             case .test:
@@ -93,7 +95,7 @@ struct CreateAccountScene: View {
 
 struct CreateAccountScene_Previews: PreviewProvider {
     static var previews: some View {
-        CreateAccountScene()
+        CreateAccountScene(state: .constant(.createAccount))
             .iPadLandscapePreviews()
     }
 }

@@ -37,17 +37,7 @@ struct SendAssetView: View {
                         .stroke(Color.black, lineWidth: 1)
                 )
                 .offset(y: -32)
-            
-            HStack {
-                Spacer()
-                PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
-                    withAnimation {
-                        presented.toggle()
-                    }
-                }
-            }
-            .padding([.top, .trailing], 16)
-            
+                        
             VStack(spacing: 0) {
                 VStack(spacing: 16) {
                     VStack {
