@@ -62,7 +62,7 @@ class PortalState: ObservableObject {
         switchWallet = false
         allTransactions = false
         createAlert = false
-        allTransactions = false
+        allNotifications = false
     }
 
 }
