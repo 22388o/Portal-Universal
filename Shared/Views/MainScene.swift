@@ -40,10 +40,16 @@ struct MainScene: View {
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
             }
-            .blur(radius: state.modalViewIsPresented ? 6 : 0)
+            .blur(radius: state.modalViewIsPresented ? 4 : 0)
             .allowsHitTesting(!state.modalViewIsPresented)
             
             if state.modalViewIsPresented || state.allNotifications {
+                Color.white.opacity(0.01)
+                    .onTapGesture {
+                        withAnimation {
+                            state.dismissModalView()
+                        }
+                    }
                 WalletModalViews()
                     .zIndex(1)
             }
