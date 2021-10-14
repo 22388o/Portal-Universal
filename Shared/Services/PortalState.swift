@@ -22,7 +22,7 @@ class PortalState: ObservableObject {
     @Published var allNotifications: Bool = false
     @Published var searchRequest = String()
     @Published var modalViewIsPresented: Bool = false
-    @Published var sceneState: WalletSceneState
+    @Published var exchangeSceneState: PortalExchangeSceneState = .full
     @Published var loading: Bool = false
     
     @Published var mainScene: Scenes = .wallet
@@ -43,7 +43,11 @@ class PortalState: ObservableObject {
     }
     
     init() {
-        self.sceneState = .full
+        #if os(macOS)
+        self.exchangeSceneState = .full
+        #else
+        self.exchangeSceneState = UIScreen.main.bounds.width > 1180 ? .full : .compactRight
+        #endif
 
         Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert, $allNotifications)
             .sink { [weak self] output in

@@ -14,14 +14,7 @@ public class AccountRecord: NSManagedObject {
     var fiatCurrencyCode: String { fiatCurrency }
     
     var bip: MnemonicDerivation {
-        switch btcBipFormat {
-        case 1:
-            return MnemonicDerivation.bip49
-        case 2:
-            return MnemonicDerivation.bip84
-        default:
-            return MnemonicDerivation.bip44
-        }
+        MnemonicDerivation.bip84
     }
     
     convenience init(id: String, name: String, bip: MnemonicDerivation, context: NSManagedObjectContext) {

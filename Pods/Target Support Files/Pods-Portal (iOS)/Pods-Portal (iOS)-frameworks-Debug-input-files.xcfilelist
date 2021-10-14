@@ -14,6 +14,7 @@ ${BUILT_PRODUCTS_DIR}/CNIOSHA1-iOS/CNIOSHA1.framework
 ${BUILT_PRODUCTS_DIR}/CNIOWindows-iOS/CNIOWindows.framework
 ${BUILT_PRODUCTS_DIR}/Charts-iOS/Charts.framework
 ${BUILT_PRODUCTS_DIR}/CoinpaprikaAPI-iOS/Coinpaprika.framework
+${BUILT_PRODUCTS_DIR}/CryptoSwift-iOS/CryptoSwift.framework
 ${BUILT_PRODUCTS_DIR}/Erc20Kit-Universal-iOS/Erc20Kit.framework
 ${BUILT_PRODUCTS_DIR}/EthereumKit-Universal-iOS/EthereumKit.framework
 ${BUILT_PRODUCTS_DIR}/FeeRateKit-Universal.swift-iOS/FeeRateKit.framework
@@ -27,6 +28,8 @@ ${BUILT_PRODUCTS_DIR}/ObjectMapper-iOS/ObjectMapper.framework
 ${BUILT_PRODUCTS_DIR}/OpenSslKit-Universal.swift-iOS/OpenSslKit.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework
 ${BUILT_PRODUCTS_DIR}/Secp256k1Kit-Universal.swift-iOS/Secp256k1Kit.framework
+${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift-iOS/SocketIO.framework
+${BUILT_PRODUCTS_DIR}/Starscream-iOS/Starscream.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIO-iOS/NIO.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIOConcurrencyHelpers-iOS/NIOConcurrencyHelpers.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIOCore-iOS/NIOCore.framework

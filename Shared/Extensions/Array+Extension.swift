@@ -74,3 +74,30 @@ extension Array where Element == Color {
     }
     #endif
 }
+
+extension Array where Element == ExchangeVolumeDataModel {
+    func exchangeWithHighterTradingVolume(activeExchanges: [ExchangeModel]) -> ExchangeModel? {
+        for exchange in self.sorted(by: {$0.qVol > $1.qVol}) {
+            for portalExchange in activeExchanges {
+                if exchange.id.lowercased() == portalExchange.id.lowercased() {
+                    return portalExchange
+                }
+            }
+        }
+        return nil
+    }
+    func exchangeWithHighterQuoteBalance(activeExchanges: [ExchangeModel], quote: String) -> ExchangeModel? {
+        var candidates = [ExchangeModel]()
+        for exchange in self {
+            for portalExchange in activeExchanges {
+                if exchange.id.lowercased() == portalExchange.id.lowercased() {
+                    candidates.append(portalExchange)
+                }
+            }
+        }
+        return candidates.first//sorted(by: {
+          //  $0.balanceFor(symbol: quote)?.free ?? 0.0 > $1.balanceFor(symbol: quote)?.free ?? 0.0
+        //}).first
+    }
+}
+

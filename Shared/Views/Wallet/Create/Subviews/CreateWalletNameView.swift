@@ -17,6 +17,7 @@ struct CreateWalletNameView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            Spacer()
             Text("Name your account")
                 .font(.mainFont(size: 17))
                 .foregroundColor(Color.createWalletLabel)
@@ -60,29 +61,7 @@ struct CreateWalletNameView: View {
                     .font(.mainFont(size: 16))
                     .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
                 
-                Spacer().frame(height: 24)
-                
-                Text("Bitcoin address format")
-                    .font(.mainFont(size: 14))
-                    .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
-                
-                Spacer().frame(height: 14)
-                
-                Picker("", selection: $viewModel.btcAddressFormat) {
-                    ForEach(0 ..< BtcAddressFormat.allCases.count) { index in
-                        Text(BtcAddressFormat.allCases[index].description).tag(index)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .frame(width: 360)
-                
-                Spacer().frame(height: 14)
-                
-                Text("With SegWit addresses the network can process more transactions per block and the sender pays lower transaction fees.")
-                    .multilineTextAlignment(.center)
-                    .font(.mainFont(size: 14))
-                    .foregroundColor(Color.coinViewRouteButtonActive).opacity(0.85)
-                    .frame(width: 500)
+                Spacer()
             }
         }
         .frame(minWidth: 450)

@@ -1,5 +1,5 @@
 //
-//  OrderBookSwitch.swift
+//  OrderBookRouteSwitch.swift
 //  Portal
 //
 //  Created by Farid on 30.08.2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct OrderBookSwitch: View {
+struct OrderBookRouteSwitch: View {
     @Binding var route: OrderBookRoute
     @State private var alignment: Alignment = .leading
     
@@ -16,20 +16,20 @@ struct OrderBookSwitch: View {
         ZStack(alignment: .bottom) {
             HStack(spacing: 2) {
                 Button(action: {
-                    route = .buying
+                    route = .buy
                 }) {
                     Text("Buying")
-                        .foregroundColor(route == .buying ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
+                        .foregroundColor(route == .buy ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
                 }
                 .frame(width: 38)
 
                 Spacer()
                 
                 Button(action: {
-                    route = .selling
+                    route = .sell
                 }) {
                     Text("Selling")
-                        .foregroundColor(route == .selling ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
+                        .foregroundColor(route == .sell ?  Color.coinViewRouteButtonActive : Color.coinViewRouteButtonInactive)
                 }
                 .frame(width: 38)
             }
@@ -46,9 +46,9 @@ struct OrderBookSwitch: View {
         }
         .onReceive(Just(route), perform: { route in
             switch route {
-            case .buying:
+            case .buy:
                 alignment = .leading
-            case .selling:
+            case .sell:
                 alignment = .trailing
             }
         })
@@ -57,7 +57,7 @@ struct OrderBookSwitch: View {
 
 struct OrderBookSwitch_Previews: PreviewProvider {
     static var previews: some View {
-        OrderBookSwitch(route: .constant(.buying))
+        OrderBookRouteSwitch(route: .constant(.buy))
             .frame(width: 87, height: 48)
             .previewLayout(PreviewLayout.sizeThatFits)
     }

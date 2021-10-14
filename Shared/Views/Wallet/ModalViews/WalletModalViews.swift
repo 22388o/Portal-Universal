@@ -40,7 +40,7 @@ struct WalletModalViews: View {
                 NotificationsView(presented: $state.allNotifications)
                     .animation(nil)
                     .padding(.top, 24)
-                    .padding(.leading, 24)
+                    .padding(.trailing, 24)
             }
             
         }

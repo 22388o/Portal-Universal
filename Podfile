@@ -10,6 +10,7 @@ def portal_shared_pods
   pod 'HsToolKit-Universal.swift'
   pod 'Hodler-Universal.swift'
   pod 'FeeRateKit-Universal.swift'
+  pod 'CryptoSwift', '~> 1.4.1'
   #MarketData
   pod 'CoinpaprikaAPI'
   #Charts
@@ -18,6 +19,8 @@ def portal_shared_pods
   pod 'KeychainAccess'
   #Async image
   pod 'Kingfisher', '~> 6.3.0'
+  #Soket framework
+  pod 'Socket.IO-Client-Swift', '~> 15.2.0'
 end
 
 

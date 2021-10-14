@@ -43,7 +43,7 @@ final class PricesDataUpdater: IPricesData {
             
     func updatePrices(for assets: String, _ competionHandler: @escaping ((Result<PriceResponse, NetworkError>) -> Void)) {
         guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
-            competionHandler(.failure(.networkError))
+            competionHandler(.failure(.missingURL))
             return
         }
         task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -55,7 +55,7 @@ final class PricesDataUpdater: IPricesData {
                     return
                 }
                 guard let response = try? self.jsonDecoder.decode(PriceResponse.self, from: mockResponse) else {
-                    competionHandler(.failure(.parsing))
+                    competionHandler(.failure(.parsingError))
                     return
                 }
                 competionHandler(.success(response))

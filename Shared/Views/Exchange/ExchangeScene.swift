@@ -8,66 +8,128 @@
 import SwiftUI
 
 struct ExchangeScene: View {
+    @ObservedObject var viewModel: ExchangeViewModel
+    
     var body: some View {
-        HStack(spacing: 0) {
-            VStack(spacing: 0) {
-                ExchangeSelectorView()
-                TradingPairView()
-                ExchangeBalancesView()
-                Spacer()
-            }
-            .frame(width: 320)
-            
-            ZStack {
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.white.opacity(0.94))
-                
-                HStack(spacing: 0) {
+        if viewModel.isLoggedIn {
+            HStack(spacing: 0) {
+                if viewModel.state.exchangeSceneState != .compactLeft {
                     VStack(spacing: 0) {
-                        ExchangeMarketView()
-                            .frame(minWidth: 606, minHeight: 374)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                            .overlay(
-//                                Rectangle()
-//                                    .stroke(Color.exchangerFieldBorder.opacity(0.94), lineWidth: 1)
-//                            )
+                        ExchangeSelectorView(
+                            state: $viewModel.state.exchangeSceneState,
+                            selectorState: $viewModel.exchangeSelectorState,
+                            exchanges: viewModel.syncedExchanges
+                        )
                         
-                        HStack(spacing: 0) {
-                            BuySellView()
-                                .frame(minWidth: 303, maxWidth: .infinity)
+                        TradingPairView(
+                            traidingPairs: viewModel.tradingPairsForSelectedExchange,
+                            selectedPair: $viewModel.currentPair,
+                            searchRequest: $viewModel.searchRequest
+                        )
+                        
+                        ExchangeBalancesView(
+                            exchanges: viewModel.syncedExchanges,
+                            tradingPairs: viewModel.allTraidingPairs,
+                            state: $viewModel.exchangeBalancesSelectorState
+                        )
+                        
+                        Spacer()
+                    }
+                    .frame(width: 320)
+                }
+
+                ZStack {
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.white)
+
+                    HStack(spacing: 0) {
+                        VStack(spacing: 0) {
+                            ExchangeMarketView(
+                                tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
+                                tradingData: viewModel.tradingData
+                            )
+                            .frame(minWidth: 606, minHeight: 224)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            
+                            ExchangeMarketDataView(ticker: viewModel.currentPairTicker)
+
+                            HStack(spacing: 32) {
+                                BuySellView(
+                                    side: .buy,
+                                    exchange: viewModel.tradingData?.exchange,
+                                    tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
+                                    ticker: viewModel.currentPairTicker,
+                                    onOrderCreate: { type, side, amount, price in
+                                        viewModel.placeOrder(type: type, side: side, amount: amount, price: price)
+                                    }
+                                )
+                                .frame(minWidth: 256, maxWidth: .infinity)
                                 .frame(height: 256)
-                            BuySellView()
-                                .frame(minWidth: 303, maxWidth: .infinity)
+                                
+                                BuySellView(
+                                    side: .sell,
+                                    exchange: viewModel.tradingData?.exchange,
+                                    tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
+                                    ticker: viewModel.currentPairTicker,
+                                    onOrderCreate: { type, side, amount, price in
+                                        viewModel.placeOrder(type: type, side: side, amount: amount, price: price)
+                                    }
+                                )
+                                .frame(minWidth: 256, maxWidth: .infinity)
                                 .frame(height: 256)
+                            }
+                            .padding(.horizontal, 32)
+                            .alert(isPresented: $viewModel.showAlert) {
+                                Alert(title: Text(viewModel.alert.title), message: Text(viewModel.alert.message), dismissButton: .default(Text("Dismiss"), action: {
+                                    viewModel.showAlert = false
+                                }))
+                            }
+                        }
+                        
+                        if viewModel.state.exchangeSceneState != .compactRight {
+                            VStack(spacing: 0) {
+                                OrderBookView(
+                                    orderBook: viewModel.orderBook ?? SocketOrderBook(tradingPair: TradingPairModel.mltBtc(), data: NSDictionary()),
+                                    tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
+                                    state: $viewModel.state.exchangeSceneState
+                                )
+                                .frame(width: 350)
+                                .frame(minHeight: 374, maxHeight: .infinity)
+
+                                MyOrdersView(
+                                    tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
+                                    orders: viewModel.orders, onOrderCancel: { order in
+                                        viewModel.cancel(order: order)
+                                    }
+                                )
+                                .frame(width: 350, height: 256)
+                            }
+
                         }
                     }
-                    
-                    VStack(spacing: 0) {
-                        OrderBookView()
-                            .frame(width: 296)
-                            .frame(minHeight: 374, maxHeight: .infinity)
-//                            .overlay(
-//                                Rectangle()
-//                                    .stroke(Color.exchangerFieldBorder.opacity(0.94), lineWidth: 1)
-//                            )
-                        MyOrdersView()
-                            .frame(width: 296, height: 256)
-//                            .overlay(
-//                                Rectangle()
-//                                    .stroke(Color.exchangerFieldBorder.opacity(0.94), lineWidth: 1)
-//                            )
-                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(paddingForState(), 8)
             }
-            .padding(8)
+        } else {
+            ExchangeSetup(viewModel: viewModel.setup)
+        }
+    }
+    
+    private func paddingForState() -> Edge.Set {
+        switch viewModel.state.exchangeSceneState {
+        case .full:
+            return [.vertical, .trailing]
+        case .compactLeft:
+            return .all
+        case .compactRight:
+            return [.vertical, .trailing]
         }
     }
 }
 
 struct ExchangeScene_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangeScene()
-            .iPadLandscapePreviews()
+        ExchangeScene(viewModel: ExchangeViewModel.config())
     }
 }
