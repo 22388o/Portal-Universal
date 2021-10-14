@@ -24,6 +24,7 @@ final class AssetViewModel: ObservableObject {
     @Published private(set) var change = String()
     @Published private(set) var chartDataEntries = [ChartDataEntry]()
     @Published private(set) var currency: Currency = .fiat(USD)
+    @Published private(set) var canSend: Bool = false
     @Published var loadingData: Bool = false
     @Published var route: AssetViewRoute = .value
         
@@ -46,7 +47,7 @@ final class AssetViewModel: ObservableObject {
         let dayLow: Decimal = marketDataProvider.marketData(coin: coin).dayLow
         return "\(fiatCurrency.symbol)\((dayLow * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
     }
-    
+        
     init(state: PortalState, walletManager: IWalletManager, adapterManager: IAdapterManager, marketDataProvider: IMarketDataProvider) {
         self.state = state
         self.coin = state.selectedCoin
@@ -107,8 +108,9 @@ final class AssetViewModel: ObservableObject {
         if let wallet = Portal.shared.walletManager.activeWallets.first(where: { $0.coin == self.coin }),
            let adapter = Portal.shared.adapterManager.balanceAdapter(for: wallet) {
             self.adapter = adapter
+            canSend = adapter.balance > 0
         } else {
-            self.adapter = nil
+            adapter = nil
         }
     }
     

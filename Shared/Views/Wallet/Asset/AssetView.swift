@@ -51,7 +51,7 @@ struct AssetView: View {
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                         
-                        PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: true) {
+                        PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: viewModel.canSend) {
                             withAnimation(.easeIn(duration: 1.2)) {
                                 state.sendAsset.toggle()
                             }
