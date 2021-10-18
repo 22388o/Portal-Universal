@@ -15,10 +15,11 @@ final class AssetItemViewModel: ObservableObject {
     let coin: Coin
     
     @Published private(set) var totalValue = String()
-    @Published private(set) var change = String()
-    @Published private(set) var balance = String()
+    @Published private(set) var changeString = String()
+    @Published private(set) var balanceString = String()
     @Published private(set) var adapterState: AdapterState = .notSynced(error: AdapterError.wrongParameters)
-    
+    @Published private(set) var syncProgressString: String = "Syncing... 1%"
+
     @Published var syncProgress: Float = 0.01
     
     private let notificationService: NotificationService
@@ -76,7 +77,7 @@ final class AssetItemViewModel: ObservableObject {
                 if let ticker = self?.ticker {
                     self?.updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
                 } else {
-                    self?.balance = "\(adapter.balance)"
+                    self?.balanceString = "\(adapter.balance) \(coin.code)"
                 }
             })
             .disposed(by: disposeBag)
@@ -90,7 +91,7 @@ final class AssetItemViewModel: ObservableObject {
                     let progress = Float(currentProgress)/100
                     if self?.syncProgress != progress {
                         self?.syncProgress = progress
-                        print("\(coin.code) sync progress: \(currentProgress)")
+                        self?.syncProgressString = "Syncing... \(currentProgress)%"
                     }
                 }
                 if case .synced  = state {
@@ -106,7 +107,7 @@ final class AssetItemViewModel: ObservableObject {
                 if let ticker = self?.ticker {
                     self?.updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
                 } else {
-                    self?.balance = "\(adapter.balance)"
+                    self?.balanceString = "\(adapter.balance) \(coin.code)"
                 }
             }
             .store(in: &subscriptions)
@@ -120,21 +121,21 @@ final class AssetItemViewModel: ObservableObject {
         let percentChangeString = "(\(changeInPercents.double.rounded(toPlaces: 2))%)"
         let priceChange = abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)
         
-        change = "\(prefix)\(symbol)\(priceChange) \(percentChangeString)"
+        changeString = "\(prefix)\(symbol)\(priceChange) \(percentChangeString)"
         
         let isInteger = spendable.rounded(toPlaces: 4).isInteger
         
         if isInteger {
             if let unspendable = unspendable, unspendable > 0 {
-                self.balance = "\(spendable) (\(unspendable.rounded(toPlaces: 6)))"
+                self.balanceString = "\(spendable) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)"
             } else {
-                self.balance = "\(spendable)"
+                self.balanceString = "\(spendable) \(coin.code)"
             }
         } else {
             if let unspendable = unspendable, unspendable > 0 {
-                self.balance = "\(spendable.rounded(toPlaces: 6)) (\(unspendable.rounded(toPlaces: 6)))"
+                self.balanceString = "\(spendable.rounded(toPlaces: 6)) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)"
             } else {
-                self.balance = "\(spendable.rounded(toPlaces: 6))"
+                self.balanceString = "\(spendable.rounded(toPlaces: 6)) \(coin.code)"
             }
         }
         
