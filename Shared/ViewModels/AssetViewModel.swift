@@ -75,6 +75,7 @@ final class AssetViewModel: ObservableObject {
         
         $loadingData
             .dropFirst()
+            .receive(on: RunLoop.main)
             .sink { [weak self] loading in
                 if !loading {
                     self?.chartDataEntries = self?.assetChartDataEntries() ?? []
@@ -190,6 +191,8 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func assetChartDataEntries() -> [ChartDataEntry] {
+        guard Portal.shared.reachabilityService.isReachable else { return [] }
+        
         var chartDataEntries = [ChartDataEntry]()
         var points = [Decimal]()
         
