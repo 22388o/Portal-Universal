@@ -26,10 +26,14 @@ final class Portal: ObservableObject {
     let ethereumKitManager: EthereumKitManager
     let adapterManager: AdapterManager
     let exchangeManager: ExchangeManager
+    let reachabilityService: ReachabilityService
     
     @Published var state = PortalState()
         
     private init() {
+        reachabilityService = ReachabilityService()
+        reachabilityService.startMonitoring()
+        
         appConfigProvider = AppConfigProvider()
         
         localStorage = LocalStorage()
@@ -37,8 +41,13 @@ final class Portal: ObservableObject {
         let keychain = Keychain(service: appConfigProvider.keychainStorageID)
         secureStorage = KeychainStorage(keychain: keychain)
         
-        let bdContext = PersistenceController.shared.container.viewContext
-        let bdStorage: IDBStorage & IAccountStorage = DBlocalStorage(context: bdContext)
+        let bdContext: NSManagedObjectContext = {
+            let backgroundContext = PersistenceController.shared.container.newBackgroundContext()
+            backgroundContext.automaticallyMergesChangesFromParent = true
+            return backgroundContext
+        }()
+        
+        let bdStorage: IDBStorage & IAccountStorage & IDBCacheStorage = DBlocalStorage(context: bdContext)
         
         if localStorage.isFirstLaunch {
             localStorage.removeCurrentAccountID()
@@ -61,14 +70,14 @@ final class Portal: ObservableObject {
             notificationService: notificationService
         )
         
-        let marketDataUpdater = MarketDataUpdater()
+        let marketDataUpdater = MarketDataUpdater(cachedTickers: bdStorage.tickers, reachability: reachabilityService)
         
         let fiatCurrenciesUpdater = FiatCurrenciesUpdater(
             interval: TimeInterval(appConfigProvider.fiatCurrenciesUpdateInterval),
             fixerApiKey: appConfigProvider.fixerApiKey
         )
                 
-        let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater)
+        let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: bdStorage)
         marketDataProvider = MarketDataProvider(repository: marketDataStorage)
                         
         let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: bdStorage)
@@ -89,12 +98,15 @@ final class Portal: ObservableObject {
         marketDataStorage.$dataReady
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] ready in
-                if !ready {
-                    self?.state.loading = true
+                guard let self = self else { return }
+                if !ready && self.reachabilityService.isReachable {
+                    self.state.loading = true
+                } else {
+                    self.state.loading = false
                 }
             })
             .store(in: &anyCancellables)
-        
+                
         adapterManager.adapterdReadyPublisher
             .receive(on: RunLoop.main)
             .sink { [weak self] ready in
@@ -116,16 +128,6 @@ final class Portal: ObservableObject {
                     self?.state.loading = false
                 }
             }
-            .store(in: &anyCancellables)
-        
-        coinManager.onCoinsUpdatePublisher
-            .debounce(for: 3, scheduler: RunLoop.main)
-            .sink(receiveValue: { [weak self] coins in
-                if !coins.isEmpty {
-                    self?.state.loading = false
-                    self?.state.selectedCoin = Coin.bitcoin()
-                }
-            })
             .store(in: &anyCancellables)
     }
     
