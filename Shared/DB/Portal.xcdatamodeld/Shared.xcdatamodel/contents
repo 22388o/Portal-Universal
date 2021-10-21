@@ -6,7 +6,12 @@
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="DBCache" representedClassName="DBCache" syncable="YES" codeGenerationType="class">
+        <attribute name="fiatCurrenciesData" optional="YES" attributeType="Binary"/>
+        <attribute name="tickersData" optional="YES" attributeType="Binary"/>
+    </entity>
     <elements>
         <element name="AccountRecord" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="89"/>
+        <element name="DBCache" positionX="-657.4296875" positionY="99.34375" width="128" height="59"/>
     </elements>
 </model>
