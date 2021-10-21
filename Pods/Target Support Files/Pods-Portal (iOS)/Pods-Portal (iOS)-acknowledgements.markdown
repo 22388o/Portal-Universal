@@ -2291,10 +2291,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-## Helpshift
-
-See http://www.helpshift.com/terms/
-
 ## Hodler-Universal.swift
 
 Copyright (c) 2019 Horizontal Systems <hsdao@protonmail.ch>

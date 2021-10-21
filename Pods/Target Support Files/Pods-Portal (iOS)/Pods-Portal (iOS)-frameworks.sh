@@ -220,7 +220,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-iOS/NIOWebSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-iOS/UIExtensions.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/_NIODataStructures-iOS/_NIODataStructures.framework"
-  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/Helpshift/Helpshift.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -269,7 +268,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-iOS/NIOWebSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-iOS/UIExtensions.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/_NIODataStructures-iOS/_NIODataStructures.framework"
-  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/Helpshift/Helpshift.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

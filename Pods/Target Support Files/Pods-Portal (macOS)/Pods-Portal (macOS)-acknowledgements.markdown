@@ -5380,10 +5380,6 @@ THE SOFTWARE.
    limitations under the License.
 
 
-## HelpshiftMacOS
-
-See http://www.helpshift.com/terms/
-
 ## Sparkle
 
 Copyright (c) 2006-2013 Andy Matuschak.

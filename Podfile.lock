@@ -70,8 +70,6 @@ PODS:
   - HdWalletKit-Universal.swift (1.5.2):
     - OpenSslKit-Universal.swift (~> 1.2.2)
     - Secp256k1Kit-Universal.swift (~> 1.1)
-  - Helpshift (7.11.1)
-  - HelpshiftMacOS (2.4.1)
   - Hodler-Universal.swift (0.17):
     - BitcoinCore-Universal.swift (~> 0.17)
     - OpenSslKit-Universal.swift (~> 1.2.2)
@@ -149,8 +147,6 @@ DEPENDENCIES:
   - Erc20Kit-Universal
   - EthereumKit-Universal
   - FeeRateKit-Universal.swift
-  - Helpshift
-  - HelpshiftMacOS (= 2.4.1)
   - Hodler-Universal.swift
   - HsToolKit-Universal.swift
   - KeychainAccess
@@ -183,8 +179,6 @@ SPEC REPOS:
     - FeeRateKit-Universal.swift
     - GRDB.swift
     - HdWalletKit-Universal.swift
-    - Helpshift
-    - HelpshiftMacOS
     - Hodler-Universal.swift
     - HsToolKit-Universal.swift
     - KeychainAccess
@@ -243,8 +237,6 @@ SPEC CHECKSUMS:
   FeeRateKit-Universal.swift: 1f2672db3511be50c30ff96465659ca3bd48f9db
   GRDB.swift: ff730d72aac9ce0123138d77cc7e0331b3c8b148
   HdWalletKit-Universal.swift: f438d6c2cdbb92da69fc0e6f5bb0a38a09c6cef3
-  Helpshift: 807d75f1beea963ec127c9acd25f721e9ae158a4
-  HelpshiftMacOS: bb3ce4598794ee82f437a9bc49ee0973f20bb2f5
   Hodler-Universal.swift: bbcb154c188ef48c0c088c513e47f0b8f3f3742d
   HsToolKit-Universal.swift: 1c58aecf9846fcf48164d41e014afc313aaf156e
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
@@ -269,6 +261,6 @@ SPEC CHECKSUMS:
   SwiftNIOWebSocket: 9649cc901b956f0e992f69f7138866b349f7638a
   UIExtensions-Stripped.swift: 2ed2ea244fc7e3b16581a8c316f9363179ec1644
 
-PODFILE CHECKSUM: dcb0d0277540d0464509f4103d120ef6fbe32e15
+PODFILE CHECKSUM: 3b0815535111d247366026ce1d17b5f57f788596
 
 COCOAPODS: 1.10.1

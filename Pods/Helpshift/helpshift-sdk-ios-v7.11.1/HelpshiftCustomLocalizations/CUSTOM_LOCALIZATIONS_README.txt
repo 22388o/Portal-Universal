@@ -1,1 +1,0 @@
-Refer https://developers.helpshift.com/ios/string-customization/ for customizing the SDK strings.

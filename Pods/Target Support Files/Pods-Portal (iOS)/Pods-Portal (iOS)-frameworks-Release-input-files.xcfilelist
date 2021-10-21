@@ -44,5 +44,4 @@ ${BUILT_PRODUCTS_DIR}/SwiftNIOTLS-iOS/NIOTLS.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-iOS/NIOWebSocket.framework
 ${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-iOS/UIExtensions.framework
 ${BUILT_PRODUCTS_DIR}/_NIODataStructures-iOS/_NIODataStructures.framework
-${PODS_XCFRAMEWORKS_BUILD_DIR}/Helpshift/Helpshift.framework/Helpshift
 ${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL

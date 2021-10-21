@@ -37,8 +37,6 @@ target 'Portal (iOS)' do
   # Pods for Portal (iOS)
   portal_shared_pods
   
-  #User Feedback
-  pod 'Helpshift'
 
 end
 
@@ -49,7 +47,6 @@ target 'Portal (macOS)' do
   inhibit_all_warnings!
   
   pod 'Sparkle'
-  pod 'HelpshiftMacOS', '2.4.1'
   
   # Pods for Portal (macOS)
   portal_shared_pods
