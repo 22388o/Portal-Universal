@@ -387,6 +387,10 @@
 		755785B1260F7363000E1686 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755785AF260F7363000E1686 /* Enums.swift */; };
 		755785B7260F73A2000E1686 /* FiatCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755785B6260F73A2000E1686 /* FiatCurrency.swift */; };
 		755785B8260F73A2000E1686 /* FiatCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755785B6260F73A2000E1686 /* FiatCurrency.swift */; };
+		755EBC2E272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
+		755EBC2F272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
+		755EBC30272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
+		755EBC31272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
 		756A66AF262441B500353635 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66AE262441B500353635 /* PortfolioView.swift */; };
 		756A66B0262441B500353635 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66AE262441B500353635 /* PortfolioView.swift */; };
 		756A66B62624443A00353635 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66B52624443A00353635 /* PortfolioViewModel.swift */; };
@@ -835,6 +839,7 @@
 		755785A8260F7331000E1686 /* AccounttModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccounttModel.swift; sourceTree = "<group>"; };
 		755785AF260F7363000E1686 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		755785B6260F73A2000E1686 /* FiatCurrency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiatCurrency.swift; sourceTree = "<group>"; };
+		755EBC2D272194D400B56B89 /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
 		756A66AE262441B500353635 /* PortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
 		756A66B52624443A00353635 /* PortfolioViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
 		756A66C02624850A00353635 /* SendAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetView.swift; sourceTree = "<group>"; };
@@ -997,6 +1002,7 @@
 			isa = PBXGroup;
 			children = (
 				75308AB226A0215C0024AACD /* Portal.swift */,
+				755EBC2D272194D400B56B89 /* ReachabilityService.swift */,
 				75A3F52626A57B99006B1823 /* PortalState.swift */,
 				750D63B52689C32B00643FD3 /* NotificationService.swift */,
 				75A3F53B26A57D5C006B1823 /* Storage */,
@@ -1966,6 +1972,7 @@
 				75C95C162614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
 				7581900F26E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */,
 				75F5CDA92684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
+				755EBC2E272194D400B56B89 /* ReachabilityService.swift in Sources */,
 				75D476DA262DB81C0006FD91 /* AssetTxView.swift in Sources */,
 				75C95C5A2614CC0400B0EE10 /* Font+Extension.swift in Sources */,
 				75BBC732261C3E2D00032A90 /* SeedTestView.swift in Sources */,
@@ -2367,6 +2374,7 @@
 				75C95C812614CC3700B0EE10 /* StringFormatter.swift in Sources */,
 				750D63B72689C32B00643FD3 /* NotificationService.swift in Sources */,
 				75C95C9B2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
+				755EBC2F272194D400B56B89 /* ReachabilityService.swift in Sources */,
 				75A00BD326D3F54000ABCA7E /* PublishedObject.swift in Sources */,
 				75F5CD9B2684C904005ECA5B /* SeedTestViewModel.swift in Sources */,
 				75A00BD126D3F4CC00ABCA7E /* NSTableView+Extension.swift in Sources */,
@@ -2438,6 +2446,7 @@
 				75C95C642614CC0400B0EE10 /* Color+Extension.swift in Sources */,
 				750AE8E92614992400C45971 /* MarketDataUpdater.swift in Sources */,
 				750AE8F92614992400C45971 /* MarketDataStorage.swift in Sources */,
+				755EBC30272194D400B56B89 /* ReachabilityService.swift in Sources */,
 				75C95C862614CC3700B0EE10 /* MockData.swift in Sources */,
 				750AE9DF26149DD900C45971 /* IChartDataProvider.swift in Sources */,
 				75C95C5C2614CC0400B0EE10 /* Font+Extension.swift in Sources */,
@@ -2525,6 +2534,7 @@
 				7537DF06270309CF00B862AB /* SocketTicker.swift in Sources */,
 				7537DEF72701C51D00B862AB /* CoinbaseBalanceResponse.swift in Sources */,
 				750AE8EA2614992400C45971 /* MarketDataUpdater.swift in Sources */,
+				755EBC31272194D400B56B89 /* ReachabilityService.swift in Sources */,
 				750AE8FA2614992400C45971 /* MarketDataStorage.swift in Sources */,
 				75C95C872614CC3700B0EE10 /* MockData.swift in Sources */,
 				750AE9E026149DD900C45971 /* IChartDataProvider.swift in Sources */,
