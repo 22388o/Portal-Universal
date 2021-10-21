@@ -8,6 +8,7 @@
 import Foundation
 import EthereumKit
 import Erc20Kit
+import HdWalletKit
 
 class EthereumKitManager {
     private let appConfigProvider: IAppConfigProvider
@@ -62,4 +63,11 @@ class EthereumKitManager {
         evmKit?.statusInfo()
     }
 
+    func privateKey() -> HDPrivateKey? {
+        guard let seed = currentAccount?.type.mnemonicSeed else {
+            print("NO SEED FOUND")
+            return nil
+        }
+        return try? Kit.privateKey(seed: seed)
+    }
 }

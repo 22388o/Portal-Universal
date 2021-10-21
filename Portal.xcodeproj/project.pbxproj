@@ -474,6 +474,10 @@
 		75F5CDBC2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */; };
 		75F5CDBD2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */; };
 		FA3FD80D26F1194200953727 /* web3.swift in Frameworks */ = {isa = PBXBuildFile; productRef = FA3FD80C26F1194200953727 /* web3.swift */; };
+		FA3FD81326FCC8A200953727 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81226FCC8A200953727 /* TokenSelector.swift */; };
+		FA3FD81426FCC8A200953727 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81226FCC8A200953727 /* TokenSelector.swift */; };
+		FA3FD81A26FCC98500953727 /* Erc20Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81926FCC98500953727 /* Erc20Token.swift */; };
+		FA3FD81B26FCC98500953727 /* Erc20Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81926FCC98500953727 /* Erc20Token.swift */; };
 		FA70527126CEB4BD000EE935 /* SwapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70527026CEB4BD000EE935 /* SwapperView.swift */; };
 		FA70527226CEB4BD000EE935 /* SwapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70527026CEB4BD000EE935 /* SwapperView.swift */; };
 		FA70527C26CEB536000EE935 /* SwapperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70527B26CEB536000EE935 /* SwapperModel.swift */; };
@@ -687,6 +691,8 @@
 		75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartUIKitView.swift; sourceTree = "<group>"; };
 		BC9A9F3CB0318CDC9451AD23 /* Pods_Portal__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E103E7237471B0E12F767D1B /* Pods-Portal (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (iOS).release.xcconfig"; path = "Target Support Files/Pods-Portal (iOS)/Pods-Portal (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		FA3FD81226FCC8A200953727 /* TokenSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelector.swift; sourceTree = "<group>"; };
+		FA3FD81926FCC98500953727 /* Erc20Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc20Token.swift; sourceTree = "<group>"; };
 		FA70527026CEB4BD000EE935 /* SwapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapperView.swift; sourceTree = "<group>"; };
 		FA70527B26CEB536000EE935 /* SwapperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapperModel.swift; sourceTree = "<group>"; };
 		FA70528226CEB582000EE935 /* SwapperViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapperViewModel.swift; sourceTree = "<group>"; };
@@ -834,6 +840,7 @@
 				7517F8A226B802DD0020AECB /* CoinImageView.swift */,
 				FA70527026CEB4BD000EE935 /* SwapperView.swift */,
 				FA70528926D54D06000EE935 /* TokenCurrencyView.swift */,
+				FA3FD81226FCC8A200953727 /* TokenSelector.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1032,6 +1039,7 @@
 				751B655A269D999F001B759C /* LastBlockInfo.swift */,
 				7556940026A6B13F00EE5CC4 /* WalletItem.swift */,
 				FA70527B26CEB536000EE935 /* SwapperModel.swift */,
+				FA3FD81926FCC98500953727 /* Erc20Token.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1423,6 +1431,7 @@
 				75A3F54526A57EBB006B1823 /* Wallet.swift in Sources */,
 				75F5CDBC2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */,
 				75B151502622FA7D00542415 /* TimeframeSwitch.swift in Sources */,
+				FA3FD81A26FCC98500953727 /* Erc20Token.swift in Sources */,
 				FA70527126CEB4BD000EE935 /* SwapperView.swift in Sources */,
 				750AE90D26149A8C00C45971 /* CoinMarketData.swift in Sources */,
 				75F5CD9F2684CA04005ECA5B /* KeyboardResponder.swift in Sources */,
@@ -1561,6 +1570,7 @@
 				75110D6926A1FAE000BDD6C0 /* IErc20Adapter.swift in Sources */,
 				75308AD126A027E60024AACD /* IAppConfigProvider.swift in Sources */,
 				751B6558269D994D001B759C /* IDepositAdapter.swift in Sources */,
+				FA3FD81326FCC8A200953727 /* TokenSelector.swift in Sources */,
 				75C95C8C2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
 				75110D6626A1C11A00BDD6C0 /* Evn20Adapter.swift in Sources */,
 				758F3AEC26A9BE3C00F345E1 /* WalletHeaderViewModel.swift in Sources */,
@@ -1599,6 +1609,7 @@
 				751B6547269CA219001B759C /* BitcoinAdapter.swift in Sources */,
 				75F5CDAA2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
 				755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */,
+				FA3FD81B26FCC98500953727 /* Erc20Token.swift in Sources */,
 				FA70527226CEB4BD000EE935 /* SwapperView.swift in Sources */,
 				75C95C472614CC0400B0EE10 /* PieChart+Extension.swift in Sources */,
 				75B151512622FA7D00542415 /* TimeframeSwitch.swift in Sources */,
@@ -1737,6 +1748,7 @@
 				750AE9CE26149DD900C45971 /* IWallet.swift in Sources */,
 				75C95C8D2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
 				7599A7982695D63900562009 /* WalletMainView.swift in Sources */,
+				FA3FD81426FCC8A200953727 /* TokenSelector.swift in Sources */,
 				75308AE626A028F30024AACD /* IFeeRateProvider.swift in Sources */,
 				750C36BE261F2DE80088CCED /* AppSceneSwitch.swift in Sources */,
 				758F3AED26A9BE3C00F345E1 /* WalletHeaderViewModel.swift in Sources */,

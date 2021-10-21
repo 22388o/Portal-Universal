@@ -11,17 +11,133 @@ import Coinpaprika
 import web3
 
 import BigInt
+import HdWalletKit
+
 
 final class SwapperViewModel: ObservableObject {
 
     var client: EthereumClient?
+    var account: EthereumAccount?
+    var myaddress: EthereumAddress
+    
+    var initializedWeb3 : Bool = false
     
     @Published var assetValue = String()
     @Published var fiatValue = String()
     
-  
-    private var subscriptions = Set<AnyCancellable>()
+    @Published var slippage = String("0")
+    
+    @Published var tokenList : [Erc20Token] = [
+        Erc20Token( name:"ChainLink", symbol:"LINK", decimal:18,
+            contractAddress:"0x514910771af9ca656af840dff83e8264ecf986ca",
+            iconURL: "https://cryptologos.cc/logos/chainlink-link-logo.png"),
+        Erc20Token( name:"Wrapped Ether", symbol:"WETH",
+            decimal:18, contractAddress:"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+            iconURL: "https://cryptologos.cc/logos/ethereum-eth-logo.png"),
+        Erc20Token( name:"BandToken", symbol:"BAND", decimal:18,
+            contractAddress:"0xba11d00c5f74255f56a5e366f4f77f5a186d7f55",
+            iconURL: "https://assets.coingecko.com/coins/images/9545/thumb/band-protocol.png"),
+        Erc20Token( name:"UniswapToken", symbol:"UNI", decimal:18,
+            contractAddress:"0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+            iconURL: "https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg/"),
+        Erc20Token( name:"Polygon", symbol:"MATIC", decimal:18,
+            contractAddress:"0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
+            iconURL: "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0/logo.png"),
+    ]
+    
+    @Published var selectionA : Erc20Token = Erc20Token( name:"Wrapped Ether",
+                                                         symbol:"WETH",
+                                                         decimal:18,
+                                                         contractAddress:"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                                                         iconURL: "https://cryptologos.cc/logos/ethereum-eth-logo.png")
+    
+    @Published var selectionB : Erc20Token = Erc20Token( name:"ChainLink",
+                                                         symbol:"LINK",
+                                                         decimal:18,
+                                                         contractAddress:"0x514910771af9ca656af840dff83e8264ecf986ca",
+                                                         iconURL: "https://cryptologos.cc/logos/chainlink-link-logo.png")
+    
 
+    
+    private var subscriptions = Set<AnyCancellable>()
+    
+    
+    //function allowance(address account, address spender)
+    public struct GetAllowance_Params: ABIFunction {
+        public static let name = "allowance"
+        public let gasPrice: BigUInt? = nil
+        public let gasLimit: BigUInt? = nil
+        public var contract: EthereumAddress
+        public let from: EthereumAddress?
+
+        public let account: EthereumAddress
+        public let spender: EthereumAddress
+
+        public init(from: EthereumAddress? = nil,
+                    contract: EthereumAddress,
+                    account: EthereumAddress,
+                    spender: EthereumAddress) {
+            
+            self.from = from
+            self.contract = contract
+            self.account = account
+            self.spender = spender
+        }
+
+        public func encode(to encoder: ABIFunctionEncoder) throws {
+            try encoder.encode(account)
+            try encoder.encode(spender)
+        }
+    }
+    
+    //function decimals()
+    public struct GetDecimals_Params: ABIFunction {
+        public static let name = "decimals"
+        public let gasPrice: BigUInt? = nil
+        public let gasLimit: BigUInt? = nil
+        public var contract: EthereumAddress
+        public let from: EthereumAddress?
+
+        public init(from: EthereumAddress? = nil,
+                    contract: EthereumAddress) {
+            
+            self.from = from
+            self.contract = contract
+        }
+
+        public func encode(to encoder: ABIFunctionEncoder) throws {
+        }
+    }
+    
+    //function approve()
+    public struct Approve_Params: ABIFunction {
+        public static let name = "approve"
+        public let gasPrice: BigUInt? = 170000000000
+        public let gasLimit: BigUInt? = 300000
+        public var contract: EthereumAddress
+        public let from: EthereumAddress?
+
+        public let spender: EthereumAddress
+        public let amount: BigUInt
+        
+        public init(
+            from: EthereumAddress,
+            contract: EthereumAddress,
+            spender: EthereumAddress,
+            amount: BigUInt
+        ) {
+            self.from = from
+            self.contract = contract
+            self.spender = spender
+            self.amount = amount
+        }
+
+        public func encode(to encoder: ABIFunctionEncoder) throws {
+            try encoder.encode(spender)
+            try encoder.encode(amount)
+        }
+    }
+    
     //function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts);
     public struct GetAmountsOut_Params: ABIFunction {
         public static let name = "getAmountsOut"
@@ -36,7 +152,6 @@ final class SwapperViewModel: ObservableObject {
         public init(from: EthereumAddress? = nil,
                     amountIn: BigUInt,
                     path: [EthereumAddress]) {
-            
             self.from = from
             self.amountIn = amountIn
             self.path = path
@@ -86,16 +201,116 @@ final class SwapperViewModel: ObservableObject {
         }
     }
     
-    
-    init( /*walletManager: IWalletManager, adapterManager: AdapterManager*/ ) {
-        print("SwapperViewModel init")
+    /* function swapExactTokensForTokens(
+           uint amountIn,
+           uint amountOutMin,
+           address[] calldata path,
+           address to,
+           uint deadline
+     )*/
+    public struct SwapExactTokensForTokens_Params: ABIFunction {
+        public static let name = "swapExactTokensForTokens"
+        public let gasPrice: BigUInt? = 170000000000
+        public let gasLimit: BigUInt? = 300000
+        public var contract: EthereumAddress = EthereumAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
+        public let from: EthereumAddress?
 
-       
-        let keyStorage = EthereumKeyLocalStorage()
-        let account = try? EthereumAccount.create(keyStorage: keyStorage, keystorePassword: "MY_PASSWORD")
-        guard let clientUrl = URL(string: "https://mainnet.infura.io/v3/c2e6a983caf749619a8f593f2f19fab3") else { return }
-        self.client = EthereumClient(url: clientUrl)
+        public let amountIn: BigUInt
+        public let amountOutMin: BigUInt
+        public let path: [EthereumAddress]
+        public let to: EthereumAddress
+        public let deadline: BigUInt
         
+        public init(
+            from: EthereumAddress,
+            amountIn: BigUInt,
+            amountOutMin: BigUInt,
+            path: [EthereumAddress],
+            to: EthereumAddress,
+            deadline: BigUInt
+        ) {
+            self.from = from
+            self.amountIn = amountIn
+            self.amountOutMin = amountOutMin
+            self.path = path
+            self.to = to
+            self.deadline = deadline
+        }
+
+        public func encode(to encoder: ABIFunctionEncoder) throws {
+            try encoder.encode(amountIn)
+            try encoder.encode(amountOutMin)
+            try encoder.encode(path)
+            try encoder.encode(to)
+            try encoder.encode(deadline)
+        }
+    }
+    
+    public struct ApproveTokenToUniswap_Params: ABIFunction {
+        public static let name = "approve"
+        public let gasPrice: BigUInt? = 10000
+        public let gasLimit: BigUInt? = 100000
+        public var contract: EthereumAddress = EthereumAddress("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")
+        public let from: EthereumAddress?
+
+        public let to: EthereumAddress = EthereumAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
+        public let value: BigUInt
+
+        public init(contract: EthereumAddress,
+                    from: EthereumAddress,
+                    value: BigUInt) {
+            
+            self.contract = contract
+            self.from = from
+            self.value = value
+        }
+
+        public func encode(to encoder: ABIFunctionEncoder) throws {
+            try encoder.encode(to)
+            try encoder.encode(value)
+        }
+    }
+    
+    func initWeb3Account(){
+        let manager = Portal.shared.ethereumKitManager
+       
+        if self.initializedWeb3 {
+            return
+        }
+            
+        let key = manager.privateKey()
+        
+        if key == nil {
+            return;
+        }else{
+            self.initializedWeb3 = true
+        }
+                
+        let base64key = Data(key!.raw).base64EncodedString()
+        
+        print("USING KEY", key!.raw)
+                
+        let keyData = Data(base64Encoded: base64key)!
+        let keyStorage = EthereumKeyLocalStorage()
+        
+        do {
+            try keyStorage.storePrivateKey(key: keyData)
+            let storedData = try keyStorage.loadPrivateKey()
+            print("STORED KEY CORRECT?")
+            print(storedData == keyData)
+        } catch {
+            print("FAILED TO LOAD PRIVATE KEY")
+        }
+        
+        //let account = try? EthereumAccount.create(keyStorage: keyStorage, keystorePassword: "MY_PASSWORD")
+        let account = try! EthereumAccount(keyStorage: keyStorage)
+        self.account = account
+        print("ACCOUNT ADDRESS", account.address)
+        self.myaddress = account.address
+        //let account = try! EthereumAccount(keyStorage: keyStorage)
+    }
+    
+    func getBalance(){
         //get balance of user for token
         let balanceOf_Calldata = BalanceOf_Parameter(
             contract: EthereumAddress("0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2"),
@@ -122,15 +337,33 @@ final class SwapperViewModel: ObservableObject {
             }
           }
         )
+    }
+    
+    init( /*walletManager: IWalletManager, adapterManager: AdapterManager*/ ) {
+        print("SwapperViewModel init")
+            
+        self.account = nil
+        self.myaddress = EthereumAddress("0x00");
+        
+        guard let clientUrl = URL(string: "https://mainnet.infura.io/v3/c2e6a983caf749619a8f593f2f19fab3") else { return }
+        self.client = EthereumClient(url: clientUrl)
+        
         
         func getAmountsOut(param1: BigUInt) -> Future<BigUInt, Never> {
             return Future { [weak self] promisse in
                 
+                //self?.slippage = (BigUInt(10000000000000000)/param1).description + "%"
+                
+                let addressA : String = self?.selectionA.contractAddress ?? "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+                let addressB : String = self?.selectionB.contractAddress ?? "0x514910771af9ca656af840dff83e8264ecf986ca"
+                
                 let getAmountsOut_Calldata = GetAmountsOut_Params(
-                    amountIn: param1,
+                    amountIn: param1 * BigUInt(1e18),
                     path: [
-                        EthereumAddress("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"),
-                        EthereumAddress("0x514910771af9ca656af840dff83e8264ecf986ca")
+                        EthereumAddress(addressA),
+                                        //"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"),
+                        EthereumAddress(addressB)
+                                        //"0x514910771af9ca656af840dff83e8264ecf986ca")
                     ]
                 )
                 let tx2 = try? getAmountsOut_Calldata.transaction()
@@ -142,7 +375,6 @@ final class SwapperViewModel: ObservableObject {
                         return
                     }
                     
-                    
                     do{
                         let decoded = try ABIDecoder.decodeData(data, types: [ABIArray<BigUInt>.self])
                         let arr : [BigUInt] = try decoded[0].decodedArray()
@@ -152,10 +384,14 @@ final class SwapperViewModel: ObservableObject {
                             return
                         }
                         //completion(nil, ensAddress)
-                        let amount = arr.last
+                        var amount : BigUInt? = arr.last
+                        
+                        amount = amount! / BigUInt(1e18)
                         
                         print("AMOUNTS OUT")
                         print(arr)
+                        
+                        
                                                 
                         promisse(.success(amount!))
                         //self?.fiatValue = "\(amount)"
@@ -167,35 +403,12 @@ final class SwapperViewModel: ObservableObject {
             }
         }
         
-        /*.map { [weak self]  in
-            "\(($0 * (self?.price ?? 1.0)).rounded(toPlaces: 2))"
-        }*/
-        
-        /*$assetValue
-            .removeDuplicates()
-            .compactMap { BigUInt($0) }
-            .map { getAmountsOut(param1: $0) }
-            
-
-            //.sink { [weak self] value in
-            //    self?.fiatValue = "\(value)"
-            //}
-            .sink(
-                receiveCompletion: {
-                    print($0)
-                    //self?.fiatValue = $0
-                },receiveValue: {
-                    print($0)
-                    self.fiatValue = "\($0)"
-                }
-            )
-            .store(in: &subscriptions)*/
-        
         $assetValue
             .removeDuplicates()
             .compactMap { BigUInt($0) }
             .map{ getAmountsOut(param1: $0) }
             .sink { future in
+                self.initWeb3Account()
                 future.receive(on: RunLoop.main).sink { [weak self] in
                    self?.fiatValue = "\($0)"
                 }
@@ -218,6 +431,78 @@ final class SwapperViewModel: ObservableObject {
                 }
             }
             .store(in: &subscriptions)*/
+    }
+    
+    func approveToken() {
+        let myaccount = self.myaddress;
+        
+        let calldata = ApproveTokenToUniswap_Params(
+            contract: EthereumAddress(self.selectionA.contractAddress),
+            from: myaccount,
+            value: BigUInt( "0xffffffffffffffffffffffffffffffffff" )
+        )
+        let tx2 = try? calldata.transaction()
+        let account = self.account!
+                                        
+        self.client?.eth_sendRawTransaction(tx2!, withAccount: account) { (error, txHash) in
+            if(error != nil){
+                print("TX error?", error!)
+                //promisse(.success(0))
+            }else{
+                print("TX Hash: \(txHash!)")
+                //promisse(.success(1))
+            }
+        }
+    }
+    
+    
+    func doSwap(){
+        print("DOING SWAP")
+            
+        let amtIn = BigUInt( self.assetValue )
+        let amtOut = BigUInt( self.fiatValue )
+        
+        if(amtIn == nil){
+            print("invalid amount in")
+            return
+        }
+        if(amtOut == nil){
+            print("invalid amount out")
+            return
+        }
+        
+        let deadline : BigUInt = BigUInt(NSDate().timeIntervalSince1970 + 300)
+        print("DEADLINE TIMESTAMP", deadline)
+               
+        let calldata = SwapExactTokensForTokens_Params(
+            from: self.myaddress,
+            amountIn: amtIn!,
+            amountOutMin: amtOut!,
+            path: [
+                EthereumAddress(self.selectionA.contractAddress),//EthereumAddress("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"),
+                EthereumAddress(self.selectionB.contractAddress)//EthereumAddress("0x514910771af9ca656af840dff83e8264ecf986ca")
+            ],
+            to: self.myaddress,
+            deadline: deadline
+        )
+        let tx2 = try? calldata.transaction()
+        let account = self.account!
+                                        
+        print("SENDING TX")
+        self.client?.eth_sendRawTransaction(tx2!, withAccount: account) { (error, txHash) in
+            if(error != nil){
+                print("TX error?", error!)
+                //promisse(.success(0))
+            }else{
+                print("TX Hash: \(txHash!)")
+                //promisse(.success(1))
+            }
+        }
+    }
+    
+    func approveWeth(){
+        print("APPROVING WETH")
+        approveToken();
     }
     
     func onValueChanged(){
