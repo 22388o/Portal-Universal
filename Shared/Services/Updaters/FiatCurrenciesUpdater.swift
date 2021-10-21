@@ -31,6 +31,8 @@ final class FiatCurrenciesUpdater {
     
     private var subscriptions = Set<AnyCancellable>()
     
+    private var urlSession: URLSession
+    
     private var latestUrl: URL? {
         URL(string: "https://data.fixer.io/api/latest?access_key=\(apiKey)&base=USD")
     }
@@ -47,6 +49,12 @@ final class FiatCurrenciesUpdater {
         self.jsonDecoder = jsonDecoder
         self.timer = RepeatingTimer(timeInterval: interval)
         self.apiKey = fixerApiKey
+        
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        
+        self.urlSession = URLSession(configuration: config)
+        
         self.timer.eventHandler = { [unowned self] in
             self.updateRatesPublisher().combineLatest(self.updateSymbolsPublisher())
                 .sink { (completion) in
@@ -75,7 +83,7 @@ final class FiatCurrenciesUpdater {
             guard let url = latestUrl else {
                 return promise(.failure(.inconsistentBehavior))
             }
-            URLSession.shared.dataTaskPublisher(for: url)
+            urlSession.dataTaskPublisher(for: url)
                 .tryMap { $0.data }
                 .decode(type: FiatRatesResponse.self, decoder: jsonDecoder)
                 .sink { (completion) in
@@ -100,7 +108,7 @@ final class FiatCurrenciesUpdater {
             guard let url = symbolsUrl else {
                 return promise(.failure(.inconsistentBehavior))
             }
-            URLSession.shared.dataTaskPublisher(for: url)
+            urlSession.dataTaskPublisher(for: url)
                 .tryMap { $0.data }
                 .decode(type: FiatSymbols.self, decoder: jsonDecoder)
                 .sink { (completion) in
