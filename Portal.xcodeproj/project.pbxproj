@@ -391,6 +391,10 @@
 		755EBC2F272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
 		755EBC30272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
 		755EBC31272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
+		755EBC332721959200B56B89 /* IDBCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC322721959200B56B89 /* IDBCacheStorage.swift */; };
+		755EBC342721959200B56B89 /* IDBCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC322721959200B56B89 /* IDBCacheStorage.swift */; };
+		755EBC352721959200B56B89 /* IDBCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC322721959200B56B89 /* IDBCacheStorage.swift */; };
+		755EBC362721959200B56B89 /* IDBCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC322721959200B56B89 /* IDBCacheStorage.swift */; };
 		756A66AF262441B500353635 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66AE262441B500353635 /* PortfolioView.swift */; };
 		756A66B0262441B500353635 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66AE262441B500353635 /* PortfolioView.swift */; };
 		756A66B62624443A00353635 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66B52624443A00353635 /* PortfolioViewModel.swift */; };
@@ -840,6 +844,7 @@
 		755785AF260F7363000E1686 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		755785B6260F73A2000E1686 /* FiatCurrency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiatCurrency.swift; sourceTree = "<group>"; };
 		755EBC2D272194D400B56B89 /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
+		755EBC322721959200B56B89 /* IDBCacheStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDBCacheStorage.swift; sourceTree = "<group>"; };
 		756A66AE262441B500353635 /* PortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
 		756A66B52624443A00353635 /* PortfolioViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
 		756A66C02624850A00353635 /* SendAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetView.swift; sourceTree = "<group>"; };
@@ -1024,6 +1029,7 @@
 				75110D6B26A1FB3100BDD6C0 /* ISendEthereumAdapter.swift */,
 				75110D6826A1FAE000BDD6C0 /* IErc20Adapter.swift */,
 				75308AC626A022570024AACD /* IBDStorage.swift */,
+				755EBC322721959200B56B89 /* IDBCacheStorage.swift */,
 				75308ABC26A021C10024AACD /* ILocalStorage.swift */,
 				751B6554269D9924001B759C /* ITransactionAdapter.swift */,
 				750AE9A226149DD900C45971 /* IBalanceProvider.swift */,
@@ -2108,6 +2114,7 @@
 				752E531126FDDE6300FCDB0C /* KrakenPrivateApi.swift in Sources */,
 				755785B0260F7363000E1686 /* Enums.swift in Sources */,
 				750AE9CD26149DD900C45971 /* IWallet.swift in Sources */,
+				755EBC332721959200B56B89 /* IDBCacheStorage.swift in Sources */,
 				75110D6926A1FAE000BDD6C0 /* IErc20Adapter.swift in Sources */,
 				75308AD126A027E60024AACD /* IAppConfigProvider.swift in Sources */,
 				751B6558269D994D001B759C /* IDepositAdapter.swift in Sources */,
@@ -2204,6 +2211,7 @@
 				752E532626FDDE6400FCDB0C /* HTTPMethod.swift in Sources */,
 				758F3AEA26A9B89000F345E1 /* NotificationsView.swift in Sources */,
 				7555640C26D7A2AD001B1C1A /* ReceiveAssetViewModel.swift in Sources */,
+				755EBC342721959200B56B89 /* IDBCacheStorage.swift in Sources */,
 				751B6545269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */,
 				750D63C7268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */,
 				750AE9CA26149DD900C45971 /* IAsset.swift in Sources */,
@@ -2420,6 +2428,7 @@
 				7517F89426B1743F0020AECB /* CoinStorage.swift in Sources */,
 				750AE9B326149DD900C45971 /* ICoinKit.swift in Sources */,
 				75C95C182614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
+				755EBC352721959200B56B89 /* IDBCacheStorage.swift in Sources */,
 				75C95C202614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
 				7537DEDD2700B17200B862AB /* CoinbaseProApi.swift in Sources */,
 				750AE9CF26149DD900C45971 /* IWallet.swift in Sources */,
@@ -2510,6 +2519,7 @@
 				7517F89526B1743F0020AECB /* CoinStorage.swift in Sources */,
 				750AE9B426149DD900C45971 /* ICoinKit.swift in Sources */,
 				75C95C192614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
+				755EBC362721959200B56B89 /* IDBCacheStorage.swift in Sources */,
 				75C95C212614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
 				750AE9D026149DD900C45971 /* IWallet.swift in Sources */,
 				75F5CD812684C418005ECA5B /* Data+Extension.swift in Sources */,
