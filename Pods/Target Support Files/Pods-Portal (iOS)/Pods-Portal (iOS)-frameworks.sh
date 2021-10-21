@@ -180,6 +180,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/BitcoinCore-Universal.swift-iOS/BitcoinCore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/BitcoinKit-Universal.swift-iOS/BitcoinKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/BlueSocket-iOS/Socket.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Bugsnag-iOS/Bugsnag.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CNIOAtomics-iOS/CNIOAtomics.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CNIOBoringSSL-iOS/CNIOBoringSSL.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CNIOBoringSSLShims-iOS/CNIOBoringSSLShims.framework"
@@ -200,6 +201,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/HsToolKit-Universal.swift-iOS/HsToolKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/KeychainAccess-iOS/KeychainAccess.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Mixpanel-swift-iOS/Mixpanel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ObjectMapper-iOS/ObjectMapper.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OpenSslKit-Universal.swift-iOS/OpenSslKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework"
@@ -218,6 +220,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-iOS/NIOWebSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-iOS/UIExtensions.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/_NIODataStructures-iOS/_NIODataStructures.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/Helpshift/Helpshift.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -226,6 +229,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/BitcoinCore-Universal.swift-iOS/BitcoinCore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/BitcoinKit-Universal.swift-iOS/BitcoinKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/BlueSocket-iOS/Socket.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Bugsnag-iOS/Bugsnag.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CNIOAtomics-iOS/CNIOAtomics.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CNIOBoringSSL-iOS/CNIOBoringSSL.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CNIOBoringSSLShims-iOS/CNIOBoringSSLShims.framework"
@@ -246,6 +250,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/HsToolKit-Universal.swift-iOS/HsToolKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/KeychainAccess-iOS/KeychainAccess.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Mixpanel-swift-iOS/Mixpanel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ObjectMapper-iOS/ObjectMapper.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OpenSslKit-Universal.swift-iOS/OpenSslKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework"
@@ -264,6 +269,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-iOS/NIOWebSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-iOS/UIExtensions.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/_NIODataStructures-iOS/_NIODataStructures.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/Helpshift/Helpshift.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

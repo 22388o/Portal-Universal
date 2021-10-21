@@ -4,6 +4,7 @@ ${BUILT_PRODUCTS_DIR}/BigInt-iOS/BigInt.framework
 ${BUILT_PRODUCTS_DIR}/BitcoinCore-Universal.swift-iOS/BitcoinCore.framework
 ${BUILT_PRODUCTS_DIR}/BitcoinKit-Universal.swift-iOS/BitcoinKit.framework
 ${BUILT_PRODUCTS_DIR}/BlueSocket-iOS/Socket.framework
+${BUILT_PRODUCTS_DIR}/Bugsnag-iOS/Bugsnag.framework
 ${BUILT_PRODUCTS_DIR}/CNIOAtomics-iOS/CNIOAtomics.framework
 ${BUILT_PRODUCTS_DIR}/CNIOBoringSSL-iOS/CNIOBoringSSL.framework
 ${BUILT_PRODUCTS_DIR}/CNIOBoringSSLShims-iOS/CNIOBoringSSLShims.framework
@@ -24,6 +25,7 @@ ${BUILT_PRODUCTS_DIR}/Hodler-Universal.swift-iOS/Hodler.framework
 ${BUILT_PRODUCTS_DIR}/HsToolKit-Universal.swift-iOS/HsToolKit.framework
 ${BUILT_PRODUCTS_DIR}/KeychainAccess-iOS/KeychainAccess.framework
 ${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework
+${BUILT_PRODUCTS_DIR}/Mixpanel-swift-iOS/Mixpanel.framework
 ${BUILT_PRODUCTS_DIR}/ObjectMapper-iOS/ObjectMapper.framework
 ${BUILT_PRODUCTS_DIR}/OpenSslKit-Universal.swift-iOS/OpenSslKit.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework
@@ -42,4 +44,5 @@ ${BUILT_PRODUCTS_DIR}/SwiftNIOTLS-iOS/NIOTLS.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-iOS/NIOWebSocket.framework
 ${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-iOS/UIExtensions.framework
 ${BUILT_PRODUCTS_DIR}/_NIODataStructures-iOS/_NIODataStructures.framework
+${PODS_XCFRAMEWORKS_BUILD_DIR}/Helpshift/Helpshift.framework/Helpshift
 ${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL

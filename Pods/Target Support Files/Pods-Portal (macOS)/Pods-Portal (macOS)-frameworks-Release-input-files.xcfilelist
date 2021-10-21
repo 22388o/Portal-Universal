@@ -4,6 +4,7 @@ ${BUILT_PRODUCTS_DIR}/BigInt-macOS/BigInt.framework
 ${BUILT_PRODUCTS_DIR}/BitcoinCore-Universal.swift-macOS/BitcoinCore.framework
 ${BUILT_PRODUCTS_DIR}/BitcoinKit-Universal.swift-macOS/BitcoinKit.framework
 ${BUILT_PRODUCTS_DIR}/BlueSocket-macOS/Socket.framework
+${BUILT_PRODUCTS_DIR}/Bugsnag-macOS/Bugsnag.framework
 ${BUILT_PRODUCTS_DIR}/CNIOAtomics-macOS/CNIOAtomics.framework
 ${BUILT_PRODUCTS_DIR}/CNIOBoringSSL-macOS/CNIOBoringSSL.framework
 ${BUILT_PRODUCTS_DIR}/CNIOBoringSSLShims-macOS/CNIOBoringSSLShims.framework
@@ -24,6 +25,7 @@ ${BUILT_PRODUCTS_DIR}/Hodler-Universal.swift-macOS/Hodler.framework
 ${BUILT_PRODUCTS_DIR}/HsToolKit-Universal.swift-macOS/HsToolKit.framework
 ${BUILT_PRODUCTS_DIR}/KeychainAccess-macOS/KeychainAccess.framework
 ${BUILT_PRODUCTS_DIR}/Kingfisher-macOS/Kingfisher.framework
+${BUILT_PRODUCTS_DIR}/Mixpanel-swift-macOS/Mixpanel.framework
 ${BUILT_PRODUCTS_DIR}/ObjectMapper-macOS/ObjectMapper.framework
 ${BUILT_PRODUCTS_DIR}/OpenSslKit-Universal.swift-macOS/OpenSslKit.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift-macOS/RxSwift.framework
@@ -42,5 +44,6 @@ ${BUILT_PRODUCTS_DIR}/SwiftNIOTLS-macOS/NIOTLS.framework
 ${BUILT_PRODUCTS_DIR}/SwiftNIOWebSocket-macOS/NIOWebSocket.framework
 ${BUILT_PRODUCTS_DIR}/UIExtensions-Stripped.swift-macOS/UIExtensions.framework
 ${BUILT_PRODUCTS_DIR}/_NIODataStructures-macOS/_NIODataStructures.framework
+${PODS_ROOT}/HelpshiftMacOS/helpshift-sdk-macOS-v2.4.1/HelpshiftOSX.framework
 ${PODS_ROOT}/Sparkle/Sparkle.framework
 ${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL

@@ -1,0 +1,6 @@
+framework module HelpshiftOSX {
+  umbrella header "HelpshiftOSX.h"
+
+  export *
+  module * { export * }
+}

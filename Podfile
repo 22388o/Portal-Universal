@@ -21,6 +21,10 @@ def portal_shared_pods
   pod 'Kingfisher', '~> 6.3.0'
   #Soket framework
   pod 'Socket.IO-Client-Swift', '~> 15.2.0'
+  #Analytics
+  pod 'Mixpanel-swift'
+  #Error monitoring
+  pod 'Bugsnag'
 end
 
 
@@ -32,6 +36,9 @@ target 'Portal (iOS)' do
 
   # Pods for Portal (iOS)
   portal_shared_pods
+  
+  #User Feedback
+  pod 'Helpshift'
 
 end
 
@@ -42,8 +49,8 @@ target 'Portal (macOS)' do
   inhibit_all_warnings!
   
   pod 'Sparkle'
+  pod 'HelpshiftMacOS', '2.4.1'
   
   # Pods for Portal (macOS)
   portal_shared_pods
-
 end

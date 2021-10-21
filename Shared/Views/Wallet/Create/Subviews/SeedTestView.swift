@@ -26,7 +26,7 @@ struct SeedTestView: View {
                 .padding(.top, 30)
                 .padding(.bottom, 13)
             
-            Text("Let’s see if you wrote the seed correctly:\nenter the following words from your seed.")
+            Text("Let’s see if you wrote the seed correctly ... \nenter the following words from your seed.")
                 .font(.mainFont(size: 14))
                 .foregroundColor(.createWalletLabel)
                 .multilineTextAlignment(.center)
