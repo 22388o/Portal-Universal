@@ -20,22 +20,27 @@ final class MarketDataStorage: ObservableObject {
     
     private var mdUpdater: MarketDataUpdater
     private var fcUpdater: FiatCurrenciesUpdater
+    private var cacheStorage: IDBCacheStorage
     
     private var cancellables: Set<AnyCancellable> = []
     private var repository = Synchronized([CoinCode : CoinMarketData]())
     
-    var tickers: [Ticker]?
-    var fiatCurrencies: [FiatCurrency] = []
+    var tickers: [Ticker]? {
+        cacheStorage.tickers
+    }
+    
+    var fiatCurrencies: [FiatCurrency] {
+        cacheStorage.fiatCurrencies
+    }
     
     @Published var marketDataReady: Bool = false
-    @Published var tickersReady: Bool = false
     @Published var historicalDataReady: Bool = false
     @Published var dataReady: Bool = false
-    
         
-    init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater) {
+    init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater, cacheStorage: IDBCacheStorage) {
         self.mdUpdater = mdUpdater
         self.fcUpdater = fcUpdater
+        self.cacheStorage = cacheStorage
         
         bindServices()
     }
@@ -62,22 +67,24 @@ final class MarketDataStorage: ObservableObject {
             .receive(on: DispatchQueue.global(qos: .userInteractive))
             .sink(receiveValue: { [weak self] tickers in
                 guard let self = self else { return }
-                self.tickers = tickers
-                if !self.tickersReady {
-                    self.tickersReady = true
-                }
+                self.cacheStorage.store(tickers: self.tickers)
             })
             .store(in: &cancellables)
         
         fcUpdater.onUpdatePublisher
             .sink(receiveValue: { [weak self] currencies in
                 guard let self = self else { return }
-                self.fiatCurrencies = currencies.filter {
-                    self.supportedFiatCurrenciesSymbols.contains($0.code)}.sorted(by: {$0.code < $1.code})
-                })
-                .store(in: &cancellables)
+                
+                let fiatCurrencies = currencies.filter {
+                    self.supportedFiatCurrenciesSymbols.contains($0.code)
+                }
+                .sorted(by: {$0.code < $1.code})
+                
+                self.cacheStorage.store(fiatCurrencies: fiatCurrencies)
+            })
+            .store(in: &cancellables)
         
-        Publishers.MergeMany($historicalDataReady, $tickersReady, $marketDataReady)
+        Publishers.MergeMany($historicalDataReady, $marketDataReady)
             .sink { [weak self] ready in
                 self?.dataReady = ready
             }
