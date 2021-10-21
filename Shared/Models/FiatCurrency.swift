@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FiatCurrency {
+struct FiatCurrency: Codable {
     let code: String
     let name: String
     let rate: Double
