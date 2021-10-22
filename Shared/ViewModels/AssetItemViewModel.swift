@@ -18,7 +18,8 @@ final class AssetItemViewModel: ObservableObject {
     @Published private(set) var changeString = String()
     @Published private(set) var balanceString = String()
     @Published private(set) var adapterState: AdapterState = .notSynced(error: AdapterError.wrongParameters)
-    
+    @Published private(set) var syncProgressString: String = "Syncing... 1%"
+
     @Published var syncProgress: Float = 0.01
     
     private let notificationService: NotificationService
@@ -81,7 +82,7 @@ final class AssetItemViewModel: ObservableObject {
                     let progress = Float(currentProgress)/100
                     if self?.syncProgress != progress {
                         self?.syncProgress = progress
-                        print("\(coin.code) sync progress: \(currentProgress)")
+                        self?.syncProgressString = "Syncing... \(currentProgress)%"
                     }
                 }
                 if case .synced  = state {

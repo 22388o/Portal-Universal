@@ -40,5 +40,10 @@
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
 	<string>https://cryptomarket-api.herokuapp.com/appcast.xml</string>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>b871d4bebc15f24306830f9709074157</string>
+	</dict>
 </dict>
 </plist>

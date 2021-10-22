@@ -34,17 +34,7 @@ struct ReceiveAssetsView: View {
                         .stroke(Color.black, lineWidth: 1)
                 )
                 .offset(y: -32)
-            
-            HStack {
-                Spacer()
-                PButton(bgColor: Color.doneButtonBg, label: "Done", width: 73, height: 32, fontSize: 12, enabled: true) {
-                    withAnimation(.easeIn(duration: 0.2)) {
-                        state.receiveAsset.toggle()
-                    }
-                }
-            }
-            .padding([.top, .trailing], 16)
-            
+                        
             VStack(spacing: 0) {
                 VStack(spacing: 16) {
                     Text("Receive \(coin.name)")
