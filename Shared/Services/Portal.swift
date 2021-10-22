@@ -8,6 +8,7 @@
 import Foundation
 import KeychainAccess
 import Combine
+import CoreData
 
 final class Portal: ObservableObject {
     static let shared = Portal()

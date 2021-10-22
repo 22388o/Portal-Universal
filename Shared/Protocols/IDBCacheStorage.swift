@@ -6,6 +6,7 @@
 //
 
 import Coinpaprika
+import CoreData
 
 protocol IDBCacheStorage {
     var context: NSManagedObjectContext { get }
