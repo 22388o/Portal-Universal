@@ -9,7 +9,6 @@ import Foundation
 
 struct WalletItem {
     let id: UUID = UUID()
-    let coin: Coin
     let viewModel: AssetItemViewModel
 }
 
@@ -19,7 +18,7 @@ extension WalletItem: Hashable, Identifiable {
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(coin.code)
-        hasher.combine(coin.name)
+        hasher.combine(viewModel.coin.code)
+        hasher.combine(viewModel.coin.name)
     }
 }
