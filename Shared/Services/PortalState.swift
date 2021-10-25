@@ -55,4 +55,14 @@ class PortalState: ObservableObject {
             }
             .store(in: &anyCancellable)
     }
+    
+    func dismissModalView() {
+        receiveAsset = false
+        sendAsset = false
+        switchWallet = false
+        allTransactions = false
+        createAlert = false
+        allNotifications = false
+    }
+
 }
