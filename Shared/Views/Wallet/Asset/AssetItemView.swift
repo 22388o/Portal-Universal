@@ -37,12 +37,21 @@ struct AssetItemView: View {
                         }
                         .frame(width: 26, height: 26)
                         
-                        Text("\(viewModel.balance) \(coin.code)")
+                        if viewModel.adapterState != .synced {
+                            HStack {
+                                Text(viewModel.balanceString)
+                                Text(viewModel.syncProgressString)
+                                    .font(.mainFont(size: 16))
+                                    .foregroundColor(selected ? .gray : Color(red: 160/255, green: 190/255, blue: 186/255, opacity: 1))
+                            }
+                        } else {
+                            Text(viewModel.balanceString)
+                        }
                     }
                     
                     Spacer()
                     
-                    Text(viewModel.change)
+                    Text(viewModel.changeString)
                         .foregroundColor(viewModel.changeLabelColor)
                 }
                 .padding(.horizontal, 20)
