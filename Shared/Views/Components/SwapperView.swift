@@ -123,7 +123,7 @@ struct SwapperView: View {
                     PButton(label: "APPROVE SOURCE TOKEN", width: 444, height: 55, fontSize: 12, enabled: true) {
                         withAnimation(.easeIn(duration: 0.2)) {
                             print("Approve1")
-                            //viewModel.approveA()
+                            viewModel.approveToken()
                         }
                     }
                 }

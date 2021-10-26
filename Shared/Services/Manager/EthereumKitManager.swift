@@ -70,4 +70,9 @@ class EthereumKitManager {
         }
         return try? Kit.privateKey(seed: seed)
     }
+    
+    func publicKey() -> String? {
+        return evmKit?.address.hex
+    }
+    
 }

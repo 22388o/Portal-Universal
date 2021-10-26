@@ -31,8 +31,9 @@ final class SwapperViewModel: ObservableObject {
         Erc20Token( name:"ChainLink", symbol:"LINK", decimal:18,
             contractAddress:"0x514910771af9ca656af840dff83e8264ecf986ca",
             iconURL: "https://cryptologos.cc/logos/chainlink-link-logo.png"),
-        Erc20Token( name:"Wrapped Ether", symbol:"WETH",
-            decimal:18, contractAddress:"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        Erc20Token( name:"Wrapped Ether", symbol:"WETH", decimal:18,
+            //contractAddress:"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+            contractAddress: "0xc778417e063141139fce010982780140aa0cd5ab",
             iconURL: "https://cryptologos.cc/logos/ethereum-eth-logo.png"),
         Erc20Token( name:"BandToken", symbol:"BAND", decimal:18,
             contractAddress:"0xba11d00c5f74255f56a5e366f4f77f5a186d7f55",
@@ -43,19 +44,29 @@ final class SwapperViewModel: ObservableObject {
         Erc20Token( name:"Polygon", symbol:"MATIC", decimal:18,
             contractAddress:"0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
             iconURL: "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0/logo.png"),
+        Erc20Token( name:"Tether USD", symbol:"USDT", decimal:6,
+                    contractAddress: "0x110a13fc3efe6a245b50102d2d79b3e76125ae83",
+                    iconURL: "https://w7.pngwing.com/pngs/202/402/png-transparent-tether-cryptocurrency-price-market-capitalization-computer-icons-others-white-logo-author-thumbnail.png"),
+        Erc20Token( name: "DAI USD", symbol: "DAI", decimal:18,
+                    contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
+                    iconURL: "https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png")
     ]
     
     @Published var selectionA : Erc20Token = Erc20Token( name:"Wrapped Ether",
                                                          symbol:"WETH",
                                                          decimal:18,
-                                                         contractAddress:"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                                                         //contractAddress:"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                                                         contractAddress: "0xc778417e063141139fce010982780140aa0cd5ab",
                                                          iconURL: "https://cryptologos.cc/logos/ethereum-eth-logo.png")
     
     @Published var selectionB : Erc20Token = Erc20Token( name:"ChainLink",
-                                                         symbol:"LINK",
+                                                         symbol:"DAI",
                                                          decimal:18,
-                                                         contractAddress:"0x514910771af9ca656af840dff83e8264ecf986ca",
-                                                         iconURL: "https://cryptologos.cc/logos/chainlink-link-logo.png")
+                                                         //contractAddress:"0x514910771af9ca656af840dff83e8264ecf986ca",
+                                                         contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
+                                                         iconURL: "https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png"
+                                                            //"https://cryptologos.cc/logos/chainlink-link-logo.png"
+    )
     
 
     
@@ -248,21 +259,23 @@ final class SwapperViewModel: ObservableObject {
     
     public struct ApproveTokenToUniswap_Params: ABIFunction {
         public static let name = "approve"
-        public let gasPrice: BigUInt? = 10000
+        public let gasPrice: BigUInt? = 170000000000
         public let gasLimit: BigUInt? = 100000
-        public var contract: EthereumAddress = EthereumAddress("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")
+        public var contract: EthereumAddress = EthereumAddress("0xc778417e063141139fce010982780140aa0cd5ab")
         public let from: EthereumAddress?
 
-        public let to: EthereumAddress = EthereumAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
+        public let to: EthereumAddress// = EthereumAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
         public let value: BigUInt
 
         public init(contract: EthereumAddress,
                     from: EthereumAddress,
+                    to: EthereumAddress,
                     value: BigUInt) {
             
             self.contract = contract
             self.from = from
             self.value = value
+            self.to = to
         }
 
         public func encode(to encoder: ABIFunctionEncoder) throws {
@@ -279,14 +292,15 @@ final class SwapperViewModel: ObservableObject {
         }
             
         let key = manager.privateKey()
-        
+        let pubkey = manager.publicKey() //get public key for compare
+                    
         if key == nil {
             return;
         }else{
             self.initializedWeb3 = true
         }
                 
-        let base64key = Data(key!.raw).base64EncodedString()
+        let base64key = key!.raw.base64EncodedString() //TODO: figure out why it's deriving incorrect address
         
         print("USING KEY", key!.raw)
                 
@@ -305,7 +319,7 @@ final class SwapperViewModel: ObservableObject {
         //let account = try? EthereumAccount.create(keyStorage: keyStorage, keystorePassword: "MY_PASSWORD")
         let account = try! EthereumAccount(keyStorage: keyStorage)
         self.account = account
-        print("ACCOUNT ADDRESS", account.address)
+        print("ACCOUNT ADDRESS", account.address, pubkey) //TODO: make sure this address matches the Ethereum address in wallet
         self.myaddress = account.address
         //let account = try! EthereumAccount(keyStorage: keyStorage)
     }
@@ -345,7 +359,11 @@ final class SwapperViewModel: ObservableObject {
         self.account = nil
         self.myaddress = EthereumAddress("0x00");
         
-        guard let clientUrl = URL(string: "https://mainnet.infura.io/v3/c2e6a983caf749619a8f593f2f19fab3") else { return }
+        let infuraCreds = Portal.shared.appConfigProvider.infuraCredentials
+        print("INFURA CREDS", infuraCreds)
+        
+        //TODO: get base URL based on mainnet/testnet
+        guard let clientUrl = URL(string: "https://ropsten.infura.io/v3/" + infuraCreds.id) else { return }
         self.client = EthereumClient(url: clientUrl)
         
         
@@ -358,7 +376,7 @@ final class SwapperViewModel: ObservableObject {
                 let addressB : String = self?.selectionB.contractAddress ?? "0x514910771af9ca656af840dff83e8264ecf986ca"
                 
                 let getAmountsOut_Calldata = GetAmountsOut_Params(
-                    amountIn: param1 * BigUInt(1e18),
+                    amountIn: param1,// * BigUInt(1e18), //TODO convert to int and append up to 1eDECIMALS
                     path: [
                         EthereumAddress(addressA),
                                         //"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"),
@@ -386,7 +404,7 @@ final class SwapperViewModel: ObservableObject {
                         //completion(nil, ensAddress)
                         var amount : BigUInt? = arr.last
                         
-                        amount = amount! / BigUInt(1e18)
+                        amount = amount! // / BigUInt(1e18) //divide by 1eDECIMALS
                         
                         print("AMOUNTS OUT")
                         print(arr)
@@ -434,12 +452,18 @@ final class SwapperViewModel: ObservableObject {
     }
     
     func approveToken() {
+        initWeb3Account()
+        
         let myaccount = self.myaddress;
+        let target = EthereumAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
+        
+        print("APPROVING", self.selectionA.contractAddress, "TO", target)
         
         let calldata = ApproveTokenToUniswap_Params(
             contract: EthereumAddress(self.selectionA.contractAddress),
             from: myaccount,
-            value: BigUInt( "0xffffffffffffffffffffffffffffffffff" )
+            to: target,
+            value: BigUInt( 99999999999999999 )
         )
         let tx2 = try? calldata.transaction()
         let account = self.account!
