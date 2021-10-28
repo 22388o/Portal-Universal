@@ -67,7 +67,7 @@ final class MarketDataStorage: ObservableObject {
             .receive(on: DispatchQueue.global(qos: .userInteractive))
             .sink(receiveValue: { [weak self] tickers in
                 guard let self = self else { return }
-                self.cacheStorage.store(tickers: self.tickers)
+                self.cacheStorage.store(tickers: tickers)
             })
             .store(in: &cancellables)
         
