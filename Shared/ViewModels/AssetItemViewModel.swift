@@ -18,7 +18,7 @@ final class AssetItemViewModel: ObservableObject {
     @Published private(set) var changeString = String()
     @Published private(set) var balanceString = String()
     @Published private(set) var adapterState: AdapterState = .notSynced(error: AdapterError.wrongParameters)
-    @Published private(set) var syncProgressString: String = "Syncing... 1%"
+    @Published private(set) var syncProgressString = String()
 
     @Published var syncProgress: Float = 0.01
     
