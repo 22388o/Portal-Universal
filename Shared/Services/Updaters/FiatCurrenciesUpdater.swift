@@ -59,7 +59,7 @@ final class FiatCurrenciesUpdater {
             self.updateRatesPublisher().combineLatest(self.updateSymbolsPublisher())
                 .sink { (completion) in
                     if case let .failure(error) = completion {
-                        print(error.localizedDescription)
+                        print(error)
                     }
                 } receiveValue: { (rates, symbols) in
                     onUpdatePublisher.send(
@@ -88,10 +88,9 @@ final class FiatCurrenciesUpdater {
                 .decode(type: FiatRatesResponse.self, decoder: jsonDecoder)
                 .sink { (completion) in
                     if case let .failure(error) = completion {
-                        print(error.localizedDescription)
-                        promise(.failure(.networkError))
+                        promise(.failure(.error(error.localizedDescription)))
                     }
-                } receiveValue: { (response) in
+                } receiveValue: { response in
                     if response.success, let rates = response.rates {
                         promise(.success(rates))
                     } else {
@@ -113,8 +112,7 @@ final class FiatCurrenciesUpdater {
                 .decode(type: FiatSymbols.self, decoder: jsonDecoder)
                 .sink { (completion) in
                     if case let .failure(error) = completion {
-                        print(error.localizedDescription)
-                        promise(.failure(.networkError))
+                        promise(.failure(.error(error.localizedDescription)))
                     }
                 } receiveValue: { (response) in
                     if response.success, let symbols = response.symbols {
