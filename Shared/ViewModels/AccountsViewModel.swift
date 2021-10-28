@@ -27,17 +27,15 @@ class AccountsViewModel: ObservableObject {
     }
     
     func switchAccount(account: Account) {
-        state.switchWallet = false
-//        state.loading = true
-        state.selectedCoin = Coin.bitcoin()
-        
         setActiveAccount(id: account.id)
+        state.switchWallet = false
     }
     
     func setActiveAccount(id: String) {
         DispatchQueue.main.async {
             self.manager.setActiveAccount(id: id)
             self.activeAcount = self.manager.activeAccount
+            self.state.selectedCoin = Coin.bitcoin()
         }
     }
     
