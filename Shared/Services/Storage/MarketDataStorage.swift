@@ -16,7 +16,7 @@ final class MarketDataStorage: ObservableObject {
     typealias CurrencyCode = String
     typealias Rate = Double
     
-    private let supportedFiatCurrenciesSymbols = "JPY USD KRW EUR INR CAD RUB GBP CNY NZD SGD BTC"
+    private let supportedFiatCurrenciesSymbols = "JPY USD KRW EUR INR CAD RUB GBP CNY NZD SGD"
     
     private var mdUpdater: MarketDataUpdater
     private var fcUpdater: FiatCurrenciesUpdater
