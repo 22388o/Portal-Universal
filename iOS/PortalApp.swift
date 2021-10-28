@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct PortalApp: App {
+    
+    @UIApplicationDelegateAdaptor(PortalAppDelegate.self) private var appDelegate
 
     init() {
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white
