@@ -87,10 +87,12 @@ struct OrderBookView: View {
                         case .buy:
                             ForEach(orderBook.bids, id:\.id) { item in
                                 OrderBookItemView(item: item)
+                                    .id(item.id)
                             }
                         case .sell:
                             ForEach(orderBook.asks, id:\.id) { item in
                                 OrderBookItemView(item: item)
+                                    .id(item.id)
                             }
                         }
                     }
