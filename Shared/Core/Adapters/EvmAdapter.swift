@@ -13,8 +13,10 @@ import HsToolKit
 
 final class EvmAdapter: BaseEvmAdapter {
     static let decimal = 18
+    private var confirmationsThreshold: Int
 
-    init(evmKit: EthereumKit.Kit) {
+    init(evmKit: EthereumKit.Kit, confirmationsThreshold: Int) {
+        self.confirmationsThreshold = confirmationsThreshold
         super.init(evmKit: evmKit, decimal: EvmAdapter.decimal)
     }
 
@@ -61,7 +63,7 @@ final class EvmAdapter: BaseEvmAdapter {
                 interTransactionIndex: 0,
                 type: type,
                 blockHeight: receipt?.blockNumber,
-                confirmationsThreshold: BaseEvmAdapter.confirmationsThreshold,
+                confirmationsThreshold: confirmationsThreshold,
                 amount: abs(amount),
                 fee: receipt.map { Decimal(sign: .plus, exponent: -decimal, significand: Decimal($0.gasUsed * transaction.gasPrice)) },
                 date: Date(timeIntervalSince1970: Double(transaction.timestamp)),

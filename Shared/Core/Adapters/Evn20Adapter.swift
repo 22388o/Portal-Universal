@@ -13,14 +13,15 @@ import HsToolKit
 import class Erc20Kit.Transaction
 
 class Evm20Adapter: BaseEvmAdapter {
-    private static let approveConfirmationsThreshold: Int? = nil
     let evm20Kit: Erc20Kit.Kit
+    private let confirmationsThreshold: Int
     private let contractAddress: EthereumKit.Address
 
-    init(evmKit: EthereumKit.Kit, contractAddress: String, decimal: Int) throws {
+    init(evmKit: EthereumKit.Kit, contractAddress: String, decimal: Int, confirmationsThreshold: Int) throws {
         let address = try EthereumKit.Address(hex: contractAddress)
         evm20Kit = try Erc20Kit.Kit.instance(ethereumKit: evmKit, contractAddress: address)
         self.contractAddress = address
+        self.confirmationsThreshold = confirmationsThreshold
 
         super.init(evmKit: evmKit, decimal: decimal)
     }
@@ -31,7 +32,6 @@ class Evm20Adapter: BaseEvmAdapter {
 
         var type: TransactionType = .sentToSelf
         var amount: Decimal = 0
-        let confirmationsThreshold: Int? = BaseEvmAdapter.confirmationsThreshold
 
         if let significand = Decimal(string: transaction.value.description) {
             amount = Decimal(sign: .plus, exponent: -decimal, significand: significand)
