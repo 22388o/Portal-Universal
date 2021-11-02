@@ -12,7 +12,6 @@ import BigInt
 import HsToolKit
 
 class BaseEvmAdapter {
-    static let confirmationsThreshold = 0
     let evmKit: EthereumKit.Kit
 
     let decimal: Int
