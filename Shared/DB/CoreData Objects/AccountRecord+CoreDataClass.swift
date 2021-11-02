@@ -22,7 +22,12 @@ public class AccountRecord: NSManagedObject {
         
         self.id = id
         self.name = name
+        
+        self.btcNetwork = 1 //testNet
         self.btcBipFormat = Int16(bip.intValue)
+        
+        self.ethNetwork = 1 //ropsten
+        self.confirmationThreshold = 0
     }
     
     func updateFiatCurrency(_ currency: FiatCurrency) {

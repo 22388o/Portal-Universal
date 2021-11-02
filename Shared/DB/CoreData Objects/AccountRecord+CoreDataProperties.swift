@@ -15,8 +15,11 @@ extension AccountRecord {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<AccountRecord> {
         return NSFetchRequest<AccountRecord>(entityName: "AccountRecord")
     }
-
+    
+    @NSManaged public var btcNetwork: Int16
     @NSManaged public var btcBipFormat: Int16
+    @NSManaged public var ethNetwork: Int16
+    @NSManaged public var confirmationThreshold: Int16
     @NSManaged public var fiatCurrency: String
     @NSManaged public var id: String
     @NSManaged public var name: String
