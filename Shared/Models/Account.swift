@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import BitcoinKit
+import EthereumKit
 
 class Account: IAccount {
     let id: String
@@ -14,6 +16,13 @@ class Account: IAccount {
 
     private(set) var name: String
     private(set) var fiatCurrencyCode: String
+    
+    private let btcNetwork: Int
+    private let ethNetwork: Int
+
+    var confirmationsThreshold: Int
+    var btcNetworkType: BitcoinKit.Kit.NetworkType
+    var ethNetworkType: EthereumKit.NetworkType
 
     init(id: String, name: String, bip: MnemonicDerivation, type: AccountType) {
         self.id = id
@@ -21,6 +30,56 @@ class Account: IAccount {
         self.type = type
         self.fiatCurrencyCode = "USD"
         self.mnemonicDereviation = bip
+        self.btcNetwork = 1 //testNet
+        self.ethNetwork = 1 //ropsten
+        self.confirmationsThreshold = 0
+
+        switch btcNetwork {
+        case 0:
+            btcNetworkType = .mainNet
+        case 2:
+            btcNetworkType = .regTest
+        default:
+            btcNetworkType = .testNet
+        }
+
+        switch ethNetwork {
+        case 0:
+            ethNetworkType = .ethMainNet
+        case 2:
+            ethNetworkType = .kovan
+        default:
+            ethNetworkType = .ropsten
+        }
+    }
+    
+    init(record: AccountRecord, type: AccountType) {
+        self.id = record.id
+        self.name = record.name
+        self.type = type
+        self.fiatCurrencyCode = record.fiatCurrencyCode
+        self.mnemonicDereviation = record.bip
+        self.btcNetwork = Int(record.btcNetwork)
+        self.ethNetwork = Int(record.ethNetwork)
+        self.confirmationsThreshold = Int(record.confirmationThreshold)
+        
+        switch btcNetwork {
+        case 0:
+            btcNetworkType = .mainNet
+        case 2:
+            btcNetworkType = .regTest
+        default:
+            btcNetworkType = .testNet
+        }
+
+        switch ethNetwork {
+        case 0:
+            ethNetworkType = .ethMainNet
+        case 2:
+            ethNetworkType = .kovan
+        default:
+            ethNetworkType = .ropsten
+        }
     }
 }
 

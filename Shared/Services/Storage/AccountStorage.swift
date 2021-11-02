@@ -31,7 +31,7 @@ class AccountStorage {
 
         type = .mnemonic(words: words, salt: salt)
         
-        return Account(id: id, name: record.name, bip: record.bip, type: type)
+        return Account(record: record, type: type)
     }
 
     private func createRecord(account: Account) throws -> AccountRecord {
@@ -133,6 +133,9 @@ extension AccountStorage {
         localStorage.setCurrentAccountID(id)
     }
 
+    func update(account: Account) {
+        storage.update(account: account)
+    }
 }
 
 extension AccountStorage {
