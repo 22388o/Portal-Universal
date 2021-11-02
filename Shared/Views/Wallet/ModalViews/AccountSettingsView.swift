@@ -125,6 +125,19 @@ struct AccountSettingsView: View {
                 .padding(.horizontal)
                 .padding(.vertical, 8)
                 
+                VStack(spacing: 6) {
+                    HStack {
+                        Text("Infura API key:")
+                            .font(.mainFont(size: 12)).foregroundColor(Color.lightActiveLabel)
+                        Spacer()
+                    }
+                    
+                    TextField("Key", text: $viewModel.infuraKeyString)
+                }
+                .frame(height: 45)
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                
                 Spacer()
                 
                 PButton(label: "Apply", width: 80, height: 30, fontSize: 12, enabled: viewModel.canApplyChanges) {

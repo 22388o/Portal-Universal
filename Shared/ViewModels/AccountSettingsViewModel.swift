@@ -10,6 +10,7 @@ import BitcoinKit
 import EthereumKit
 
 final class AccountSettingsViewModel: ObservableObject {
+    private let storage: UserDefaults
     private let accountManager: IAccountManager
     private let adapterManager: IAdapterManager
     
@@ -19,10 +20,16 @@ final class AccountSettingsViewModel: ObservableObject {
     @Published var ethNetworkString: String = "ropsten"
     @Published var confirmationThreshold: Int = 1
     @Published var canApplyChanges: Bool = false
+    @Published var infuraKeyString: String = String()
     
     private var subscriptions = Set<AnyCancellable>()
     
+    private var infuraKey: String {
+        "\(account.id)_INFURA_KEY"
+    }
+    
     init(accountManager: IAccountManager, adapterManager: IAdapterManager) {
+        self.storage = UserDefaults.standard
         self.accountManager = accountManager
         self.adapterManager = adapterManager
         
@@ -57,9 +64,10 @@ final class AccountSettingsViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        Publishers.CombineLatest3($btcNetwork, $ethNetwork, $confirmationThreshold)
+        Publishers.CombineLatest4($btcNetwork, $ethNetwork, $confirmationThreshold, $infuraKeyString)
             .sink { [weak self] in
-                self?.canApplyChanges = account.btcNetworkType != $0 || account.ethNetworkType != $1 || account.confirmationsThreshold != $2
+                guard let self = self else { return }
+                self.canApplyChanges = account.btcNetworkType != $0 || account.ethNetworkType != $1 || account.confirmationsThreshold != $2 || self.storage.string(forKey: self.infuraKey) != $3
             }
             .store(in: &subscriptions)
         
@@ -72,12 +80,17 @@ final class AccountSettingsViewModel: ObservableObject {
         self.ethNetwork = account.ethNetworkType
         self.confirmationThreshold = account.confirmationsThreshold
         self.canApplyChanges = false
+        
+        if let key = storage.string(forKey: infuraKey) {
+            self.infuraKeyString = key
+        }
     }
     
     func applySettings() {
         account.btcNetworkType = btcNetwork
         account.ethNetworkType = ethNetwork
         account.confirmationsThreshold = confirmationThreshold
+        storage.setValue(infuraKeyString, forKey: infuraKey)
         
         accountManager.update(account: account)
     }
