@@ -63,7 +63,6 @@ extension PortalHeaderViewModel {
             accountManager: accountManager,
             notificationService: notificationService,
             reachabilityService: reachabilityService
-            
         )
     }
 }

@@ -8,14 +8,8 @@
 import SwiftUI
 
 struct NotificationsView: View {
-    @Binding var presented: Bool
-    
     @ObservedObject private var service = Portal.shared.notificationService
-    
-    init(presented: Binding<Bool>) {
-        self._presented = presented
-    }
-    
+        
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
@@ -69,7 +63,7 @@ struct NotificationsView: View {
 
 struct NotificationsView_Previews: PreviewProvider {
     static var previews: some View {
-        NotificationsView(presented: .constant(true))
+        NotificationsView()
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)
     }
