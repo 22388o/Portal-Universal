@@ -20,6 +20,7 @@ class PortalState: ObservableObject {
     @Published var createAlert: Bool = false
     @Published var allTransactions: Bool = false
     @Published var allNotifications: Bool = false
+    @Published var accountSettings: Bool = false
     @Published var searchRequest = String()
     @Published var modalViewIsPresented: Bool = false
     @Published var exchangeSceneState: PortalExchangeSceneState = .full
@@ -31,17 +32,7 @@ class PortalState: ObservableObject {
     @Published var fiatCurrency: FiatCurrency = USD
     
     private var anyCancellable = Set<AnyCancellable>()
-    
-    var scaleEffectRation: CGFloat {
-        if switchWallet {
-            return 0.45
-        } else if receiveAsset || sendAsset || allTransactions || createAlert {
-            return 0.98
-        } else {
-            return 1
-        }
-    }
-    
+        
     init() {
         #if os(macOS)
         self.exchangeSceneState = .full
@@ -49,7 +40,7 @@ class PortalState: ObservableObject {
         self.exchangeSceneState = UIScreen.main.bounds.width > 1180 ? .full : .compactRight
         #endif
 
-        Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert, $allNotifications)
+        Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert, $allNotifications, $accountSettings)
             .sink { [weak self] output in
                 self?.modalViewIsPresented = output
             }
@@ -63,6 +54,7 @@ class PortalState: ObservableObject {
         allTransactions = false
         createAlert = false
         allNotifications = false
+        accountSettings = false
     }
 
 }
