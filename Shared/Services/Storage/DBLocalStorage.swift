@@ -77,13 +77,17 @@ final class DBlocalStorage {
 
 extension DBlocalStorage: IDBStorage {
     func accountRecords() -> [AccountRecord] {
-        let request = AccountRecord.fetchRequest() as NSFetchRequest<AccountRecord>
-                
-        if let records = try? context.fetch(request) {
-            return records
-        } else {
-            return []
+        var accountRecords: [AccountRecord] = []
+        
+        context.performAndWait {
+            let request = AccountRecord.fetchRequest() as NSFetchRequest<AccountRecord>
+                    
+            if let records = try? context.fetch(request) {
+                accountRecords = records
+            }
         }
+        
+        return accountRecords
     }
         
     func delete(account: Account) throws {
@@ -99,18 +103,42 @@ extension DBlocalStorage: IDBStorage {
 
 extension DBlocalStorage: IAccountStorage {
     var allAccountRecords: [AccountRecord] {
-        let request = AccountRecord.fetchRequest() as NSFetchRequest<AccountRecord>
-        if let records = try? context.fetch(request) {
-            return records
-        } else {
-            return []
-        }
+        accountRecords()
     }
     
     func save(accountRecord: AccountRecord) {
         context.performAndWait {
             context.insert(accountRecord)
             try? context.save()
+        }
+    }
+    
+    func update(account: Account) {
+        context.performAndWait {
+            if let record = accountRecords().first(where: { $0.id == account.id }) {
+                switch account.btcNetworkType {
+                case .mainNet:
+                    record.btcNetwork = 0
+                case .regTest:
+                    record.btcNetwork = 2
+                default:
+                    record.btcNetwork = 1
+                }
+                
+                switch account.ethNetworkType {
+                case .ethMainNet:
+                    record.ethNetwork = 0
+                case .kovan:
+                    record.ethNetwork = 2
+                default:
+                    record.ethNetwork = 1
+                }
+                            
+                record.confirmationThreshold = Int16(account.confirmationsThreshold)
+                
+                try? context.save()
+            }
+            
         }
     }
     
@@ -139,6 +167,7 @@ extension DBlocalStorage: IDBCacheStorage {
                 print("Encoding error: \(error)")
             }
         }
+        
         self.tickers = tickers
     }
     
@@ -153,6 +182,7 @@ extension DBlocalStorage: IDBCacheStorage {
                 print("Encoding error: \(error)")
             }
         }
+        
         self.fiatCurrencies = fiatCurrencies
     }
 }
