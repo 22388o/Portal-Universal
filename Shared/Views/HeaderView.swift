@@ -45,6 +45,21 @@ struct HeaderView: View {
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.red)
                     }
+                    
+                    if viewModel.state.mainScene == .wallet {
+                        Button(action: {
+                            withAnimation(.easeIn(duration: 0.4)) {
+                                viewModel.state.accountSettings.toggle()
+                            }
+                        }, label: {
+                            Image("iconSettings")
+                                .resizable()
+                                .frame(width: 22, height: 22)
+                                .foregroundColor(Color.white.opacity(0.82))
+                        })
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                    
                     Button(action: {
                         withAnimation(.easeIn(duration: 0.4)) {
                             viewModel.markAllNotificationsViewed()
