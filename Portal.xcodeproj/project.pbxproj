@@ -137,6 +137,10 @@
 		751A1CE127306E460024586B /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A1CDF27306E460024586B /* AccountSettingsViewModel.swift */; };
 		751A1CE227306E460024586B /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A1CDF27306E460024586B /* AccountSettingsViewModel.swift */; };
 		751A1CE327306E460024586B /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A1CDF27306E460024586B /* AccountSettingsViewModel.swift */; };
+		751A1CE52732BDB60024586B /* BtcNetworkPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A1CE42732BDB50024586B /* BtcNetworkPicker.swift */; };
+		751A1CE72732BDE70024586B /* EthNetworkPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A1CE62732BDE70024586B /* EthNetworkPicker.swift */; };
+		751A1CE92732C06D0024586B /* BtcNetworkPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A1CE82732C06D0024586B /* BtcNetworkPicker.swift */; };
+		751A1CEB2732C15C0024586B /* EthNetworkPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A1CEA2732C15C0024586B /* EthNetworkPicker.swift */; };
 		751B6544269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6542269CA218001B759C /* BitcoinBaseAdapter.swift */; };
 		751B6545269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6542269CA218001B759C /* BitcoinBaseAdapter.swift */; };
 		751B6546269CA219001B759C /* BitcoinAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B6543269CA218001B759C /* BitcoinAdapter.swift */; };
@@ -734,6 +738,10 @@
 		7517F89F26B802960020AECB /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		7517F8A226B802DD0020AECB /* CoinImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinImageView.swift; sourceTree = "<group>"; };
 		751A1CDF27306E460024586B /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
+		751A1CE42732BDB50024586B /* BtcNetworkPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BtcNetworkPicker.swift; sourceTree = "<group>"; };
+		751A1CE62732BDE70024586B /* EthNetworkPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthNetworkPicker.swift; sourceTree = "<group>"; };
+		751A1CE82732C06D0024586B /* BtcNetworkPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BtcNetworkPicker.swift; sourceTree = "<group>"; };
+		751A1CEA2732C15C0024586B /* EthNetworkPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthNetworkPicker.swift; sourceTree = "<group>"; };
 		751B6542269CA218001B759C /* BitcoinBaseAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitcoinBaseAdapter.swift; sourceTree = "<group>"; };
 		751B6543269CA218001B759C /* BitcoinAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitcoinAdapter.swift; sourceTree = "<group>"; };
 		751B6548269D9711001B759C /* TransactionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRecord.swift; sourceTree = "<group>"; };
@@ -1225,6 +1233,8 @@
 				752229F62714343400003D3F /* TradingPairPicker.swift */,
 				752229FA271435C900003D3F /* ExchangePicker.swift */,
 				752229FE27145BA200003D3F /* ExchangeBalancePicker.swift */,
+				751A1CE42732BDB50024586B /* BtcNetworkPicker.swift */,
+				751A1CE62732BDE70024586B /* EthNetworkPicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1240,6 +1250,8 @@
 				752229F4271433FC00003D3F /* TradingPairPicker.swift */,
 				752229F8271434CC00003D3F /* ExchangePicker.swift */,
 				752229FC27145B1400003D3F /* ExchangeBalancePicker.swift */,
+				751A1CE82732C06D0024586B /* BtcNetworkPicker.swift */,
+				751A1CEA2732C15C0024586B /* EthNetworkPicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2005,6 +2017,7 @@
 				750AE8E72614992400C45971 /* MarketDataUpdater.swift in Sources */,
 				756C3C6A26EA8F84009530A9 /* ExchangeDataUpdater.swift in Sources */,
 				7555643D26DCED22001B1C1A /* OrderBookRouteSwitch.swift in Sources */,
+				751A1CEB2732C15C0024586B /* EthNetworkPicker.swift in Sources */,
 				75E7BD1D26DFA28C00AA6A3F /* ExchangeOrderModel.swift in Sources */,
 				756C3C7926EA9BE1009530A9 /* ExchangeBalanceItem.swift in Sources */,
 				756A66AF262441B500353635 /* PortfolioView.swift in Sources */,
@@ -2131,6 +2144,7 @@
 				755785B0260F7363000E1686 /* Enums.swift in Sources */,
 				750AE9CD26149DD900C45971 /* IWallet.swift in Sources */,
 				755EBC332721959200B56B89 /* IDBCacheStorage.swift in Sources */,
+				751A1CE92732C06D0024586B /* BtcNetworkPicker.swift in Sources */,
 				75110D6926A1FAE000BDD6C0 /* IErc20Adapter.swift in Sources */,
 				75308AD126A027E60024AACD /* IAppConfigProvider.swift in Sources */,
 				751B6558269D994D001B759C /* IDepositAdapter.swift in Sources */,
@@ -2199,6 +2213,7 @@
 				75110D6A26A1FAE000BDD6C0 /* IErc20Adapter.swift in Sources */,
 				75984F2F2648219B002CD1EA /* RestoreAccountView.swift in Sources */,
 				7555640626D798D5001B1C1A /* LineChartRepresentable.swift in Sources */,
+				751A1CE72732BDE70024586B /* EthNetworkPicker.swift in Sources */,
 				751B655C269D999F001B759C /* LastBlockInfo.swift in Sources */,
 				75BEB20C26B96AE200C99F50 /* ERC20TokensUpdater.swift in Sources */,
 				756C3C7D26EA9C1D009530A9 /* MarketLimitSwitch.swift in Sources */,
@@ -2274,6 +2289,7 @@
 				75308AC826A022570024AACD /* IBDStorage.swift in Sources */,
 				7556940526A6B15C00EE5CC4 /* WalletViewModel.swift in Sources */,
 				756C66B52640363500CD22B2 /* AlertsView.swift in Sources */,
+				751A1CE52732BDB60024586B /* BtcNetworkPicker.swift in Sources */,
 				750AE8E82614992400C45971 /* MarketDataUpdater.swift in Sources */,
 				756A66B0262441B500353635 /* PortfolioView.swift in Sources */,
 				750AE9BA26149DD900C45971 /* IKeyChainStorage.swift in Sources */,

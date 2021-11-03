@@ -41,98 +41,38 @@ struct AccountSettingsView: View {
                             .font(.mainFont(size: 14))
                     }
                 }
-                .padding(.top)
+                .padding([.top, .horizontal])
                 
-                VStack(spacing: 6) {
-                    HStack {
-                        Text("Bitcoin network:")
-                            .font(.mainFont(size: 12)).foregroundColor(Color.lightActiveLabel)
-                        Spacer()
-                    }
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 4)
-                            .foregroundColor(Color.black.opacity(0.05))
-                        
+                Group {
+                    VStack(spacing: 6) {
                         HStack {
-                            Text(viewModel.btcNetwork.rawValue)
-                                .font(.mainFont(size: 12))
-                                .foregroundColor(Color.lightActiveLabel)
+                            Text("Bitcoin network:")
+                                .font(.mainFont(size: 12)).foregroundColor(Color.lightActiveLabel)
                             Spacer()
-                            Image("optionArrowDownDark")
                         }
-                        .padding(.horizontal, 6)
                         
-                        MenuButton(
-                            label: EmptyView(),
-                            content: {
-                                Button("mainNet") {
-                                    viewModel.btcNetwork = .mainNet
-                                }
-                                Button("testNet") {
-                                    viewModel.btcNetwork = .testNet
-                                }
-                                Button("regTest") {
-                                    viewModel.btcNetwork = .regTest
-                                }
-                            }
-                        )
-                        .menuButtonStyle(BorderlessButtonMenuButtonStyle())
+                        BtcNetworkPicker(btcNetwork: $viewModel.btcNetwork)
                     }
-                }
-                .frame(height: 45)
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-                                
-                VStack(spacing: 6) {
-                    HStack {
-                        Text("Ethereum network:")
-                            .font(.mainFont(size: 12)).foregroundColor(Color.lightActiveLabel)
-                        Spacer()
-                    }
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 4)
-                            .foregroundColor(Color.black.opacity(0.05))
-                        
+                                    
+                    VStack(spacing: 6) {
                         HStack {
-                            Text(viewModel.ethNetworkString)
-                                .font(.mainFont(size: 12))
-                                .foregroundColor(Color.lightActiveLabel)
+                            Text("Ethereum network:")
+                                .font(.mainFont(size: 12)).foregroundColor(Color.lightActiveLabel)
                             Spacer()
-                            Image("optionArrowDownDark")
                         }
-                        .padding(.horizontal, 6)
                         
-                        MenuButton(
-                            label: EmptyView(),
-                            content: {
-                                Button("mainNet") {
-                                    viewModel.ethNetwork = .ethMainNet
-                                }
-                                Button("ropsten") {
-                                    viewModel.ethNetwork = .ropsten
-                                }
-                                Button("kovan") {
-                                    viewModel.ethNetwork = .kovan
-                                }
-                            }
-                        )
-                        .menuButtonStyle(BorderlessButtonMenuButtonStyle())
-                    }
-                }
-                .frame(height: 45)
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-                
-                VStack(spacing: 6) {
-                    HStack {
-                        Text("Infura API key:")
-                            .font(.mainFont(size: 12)).foregroundColor(Color.lightActiveLabel)
-                        Spacer()
+                        EthNetworkPicker(ethNetwork: $viewModel.ethNetwork, description: viewModel.ethNetworkString)
                     }
                     
-                    TextField("Key", text: $viewModel.infuraKeyString)
+                    VStack(spacing: 6) {
+                        HStack {
+                            Text("Infura API key:")
+                                .font(.mainFont(size: 12)).foregroundColor(Color.lightActiveLabel)
+                            Spacer()
+                        }
+                        
+                        TextField("Key", text: $viewModel.infuraKeyString)
+                    }
                 }
                 .frame(height: 45)
                 .padding(.horizontal)
@@ -150,8 +90,16 @@ struct AccountSettingsView: View {
                 .padding()
             }
         }
-        .frame(width: 216, height: 333)
+        .frame(width: settingsWidth, height: 333)
         .transition(.move(edge: .leading))
+    }
+    
+    private var settingsWidth: CGFloat {
+        #if os(iOS)
+        300
+        #else
+        216
+        #endif
     }
 }
 
