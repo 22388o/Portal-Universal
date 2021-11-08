@@ -22,6 +22,7 @@ struct PortfolioView: View {
                     high: "$0.0",
                     low: "$0.0",
                     chartDataEntries: viewModel.chartDataEntries,
+                    landscape: true,
                     type: .portfolio
                 )
                 .padding(.top, 12)
