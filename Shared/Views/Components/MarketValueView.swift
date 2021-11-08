@@ -18,6 +18,7 @@ struct MarketValueView: View {
     let high: String
     let low: String
     let chartDataEntries: [ChartDataEntry]
+    let landscape: Bool
     
     let type: AssetMarketValueViewType
 
@@ -49,7 +50,7 @@ struct MarketValueView: View {
             }
             
             LineChartRepresentable(chartDataEntries: chartDataEntries)
-                .frame(height: 106)
+                .frame(height: landscape ? 106 : 160)
                 .padding(.top, 20)
             
             HStack(spacing: 40) {
@@ -114,16 +115,11 @@ struct AssetMarketValueView_Previews: PreviewProvider {
                 ChartDataEntry(x: 22.0, y: 7233.47),
                 ChartDataEntry(x: 23.0, y: 7234.02)
             ],
+            landscape: true,
             type: .asset
         )
         .frame(width: 304)
         .previewLayout(PreviewLayout.sizeThatFits)
         .padding()
-//        .background(
-//            ZStack {
-//                Color.portalGradientBackground
-//                Color.black.opacity(0.58)
-//            }
-//        )
     }
 }
