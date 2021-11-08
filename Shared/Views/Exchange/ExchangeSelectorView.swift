@@ -11,6 +11,7 @@ struct ExchangeSelectorView: View {
     @Binding var state: PortalExchangeSceneState
     @Binding var selectorState: ExchangeSelectorState
     let exchanges: [ExchangeModel]
+    let panelWidth: CGFloat
     
     var body: some View {
         VStack(spacing: 0) {
@@ -42,7 +43,7 @@ struct ExchangeSelectorView: View {
                 .foregroundColor(Color.white.opacity(0.10))
                 .frame(height: 1)
         }
-        .padding(.horizontal, 32)
+        .padding(.horizontal, panelWidth == 320 ? 32 : 20)
         .frame(height: 101)
     }
 }
@@ -50,9 +51,9 @@ struct ExchangeSelectorView: View {
 struct ExchangeSelectorView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ExchangeSelectorView(state: .constant(.full), selectorState: .constant(.merged), exchanges: [ExchangeModel.binanceMock(), ExchangeModel.coinbaseMock()])
-            ExchangeSelectorView(state: .constant(.compactRight), selectorState: .constant(.selected(exchange: ExchangeModel.binanceMock())), exchanges: [ExchangeModel.binanceMock(), ExchangeModel.coinbaseMock()])
-            ExchangeSelectorView(state: .constant(.compactLeft), selectorState: .constant(.selected(exchange: ExchangeModel.binanceMock())), exchanges: [ExchangeModel.binanceMock()])
+            ExchangeSelectorView(state: .constant(.full), selectorState: .constant(.merged), exchanges: [ExchangeModel.binanceMock(), ExchangeModel.coinbaseMock()], panelWidth: 320)
+            ExchangeSelectorView(state: .constant(.compactRight), selectorState: .constant(.selected(exchange: ExchangeModel.binanceMock())), exchanges: [ExchangeModel.binanceMock(), ExchangeModel.coinbaseMock()], panelWidth: 320)
+            ExchangeSelectorView(state: .constant(.compactLeft), selectorState: .constant(.selected(exchange: ExchangeModel.binanceMock())), exchanges: [ExchangeModel.binanceMock()], panelWidth: 320)
         }
     }
 }

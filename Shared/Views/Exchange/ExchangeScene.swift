@@ -8,7 +8,71 @@
 import SwiftUI
 
 struct ExchangeScene: View {
+    @ObservedObject var state: PortalState
     @ObservedObject var viewModel: ExchangeViewModel
+    
+    private var paddingForState: Edge.Set {
+        switch viewModel.state.exchangeSceneState {
+        case .full:
+            return [.vertical, .trailing]
+        case .compactLeft:
+            return .all
+        case .compactRight:
+            return [.vertical, .trailing]
+        }
+    }
+    
+    private var leftPanelWidth: CGFloat {
+        #if os(iOS)
+        switch state.orientation {
+        case .portrait, .portraitUpsideDown, .faceUp, .faceDown:
+            return 210
+        default:
+            return 320
+        }
+        #else
+        return 320
+        #endif
+    }
+    
+    private var rigthPanelWidth: CGFloat {
+        #if os(iOS)
+        switch state.orientation {
+        case .portrait, .portraitUpsideDown, .faceUp, .faceDown:
+            return 210
+        default:
+            return 350
+        }
+        #else
+        return 350
+        #endif
+    }
+    
+    private var marketViewWidth: CGFloat {
+        #if os(iOS)
+        switch state.orientation {
+        case .portrait, .portraitUpsideDown, .faceUp, .faceDown:
+            return 400
+        default:
+            return 606
+        }
+        #else
+        return 606
+        #endif
+    }
+    
+    private var buySellViewWidth: CGFloat {
+        #if os(iOS)
+        switch state.orientation {
+        case .portrait, .portraitUpsideDown, .faceUp, .faceDown:
+            return 205
+        default:
+            return 256
+        }
+        #else
+        return 256
+        #endif
+    }
     
     var body: some View {
         if viewModel.isLoggedIn {
@@ -18,24 +82,27 @@ struct ExchangeScene: View {
                         ExchangeSelectorView(
                             state: $viewModel.state.exchangeSceneState,
                             selectorState: $viewModel.exchangeSelectorState,
-                            exchanges: viewModel.syncedExchanges
+                            exchanges: viewModel.syncedExchanges,
+                            panelWidth: leftPanelWidth
                         )
                         
                         TradingPairView(
                             traidingPairs: viewModel.tradingPairsForSelectedExchange,
                             selectedPair: $viewModel.currentPair,
-                            searchRequest: $viewModel.searchRequest
+                            searchRequest: $viewModel.searchRequest,
+                            panelWidth: leftPanelWidth
                         )
                         
                         ExchangeBalancesView(
                             exchanges: viewModel.syncedExchanges,
                             tradingPairs: viewModel.allTraidingPairs,
-                            state: $viewModel.exchangeBalancesSelectorState
+                            state: $viewModel.exchangeBalancesSelectorState,
+                            panelWidth: leftPanelWidth
                         )
                         
                         Spacer()
                     }
-                    .frame(width: 320)
+                    .frame(width: leftPanelWidth)
                 }
 
                 ZStack {
@@ -48,7 +115,7 @@ struct ExchangeScene: View {
                                 tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
                                 tradingData: viewModel.tradingData
                             )
-                            .frame(minWidth: 606, minHeight: 224)
+                            .frame(minWidth: marketViewWidth, minHeight: 224)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             
                             ExchangeMarketDataView(ticker: viewModel.currentPairTicker)
@@ -63,7 +130,7 @@ struct ExchangeScene: View {
                                         viewModel.placeOrder(type: type, side: side, amount: amount, price: price)
                                     }
                                 )
-                                .frame(minWidth: 256, maxWidth: .infinity)
+                                .frame(minWidth: buySellViewWidth, maxWidth: .infinity)
                                 .frame(height: 256)
                                 
                                 BuySellView(
@@ -75,7 +142,7 @@ struct ExchangeScene: View {
                                         viewModel.placeOrder(type: type, side: side, amount: amount, price: price)
                                     }
                                 )
-                                .frame(minWidth: 256, maxWidth: .infinity)
+                                .frame(minWidth: buySellViewWidth, maxWidth: .infinity)
                                 .frame(height: 256)
                             }
                             .padding(.horizontal, 32)
@@ -93,7 +160,7 @@ struct ExchangeScene: View {
                                     tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
                                     state: $viewModel.state.exchangeSceneState
                                 )
-                                .frame(width: 350)
+                                .frame(width: rigthPanelWidth)//350
                                 .frame(minHeight: 374, maxHeight: .infinity)
 
                                 MyOrdersView(
@@ -102,34 +169,23 @@ struct ExchangeScene: View {
                                         viewModel.cancel(order: order)
                                     }
                                 )
-                                .frame(width: 350, height: 256)
+                                .frame(width: rigthPanelWidth, height: 256)
                             }
 
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .padding(paddingForState(), 8)
+                .padding(paddingForState, 8)
             }
         } else {
             ExchangeSetup(viewModel: viewModel.setup)
-        }
-    }
-    
-    private func paddingForState() -> Edge.Set {
-        switch viewModel.state.exchangeSceneState {
-        case .full:
-            return [.vertical, .trailing]
-        case .compactLeft:
-            return .all
-        case .compactRight:
-            return [.vertical, .trailing]
         }
     }
 }
 
 struct ExchangeScene_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangeScene(viewModel: ExchangeViewModel.config())
+        ExchangeScene(state: PortalState(), viewModel: ExchangeViewModel.config())
     }
 }

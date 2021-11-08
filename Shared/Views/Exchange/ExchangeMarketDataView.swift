@@ -35,6 +35,7 @@ struct ExchangeMarketDataView: View {
             
             Spacer()
         }
+        .lineLimit(1)
         .font(.mainFont(size: 12, bold: false))
         .foregroundColor(Color.gray)
         .padding(.horizontal, 32)
