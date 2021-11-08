@@ -32,12 +32,30 @@ class PortalState: ObservableObject {
     @Published var fiatCurrency: FiatCurrency = USD
     
     private var anyCancellable = Set<AnyCancellable>()
+    #if os(iOS)
+    @Published var orientation = UIDeviceOrientation.unknown
+    #endif
         
     init() {
         #if os(macOS)
         self.exchangeSceneState = .full
         #else
         self.exchangeSceneState = UIScreen.main.bounds.width > 1180 ? .full : .compactRight
+        
+        self.orientation = UIDevice.current.orientation
+
+        NotificationCenter
+            .default
+            .publisher(for: UIDevice.orientationDidChangeNotification)
+            .map { _ in
+                UIDevice.current.orientation
+            }
+            .sink { [weak self] orientation in
+                if orientation.isValidInterfaceOrientation {
+                    self?.orientation = orientation
+                }
+            }
+            .store(in: &anyCancellable)
         #endif
 
         Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert, $allNotifications, $accountSettings)
