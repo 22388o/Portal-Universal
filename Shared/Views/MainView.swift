@@ -19,15 +19,36 @@ struct MainView: View {
             
             switch state.mainScene {
             case .wallet:
+                #if os(macOS)
                 HStack(spacing: 0) {
                     WalletView(state: state, viewModel: walletViewModel)
-                    AssetView(viewModel: assetViewModel)
+                    AssetViewLandscape(viewModel: assetViewModel)
                         .zIndex(0)
                         .padding([.top, .trailing, .bottom], 8)
                 }
+                #else
+                VStack(spacing: 0) {
+                    HStack(spacing: 0) {
+                        WalletView(state: state, viewModel: walletViewModel)
+
+                        if state.orientation == .landscapeLeft || state.orientation == .landscapeRight {
+                            AssetViewLandscape(viewModel: assetViewModel)
+                                .id(UUID())
+                                .padding([.top, .trailing, .bottom], 8)
+
+                        }
+                    }
+                    if state.orientation == .portrait || state.orientation == .portraitUpsideDown || state.orientation == .faceDown || state.orientation == .faceUp {
+                        AssetViewPortrait(viewModel: assetViewModel)
+                            .id(UUID())
+                            .frame(height: 640)
+                            .padding(.all, 8)
+                    }
+                }
+                #endif
             case .exchange:
                 if Portal.shared.reachabilityService.isReachable {
-                    ExchangeScene(viewModel: exchangeViewModel)
+                    ExchangeScene(state: state, viewModel: exchangeViewModel)
                 } else {
                     Text("Exchanges aren't avalible.")
                         .foregroundColor(Color.red)
