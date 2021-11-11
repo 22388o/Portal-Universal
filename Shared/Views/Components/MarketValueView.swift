@@ -26,7 +26,7 @@ struct MarketValueView: View {
         VStack {
             TimeframeButtonsView(type: type, timeframe: $timeframe)
                 .offset(x: -2)
-                .padding(.top)
+                .padding([.top, .horizontal])
             
             VStack {
                 VStack(spacing: 6) {
