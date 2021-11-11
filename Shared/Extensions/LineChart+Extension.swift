@@ -30,7 +30,17 @@ extension LineChartView {
         yaxis.enabled = false
         
         let xaxis = getAxis(YAxis.AxisDependency.right)
-        xaxis.drawLabelsEnabled = false
+        xaxis.drawLabelsEnabled = true
         xaxis.enabled = false
+        
+        autoScaleMinMaxEnabled = true
+        setScaleEnabled(false)
+        doubleTapToZoomEnabled = false
+        highlightPerTapEnabled = true
+        highlightPerDragEnabled = false
+        
+        let marker = LineChartMarkerView()
+        marker.chartView = self
+        self.marker = marker
     }
 }

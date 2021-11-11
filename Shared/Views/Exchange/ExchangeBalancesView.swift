@@ -23,8 +23,8 @@ enum BalaceSelectorState {
 struct ExchangeBalancesView: View {
     let exchanges: [ExchangeModel]
     let tradingPairs: [TradingPairModel]
-//    let balances: [ExchangeBalanceModel]
     @Binding var state: BalaceSelectorState
+    let panelWidth: CGFloat
     
     private var balances: [ExchangeBalanceModel] {
         switch state {
@@ -54,7 +54,7 @@ struct ExchangeBalancesView: View {
                 .padding(.horizontal, 32)
                 
                 ExchangeBalancePicker(state: $state, exchanges: exchanges)
-                    .padding(.horizontal, 32)
+                    .padding(.horizontal, panelWidth == 320 ? 32 : 20)
                     .padding(.bottom, 6)
                 
                 List(balances, id:\.id) { balance in
@@ -67,7 +67,7 @@ struct ExchangeBalancesView: View {
                     .contentShape(Rectangle())
                 }
                 .listStyle(SidebarListStyle())
-                .padding(.horizontal, 15)
+                .padding(.horizontal, panelWidth == 320 ? 15 : 2)
                 
                 Spacer()
             }
@@ -78,6 +78,6 @@ struct ExchangeBalancesView: View {
 
 struct ExchangeBalancesView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangeBalancesView(exchanges: [], tradingPairs: [], state: .constant(.merged))
+        ExchangeBalancesView(exchanges: [], tradingPairs: [], state: .constant(.merged), panelWidth: 320)
     }
 }

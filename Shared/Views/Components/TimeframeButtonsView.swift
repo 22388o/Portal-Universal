@@ -12,7 +12,7 @@ struct TimeframeButtonsView: View {
     @Binding var timeframe: Timeframe
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack {
             Button(action: {
                 timeframe = .day
             }) {
@@ -21,7 +21,8 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .day)
                     )
             }
-            .frame(width: 60)
+            
+            Spacer()
             
             Button(action: {
                 timeframe = .week
@@ -31,7 +32,8 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .week)
                     )
             }
-            .frame(width: 60)
+            
+            Spacer()
 
             Button(action: {
                 timeframe = .month
@@ -41,7 +43,8 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .month)
                     )
             }
-            .frame(width: 60)
+            
+            Spacer()
             
             Button(action: {
                 timeframe = .year
@@ -51,7 +54,6 @@ struct TimeframeButtonsView: View {
                         TimeframeButton(type: type, isSelected: timeframe == .year)
                     )
             }
-            .frame(width: 60)
         }
         .buttonStyle(BorderlessButtonStyle())
     }

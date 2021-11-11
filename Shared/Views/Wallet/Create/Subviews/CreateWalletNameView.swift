@@ -78,7 +78,7 @@ struct CreateWalletNameView: View {
                 Spacer()
             }
         }
-        .frame(minWidth: 450)
+        .frame(minWidth: 400)
         .frame(minHeight: 600)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  AssetView.swift
+//  AssetViewLandscape.swift
 //  Portal
 //
 //  Created by Farid on 10.04.2021.
@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 import Coinpaprika
 
-struct AssetView: View {
+struct AssetViewLandscape: View {
     @ObservedObject private var viewModel: AssetViewModel
     @ObservedObject private var state = Portal.shared.state
         
@@ -88,6 +88,7 @@ struct AssetView: View {
                         high: viewModel.dayHigh,
                         low: viewModel.dayLow,
                         chartDataEntries: viewModel.chartDataEntries,
+                        landscape: true,
                         type: .asset
                     )
                 case .transactions:
@@ -105,12 +106,12 @@ struct AssetView: View {
     }
 }
 
-struct AssetView_Previews: PreviewProvider {
+struct AssetViewLandscape_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            AssetView(viewModel: AssetViewModel.config())
+            AssetViewLandscape(viewModel: AssetViewModel.config())
         }
         .frame(width: 304, height: 656)
         .previewLayout(PreviewLayout.sizeThatFits)

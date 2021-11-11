@@ -11,6 +11,7 @@ struct TradingPairView: View {
     let traidingPairs: [TradingPairModel]
     @Binding var selectedPair: TradingPairModel?
     @Binding var searchRequest: String
+    let panelWidth: CGFloat
             
     var body: some View {
         VStack(spacing: 0) {
@@ -37,7 +38,7 @@ struct TradingPairView: View {
                 
                 PairSearchField(search: $searchRequest)
             }
-            .padding(.horizontal, 32)
+            .padding(.horizontal, panelWidth == 320 ? 32 : 20)
             
             List(tradingPairsToShow(), id:\.id) { tradingPair in
                 TradingPairItem(traidingPair: tradingPair, selected: isSelected(tradingPair))
@@ -48,7 +49,7 @@ struct TradingPairView: View {
                     }
             }
             .listStyle(SidebarListStyle())
-            .padding(.horizontal, 15)
+            .padding(.horizontal, panelWidth == 320 ? 15 : 2)
         }
     }
     
@@ -67,6 +68,6 @@ struct TradingPairView: View {
 
 struct TradingPairView_Previews: PreviewProvider {
     static var previews: some View {
-        TradingPairView(traidingPairs: [], selectedPair: .constant(TradingPairModel.mltBtc()), searchRequest: .constant(""))
+        TradingPairView(traidingPairs: [], selectedPair: .constant(TradingPairModel.mltBtc()), searchRequest: .constant(""), panelWidth: 320)
     }
 }

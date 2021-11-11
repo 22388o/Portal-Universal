@@ -52,7 +52,6 @@ struct ExchangeMarketView: View {
             .padding(.horizontal, 32)
             
             WebView(symbol: tradingPair.exchanger(tradingData?.exchange?.id.lowercased() ?? "")?.sym ?? "")
-//                .frame(minHeight: 224)
                 .padding(.horizontal, 20)
                 .padding(.bottom, 22)
         }
