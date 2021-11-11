@@ -46,12 +46,22 @@ struct StoreSeedView: View {
                 
                 Spacer().frame(height: 60)
                 
-                PButton(label: "Next", width: 180, height: 48, fontSize: 15, enabled: true) {
-                    withAnimation {
-                        viewModel.walletCreationStep = .test
+                HStack(spacing: 12) {
+                    PButton(label: "Next", width: 140, height: 40, fontSize: 15, enabled: true) {
+                        withAnimation {
+                            viewModel.walletCreationStep = .test
+                        }
                     }
+                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                    
+                    Text("Copy to clipboard")
+                        .underline()
+                        .foregroundColor(Color.txListTxType)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            viewModel.copyToClipboard()
+                        }
                 }
-                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
             }
             
             ZStack {
