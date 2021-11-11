@@ -25,9 +25,10 @@ extension Array where Element: ChartDataEntry {
         ]
         #endif
         
-        ds.highlightEnabled = false
+        ds.highlightEnabled = true
         ds.mode = .cubicBezier
         ds.drawHorizontalHighlightIndicatorEnabled = false
+        ds.drawVerticalHighlightIndicatorEnabled = false
         
         ds.drawCirclesEnabled = false
         ds.lineWidth = 2.5
