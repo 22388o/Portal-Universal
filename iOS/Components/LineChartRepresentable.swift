@@ -10,12 +10,16 @@ import Charts
 
 struct LineChartRepresentable: UIViewRepresentable {
     let chartDataEntries: [ChartDataEntry]
-    
+        
     func makeUIView(context: Context) -> LineChartView {
         let lineChart = LineChartView()
         lineChart.applyStandardSettings()
                 
         updateChartData(lineChart: lineChart)
+        
+        let marker = LineChartMarkerView()
+        marker.chartView = lineChart
+        lineChart.marker = marker
         
         return lineChart
     }
@@ -33,7 +37,7 @@ struct LineChartRepresentable: UIViewRepresentable {
         let maxValue = chartDataEntries.map{$0.y}.max()
         
         if maxValue != nil {
-//            dataSet.gradientPositions = [0, CGFloat(maxValue!)]
+            dataSet.gradientPositions = [0, CGFloat(maxValue!)]
             lineChart.data = data
             lineChart.notifyDataSetChanged()
         }
