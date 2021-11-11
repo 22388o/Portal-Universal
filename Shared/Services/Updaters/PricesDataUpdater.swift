@@ -17,12 +17,18 @@ final class PricesDataUpdater: IPricesData {
     private let jsonDecoder: JSONDecoder
     private let timer: RepeatingTimer
     private var task: URLSessionTask?
+    private var urlSession: URLSession
         
     init(
         jsonDecoder: JSONDecoder = JSONDecoder(),
         interval: TimeInterval
     ) {
         self.jsonDecoder = jsonDecoder
+        
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        
+        self.urlSession = URLSession(configuration: config)
 
         self.timer = RepeatingTimer(timeInterval: interval)
         self.timer.eventHandler = { [weak self] in
@@ -46,7 +52,7 @@ final class PricesDataUpdater: IPricesData {
             competionHandler(.failure(.missingURL))
             return
         }
-        task = URLSession.shared.dataTask(with: url) { data, response, error in
+        task = urlSession.dataTask(with: url) { data, response, error in
             switch (data, error) {
             case (_, .some):
                 competionHandler(.failure(.networkError))

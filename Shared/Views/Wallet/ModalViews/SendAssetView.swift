@@ -124,7 +124,7 @@ struct SendAssetView: View {
                     
                     ScrollView {
                         LazyVStack_(alignment: .leading) {
-                            ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.uid) { tx in
+                            ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.transactionHash) { tx in
                                 VStack(spacing: 0) {
                                     HStack(spacing: 0) {
                                         HStack {
@@ -153,6 +153,7 @@ struct SendAssetView: View {
                                     
                                     Divider()
                                 }
+                                .id(tx.transactionHash)
                                 .foregroundColor(.coinViewRouteButtonInactive)
                                 .frame(maxWidth: .infinity)
                             }

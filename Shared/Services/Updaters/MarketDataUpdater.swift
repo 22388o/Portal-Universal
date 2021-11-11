@@ -15,35 +15,45 @@ final class MarketDataUpdater {
     let onUpdateHistoricalDataPublisher = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
     let onTickersUpdatePublisher = PassthroughSubject<([Ticker]), Never>()
     
-    private(set) var tickers: [Ticker]?
+    private(set) var tickers: [Ticker]
+    private var reachability: ReachabilityService
 
-    init() {
-        fetchTickers()
+    init(cachedTickers: [Ticker], reachability: ReachabilityService) {
+        self.tickers = cachedTickers
+        self.reachability = reachability
+        
+        updateTickers()
+        updateTickerHistory()
     }
         
-    private func fetchTickers() {
+    private func updateTickers() {
+        guard reachability.isReachable else { return }
+        print("Fetching tickers")
+        
         Coinpaprika.API.tickers(quotes: [.usd, .btc, .eth])
             .perform { [unowned self] (response) in
                 switch response {
                 case .success(let tickers):
                     self.tickers = tickers
                     self.onTickersUpdatePublisher.send(tickers)
-                    self.tickerHistory()
                 case .failure(let error):
                     print(error)
                 }
             }
     }
     
-    private func tickerHistory() {
+    private func updateTickerHistory() {
+        guard reachability.isReachable else { return }
+
         let coins =  [Coin.bitcoin(), Coin.ethereum()]
         let coinPaprikaCoinIds = coins.compactMap { (coin) -> String? in
-            tickers?.first(where: { (ticker) -> Bool in
+            tickers.first(where: { (ticker) -> Bool in
                 coin.name.lowercased() == ticker.name.lowercased()
             })?.id
         }
 
         for (index, id) in coinPaprikaCoinIds.enumerated() {
+            print("Fetching ticker history \(id)")
             Coinpaprika.API.coinLatestOhlcv(id: id, quote: .usd)
                 .perform { (response) in
                     switch response {
@@ -57,7 +67,9 @@ final class MarketDataUpdater {
     }
     
     func requestHistoricalMarketData(coin: Coin, timeframe: Timeframe) {
-        guard let coinPaprikaId = tickers?.first(where: { (ticker) -> Bool in
+        guard reachability.isReachable else { return }
+
+        guard let coinPaprikaId = tickers.first(where: { (ticker) -> Bool in
             coin.code.lowercased() == ticker.symbol.lowercased()
         })?.id else { return }
                 

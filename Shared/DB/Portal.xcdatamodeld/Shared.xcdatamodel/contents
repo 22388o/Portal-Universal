@@ -2,11 +2,19 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccountRecord" representedClassName="AccountRecord" syncable="YES">
         <attribute name="btcBipFormat" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="btcNetwork" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="confirmationThreshold" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="ethNetwork" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="fiatCurrency" optional="YES" attributeType="String" defaultValueString="USD"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="DBCache" representedClassName="DBCache" syncable="YES" codeGenerationType="class">
+        <attribute name="fiatCurrenciesData" optional="YES" attributeType="Binary"/>
+        <attribute name="tickersData" optional="YES" attributeType="Binary"/>
+    </entity>
     <elements>
-        <element name="AccountRecord" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="89"/>
+        <element name="AccountRecord" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="134"/>
+        <element name="DBCache" positionX="-657.4296875" positionY="99.34375" width="128" height="59"/>
     </elements>
 </model>

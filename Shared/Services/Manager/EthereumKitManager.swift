@@ -28,7 +28,7 @@ final class EthereumKitManager {
             throw AdapterError.unsupportedAccount
         }
         
-        let networkType = self.networkType
+        let networkType = account.ethNetworkType
 
         guard let syncSource = EthereumKit.Kit.infuraWebsocketSyncSource(
             networkType: networkType,
@@ -56,10 +56,6 @@ final class EthereumKitManager {
         currentAccount = account
         
         return evmKit
-    }
-
-    var networkType: NetworkType {
-        .ropsten
     }
 
     var statusInfo: [(String, Any)]? {

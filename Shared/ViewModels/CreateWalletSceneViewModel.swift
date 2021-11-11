@@ -37,7 +37,7 @@ final class CreateWalletSceneViewModel: ObservableObject {
         print("\(#function) deinit")
     }
     
-    var account: Account? {
+    var account: Account {
         Account(id: UUID().uuidString, name: walletName, bip: mnemonicDereviation, type: type)
     }
     

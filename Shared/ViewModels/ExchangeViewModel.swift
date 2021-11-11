@@ -85,7 +85,7 @@ final class ExchangeViewModel: ObservableObject {
             })
             .store(in: &subscriptions)
         
-        Publishers.Merge(manager.$tradingPairs, manager.$tradingPairs)
+        manager.$tradingPairs
             .delay(for: .seconds(0.01), scheduler: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
                 guard let self = self else { return }

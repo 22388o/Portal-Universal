@@ -15,6 +15,8 @@ final class ERC20TokensUpdater {
     
     private let jsonDecoder: JSONDecoder
     private var subscriptions = Set<AnyCancellable>()
+    
+    private var urlSession: URLSession
         
     private var url: URL? {
         URL(string: "https://cryptomarket-api.herokuapp.com/erc20_token_list")
@@ -22,6 +24,12 @@ final class ERC20TokensUpdater {
     
     init(jsonDecoder: JSONDecoder = JSONDecoder()) {
         self.jsonDecoder = jsonDecoder
+        
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        
+        self.urlSession = URLSession(configuration: config)
+        
         updateErc20TokensData()
     }
     
@@ -36,7 +44,7 @@ final class ERC20TokensUpdater {
     private func updateErc20TokensData() {
         guard let url = self.url else { return }
         
-        URLSession.shared.dataTaskPublisher(for: url)
+        urlSession.dataTaskPublisher(for: url)
             .tryMap { $0.data }
             .decode(type: [String : Erc20TokenCodable].self, decoder: jsonDecoder)
             .sink { [weak self] completion in

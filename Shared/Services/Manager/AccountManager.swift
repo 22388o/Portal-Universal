@@ -63,7 +63,9 @@ extension AccountManager: IAccountManager {
     }
     
     func update(account: Account) {
-        
+        accountStorage.update(account: account)
+        nextActiveAccount()
+        setActiveAccount(id: account.id)
     }
     
     func clear() {

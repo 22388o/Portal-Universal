@@ -51,7 +51,7 @@ class WalletViewModel: ObservableObject {
             let coin = wallet.coin
             guard let adapter = adapterManager.balanceAdapter(for: wallet) else { return nil }
             let viewModel = AssetItemViewModel.config(coin: coin, adapter: adapter)
-            return WalletItem(coin: coin, viewModel: viewModel)
+            return WalletItem(viewModel: viewModel)
         })
     }
     

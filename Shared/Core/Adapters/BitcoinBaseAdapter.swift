@@ -13,7 +13,7 @@ import RxSwift
 import HsToolKit
 
 class BitcoinBaseAdapter {
-    static let confirmationsThreshold = 0
+    private var confirmationsThreshold: Int
 
     private let abstractKit: AbstractKit
     private let coinRate: Decimal = pow(10, 8)
@@ -30,8 +30,9 @@ class BitcoinBaseAdapter {
     }
     private(set) var transactionState: AdapterState
 
-    init(abstractKit: AbstractKit) {
+    init(abstractKit: AbstractKit, confirmationsThreshold: Int) {
         self.abstractKit = abstractKit
+        self.confirmationsThreshold = confirmationsThreshold
 
         balanceState = .notSynced(error: AppError.unknownError)
         transactionState = balanceState
@@ -113,7 +114,7 @@ class BitcoinBaseAdapter {
                 interTransactionIndex: 0,
                 type: type,
                 blockHeight: transaction.blockHeight,
-                confirmationsThreshold: Self.confirmationsThreshold,
+                confirmationsThreshold: confirmationsThreshold,
                 amount: Decimal(abs(amount)) / coinRate,
                 fee: transaction.fee.map { Decimal($0) / coinRate },
                 date: Date(timeIntervalSince1970: Double(transaction.timestamp)),

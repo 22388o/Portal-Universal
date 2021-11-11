@@ -26,10 +26,10 @@ final class CoinStorage: ICoinStorage {
     }
     
     private func subscribe() {
-        updater.onTokensUpdatePublisher.combineLatest(marketData.$tickersReady)
-            .sink { [weak self] tokens, ready in
+        updater.onTokensUpdatePublisher//.combineLatest(marketData.$tickersReady)
+            .sink { [weak self] tokens in
                 guard let self = self else { return }
-                if ready && !tokens.isEmpty {
+                if !tokens.isEmpty {
                     let coins = tokens.compactMap {
                         Coin(
                             type: .erc20(address: $0.contractAddress),

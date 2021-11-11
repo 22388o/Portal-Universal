@@ -83,6 +83,8 @@ struct AssetTxView: View {
                                             selectedTx = tx
                                         }
                                     }
+                                    .id(tx.transactionHash)
+                                    
                                     Divider()
                                 }
                             }

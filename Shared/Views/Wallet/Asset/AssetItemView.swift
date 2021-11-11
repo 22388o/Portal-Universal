@@ -9,12 +9,10 @@ import SwiftUI
 
 struct AssetItemView: View {
     @ObservedObject private var viewModel: AssetItemViewModel
-    let coin: Coin
     let selected: Bool
     let onTap: () -> ()
             
-    init(coin: Coin, viewModel: AssetItemViewModel, selected: Bool, onTap: @escaping () -> ()) {
-        self.coin = coin
+    init(viewModel: AssetItemViewModel, selected: Bool, onTap: @escaping () -> ()) {
         self.viewModel = viewModel
         self.selected = selected
         self.onTap = onTap
@@ -56,7 +54,7 @@ struct AssetItemView: View {
                 }
                 .padding(.horizontal, 20)
                 
-                Text(viewModel.totalValue)
+                Text(viewModel.totalValueString)
                     .transition(.identity)
             }
             .font(.mainFont(size: 18))
@@ -74,14 +72,12 @@ struct AssetItemView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             AssetItemView(
-                coin: Coin.bitcoin(),
                 viewModel: AssetItemViewModel.config(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter()),
                 selected: true,
                 onTap: {}
             )
             
             AssetItemView(
-                coin: Coin.bitcoin(),
                 viewModel: AssetItemViewModel.config(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter()),
                 selected: false,
                 onTap: {}

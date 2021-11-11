@@ -12,7 +12,6 @@ struct NotificationView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            Image("plus.circle")
             VStack(alignment: .leading) {
                 Text(notification.message)
                     .foregroundColor(Color.lightActiveLabel)

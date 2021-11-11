@@ -34,7 +34,7 @@ struct RecentTxsView: View {
                     .foregroundColor(Color.coinViewRouteButtonActive)
                     .padding(.vertical)
                 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     LazyVStack_(alignment: .leading, spacing: 0) {
                         Rectangle()
                             .fill(Color.exchangerFieldBorder)
@@ -63,6 +63,7 @@ struct RecentTxsView: View {
                                 }
                             }
                             .frame(height: 56)
+                            .id(tx.transactionHash)
                             
                             Rectangle()
                                 .fill(Color.exchangerFieldBorder)

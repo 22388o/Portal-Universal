@@ -85,10 +85,12 @@ struct MyOrdersView: View {
                                 OrderItemView(order: order, isOpen: true, onCancel: {
                                     onOrderCancel(order)
                                 })
+                                .id(order.id)
                             }
                         case .history:
                             ForEach(orders.filter{ $0.status == "closed" || $0.status == "FILLED" || $0.status == "CANCELED"}, id:\.id) { order in
                                 OrderItemView(order: order, isOpen: false, onCancel: {})
+                                    .id(order.id)
                             }
                         }
                     }

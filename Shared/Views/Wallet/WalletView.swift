@@ -49,12 +49,11 @@ struct WalletView: View {
                     if state.searchRequest.isEmpty {
                         List(viewModel.items) { item in
                             AssetItemView(
-                                coin: item.coin,
                                 viewModel: item.viewModel,
-                                selected: state.selectedCoin.code == item.coin.code,
+                                selected: state.selectedCoin.code == item.viewModel.coin.code,
                                 onTap: {
-                                    if item.coin.code != state.selectedCoin.code {
-                                        state.selectedCoin = item.coin
+                                    if item.viewModel.coin.code != state.selectedCoin.code {
+                                        state.selectedCoin = item.viewModel.coin
                                     }
                                 }
                             )
@@ -66,15 +65,14 @@ struct WalletView: View {
                         .listStyle(SidebarListStyle())
                     } else {
                         List(viewModel.items.filter {
-                                $0.coin.code.lowercased().contains(state.searchRequest.lowercased()) ||
-                                    $0.coin.name.lowercased().contains(state.searchRequest.lowercased())}) { item in
+                                $0.viewModel.coin.code.lowercased().contains(state.searchRequest.lowercased()) ||
+                                    $0.viewModel.coin.name.lowercased().contains(state.searchRequest.lowercased())}) { item in
                             AssetItemView(
-                                coin: item.coin,
                                 viewModel: item.viewModel,
-                                selected: state.selectedCoin.code == item.coin.code,
+                                selected: state.selectedCoin.code == item.viewModel.coin.code,
                                 onTap: {
-                                    if item.coin.code != state.selectedCoin.code {
-                                        state.selectedCoin = item.coin
+                                    if item.viewModel.coin.code != state.selectedCoin.code {
+                                        state.selectedCoin = item.viewModel.coin
                                     }
                                 }
                             )

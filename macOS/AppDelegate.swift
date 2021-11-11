@@ -18,7 +18,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let contentView = RootView()
-            .environmentObject(Portal.shared.marketDataProvider)
             .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
 
         window = NSWindow(

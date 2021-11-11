@@ -95,7 +95,9 @@ final class SendAssetViewModel: ObservableObject {
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] records in
-                self?.transactions.append(contentsOf: records.filter{ $0.type != .incoming })
+                guard let self = self else { return }
+                let updatedTxs = records.filter{ !self.transactions.contains($0) }
+                self.transactions.append(contentsOf: updatedTxs.filter{ $0.type != .incoming })
             })
             .disposed(by: disposeBag)
         

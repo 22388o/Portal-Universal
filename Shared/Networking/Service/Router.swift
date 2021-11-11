@@ -20,8 +20,15 @@ protocol NetworkRouter {
 
 class Router<EndPoint: EndPointType>: NetworkRouter, BinanceRequestConfig, CoinbaseProRequestConfig, KrakenRequestConfig {
     private var task: URLSessionTask?
-    private let session = URLSession(configuration: .default)
+    private let session: URLSession
     private let networkQueue = DispatchQueue(label: "com.portal.network.layer.queue")
+    
+    init() {
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        
+        session = URLSession(configuration: config)
+    }
     
     func request(_ route: EndPoint, completion: @escaping NetworkRouterCompletion) {
         networkQueue.async { [weak self] in

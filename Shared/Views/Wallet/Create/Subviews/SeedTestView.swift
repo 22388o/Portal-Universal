@@ -73,7 +73,7 @@ struct SeedTestView: View {
                         state.loading = true
                     }
                     DispatchQueue.global(qos: .userInitiated).async {
-                        accountManager.save(account: viewModel.account!)
+                        accountManager.save(account: viewModel.account)
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)

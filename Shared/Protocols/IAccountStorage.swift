@@ -12,6 +12,7 @@ protocol IAccountStorage {
     var context: NSManagedObjectContext { get }
     var allAccountRecords: [AccountRecord] { get }
     func save(accountRecord: AccountRecord)
+    func update(account: Account)
     func deleteAccountRecord(by id: String)
     func deleteAllAccountRecords()
 }

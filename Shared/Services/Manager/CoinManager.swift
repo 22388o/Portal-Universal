@@ -19,7 +19,10 @@ final class CoinManager: ICoinManager {
     init(storage: ICoinStorage) {
         self.storage = storage
         
-        subscribe()
+        self.coins = [Coin.bitcoin(), Coin.ethereum(), Coin.portal()]
+        self.onCoinsUpdatePublisher.send(self.coins)
+            
+//        subscribe()
     }
     
     private func subscribe() {

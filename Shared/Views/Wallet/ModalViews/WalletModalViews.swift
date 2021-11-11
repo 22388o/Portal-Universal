@@ -37,7 +37,14 @@ struct WalletModalViews: View {
             }
             
             if state.allNotifications {
-                NotificationsView(presented: $state.allNotifications)
+                NotificationsView()
+                    .animation(nil)
+                    .padding(.top, 24)
+                    .padding(.trailing, 24)
+            }
+            
+            if state.accountSettings {
+                AccountSettingsView()
                     .animation(nil)
                     .padding(.top, 24)
                     .padding(.trailing, 24)

@@ -65,17 +65,6 @@ struct RestoreAccountView: View {
                                 .font(.mainFont(size: 18))
                             PTextField(text: $viewModel.accountName, placeholder: "Enter account name", upperCase: true, width: 360, height: 40)
                         }
-                        VStack(alignment: .leading, spacing: 7) {
-                            Text("BTC address format")
-                                .font(.mainFont(size: 18))
-                            Picker("", selection: $viewModel.btcAddressFormat) {
-                                ForEach(0 ..< BtcAddressFormat.allCases.count) { index in
-                                    Text(BtcAddressFormat.allCases[index].description).tag(index)
-                                }
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                        }
-                        .frame(width: 360, height: 40)
                     }
                     .foregroundColor(Color.lightActiveLabel)
                     .padding(.top, 20)

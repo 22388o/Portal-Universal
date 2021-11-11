@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Combine
+import RxSwift
 import Charts
 import Coinpaprika
 
@@ -28,7 +29,8 @@ final class AssetViewModel: ObservableObject {
     @Published var loadingData: Bool = false
     @Published var route: AssetViewRoute = .value
         
-    private let queue = DispatchQueue.main
+    private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
+    private let disposeBag = DisposeBag()
     private var subscriptions = Set<AnyCancellable>()
     private var fiatCurrency: FiatCurrency
     
@@ -55,10 +57,7 @@ final class AssetViewModel: ObservableObject {
         self.adapterManager = adapterManager
         self.fiatCurrency = state.fiatCurrency
         self.marketDataProvider = marketDataProvider
-        
-        self.updateAdapter()
-        self.updateValues()
-                
+                                
         $selectedTimeframe
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
@@ -75,6 +74,7 @@ final class AssetViewModel: ObservableObject {
         
         $loadingData
             .dropFirst()
+            .receive(on: RunLoop.main)
             .sink { [weak self] loading in
                 if !loading {
                     self?.chartDataEntries = self?.assetChartDataEntries() ?? []
@@ -105,13 +105,21 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func updateAdapter() {
-        if let wallet = Portal.shared.walletManager.activeWallets.first(where: { $0.coin == self.coin }),
-           let adapter = Portal.shared.adapterManager.balanceAdapter(for: wallet) {
+        if let wallet = walletManager.activeWallets.first(where: { $0.coin == self.coin }),
+           let adapter = adapterManager.balanceAdapter(for: wallet) {
             self.adapter = adapter
             canSend = adapter.balance > 0
         } else {
             adapter = nil
         }
+        
+        adapter?.balanceUpdatedObservable
+            .subscribeOn(serialQueueScheduler)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.updateValues()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func updateValues() {
@@ -190,6 +198,8 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func assetChartDataEntries() -> [ChartDataEntry] {
+        guard Portal.shared.reachabilityService.isReachable else { return [] }
+        
         var chartDataEntries = [ChartDataEntry]()
         var points = [Decimal]()
         

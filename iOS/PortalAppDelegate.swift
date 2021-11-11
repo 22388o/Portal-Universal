@@ -52,16 +52,18 @@ extension NotificationCenter: UNUserNotificationCenterDelegate  {
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) { }
 }
 
+import SwiftUI
+
 class LocalNotification: ObservableObject {
     init() {
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (allowed, error) in
             //This callback does not trigger on main loop be careful
-            if allowed {
-                os_log(.debug, "Allowed")
-            } else {
-                os_log(.debug, "Error")
-            }
+//            if allowed {
+//                os_log(.debug, "Allowed")
+//            } else {
+//                os_log(.debug, "Error")
+//            }
         }
     }
     

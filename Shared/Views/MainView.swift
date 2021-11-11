@@ -26,7 +26,13 @@ struct MainView: View {
                         .padding([.top, .trailing, .bottom], 8)
                 }
             case .exchange:
-                ExchangeScene(viewModel: exchangeViewModel)
+                if Portal.shared.reachabilityService.isReachable {
+                    ExchangeScene(viewModel: exchangeViewModel)
+                } else {
+                    Text("Exchanges aren't avalible.")
+                        .foregroundColor(Color.red)
+                        .font(.mainFont(size: 18))
+                }
             }
         }
         .zIndex(0)

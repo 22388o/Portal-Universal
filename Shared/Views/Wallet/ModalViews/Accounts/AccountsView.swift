@@ -40,6 +40,7 @@ struct AccountsView: View {
                                     onDelete(account: account)
                                 }
                             )
+                            .id(account.id)
                             .onTapGesture {
                                 withAnimation(.easeIn(duration: 0.3)) {
                                     if account != viewModel.activeAcount {

@@ -14,7 +14,7 @@ struct MainScene: View {
     var containerZStackAlignment: Alignment {
         if state.switchWallet {
             return .topLeading
-        } else if state.allNotifications {
+        } else if state.allNotifications || state.accountSettings {
             return .topTrailing
         } else {
             return .center

@@ -39,33 +39,55 @@ struct HeaderView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    withAnimation(.easeIn(duration: 0.4)) {
-                        viewModel.markAllNotificationsViewed()
-                        viewModel.state.allNotifications.toggle()
+                HStack {
+                    if viewModel.isOffline {
+                        Text("You are not connected to the Internet")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.red)
                     }
-                }, label: {
-                    ZStack(alignment: .topTrailing) {
-                        Image("bellIcon")
-                            .resizable()
-                            .frame(width: 15, height: 18)
-                        if viewModel.hasBadge {
-                            Text("\(viewModel.newAlerts)")
-                                .lineLimit(1)
-                                .padding(.horizontal, 3)
-                                .frame(minWidth: 16)
-                                .frame(height: 16)
-                                .font(.mainFont(size: 8))
-                                .foregroundColor(Color.walletGradientTop)
-                                .background(Color.white)
-                                .cornerRadius(8)
-                                .offset(x: 3, y: -5)
+                    
+                    if viewModel.state.mainScene == .wallet {
+                        Button(action: {
+                            withAnimation(.easeIn(duration: 0.4)) {
+                                viewModel.state.accountSettings.toggle()
+                            }
+                        }, label: {
+                            Image("iconSettings")
+                                .resizable()
+                                .frame(width: 22, height: 22)
+                                .foregroundColor(Color.white.opacity(0.82))
+                        })
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                    
+                    Button(action: {
+                        withAnimation(.easeIn(duration: 0.4)) {
+                            viewModel.markAllNotificationsViewed()
+                            viewModel.state.allNotifications.toggle()
                         }
-                    }
-                    .foregroundColor(Color.white.opacity(0.82))
-                    .frame(minWidth: 30)
-                })
-                .buttonStyle(PlainButtonStyle())
+                    }, label: {
+                        ZStack(alignment: .topTrailing) {
+                            Image("bellIcon")
+                                .resizable()
+                                .frame(width: 15, height: 18)
+                            if viewModel.hasBadge {
+                                Text("\(viewModel.newAlerts)")
+                                    .lineLimit(1)
+                                    .padding(.horizontal, 3)
+                                    .frame(minWidth: 16)
+                                    .frame(height: 16)
+                                    .font(.mainFont(size: 8))
+                                    .foregroundColor(Color.walletGradientTop)
+                                    .background(Color.white)
+                                    .cornerRadius(8)
+                                    .offset(x: 3, y: -5)
+                            }
+                        }
+                        .foregroundColor(Color.white.opacity(0.82))
+                        .frame(minWidth: 30)
+                    })
+                    .buttonStyle(PlainButtonStyle())
+                }
             }
             
             AppSceneSwitch(state: $viewModel.state.mainScene)            

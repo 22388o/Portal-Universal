@@ -31,6 +31,8 @@ final class FiatCurrenciesUpdater {
     
     private var subscriptions = Set<AnyCancellable>()
     
+    private var urlSession: URLSession
+    
     private var latestUrl: URL? {
         URL(string: "https://data.fixer.io/api/latest?access_key=\(apiKey)&base=USD")
     }
@@ -47,11 +49,17 @@ final class FiatCurrenciesUpdater {
         self.jsonDecoder = jsonDecoder
         self.timer = RepeatingTimer(timeInterval: interval)
         self.apiKey = fixerApiKey
+        
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        
+        self.urlSession = URLSession(configuration: config)
+        
         self.timer.eventHandler = { [unowned self] in
             self.updateRatesPublisher().combineLatest(self.updateSymbolsPublisher())
                 .sink { (completion) in
                     if case let .failure(error) = completion {
-                        print(error.localizedDescription)
+                        print(error)
                     }
                 } receiveValue: { (rates, symbols) in
                     onUpdatePublisher.send(
@@ -75,15 +83,14 @@ final class FiatCurrenciesUpdater {
             guard let url = latestUrl else {
                 return promise(.failure(.inconsistentBehavior))
             }
-            URLSession.shared.dataTaskPublisher(for: url)
+            urlSession.dataTaskPublisher(for: url)
                 .tryMap { $0.data }
                 .decode(type: FiatRatesResponse.self, decoder: jsonDecoder)
                 .sink { (completion) in
                     if case let .failure(error) = completion {
-                        print(error.localizedDescription)
-                        promise(.failure(.networkError))
+                        promise(.failure(.error(error.localizedDescription)))
                     }
-                } receiveValue: { (response) in
+                } receiveValue: { response in
                     if response.success, let rates = response.rates {
                         promise(.success(rates))
                     } else {
@@ -100,13 +107,12 @@ final class FiatCurrenciesUpdater {
             guard let url = symbolsUrl else {
                 return promise(.failure(.inconsistentBehavior))
             }
-            URLSession.shared.dataTaskPublisher(for: url)
+            urlSession.dataTaskPublisher(for: url)
                 .tryMap { $0.data }
                 .decode(type: FiatSymbols.self, decoder: jsonDecoder)
                 .sink { (completion) in
                     if case let .failure(error) = completion {
-                        print(error.localizedDescription)
-                        promise(.failure(.networkError))
+                        promise(.failure(.error(error.localizedDescription)))
                     }
                 } receiveValue: { (response) in
                     if response.success, let symbols = response.symbols {

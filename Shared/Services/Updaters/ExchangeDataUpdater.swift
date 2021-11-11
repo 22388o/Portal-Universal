@@ -16,6 +16,7 @@ final class ExchangeDataUpdater {
     private let supportedExchangesIds: String = "binance,coinbasepro,kraken"
     private let jsonDecoder: JSONDecoder
     private var subscriptions = Set<AnyCancellable>()
+    private var urlSession: URLSession
     
     private var supportedExchangesUrl: URL? {
         URL(string: "\(baseUrl)exchange/list")
@@ -27,6 +28,12 @@ final class ExchangeDataUpdater {
     
     init(jsonDecoder: JSONDecoder = JSONDecoder()) {
         self.jsonDecoder = jsonDecoder
+        
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        
+        self.urlSession = URLSession(configuration: config)
+        
         updateSupportedExchanges()
         updateTraidingPairs()
     }
@@ -34,7 +41,7 @@ final class ExchangeDataUpdater {
     private func updateSupportedExchanges() {
         guard let url = self.supportedExchangesUrl else { return }
         
-        URLSession.shared.dataTaskPublisher(for: url)
+        urlSession.dataTaskPublisher(for: url)
             .tryMap { $0.data }
             .decode(type: [ExchangeModel].self, decoder: jsonDecoder)
             .sink { completion in
@@ -50,7 +57,7 @@ final class ExchangeDataUpdater {
     private func updateTraidingPairs() {
         guard let url = self.traidingPairsUrl else { return }
         
-        URLSession.shared.dataTaskPublisher(for: url)
+        urlSession.dataTaskPublisher(for: url)
             .tryMap { $0.data }
             .decode(type: [TradingPairModel].self, decoder: jsonDecoder)
             .sink { completion in

@@ -14,11 +14,11 @@ final class AssetItemViewModel: ObservableObject {
     let adapter: IBalanceAdapter
     let coin: Coin
     
-    @Published private(set) var totalValue = String()
+    @Published private(set) var totalValueString = String()
     @Published private(set) var changeString = String()
     @Published private(set) var balanceString = String()
     @Published private(set) var adapterState: AdapterState = .notSynced(error: AdapterError.wrongParameters)
-    @Published private(set) var syncProgressString: String = "Syncing... 1%"
+    @Published private(set) var syncProgressString = String()
 
     @Published var syncProgress: Float = 0.01
     
@@ -63,22 +63,13 @@ final class AssetItemViewModel: ObservableObject {
         
         self.adapterState = adapter.balanceState
         
-                
-        if let ticker = ticker {
-            updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
-        }
+        updateBalance()
         
         adapter.balanceUpdatedObservable
             .subscribeOn(serialQueueScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
-                notificationService.notify(PNotification(message: "\(coin.code) balance updated"))
-                
-                if let ticker = self?.ticker {
-                    self?.updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
-                } else {
-                    self?.balanceString = "\(adapter.balance) \(coin.code)"
-                }
+                self?.updateBalance()
             })
             .disposed(by: disposeBag)
         
@@ -104,13 +95,17 @@ final class AssetItemViewModel: ObservableObject {
         state.$fiatCurrency
             .sink { [weak self] currency in
                 self?.fiatCurrency = currency
-                if let ticker = self?.ticker {
-                    self?.updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
-                } else {
-                    self?.balanceString = "\(adapter.balance) \(coin.code)"
-                }
+                self?.updateBalance()
             }
             .store(in: &subscriptions)
+    }
+    
+    private func updateBalance() {
+        if let ticker = ticker {
+            updateValues(spendable: adapter.balance, unspendable: adapter.balanceLocked, ticker: ticker)
+        } else {
+            balanceString = "\(adapter.balance) \(coin.code)"
+        }
     }
     
     private func updateValues(spendable: Decimal, unspendable: Decimal?, ticker: Ticker) {
@@ -124,22 +119,22 @@ final class AssetItemViewModel: ObservableObject {
         changeString = "\(prefix)\(symbol)\(priceChange) \(percentChangeString)"
         
         let isInteger = spendable.rounded(toPlaces: 4).isInteger
+        let updatedBalanceString: String
         
-        if isInteger {
-            if let unspendable = unspendable, unspendable > 0 {
-                self.balanceString = "\(spendable) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)"
-            } else {
-                self.balanceString = "\(spendable) \(coin.code)"
-            }
+        if let unspendable = unspendable, unspendable > 0 {
+            updatedBalanceString = isInteger ? "\(spendable) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)" : "\(spendable.rounded(toPlaces: 6)) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)"
         } else {
-            if let unspendable = unspendable, unspendable > 0 {
-                self.balanceString = "\(spendable.rounded(toPlaces: 6)) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)"
-            } else {
-                self.balanceString = "\(spendable.rounded(toPlaces: 6)) \(coin.code)"
-            }
+            updatedBalanceString = isInteger ? "\(spendable) \(coin.code)" : "\(spendable.rounded(toPlaces: 6)) \(coin.code)"
         }
         
-        totalValue = "\(symbol)\((spendable * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
+        if balanceString != updatedBalanceString && !balanceString.isEmpty {
+            balanceString = updatedBalanceString
+            notificationService.notify(PNotification(message: "\(coin.code) balance updated: \(balanceString)"))
+        } else {
+            balanceString = updatedBalanceString
+        }
+        
+        totalValueString = "\(symbol)\((spendable * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
     }
     
     deinit {

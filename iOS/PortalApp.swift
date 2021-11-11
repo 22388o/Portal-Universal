@@ -22,7 +22,6 @@ struct PortalApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environmentObject(Portal.shared.marketDataProvider)
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .edgesIgnoringSafeArea(.all)
         }

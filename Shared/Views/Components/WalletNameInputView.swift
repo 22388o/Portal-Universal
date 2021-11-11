@@ -22,7 +22,7 @@ struct WalletNameInputView: View {
                 Image("iconSafeSmall")
                 ZStack(alignment: .leading) {
                     if name.isEmpty {
-                        Text("Enter wallet name")
+                        Text("Enter account name")
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.lightActiveLabel.opacity(0.4))
                     }

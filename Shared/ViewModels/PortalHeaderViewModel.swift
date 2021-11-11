@@ -13,13 +13,16 @@ class PortalHeaderViewModel: ObservableObject {
     @Published var state = Portal.shared.state
     @Published var hasBadge: Bool = false
     @Published var newAlerts: Int = 0
+    @Published var isOffline: Bool = false
     
     private var notificationService: NotificationService
+    private var reachabillityService: ReachabilityService
     private var cancellables = Set<AnyCancellable>()
     
-    init(accountManager: IAccountManager, notificationService: NotificationService) {
+    init(accountManager: IAccountManager, notificationService: NotificationService, reachabilityService: ReachabilityService) {
         self.accountName = accountManager.activeAccount?.name ?? "-"
         self.notificationService = notificationService
+        self.reachabillityService = reachabilityService
         
         accountManager.onActiveAccountUpdatePublisher
             .receive(on: RunLoop.main)
@@ -35,6 +38,14 @@ class PortalHeaderViewModel: ObservableObject {
                 self?.hasBadge = !alertsBeenSeen && newAlerts > 0
             }
             .store(in: &cancellables)
+        
+        reachabilityService
+            .$isReachable
+            .receive(on: RunLoop.main)
+            .sink { [weak self] online in
+                self?.isOffline = !online
+            }
+            .store(in: &cancellables)
     }
     
     func markAllNotificationsViewed() {
@@ -46,10 +57,12 @@ extension PortalHeaderViewModel {
     static func config() -> PortalHeaderViewModel {
         let accountManager = Portal.shared.accountManager
         let notificationService = Portal.shared.notificationService
+        let reachabilityService = Portal.shared.reachabilityService
         
         return PortalHeaderViewModel(
             accountManager: accountManager,
-            notificationService: notificationService
+            notificationService: notificationService,
+            reachabilityService: reachabilityService
         )
     }
 }
