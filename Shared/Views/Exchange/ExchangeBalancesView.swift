@@ -61,7 +61,9 @@ struct ExchangeBalancesView: View {
                     ExchangeBalanceItem(
                         balanceItem: balance,
                         iconUrl: tradingPairs.first(where: {$0.base == balance.asset})?.icon,
-                        selected: false
+                        onWithdraw: {
+                            print("On withdraw")
+                        }
                     )
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                     .contentShape(Rectangle())
