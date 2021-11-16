@@ -46,7 +46,7 @@ struct AccountsView: View {
                                     if account != viewModel.activeAcount {
                                         viewModel.switchAccount(account: account)
                                     } else {
-                                        viewModel.state.switchWallet.toggle()
+                                        viewModel.state.modalView = .switchAccount
                                     }
                                 }
                             }
@@ -58,7 +58,7 @@ struct AccountsView: View {
                 PButton(label: "Create new account", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
                         viewModel.state.current = .createAccount
-                        viewModel.state.switchWallet.toggle()
+                        viewModel.state.modalView = .none
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
@@ -66,7 +66,7 @@ struct AccountsView: View {
                 PButton(label: "Restore account", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
                         viewModel.state.current = .restoreAccount
-                        viewModel.state.switchWallet.toggle()
+                        viewModel.state.modalView = .none
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
@@ -78,7 +78,7 @@ struct AccountsView: View {
                     if let account = viewModel.accountToDelete {
                         viewModel.state.loading = true
                         viewModel.accountToDelete = nil
-                        viewModel.state.switchWallet.toggle()
+                        viewModel.state.modalView = .none
                         DispatchQueue.global(qos: .userInitiated).async {
                             viewModel.delete(account: account)
                         }

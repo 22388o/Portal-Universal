@@ -21,7 +21,7 @@ struct HeaderView: View {
                 if viewModel.state.mainScene == .wallet {
                     Button(action: {
                         withAnimation(.easeIn(duration: 1.2)) {
-                            viewModel.state.switchWallet.toggle()
+                            viewModel.state.modalView = .switchAccount
                         }
                     }, label: {
                         HStack {
@@ -49,7 +49,7 @@ struct HeaderView: View {
                     if viewModel.state.mainScene == .wallet {
                         Button(action: {
                             withAnimation(.easeIn(duration: 0.4)) {
-                                viewModel.state.accountSettings.toggle()
+                                viewModel.state.modalView = .accountSettings
                             }
                         }, label: {
                             Image("iconSettings")
@@ -63,7 +63,7 @@ struct HeaderView: View {
                     Button(action: {
                         withAnimation(.easeIn(duration: 0.4)) {
                             viewModel.markAllNotificationsViewed()
-                            viewModel.state.allNotifications.toggle()
+                            viewModel.state.modalView = .allNotifications
                         }
                     }, label: {
                         ZStack(alignment: .topTrailing) {

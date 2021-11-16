@@ -49,7 +49,7 @@ struct NotificationsView: View {
                 
                 PButton(label: "Close", width: 80, height: 30, fontSize: 12, enabled: true) {
                     withAnimation(.easeInOut(duration: 0.3)) {
-                        Portal.shared.state.allNotifications.toggle()
+                        Portal.shared.state.modalView = .allNotifications
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)

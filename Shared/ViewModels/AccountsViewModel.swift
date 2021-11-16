@@ -28,7 +28,7 @@ class AccountsViewModel: ObservableObject {
     
     func switchAccount(account: Account) {
         setActiveAccount(id: account.id)
-        state.switchWallet = false
+        state.modalView = .none
     }
     
     func setActiveAccount(id: String) {

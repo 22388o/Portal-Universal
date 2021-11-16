@@ -13,16 +13,12 @@ class PortalState: ObservableObject {
         case idle, currentAccount, createAccount, restoreAccount
     }
     
+    enum ModalViewState {
+        case none, receiveAsset, sendAsset, switchAccount, createAlert, allTransactions, allNotifications, accountSettings, withdrawFromExchange
+    }
+    
     @Published var current: State = .idle
-    @Published var receiveAsset: Bool = false
-    @Published var sendAsset: Bool = false
-    @Published var switchWallet: Bool = false
-    @Published var createAlert: Bool = false
-    @Published var allTransactions: Bool = false
-    @Published var allNotifications: Bool = false
-    @Published var accountSettings: Bool = false
     @Published var searchRequest = String()
-    @Published var modalViewIsPresented: Bool = false
     @Published var exchangeSceneState: PortalExchangeSceneState = .full
     @Published var loading: Bool = false
     
@@ -30,6 +26,8 @@ class PortalState: ObservableObject {
     
     @Published var selectedCoin: Coin = Coin.bitcoin()
     @Published var fiatCurrency: FiatCurrency = USD
+    
+    @Published var modalView: ModalViewState = .none
     
     private var anyCancellable = Set<AnyCancellable>()
     #if os(iOS)
@@ -57,22 +55,5 @@ class PortalState: ObservableObject {
             }
             .store(in: &anyCancellable)
         #endif
-
-        Publishers.MergeMany($receiveAsset, $sendAsset, $switchWallet, $allTransactions, $createAlert, $allNotifications, $accountSettings)
-            .sink { [weak self] output in
-                self?.modalViewIsPresented = output
-            }
-            .store(in: &anyCancellable)
     }
-    
-    func dismissModalView() {
-        receiveAsset = false
-        sendAsset = false
-        switchWallet = false
-        allTransactions = false
-        createAlert = false
-        allNotifications = false
-        accountSettings = false
-    }
-
 }

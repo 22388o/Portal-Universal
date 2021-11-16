@@ -46,14 +46,14 @@ struct AssetViewLandscape: View {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
                             withAnimation(.easeIn(duration: 1.2)) {
-                                state.receiveAsset.toggle()
+                                state.modalView = .receiveAsset
                             }
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                         
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: viewModel.canSend) {
                             withAnimation(.easeIn(duration: 1.2)) {
-                                state.sendAsset.toggle()
+                                state.modalView = .sendAsset
                             }
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
@@ -95,8 +95,9 @@ struct AssetViewLandscape: View {
                     RecentTxsView(coin: state.selectedCoin)
                         .transition(.identity)
                 case .alerts:
-                    AlertsView(coin: viewModel.coin, createAlert: $state.createAlert)
-                        .transition(.identity)
+                    EmptyView()
+                    //AlertsView(coin: viewModel.coin, createAlert: $state.createAlert)
+                        //.transition(.identity)
                 }
             }
             .padding(.horizontal, 24)

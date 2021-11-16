@@ -75,7 +75,7 @@ struct RecentTxsView: View {
                 
                 PButton(label: "See all transactions", width: 256, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
-                        state.allTransactions.toggle()
+                        state.modalView = .allTransactions
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
