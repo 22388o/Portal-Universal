@@ -48,7 +48,7 @@ struct HeaderView: View {
                     
                     if viewModel.state.mainScene == .wallet {
                         Button(action: {
-                            withAnimation(.easeIn(duration: 0.4)) {
+                            withAnimation(.easeIn(duration: 1.2)) {
                                 viewModel.state.modalView = .accountSettings
                             }
                         }, label: {
@@ -61,7 +61,7 @@ struct HeaderView: View {
                     }
                     
                     Button(action: {
-                        withAnimation(.easeIn(duration: 0.4)) {
+                        withAnimation(.easeIn(duration: 1.2)) {
                             viewModel.markAllNotificationsViewed()
                             viewModel.state.modalView = .allNotifications
                         }
