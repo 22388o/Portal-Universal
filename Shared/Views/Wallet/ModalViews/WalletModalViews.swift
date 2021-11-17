@@ -38,7 +38,7 @@ struct WalletModalViews: View {
                     .padding(.top, 24)
                     .padding(.trailing, 24)
             case .withdrawFromExchange(let balance):
-                EmptyView()
+                WithdrawFromExchangeView(balance: balance)
             default:
                 EmptyView()
             }

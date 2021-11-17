@@ -201,6 +201,8 @@
 		752E533226FDDE6400FCDB0C /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E530926FDDE6300FCDB0C /* NetworkLogger.swift */; };
 		752E533326FDDE6400FCDB0C /* EndPointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E530A26FDDE6300FCDB0C /* EndPointType.swift */; };
 		752E533426FDDE6400FCDB0C /* EndPointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E530A26FDDE6300FCDB0C /* EndPointType.swift */; };
+		752F127127440307007C0C11 /* WithdrawFromExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752F127027440307007C0C11 /* WithdrawFromExchangeView.swift */; };
+		752F127227440307007C0C11 /* WithdrawFromExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752F127027440307007C0C11 /* WithdrawFromExchangeView.swift */; };
 		75308AB326A0215C0024AACD /* Portal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AB226A0215C0024AACD /* Portal.swift */; };
 		75308AB426A0215C0024AACD /* Portal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AB226A0215C0024AACD /* Portal.swift */; };
 		75308AB526A0215C0024AACD /* Portal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AB226A0215C0024AACD /* Portal.swift */; };
@@ -779,6 +781,7 @@
 		752E530826FDDE6300FCDB0C /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		752E530926FDDE6300FCDB0C /* NetworkLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
 		752E530A26FDDE6300FCDB0C /* EndPointType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndPointType.swift; sourceTree = "<group>"; };
+		752F127027440307007C0C11 /* WithdrawFromExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawFromExchangeView.swift; sourceTree = "<group>"; };
 		75308AB226A0215C0024AACD /* Portal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portal.swift; sourceTree = "<group>"; };
 		75308AB726A021900024AACD /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		75308ABC26A021C10024AACD /* ILocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILocalStorage.swift; sourceTree = "<group>"; };
@@ -1346,6 +1349,7 @@
 				7555643926D8FB7A001B1C1A /* ExchangeMarketView.swift */,
 				7537DED3270F3A0100B0EBFF /* ExchangeMarketDataView.swift */,
 				7555643F26DCED28001B1C1A /* Components */,
+				752F127027440307007C0C11 /* WithdrawFromExchangeView.swift */,
 			);
 			path = Exchange;
 			sourceTree = "<group>";
@@ -2009,6 +2013,7 @@
 				752E533126FDDE6400FCDB0C /* NetworkLogger.swift in Sources */,
 				751B654F269D98E8001B759C /* IAdapter.swift in Sources */,
 				75308AC226A0222A0024AACD /* DBLocalStorage.swift in Sources */,
+				752F127127440307007C0C11 /* WithdrawFromExchangeView.swift in Sources */,
 				750D63C0268B2AAC00643FD3 /* TxSortSwitch.swift in Sources */,
 				7555643426D8FB1A001B1C1A /* MyOrdersView.swift in Sources */,
 				75C95C162614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
@@ -2321,6 +2326,7 @@
 				75A3F54F26A59FFC006B1823 /* IWalletStorage.swift in Sources */,
 				758F3AE426A9AA2100F345E1 /* AccountStorage.swift in Sources */,
 				75A3F54C26A59F95006B1823 /* IWalletManager.swift in Sources */,
+				752F127227440307007C0C11 /* WithdrawFromExchangeView.swift in Sources */,
 				75C95C432614CC0400B0EE10 /* Publisher+Extension.swift in Sources */,
 				753364A326F339510073B0A4 /* TradingPairModel.swift in Sources */,
 				753471FE262C2ECA005CD93C /* ExchangerViewModel.swift in Sources */,
