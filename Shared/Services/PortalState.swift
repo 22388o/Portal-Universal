@@ -13,8 +13,16 @@ class PortalState: ObservableObject {
         case idle, currentAccount, createAccount, restoreAccount
     }
     
-    enum ModalViewState {
-        case none, receiveAsset, sendAsset, switchAccount, createAlert, allTransactions, allNotifications, accountSettings, withdrawFromExchange
+    enum ModalViewState: Equatable {
+        case none,
+             receiveAsset,
+             sendAsset,
+             switchAccount,
+             createAlert,
+             allTransactions,
+             allNotifications,
+             accountSettings,
+             withdrawFromExchange(balance: ExchangeBalanceModel)
     }
     
     @Published var current: State = .idle

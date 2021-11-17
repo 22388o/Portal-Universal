@@ -37,6 +37,8 @@ struct WalletModalViews: View {
                     .animation(nil)
                     .padding(.top, 24)
                     .padding(.trailing, 24)
+            case .withdrawFromExchange(let balance):
+                EmptyView()
             default:
                 EmptyView()
             }

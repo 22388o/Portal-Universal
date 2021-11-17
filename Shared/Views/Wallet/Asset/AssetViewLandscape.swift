@@ -95,9 +95,8 @@ struct AssetViewLandscape: View {
                     RecentTxsView(coin: state.selectedCoin)
                         .transition(.identity)
                 case .alerts:
-                    EmptyView()
-                    //AlertsView(coin: viewModel.coin, createAlert: $state.createAlert)
-                        //.transition(.identity)
+                    AlertsView(coin: viewModel.coin)
+                        .transition(.identity)
                 }
             }
             .padding(.horizontal, 24)
