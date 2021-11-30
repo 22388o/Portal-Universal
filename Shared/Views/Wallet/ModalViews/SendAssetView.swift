@@ -11,8 +11,8 @@ struct SendAssetView: View {
     @ObservedObject private var viewModel: SendAssetViewModel
     @State private var showConfirmationAlert: Bool = false
         
-    init(coin: Coin, fiatCurrency: FiatCurrency) {
-        guard let viewModel = SendAssetViewModel.config(coin: coin, fiatCurrency: fiatCurrency) else {
+    init(coin: Coin, currency: Currency) {
+        guard let viewModel = SendAssetViewModel.config(coin: coin, currency: currency) else {
             fatalError("Cannot config SendAssetViewModel")
         }
         self.viewModel = viewModel
@@ -176,7 +176,7 @@ struct SendAssetView_Previews: PreviewProvider {
     static var previews: some View {
         SendAssetView(
             coin: Coin.bitcoin(),
-            fiatCurrency: USD
+            currency: .fiat(USD)
         )
             .frame(width: 576, height: 662)
             .padding()

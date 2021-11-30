@@ -16,7 +16,7 @@ struct WalletModalViews: View {
             case .sendAsset:
                 SendAssetView(
                     coin: state.selectedCoin,
-                    fiatCurrency: state.fiatCurrency
+                    currency: state.walletCurrency
                 )
             case .receiveAsset:
                 ReceiveAssetsView(coin: state.selectedCoin)
@@ -35,7 +35,7 @@ struct WalletModalViews: View {
             case .accountSettings:
                 AccountSettingsView()
                     .animation(nil)
-                    .padding(.top, 24)
+                    .padding(.top, 40)
                     .padding(.trailing, 24)
             case .withdrawFromExchange(let balance):
                 WithdrawFromExchangeView(balance: balance)
