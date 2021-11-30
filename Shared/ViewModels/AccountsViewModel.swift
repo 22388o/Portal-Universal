@@ -45,7 +45,7 @@ class AccountsViewModel: ObservableObject {
     }
     
     deinit {
-        print("Deinit")
+//        print("Deinit")
     }
 }
 

@@ -218,7 +218,7 @@ final class PortfolioViewModel: ObservableObject {
     }
     
     deinit {
-        print("Portfolio view model deinit")
+//        print("Portfolio view model deinit")
     }
 
 }

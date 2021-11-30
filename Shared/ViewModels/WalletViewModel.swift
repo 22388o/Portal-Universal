@@ -52,7 +52,7 @@ class WalletViewModel: ObservableObject {
     }
     
     deinit {
-        print("WalletViewModel deinited")
+//        print("WalletViewModel deinited")
     }
 }
 

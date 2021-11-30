@@ -110,7 +110,7 @@ final class SendAssetViewModel: ObservableObject {
     }
     
     deinit {
-        print("send asset view model deinited")
+//        print("send asset view model deinited")
     }
     
     private func validate(address: String, amount: Decimal) {

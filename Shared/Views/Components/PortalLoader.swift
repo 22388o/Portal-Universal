@@ -21,7 +21,7 @@ private class Counter: ObservableObject {
     }
     
     deinit {
-        print("Counter is deinited")
+//        print("Counter is deinited")
     }
 }
 

@@ -98,7 +98,7 @@ final class TxsViewModel: ObservableObject {
     }
     
     deinit {
-        print("Tx view Model deinited")
+//        print("Tx view Model deinited")
     }
 }
 

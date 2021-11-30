@@ -38,6 +38,6 @@ final class WalletSceneViewModel: ObservableObject {
     }
     
     deinit {
-        print("WalletScene view model deinit")
+//        print("WalletScene view model deinit")
     }
 }

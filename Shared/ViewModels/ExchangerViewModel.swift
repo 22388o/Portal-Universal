@@ -76,6 +76,6 @@ final class ExchangerViewModel: ObservableObject {
     }
     
     deinit {
-        print("ExchangerViewModel deinit")
+//        print("ExchangerViewModel deinit")
     }
 }

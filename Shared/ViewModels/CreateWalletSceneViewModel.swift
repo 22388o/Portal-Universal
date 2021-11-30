@@ -34,7 +34,7 @@ final class CreateWalletSceneViewModel: ObservableObject {
     }
     
     deinit {
-        print("\(#function) deinit")
+//        print("\(#function) deinit")
     }
     
     var account: Account {
