@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainScene: View {
     @ObservedObject var state = Portal.shared.state
-    @StateObject var headerViewModel = PortalHeaderViewModel.config()
+    @StateObject var headerViewModel = HeaderViewModel.config()
     
     var containerZStackAlignment: Alignment {
         switch state.modalView {

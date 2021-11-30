@@ -9,9 +9,9 @@ import SwiftUI
 import Combine
 
 struct HeaderView: View {
-    @ObservedObject private var viewModel: PortalHeaderViewModel
+    @ObservedObject private var viewModel: HeaderViewModel
     
-    init(viewModel: PortalHeaderViewModel) {
+    init(viewModel: HeaderViewModel) {
         self.viewModel = viewModel
     }
     
@@ -37,7 +37,8 @@ struct HeaderView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
-                Spacer()
+                Spacer().frame(minWidth: 690)
+
                 
                 HStack {
                     if viewModel.isOffline {
@@ -45,8 +46,9 @@ struct HeaderView: View {
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.red)
                     }
-                    
                     if viewModel.state.mainScene == .wallet {
+                        WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.walletCurrency).scaleEffect(0.85)
+                        
                         Button(action: {
                             withAnimation(.easeIn(duration: 1.2)) {
                                 viewModel.state.modalView = .accountSettings
@@ -90,14 +92,13 @@ struct HeaderView: View {
                 }
             }
             
-            AppSceneSwitch(state: $viewModel.state.mainScene)            
+            AppSceneSwitch(state: $viewModel.state.mainScene)
         }
-        .frame(minWidth: 600)
     }
 }
 
 struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        HeaderView(viewModel: PortalHeaderViewModel.config())
+        HeaderView(viewModel: HeaderViewModel.config())
     }
 }

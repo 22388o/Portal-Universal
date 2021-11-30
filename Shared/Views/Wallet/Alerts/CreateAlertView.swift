@@ -59,7 +59,6 @@ struct CreateAlertView: View {
                 .padding(.bottom, 16)
                                 
                 VStack(spacing: 23) {
-//                    ExchangerView(viewModel: viewModel.exchangerViewModel)
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Add a custom alert")
                             .font(.mainFont(size: 12))
@@ -76,7 +75,6 @@ struct CreateAlertView: View {
                             HStack(spacing: 8) {
                                 FiatCurrencyView(
                                     size: 24,
-                                    state: .constant(.fiat),
                                     currency: .constant(.fiat(USD))
                                 )
                                 .frame(width: 24, height: 24)
