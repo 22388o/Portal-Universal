@@ -1,5 +1,5 @@
 //
-//  FiatCurrencyButton.swift
+//  WalletCurrencyButton.swift
 //  Portal
 //
 //  Created by Farid on 11.04.2021.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct FiatCurrencyButton: View {
-    let currencies: [FiatCurrency]
-    @Binding var selectedCurrrency: FiatCurrency
+struct WalletCurrencyButton: View {
+    let currencies: [Currency]
+    @Binding var selectedCurrrency: Currency
         
     var body: some View {
         ZStack(alignment: .leading) {
@@ -54,7 +54,7 @@ struct FiatCurrencyButton: View {
 
 struct FiatCurrencyButton_Previews: PreviewProvider {
     static var previews: some View {
-        FiatCurrencyButton(currencies: [], selectedCurrrency: .constant(USD))
+        WalletCurrencyButton(currencies: [], selectedCurrrency: .constant(.fiat(USD)))
             .frame(width: 158, height: 40)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()
