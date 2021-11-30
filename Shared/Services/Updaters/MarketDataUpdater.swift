@@ -28,7 +28,6 @@ final class MarketDataUpdater {
         
     private func updateTickers() {
         guard reachability.isReachable else { return }
-        print("Fetching tickers")
         
         Coinpaprika.API.tickers(quotes: [.usd, .btc, .eth])
             .perform { [unowned self] (response) in
@@ -63,6 +62,11 @@ final class MarketDataUpdater {
                         print(error)
                     }
                 }
+            
+            requestHistoricalMarketData(coin: coins[index], timeframe: .day)
+            requestHistoricalMarketData(coin: coins[index], timeframe: .week)
+            requestHistoricalMarketData(coin: coins[index], timeframe: .month)
+            requestHistoricalMarketData(coin: coins[index], timeframe: .year)
         }
     }
     
@@ -90,7 +94,7 @@ final class MarketDataUpdater {
             }
         case .week:
             if let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: today) {
-                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours2)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours3)
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
