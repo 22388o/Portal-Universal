@@ -135,6 +135,7 @@ extension DBlocalStorage: IAccountStorage {
                 }
                             
                 record.confirmationThreshold = Int16(account.confirmationsThreshold)
+                record.fiatCurrency = account.fiatCurrencyCode
                 
                 try? context.save()
             }
