@@ -135,15 +135,17 @@ final class AssetViewModel: ObservableObject {
         
         switch state.walletCurrency {
         case .btc:
-            if let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) {
+            guard let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) else { return "-" }
+            guard coin == .bitcoin() else {
                 return (highValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
             }
-            return "-"
+            return "1 BTC"
         case .eth:
-            if let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) {
+            guard let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) else { return "-" }
+            guard coin == .ethereum() else {
                 return (highValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
             }
-            return "-"
+            return "1 ETH"
         case .fiat(let fiatCurrency):
             return (highValue * Decimal(fiatCurrency.rate)).formattedString(state.walletCurrency)
         }
@@ -165,15 +167,17 @@ final class AssetViewModel: ObservableObject {
         
         switch state.walletCurrency {
         case .btc:
-            if let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) {
-                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 3)
+            guard let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) else { return "-" }
+            guard coin == .bitcoin() else {
+                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
             }
-            return "-"
+            return "1 BTC"
         case .eth:
-            if let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) {
-                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 3)
+            guard let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) else { return "-" }
+            guard coin == .ethereum() else {
+                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
             }
-            return "-"
+            return "1 ETH"
         case .fiat(let fiatCurrency):
             return (lowValue * Decimal(fiatCurrency.rate)).formattedString(state.walletCurrency)
         }
@@ -225,7 +229,7 @@ final class AssetViewModel: ObservableObject {
     }
     
     deinit {
-        print("Deinit - \(coin.code)")
+//        print("Deinit - \(coin.code)")
     }
     
     private func subscribeForUpdates() {
@@ -314,7 +318,20 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func change(currentPrice: Decimal, changeInPercents: Decimal) -> String {
-        return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+        switch state.walletCurrency {
+        case .btc:
+            guard coin == .bitcoin() else {
+                return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+            }
+            return " "
+        case .eth:
+            guard coin == .ethereum() else {
+                return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+            }
+            return " "
+        case .fiat:
+            return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+        }
     }
     
     private func assetChartDataEntries() -> [ChartDataEntry] {

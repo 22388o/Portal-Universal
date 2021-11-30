@@ -23,11 +23,17 @@ final class AssetItemViewModel: ObservableObject {
     @Published var syncProgress: Float = 0.01
     
     private let notificationService: NotificationService
+    private let marketDataProvider: MarketDataProvider
     private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
     private let disposeBag = DisposeBag()
     private var subscriptions = Set<AnyCancellable>()
     
-    private let ticker: Ticker?
+    private let selectedTimeframe: Timeframe
+    private var currency: Currency
+    
+    private var ticker: Ticker? {
+        marketDataProvider.ticker(coin: coin)
+    }
     
     var changeLabelColor: Color {
         let priceChange: Decimal?
@@ -49,14 +55,17 @@ final class AssetItemViewModel: ObservableObject {
         return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
     }
     
-    private let selectedTimeframe: Timeframe
-    private var currency: Currency
-    
-    init(coin: Coin, adapter: IBalanceAdapter, state: PortalState, ticker: Ticker?, notificationService: NotificationService) {
+    init(
+        coin: Coin,
+        adapter: IBalanceAdapter,
+        state: PortalState,
+        notificationService: NotificationService,
+        marketDataProvider: MarketDataProvider
+    ) {
         self.coin = coin
         self.adapter = adapter
-        self.ticker = ticker
         self.notificationService = notificationService
+        self.marketDataProvider = marketDataProvider
         
         self.selectedTimeframe = .day
         self.currency = state.walletCurrency
@@ -156,10 +165,9 @@ extension AssetItemViewModel {
     static func config(coin: Coin, adapter: IBalanceAdapter) -> AssetItemViewModel {
         let state = Portal.shared.state
         let marketDataProvider = Portal.shared.marketDataProvider
-        let ticker = marketDataProvider.ticker(coin: coin)
         let notificationService = Portal.shared.notificationService
         
-        return AssetItemViewModel(coin: coin, adapter: adapter, state: state, ticker: ticker, notificationService: notificationService)
+        return AssetItemViewModel(coin: coin, adapter: adapter, state: state, notificationService: notificationService, marketDataProvider: marketDataProvider)
     }
 }
 
