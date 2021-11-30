@@ -83,8 +83,8 @@ struct AssetViewPortrait: View {
                         currency: state.walletCurrency,
                         totalValue: viewModel.totalValue,
                         change: viewModel.change,
-                        high: viewModel.dayHigh,
-                        low: viewModel.dayLow,
+                        high: viewModel.highValue,
+                        low: viewModel.lowValue,
                         chartDataEntries: viewModel.chartDataEntries,
                         landscape: false,
                         type: .asset

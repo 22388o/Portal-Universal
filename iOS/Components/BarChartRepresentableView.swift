@@ -21,7 +21,7 @@ struct BarChartRepresentableView: UIViewRepresentable {
         return barChart
     }
 
-    func updateUIView(_ uiView: BarChartView, context: Context) {
+    func updateUIView(_ barChart: BarChartView, context: Context) {
         barChart.data = viewModel.assetAllocationBarChartData()
         barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: viewModel.barChartData().labels)
     }

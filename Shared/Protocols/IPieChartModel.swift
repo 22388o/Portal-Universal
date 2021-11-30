@@ -76,7 +76,7 @@ extension IBarChartViewModel {
             set.valueFormatter = BarChartXAxixValueFormatter()
             #if os(iOS)
             set.colors = [UIColor(barData.colors[index])]
-            set.valueFont = Font.mainFont(size: 12, bold: false)
+            set.valueFont = UIFont(name: "Avenir-Medium", size: 12.0)!
             set.valueTextColor = UIColor(white: 1, alpha: 0.5)
             #else
             set.colors = [barData.colors[index].nsColor]
