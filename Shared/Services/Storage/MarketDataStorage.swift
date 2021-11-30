@@ -84,9 +84,9 @@ final class MarketDataStorage: ObservableObject {
             })
             .store(in: &cancellables)
         
-        Publishers.MergeMany($historicalDataReady, $marketDataReady)
-            .sink { [weak self] ready in
-                self?.dataReady = ready
+        Publishers.CombineLatest($historicalDataReady, $marketDataReady)
+            .sink { [weak self] historicalDataReady, marketDataReady in
+                self?.dataReady = historicalDataReady && marketDataReady
             }
             .store(in: &cancellables)
     }
@@ -102,15 +102,15 @@ final class MarketDataStorage: ObservableObject {
                 switch range {
                 case .day:
                     data[points.key]?.dayPoints = points.value
-                    if !self.marketDataReady {
-                        self.marketDataReady = true
-                    }
                 case .week:
                     data[points.key]?.weekPoints = points.value
                 case .month:
                     data[points.key]?.monthPoints = points.value
                 case .year:
                     data[points.key]?.yearPoints = points.value
+                    if !self.marketDataReady {
+                        self.marketDataReady = true
+                    }
                 }
             })
         }
@@ -127,13 +127,7 @@ final class MarketDataStorage: ObservableObject {
                 switch range {
                 case .day:
                     data[snap.key]?.dayOhlc = snap.value
-                case .week:
-                    break
-//                    data[snap.key]?.weekPoints = points.value
-                case .month:
-                    break
-//                    data[snap.key]?.monthPoints = points.value
-                case .year:
+                default:
                     break
                 }
             })
