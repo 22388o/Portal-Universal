@@ -79,9 +79,8 @@ struct AssetViewPortrait: View {
                 switch viewModel.route {
                 case .value:
                     MarketValueView(
-                        timeframe: $viewModel.selectedTimeframe,
-                        valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
-                        fiatCurrency: $state.fiatCurrency,
+                        timeframe: $viewModel.timeframe,
+                        currency: state.walletCurrency,
                         totalValue: viewModel.totalValue,
                         change: viewModel.change,
                         high: viewModel.dayHigh,

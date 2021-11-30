@@ -23,7 +23,7 @@ final class Asset: IAsset {
     private(set) var adapter: IAdapter?
     private(set) var balanceAdapter: IBalanceAdapter?
     private(set) var depositAdapter: IDepositAdapter?
-    private(set) var transactionAdaper: ITransactionsAdapter?
+    private(set) var transactionAdapter: ITransactionsAdapter?
     
     private(set) var sendBtcAdapter: ISendBitcoinAdapter?
     private(set) var sendEtherAdapter: ISendEthereumAdapter?
@@ -36,67 +36,13 @@ final class Asset: IAsset {
         self.id = UUID()
         self.coin = coin
         
-//        let walletID = "\(account.id)_\(coin.name.lowercased())_wallet_id"
         let kit: (IAdapter & IBalanceAdapter & IDepositAdapter & ITransactionsAdapter)? = nil
         
         self.qrCodeProvider = QRCodeProvider()
-
-        
-//        guard let seed = account.type.mnemonicSeed else { return }
-//        
-//        switch coin.type {
-//        case .bitcoin:
-//            
-//            if let bitcoinKit = try? BitcoinAdapter(
-//                walletID: walletID,
-//                data: seed,
-//                dereviation: account.mnemonicDereviation,
-//                syncMode: .fast,
-//                testMode: true
-//            ) {
-//                kit = bitcoinKit
-//                sendBtcAdapter = bitcoinKit
-//            }
-//             
-//        case .ethereum:
-//
-//            let configProvider: IAppConfigProvider = AppConfigProvider()
-//            
-//            let networkType: NetworkType = .ropsten
-//
-//            guard
-//                !configProvider.infuraCredentials.id.isEmpty,
-//                let infuraSecret = configProvider.infuraCredentials.secret,
-//                !infuraSecret.isEmpty,
-//                let syncSource = EthereumKit.Kit.infuraWebsocketSyncSource(networkType: networkType, projectId: configProvider.infuraCredentials.id, projectSecret: infuraSecret) else {
-//                fatalError("Sync source isn't set")
-//            }
-//
-//            do {
-//                let evmKit = try EthereumKit.Kit.instance(
-//                    seed: seed,
-//                    networkType: .ropsten,
-//                    syncSource: syncSource,
-//                    etherscanApiKey: configProvider.etherscanKey,
-//                    walletId: walletID,
-//                    minLogLevel: .error
-//                )
-//                                    
-//                let ethereumKit = EvmAdapter(evmKit: evmKit)
-//                kit = ethereumKit
-//                sendEtherAdapter = ethereumKit
-//                
-//            } catch {
-//                fatalError("Cannot create eth kit")
-//            }
-//        case .erc20(address: _):
-//            kit = nil
-//        }
-        
         self.adapter = kit
         self.balanceAdapter = kit
         self.depositAdapter = kit
-        self.transactionAdaper = kit
+        self.transactionAdapter = kit
     }
         
     func availableBalance(feeRate: Int, address: String?) -> Decimal {

@@ -15,7 +15,6 @@ class Account: IAccount {
     let mnemonicDereviation: MnemonicDerivation
 
     private(set) var name: String
-    private(set) var fiatCurrencyCode: String
     
     private let btcNetwork: Int
     private let ethNetwork: Int
@@ -23,6 +22,7 @@ class Account: IAccount {
     var confirmationsThreshold: Int
     var btcNetworkType: BitcoinKit.Kit.NetworkType
     var ethNetworkType: EthereumKit.NetworkType
+    var fiatCurrencyCode: String
 
     init(id: String, name: String, bip: MnemonicDerivation, type: AccountType) {
         self.id = id
