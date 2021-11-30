@@ -33,7 +33,7 @@ class PortalState: ObservableObject {
     @Published var mainScene: Scenes = .wallet
     
     @Published var selectedCoin: Coin = Coin.bitcoin()
-    @Published var fiatCurrency: FiatCurrency = USD
+    @Published var walletCurrency: Currency = .fiat(USD)
     
     @Published var modalView: ModalViewState = .none
     
