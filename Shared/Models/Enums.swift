@@ -68,8 +68,12 @@ enum AssetMarketValueViewType {
     case portfolio, asset
 }
 
-enum Currency {
-    case fiat(_ currency: FiatCurrency)
+enum Currency: Equatable {
+    static func == (lhs: Currency, rhs: Currency) -> Bool {
+        lhs.symbol == rhs.symbol
+    }
+    
+    case fiat(FiatCurrency)
     case btc
     case eth
     
@@ -78,9 +82,31 @@ enum Currency {
         case .fiat(let currency):
             return currency.symbol
         case .btc:
+            return "₿"
+        case .eth:
+            return "Ξ"
+        }
+    }
+    
+    var code: String {
+        switch self {
+        case .fiat(let currency):
+            return currency.code
+        case .btc:
             return "BTC"
         case .eth:
             return "ETH"
+        }
+    }
+    
+    var name: String {
+        switch self {
+        case .fiat(let currency):
+            return currency.name
+        case .btc:
+            return "Bitcoin"
+        case .eth:
+            return "Ethereum"
         }
     }
 }
@@ -312,10 +338,6 @@ enum OrderBookRoute {
 
 enum MyOrdersRoute {
     case open, history
-}
-
-enum ValueCurrencySwitchState: Int {
-    case fiat, btc, eth
 }
 
 enum TxSortState {
