@@ -8,25 +8,22 @@
 import SwiftUI
 
 struct AssetAllocationView: View {
-    let viewModel: AssetAllocationViewModel
-    let showTotalValue: Bool
+    private let viewModel: AssetAllocationViewModel
+    private let isBarChart: Bool
     
     init(
-        assets: [IAsset],
-        showTotalValue: Bool = true
+        assets: [PortfolioItem],
+        isBarChart: Bool = true
     ) {
-        print("Asset allocation view init")
         self.viewModel = AssetAllocationViewModel(assets: assets)
-        self.showTotalValue = showTotalValue
+        self.isBarChart = isBarChart
     }
     
     var body: some View {
         ZStack {
-            if viewModel.isLineChart {
+            if isBarChart {
                 BarChartRepresentableView(viewModel: viewModel)
-                    .frame(height: 350)
-                    .offset(y: 100)
-                    
+                    .padding(.bottom, 10)
             } else {
                 PieChartRepresentableView(viewModel: viewModel)
             }
