@@ -27,6 +27,7 @@ class AccountsViewModel: ObservableObject {
     }
     
     func switchAccount(account: Account) {
+        state.loading = true
         setActiveAccount(id: account.id)
         state.modalView = .none
     }

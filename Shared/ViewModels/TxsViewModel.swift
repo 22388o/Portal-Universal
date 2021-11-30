@@ -24,7 +24,7 @@ final class TxsViewModel: ObservableObject {
     @Published var txSortState: TxSortState = .all
     var lastBlockInfo: LastBlockInfo?
     
-    private var transactionAdaper: ITransactionsAdapter
+    private var transactionAdapter: ITransactionsAdapter
     private var balance: Decimal
     
     var balanceString: String {
@@ -51,14 +51,14 @@ final class TxsViewModel: ObservableObject {
     }
     
     func confimations(tx: TransactionRecord) -> String {
-        "\(tx.confirmations(lastBlockHeight: transactionAdaper.lastBlockInfo?.height)) confirmations"
+        "\(tx.confirmations(lastBlockHeight: transactionAdapter.lastBlockInfo?.height)) confirmations"
     }
     
-    init(coin: Coin, balance: Decimal, transactionAdaper: ITransactionsAdapter) {
+    init(coin: Coin, balance: Decimal, transactionAdapter: ITransactionsAdapter) {
         self.coin = coin
         self.balance = balance
-        self.transactionAdaper = transactionAdaper
-        self.lastBlockInfo = transactionAdaper.lastBlockInfo
+        self.transactionAdapter = transactionAdapter
+        self.lastBlockInfo = transactionAdapter.lastBlockInfo
         
         cancellable = $txSortState
             .removeDuplicates()
@@ -67,7 +67,7 @@ final class TxsViewModel: ObservableObject {
                 self?.updateTxList()
             }
         
-        transactionAdaper.transactionRecordsObservable
+        transactionAdapter.transactionRecordsObservable
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] records in
@@ -75,7 +75,7 @@ final class TxsViewModel: ObservableObject {
             })
             .disposed(by: disposeBag)
         
-        transactionAdaper.transactionsSingle(from: nil, limit: 100)
+        transactionAdapter.transactionsSingle(from: nil, limit: 100)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] records in
@@ -115,6 +115,6 @@ extension TxsViewModel {
             return nil
         }
         
-        return TxsViewModel(coin: coin, balance: balanceAdapter.balance, transactionAdaper: transactionAdapter)
+        return TxsViewModel(coin: coin, balance: balanceAdapter.balance, transactionAdapter: transactionAdapter)
     }
 }

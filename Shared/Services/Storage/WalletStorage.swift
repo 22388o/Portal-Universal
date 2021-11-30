@@ -26,13 +26,15 @@ class WalletStorage: IWalletStorage {
     }
     
     private func subscribeForUpdates() {
-        accountManager.onActiveAccountUpdatePublisher
+        accountManager
+            .onActiveAccountUpdatePublisher
             .sink { [weak self] _ in
                 self?.syncWallets()
             }
             .store(in: &cancelabel)
         
-        coinManager.onCoinsUpdatePublisher
+        coinManager
+            .onCoinsUpdatePublisher
             .sink { [weak self] _ in
                 self?.syncWallets()
             }

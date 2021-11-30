@@ -12,11 +12,7 @@ import Combine
 class WalletViewModel: ObservableObject {
     @Published var items: [WalletItem] = []
     @Published var uuid: UUID = UUID()
-    
-    var fiatCurrencies: [FiatCurrency] {
-        marketDataProvider.fiatCurrencies
-    }
-            
+                
     private var cancellables = Set<AnyCancellable>()
     private var adapterManager: IAdapterManager
     private var walletManager: IWalletManager
@@ -26,7 +22,7 @@ class WalletViewModel: ObservableObject {
         self.walletManager = walletManager
         self.adapterManager = adapterManager
         self.marketDataProvider = marketDataProvider
-        
+
         subscribe()
     }
     
