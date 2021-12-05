@@ -24,11 +24,12 @@ final class PortfolioViewModel: ObservableObject {
     @Published var selectedTimeframe: Timeframe = .day
     @Published var state: PortalState
     @Published private var walletCurrency: Currency
+    @Published var empty: Bool = true
     
     private var subscriptions = Set<AnyCancellable>()
     private var walletManager: IWalletManager
     private var adapterManager: IAdapterManager
-    private var marketDataProvider: MarketDataProvider
+    private var marketDataProvider: IMarketDataProvider
     private var exchangeBalances = [String: Double]()
     
     private var btcUSDPrice: Decimal {
@@ -41,8 +42,8 @@ final class PortfolioViewModel: ObservableObject {
     
     init(
         walletManager: IWalletManager,
-        adapterManager: AdapterManager,
-        marketDataProvider: MarketDataProvider,
+        adapterManager: IAdapterManager,
+        marketDataProvider: IMarketDataProvider,
         state: PortalState
     ) {
         self.walletManager = walletManager
@@ -126,6 +127,7 @@ final class PortfolioViewModel: ObservableObject {
     
     private func updateLabels() {
         totalValue = "\(assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }.formattedString(walletCurrency))"
+        empty = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 } == 0
         
         let changeInPercents: Decimal = assets.map{ $0.marketData.changeInPercents(tf: selectedTimeframe)}.reduce(0) { $0 + $1 }
 
