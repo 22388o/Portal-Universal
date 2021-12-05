@@ -36,11 +36,13 @@ struct AssetItemView: View {
                         .frame(width: 26, height: 26)
                         
                         if viewModel.adapterState != .synced {
-                            HStack {
+                            VStack(alignment: .leading) {
                                 Text(viewModel.balanceString)
-                                Text(viewModel.syncProgressString)
-                                    .font(.mainFont(size: 16))
-                                    .foregroundColor(selected ? .gray : Color(red: 160/255, green: 190/255, blue: 186/255, opacity: 1))
+                                if !viewModel.syncProgressString.isEmpty {
+                                    Text(viewModel.syncProgressString)
+                                        .font(.mainFont(size: 14))
+                                        .foregroundColor(selected ? .gray : Color(red: 160/255, green: 190/255, blue: 186/255, opacity: 1))
+                                }
                             }
                         } else {
                             Text(viewModel.balanceString)
