@@ -90,7 +90,7 @@ struct AccountSettingsView: View {
                 PButton(label: "Apply", width: 80, height: 30, fontSize: 12, enabled: viewModel.canApplyChanges) {
                     withAnimation(.easeInOut(duration: 0.3)) {
                         viewModel.applySettings()
-                        Portal.shared.state.modalView = .accountSettings
+                        Portal.shared.state.modalView = .none
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
