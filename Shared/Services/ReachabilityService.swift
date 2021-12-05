@@ -63,5 +63,6 @@ class ReachabilityService: ObservableObject {
     func stopMonitoring() {
         monitorForWifi.cancel()
         monitorForCellular.cancel()
+        monitorForOtherConnections.cancel()
     }
 }
