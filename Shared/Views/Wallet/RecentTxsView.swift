@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct RecentTxsView: View {
-    @ObservedObject private var viewModel: TxsViewModel
+    @StateObject private var viewModel: TxsViewModel
     @ObservedObject private var state = Portal.shared.state
     
     init(coin: Coin) {
         guard let viewModel = TxsViewModel.config(coin: coin) else {
             fatalError("Cannot config TxsViewModel")
         }
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
