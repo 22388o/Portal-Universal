@@ -16,7 +16,7 @@ class PortfolioItem: ObservableObject {
     @Published private(set) var price: Decimal
     
     private let balanceAdapter: IBalanceAdapter
-    private let marketDataProvider: MarketDataProvider
+    private let marketDataProvider: IMarketDataProvider
     private var disposeBag = DisposeBag()
     
     private var btcUSDPrice: Decimal {
@@ -59,7 +59,7 @@ class PortfolioItem: ObservableObject {
         coin: Coin,
         balanceAdapter: IBalanceAdapter,
         transactionAdapter: ITransactionsAdapter,
-        marketDataProvider: MarketDataProvider
+        marketDataProvider: IMarketDataProvider
     ) {
         self.coin = coin
         self.balanceAdapter = balanceAdapter

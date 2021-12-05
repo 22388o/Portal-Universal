@@ -23,7 +23,7 @@ final class AssetItemViewModel: ObservableObject {
     @Published var syncProgress: Float = 0.01
     
     private let notificationService: NotificationService
-    private let marketDataProvider: MarketDataProvider
+    private let marketDataProvider: IMarketDataProvider
     private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
     private let disposeBag = DisposeBag()
     private var subscriptions = Set<AnyCancellable>()
@@ -60,7 +60,7 @@ final class AssetItemViewModel: ObservableObject {
         adapter: IBalanceAdapter,
         state: PortalState,
         notificationService: NotificationService,
-        marketDataProvider: MarketDataProvider
+        marketDataProvider: IMarketDataProvider
     ) {
         self.coin = coin
         self.adapter = adapter

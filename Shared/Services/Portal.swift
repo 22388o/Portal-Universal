@@ -18,14 +18,15 @@ final class Portal: ObservableObject {
     private let localStorage: ILocalStorage
     private let secureStorage: IKeychainStorage
     
+    let dbStorage: IDBStorage & IAccountStorage & IDBCacheStorage & IPriceAlertStorage
     let appConfigProvider: IAppConfigProvider
     let accountManager: IAccountManager
     let walletManager: IWalletManager
-    let marketDataProvider: MarketDataProvider
+    let marketDataProvider: IMarketDataProvider
     let notificationService: NotificationService
     let feeRateProvider: FeeRateProvider
     let ethereumKitManager: EthereumKitManager
-    let adapterManager: AdapterManager
+    let adapterManager: IAdapterManager
     let exchangeManager: ExchangeManager
     let reachabilityService: ReachabilityService
     
@@ -42,18 +43,18 @@ final class Portal: ObservableObject {
         let keychain = Keychain(service: appConfigProvider.keychainStorageID)
         secureStorage = KeychainStorage(keychain: keychain)
         
-        let bdContext: NSManagedObjectContext = {
+        let dbContext: NSManagedObjectContext = {
             let backgroundContext = PersistenceController.shared.container.newBackgroundContext()
             backgroundContext.automaticallyMergesChangesFromParent = true
             return backgroundContext
         }()
         
-        let bdStorage: IDBStorage & IAccountStorage & IDBCacheStorage = DBlocalStorage(context: bdContext)
+        dbStorage = DBlocalStorage(context: dbContext)
         
         if localStorage.isFirstLaunch {
             localStorage.removeCurrentAccountID()
             try? secureStorage.clear()
-            bdStorage.clear()
+            dbStorage.clear()
         }
         
         localStorage.incrementAppLaunchesCouner()
@@ -71,21 +72,21 @@ final class Portal: ObservableObject {
             notificationService: notificationService
         )
         
-        let marketDataUpdater = MarketDataUpdater(cachedTickers: bdStorage.tickers, reachability: reachabilityService)
+        let marketDataUpdater = MarketDataUpdater(cachedTickers: dbStorage.tickers, reachability: reachabilityService)
         
         let fiatCurrenciesUpdater = FiatCurrenciesUpdater(
             interval: TimeInterval(appConfigProvider.fiatCurrenciesUpdateInterval),
             fixerApiKey: appConfigProvider.fixerApiKey
         )
                 
-        let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: bdStorage)
+        let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: dbStorage)
         marketDataProvider = MarketDataProvider(repository: marketDataStorage)
                         
-        let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: bdStorage)
+        let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: dbStorage)
         accountManager = AccountManager(accountStorage: accountStorage)
         
-        let erc20Updater = ERC20TokensUpdater()
-        let coinStorage = CoinStorage(updater: erc20Updater, marketData: marketDataStorage)
+        let erc20Updater: IERC20Updater = ERC20Updater()
+        let coinStorage: ICoinStorage = CoinStorage(updater: erc20Updater, marketData: marketDataStorage)
         let coinManager: ICoinManager = CoinManager(storage: coinStorage)
         
         let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)
