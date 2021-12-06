@@ -20,6 +20,13 @@ struct MarketValueView: View {
     let landscape: Bool
     
     let type: AssetMarketValueViewType
+    
+    var changeColor: Color {
+        guard change.first == "+" else {
+            return Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
+        }
+        return Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1)
+    }
 
     var body: some View {
         VStack {
@@ -42,7 +49,7 @@ struct MarketValueView: View {
                     
                     Text(change)
                         .font(Font.mainFont(size: 15))
-                        .foregroundColor(Color(red: 228.0/255.0, green: 136.0/255.0, blue: 37.0/255.0))
+                        .foregroundColor(changeColor)
                 }
             }
             
