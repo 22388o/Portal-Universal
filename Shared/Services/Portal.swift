@@ -9,6 +9,8 @@ import Foundation
 import KeychainAccess
 import Combine
 import CoreData
+import Mixpanel
+import Bugsnag
 
 final class Portal: ObservableObject {
     static let shared = Portal()
@@ -29,6 +31,7 @@ final class Portal: ObservableObject {
     let adapterManager: IAdapterManager
     let exchangeManager: ExchangeManager
     let reachabilityService: ReachabilityService
+    let pushNotificationService: PushNotificationService
     
     @Published var state = PortalState()
         
@@ -37,6 +40,12 @@ final class Portal: ObservableObject {
         reachabilityService.startMonitoring()
         
         appConfigProvider = AppConfigProvider()
+        
+        let mixpanel = Mixpanel.initialize(token: appConfigProvider.mixpanelToken)
+        let appID = mixpanel.distinctId
+        mixpanel.identify(distinctId: appID)
+        
+        Bugsnag.start()
         
         localStorage = LocalStorage()
         
@@ -96,6 +105,9 @@ final class Portal: ObservableObject {
         
         let adapterFactory = AdapterFactory(appConfigProvider: appConfigProvider, ethereumKitManager: ethereumKitManager)
         adapterManager = AdapterManager(adapterFactory: adapterFactory, ethereumKitManager: ethereumKitManager, walletManager: walletManager)
+        
+        pushNotificationService = PushNotificationService(appId: appID)
+        pushNotificationService.registerForRemoteNotifications()
                 
         if let activeAccount = accountManager.activeAccount {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
