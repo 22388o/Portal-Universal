@@ -7,8 +7,29 @@
 
 import SwiftUI
 
-struct AlertsView: View {
+final class AlertsViewModel: ObservableObject {
     let coin: Coin
+    let alerts: [PriceAlert]
+    
+    init(coin: Coin, alerts: [PriceAlert]) {
+        self.coin = coin
+        self.alerts = alerts.reversed()
+    }
+}
+
+extension AlertsViewModel {
+    static func config(coin: Coin) -> AlertsViewModel {
+        let storage = Portal.shared.dbStorage
+        return AlertsViewModel(coin: coin, alerts: storage.alerts)
+    }
+}
+
+struct AlertsView: View {
+    @ObservedObject private var viewModel: AlertsViewModel
+    
+    init(coin: Coin) {
+        self.viewModel = AlertsViewModel.config(coin: coin)
+    }
     
     var body: some View {
         VStack {
@@ -16,18 +37,44 @@ struct AlertsView: View {
                 Image("bellIcon")
                     .resizable()
                     .frame(width: 30, height:36)
-                Text("Recent changes in \(coin.code)")
+                Text("Recent changes in \(viewModel.coin.code)")
                     .font(.mainFont(size: 14))
-                    .foregroundColor(Color.coinViewRouteButtonInactive)
             }
+            .foregroundColor(Color.coinViewRouteButtonInactive)
             .padding(.top, 35)
-            Spacer()
-//            PButton(label: "Manage alerts", width: 256, height: 32, fontSize: 12, enabled: true) {
-//                withAnimation {
-//                    createAlert.toggle()
-//                }
-//            }
-//            .padding(.bottom, 41)
+            
+            ScrollView(showsIndicators: false) {
+                LazyVStack_(alignment: .leading, spacing: 0) {
+                    Rectangle()
+                        .fill(Color.exchangerFieldBorder)
+                        .frame(height: 1)
+                    
+                    ForEach(viewModel.alerts) { alert in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(alert.title ?? "-")
+                                .font(.mainFont(size: 12))
+                                .foregroundColor(Color.coinViewRouteButtonActive)
+                            Text(Date(timeIntervalSinceReferenceDate: alert.timestamp?.doubleValue ?? 0).timeAgoSinceDate(shortFormat: true))
+                                .lineLimit(1)
+                                .font(.mainFont(size: 12))
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                        }
+                        .frame(height: 56)
+                        
+                        Rectangle()
+                            .fill(Color.exchangerFieldBorder)
+                            .frame(height: 1)
+                    }
+                }
+            }
+            .frame(width: 256)
+            
+            PButton(label: "Manage alerts", width: 256, height: 32, fontSize: 12, enabled: true) {
+                withAnimation {
+                    Portal.shared.state.modalView = .createAlert
+                }
+            }
+            .padding(.bottom, 41)
         }
     }
 }
