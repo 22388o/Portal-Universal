@@ -74,6 +74,15 @@ class PortfolioItem: ObservableObject {
                 self?.transactions = records
             })
             .disposed(by: disposeBag)
+        
+        balanceAdapter
+            .balanceUpdatedObservable
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.balance = balanceAdapter.balance
+            })
+            .disposed(by: disposeBag)
     }
     
     private func values(timeframe: Timeframe, points: [Decimal]) -> [Double] {
@@ -86,29 +95,30 @@ class PortfolioItem: ObservableObject {
             return points.enumerated().map{ (index, point) in
                 let timestamp = calendar.date(byAdding: .hour, value: index - maxIndex, to: currentDate)?.timeIntervalSince1970
                 let balanceAtTimestamp = balance(at: timestamp)
+                let value = point * balanceAtTimestamp
                 
                 switch Portal.shared.state.walletCurrency {
                 case .btc:
-                    return ((point * balanceAtTimestamp)/btcUSDPrice).double
+                    return (value/btcUSDPrice).double
                 case .eth:
-                    return ((point * balanceAtTimestamp)/ethUSDPrice).double
+                    return (value/ethUSDPrice).double
                 case .fiat(let fiatCurrency):
-                    return (point * balanceAtTimestamp).double * fiatCurrency.rate
+                    return value.double * fiatCurrency.rate
                 }
             }
         case .month, .year:
             return points.enumerated().map{ (index, point) in
                 let timestamp = calendar.date(byAdding: .day, value: index - maxIndex, to: currentDate)?.timeIntervalSince1970
-                
                 let balanceAtTimestamp = balance(at: timestamp)
+                let value = point * balanceAtTimestamp
                 
                 switch Portal.shared.state.walletCurrency {
                 case .btc:
-                    return ((point * balanceAtTimestamp)/btcUSDPrice).double
+                    return (value/btcUSDPrice).double
                 case .eth:
-                    return ((point * balanceAtTimestamp)/ethUSDPrice).double
+                    return (value/ethUSDPrice).double
                 case .fiat(let fiatCurrency):
-                    return (point * balanceAtTimestamp).double * fiatCurrency.rate
+                    return value.double * fiatCurrency.rate
                 }
             }
         }
@@ -189,6 +199,41 @@ class PortfolioItem: ObservableObject {
             return balanceAdapter.balance * (ticker?[.eth].price ?? 1)
         case .fiat(let fiatCurrency):
             return balanceAdapter.balance * (ticker?[.usd].price ?? 1) * Decimal(fiatCurrency.rate)
+        }
+    }
+    
+    func balanceValue(for currency: Currency, at timeframe: Timeframe) -> Decimal {
+        let calendar = Calendar.current
+        let currentDate = currentDateInUserTimeZone()
+        let timestamp: TimeInterval?
+        let pricePont: Decimal?
+        
+        switch timeframe {
+        case .day:
+            pricePont = marketData.dayPoints.first
+            timestamp = calendar.date(byAdding: .day, value: -1, to: currentDate)?.timeIntervalSince1970
+        case .week:
+            pricePont = marketData.weekPoints.first
+            timestamp = calendar.date(byAdding: .day, value: -7, to: currentDate)?.timeIntervalSince1970
+        case .month:
+            pricePont = marketData.monthPoints.first
+            timestamp = calendar.date(byAdding: .month, value: -1, to: currentDate)?.timeIntervalSince1970
+        case .year:
+            pricePont = marketData.yearPoints.first
+            timestamp = calendar.date(byAdding: .year, value: -1, to: currentDate)?.timeIntervalSince1970
+        }
+        
+        guard let price = pricePont, let timeInterval = timestamp else { return 0 }
+        
+        let balanceAtTimestamp = balance(at: timeInterval)
+        
+        switch currency {
+        case .btc:
+            return balanceAtTimestamp > 0 ? (balanceAtTimestamp * price)/btcUSDPrice : 0
+        case .eth:
+            return balanceAtTimestamp > 0 ? (balanceAtTimestamp * price)/ethUSDPrice : 0
+        case .fiat(let fiatCurrency):
+            return balanceAtTimestamp > 0 ? balanceAtTimestamp * price * Decimal(fiatCurrency.rate) : 0
         }
     }
 }
