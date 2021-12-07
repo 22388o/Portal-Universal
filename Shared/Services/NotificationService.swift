@@ -7,6 +7,7 @@
 
 import Foundation
 import AVFoundation
+import Combine
 
 final class NotificationService: ObservableObject {
 
@@ -15,13 +16,24 @@ final class NotificationService: ObservableObject {
     @Published private(set) var notifications: [PNotification] = []
     @Published private(set) var newAlerts: Int = 0
     @Published private(set) var alertsBeenSeen: Bool = false
+    private var accountId: String?
+    private var subscriptions = Set<AnyCancellable>()
         
-    init() {
+    init(accountManager: IAccountManager) {
         if let url = Bundle.main.url(forResource: "alert", withExtension: "mp3") {
             player = AVPlayer.init(url: url)
         } else {
             player = nil
         }
+        
+        accountId = accountManager.activeAccount?.id
+        
+        accountManager
+            .onActiveAccountUpdatePublisher
+            .sink { [weak self] account in
+                self?.accountId = account?.id
+            }
+            .store(in: &subscriptions)
     }
     
     func notify(_ notification: PNotification) {
