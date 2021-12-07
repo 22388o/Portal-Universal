@@ -32,6 +32,7 @@ final class Portal: ObservableObject {
     let exchangeManager: ExchangeManager
     let reachabilityService: ReachabilityService
     let pushNotificationService: PushNotificationService
+    let userId: String
     
     @Published var state = PortalState()
         
@@ -42,8 +43,8 @@ final class Portal: ObservableObject {
         appConfigProvider = AppConfigProvider()
         
         let mixpanel = Mixpanel.initialize(token: appConfigProvider.mixpanelToken)
-        let appID = mixpanel.distinctId
-        mixpanel.identify(distinctId: appID)
+        userId = mixpanel.distinctId
+        mixpanel.identify(distinctId: userId)
         
         Bugsnag.start()
         
@@ -68,8 +69,6 @@ final class Portal: ObservableObject {
         
         localStorage.incrementAppLaunchesCouner()
         
-        notificationService = NotificationService()
-        
         feeRateProvider = FeeRateProvider(appConfigProvider: appConfigProvider)
         
         let exchangeDataUpdater = ExchangeDataUpdater()
@@ -77,8 +76,7 @@ final class Portal: ObservableObject {
         exchangeManager = ExchangeManager(
             localStorage: localStorage,
             secureStorage: secureStorage,
-            exchangeDataUpdater: exchangeDataUpdater,
-            notificationService: notificationService
+            exchangeDataUpdater: exchangeDataUpdater
         )
         
         let marketDataUpdater = MarketDataUpdater(cachedTickers: dbStorage.tickers, reachability: reachabilityService)
@@ -106,7 +104,9 @@ final class Portal: ObservableObject {
         let adapterFactory = AdapterFactory(appConfigProvider: appConfigProvider, ethereumKitManager: ethereumKitManager)
         adapterManager = AdapterManager(adapterFactory: adapterFactory, ethereumKitManager: ethereumKitManager, walletManager: walletManager)
         
-        pushNotificationService = PushNotificationService(appId: appID)
+        notificationService = NotificationService(accountManager: accountManager)
+        
+        pushNotificationService = PushNotificationService(appId: userId)
         pushNotificationService.registerForRemoteNotifications()
                 
         if let activeAccount = accountManager.activeAccount {
