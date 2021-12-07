@@ -15,7 +15,6 @@ final class ExchangeManager: ObservableObject {
     private let exchangeDataUpdater: ExchangeDataUpdater
     private let secureStorage: IKeychainStorage
     private let localStorage: ILocalStorage
-    private let notificationService: NotificationService
     private let binanceApi: BinanceApi = BinanceApi()
     private let coinbaseApi: CoinbaseProApi = CoinbaseProApi()
     private let krakenApi: KrakenApi = KrakenApi()
@@ -27,11 +26,10 @@ final class ExchangeManager: ObservableObject {
         return allSupportedExchanges.filter{ syncedExchangesIds.contains($0.id) }
     }
     
-    init(localStorage: ILocalStorage, secureStorage: IKeychainStorage, exchangeDataUpdater: ExchangeDataUpdater, notificationService: NotificationService) {
+    init(localStorage: ILocalStorage, secureStorage: IKeychainStorage, exchangeDataUpdater: ExchangeDataUpdater) {
         self.localStorage = localStorage
         self.secureStorage = secureStorage
         self.exchangeDataUpdater = exchangeDataUpdater
-        self.notificationService = notificationService
         
         self.setupSubscriptions()
     }
