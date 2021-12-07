@@ -7,23 +7,6 @@
 
 import SwiftUI
 
-final class AlertsViewModel: ObservableObject {
-    let coin: Coin
-    let alerts: [PriceAlert]
-    
-    init(coin: Coin, alerts: [PriceAlert]) {
-        self.coin = coin
-        self.alerts = alerts.reversed()
-    }
-}
-
-extension AlertsViewModel {
-    static func config(coin: Coin) -> AlertsViewModel {
-        let storage = Portal.shared.dbStorage
-        return AlertsViewModel(coin: coin, alerts: storage.alerts)
-    }
-}
-
 struct AlertsView: View {
     @ObservedObject private var viewModel: AlertsViewModel
     

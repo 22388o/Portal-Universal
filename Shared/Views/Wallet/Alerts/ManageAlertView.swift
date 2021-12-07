@@ -160,9 +160,7 @@ struct ManageAlertView: View {
 
                                     Spacer().frame(width: 100)
                                     Button(action: {
-//                                        withAnimation {
-                                            viewModel.deleteAlert(alert)
-//                                        }
+                                        viewModel.deleteAlert(alert)
                                     }) {
                                         Image("trash")
                                             .resizable()
