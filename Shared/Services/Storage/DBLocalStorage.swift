@@ -59,6 +59,30 @@ final class DBlocalStorage {
             }
         }
     }
+        
+    private func alertsFor(accountId: String, coin: String) -> [PriceAlert] {
+        var alerts: [PriceAlert] = []
+        
+        context.performAndWait {
+            let request = PriceAlert.fetchRequest() as NSFetchRequest<PriceAlert>
+            
+            let accountIdPredicate = NSPredicate(format: "accountId = %@", accountId)
+            let coinPredicate = NSPredicate(format: "coin = %@", coin)
+
+            request.predicate = NSCompoundPredicate(
+                andPredicateWithSubpredicates: [
+                    accountIdPredicate,
+                    coinPredicate
+                ]
+            )
+
+            if let records = try? context.fetch(request) {
+                alerts = records
+            }
+        }
+        
+        return alerts
+    }
     
     fileprivate func fetchCachedTickers() -> [Ticker] {
         guard let cache = self.cache, let tickersData = cache.tickersData else { return [] }
@@ -185,5 +209,43 @@ extension DBlocalStorage: IDBCacheStorage {
         }
         
         self.fiatCurrencies = fiatCurrencies
+    }
+}
+
+extension DBlocalStorage: IPriceAlertStorage {    
+    func alerts(accountId: String, coin: String) -> [PriceAlert] {
+        alertsFor(accountId: accountId, coin: coin)
+    }
+    
+    func addAlert(_ model: PriceAlertModel) {
+        context.performAndWait {
+            do {
+                let alert = PriceAlert.init(context: context)
+                
+                alert.accountId = model.accountId
+                alert.id = model.id
+                alert.coin = model.coin
+                alert.timestamp = model.timestamp
+                alert.value = model.value
+                alert.title = model.title
+                
+                context.insert(alert)
+                
+                try context.save()
+            } catch {
+                print("Encoding error: \(error)")
+            }
+        }
+    }
+    
+    func deleteAlert(_ alert: PriceAlert) {
+        context.performAndWait {
+            do {
+                context.delete(alert)
+                try context.save()
+            } catch {
+                print("Encoding error: \(error)")
+            }
+        }
     }
 }

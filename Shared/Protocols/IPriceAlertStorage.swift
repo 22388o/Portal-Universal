@@ -8,7 +8,7 @@
 import Foundation
 
 protocol IPriceAlertStorage {
-    var alerts: [PriceAlert] { get }
+    func alerts(accountId: String, coin: String) -> [PriceAlert]
     func addAlert(_ model: PriceAlertModel)
     func deleteAlert(_ alert: PriceAlert)
 }
