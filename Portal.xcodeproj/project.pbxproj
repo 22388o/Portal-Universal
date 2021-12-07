@@ -432,6 +432,10 @@
 		755D9FD6275E6DD000EE363D /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D9FD4275E6DD000EE363D /* PushNotificationService.swift */; };
 		755D9FD7275E6DD000EE363D /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D9FD4275E6DD000EE363D /* PushNotificationService.swift */; };
 		755D9FD8275E6DD000EE363D /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D9FD4275E6DD000EE363D /* PushNotificationService.swift */; };
+		755D9FDA275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D9FD9275F7E1200EE363D /* PriceAlertUpdater.swift */; };
+		755D9FDB275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D9FD9275F7E1200EE363D /* PriceAlertUpdater.swift */; };
+		755D9FDC275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D9FD9275F7E1200EE363D /* PriceAlertUpdater.swift */; };
+		755D9FDD275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D9FD9275F7E1200EE363D /* PriceAlertUpdater.swift */; };
 		755EBC2E272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
 		755EBC2F272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
 		755EBC30272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
@@ -910,6 +914,7 @@
 		755785B6260F73A2000E1686 /* FiatCurrency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiatCurrency.swift; sourceTree = "<group>"; };
 		755D9FCF275E6DA200EE363D /* PushTokenUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTokenUpdater.swift; sourceTree = "<group>"; };
 		755D9FD4275E6DD000EE363D /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
+		755D9FD9275F7E1200EE363D /* PriceAlertUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceAlertUpdater.swift; sourceTree = "<group>"; };
 		755EBC2D272194D400B56B89 /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
 		755EBC322721959200B56B89 /* IDBCacheStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDBCacheStorage.swift; sourceTree = "<group>"; };
 		756A66AE262441B500353635 /* PortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
@@ -1664,6 +1669,7 @@
 				750AE8DF2614992400C45971 /* FiatCurrenciesUpdater.swift */,
 				756C3C6926EA8F84009530A9 /* ExchangeDataUpdater.swift */,
 				755D9FCF275E6DA200EE363D /* PushTokenUpdater.swift */,
+				755D9FD9275F7E1200EE363D /* PriceAlertUpdater.swift */,
 			);
 			path = Updaters;
 			sourceTree = "<group>";
@@ -2068,6 +2074,7 @@
 				75308AC226A0222A0024AACD /* DBLocalStorage.swift in Sources */,
 				752F127127440307007C0C11 /* WithdrawFromExchangeView.swift in Sources */,
 				750D63C0268B2AAC00643FD3 /* TxSortSwitch.swift in Sources */,
+				755D9FDA275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */,
 				7555643426D8FB1A001B1C1A /* MyOrdersView.swift in Sources */,
 				75C95C162614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
 				7581900F26E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */,
@@ -2513,6 +2520,7 @@
 				75F5CD912684C6AD005ECA5B /* AssetItemViewModel.swift in Sources */,
 				7555641526D8E915001B1C1A /* NSTextField+Extension.swift in Sources */,
 				75E7BD1E26DFA28C00AA6A3F /* ExchangeOrderModel.swift in Sources */,
+				755D9FDB275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */,
 				750AE90A26149A8C00C45971 /* Coin.swift in Sources */,
 				750AE9B226149DD900C45971 /* ICoinKit.swift in Sources */,
 				7555643226D8FB08001B1C1A /* OrderBookView.swift in Sources */,
@@ -2553,6 +2561,7 @@
 				7517F89426B1743F0020AECB /* CoinStorage.swift in Sources */,
 				750AE9B326149DD900C45971 /* ICoinKit.swift in Sources */,
 				7521917B275D6444003FA89D /* IPriceAlertStorage.swift in Sources */,
+				755D9FDC275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */,
 				751A1CE227306E460024586B /* AccountSettingsViewModel.swift in Sources */,
 				75C95C182614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
 				755EBC352721959200B56B89 /* IDBCacheStorage.swift in Sources */,
@@ -2707,6 +2716,7 @@
 				75F5CD932684C6AD005ECA5B /* AssetItemViewModel.swift in Sources */,
 				75C95C692614CC0400B0EE10 /* Array+Extension.swift in Sources */,
 				75F5CDAC2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
+				755D9FDD275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */,
 				750AE9C026149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
 				750AE8F62614992400C45971 /* KeychainStorage.swift in Sources */,
 				7555641326D8E8AB001B1C1A /* AccountsViewModel.swift in Sources */,
