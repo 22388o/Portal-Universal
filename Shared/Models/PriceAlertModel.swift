@@ -8,6 +8,7 @@
 import Foundation
 
 struct PriceAlertModel {
+    let accountId: String
     let id: String
     let coin: String
     let timestamp: String

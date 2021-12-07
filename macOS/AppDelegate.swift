@@ -31,14 +31,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         NSApp.appearance = NSAppearance(named: .aqua)
     }
-
-    func applicationWillTerminate(_ aNotification: Notification) {
-        
-    }
-    
-    func applicationDidBecomeActive(_ notification: Notification) {
-        self.window = NSApp.mainWindow
-    }
 }
 
 //MARK: - Remote notifications
@@ -57,6 +49,7 @@ extension AppDelegate {
     }
 
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
+        print("Received remote notification: \(userInfo)")
         handleRemoteNotification(userInfo)
     }
 
