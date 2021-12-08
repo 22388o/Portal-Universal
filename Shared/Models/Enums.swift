@@ -307,15 +307,11 @@ enum TransactionDataSortMode: String, CaseIterable {
     }
 }
 
-enum WalletCreationSteps {
-    case createWalletName, seed, test, confirmation
-}
-
-enum PortalExchangeSceneState {
+enum ExchangeViewMode {
     case full, compactLeft, compactRight
 }
 
-enum Scenes {
+enum HeaderSwitchState {
     case wallet, exchange
 }
 

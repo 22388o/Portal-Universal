@@ -11,6 +11,7 @@ import Combine
 import CoreData
 import Mixpanel
 import Bugsnag
+import SwiftUI
 
 final class Portal: ObservableObject {
     static let shared = Portal()
@@ -32,9 +33,8 @@ final class Portal: ObservableObject {
     let exchangeManager: ExchangeManager
     let reachabilityService: ReachabilityService
     let pushNotificationService: PushNotificationService
-    let userId: String
     
-    @Published var state = PortalState()
+    @ObservedObject var state = PortalState()
         
     private init() {
         reachabilityService = ReachabilityService()
@@ -43,7 +43,7 @@ final class Portal: ObservableObject {
         appConfigProvider = AppConfigProvider()
         
         let mixpanel = Mixpanel.initialize(token: appConfigProvider.mixpanelToken)
-        userId = mixpanel.distinctId
+        let userId = mixpanel.distinctId
         mixpanel.identify(distinctId: userId)
         
         Bugsnag.start()
@@ -108,7 +108,9 @@ final class Portal: ObservableObject {
         
         pushNotificationService = PushNotificationService(appId: userId)
         pushNotificationService.registerForRemoteNotifications()
-                
+        
+        state.userId = userId
+        
         if let activeAccount = accountManager.activeAccount {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
         }
@@ -128,13 +130,14 @@ final class Portal: ObservableObject {
         adapterManager.adapterdReadyPublisher
             .receive(on: RunLoop.main)
             .sink { [weak self] ready in
-                if ready && self?.accountManager.activeAccount != nil {
-                    if self?.state.current != .currentAccount {
-                        self?.state.current = .currentAccount
+                let hasAccount = self?.accountManager.activeAccount != nil
+                if hasAccount && ready {
+                    if self?.state.rootView != .account {
+                        self?.state.rootView = .account
                     }
-                } else if self?.accountManager.activeAccount == nil {
+                } else if hasAccount {
                     self?.state.loading = false
-                    self?.state.current = .createAccount
+                    self?.state.rootView = .createAccount
                 }
             }
             .store(in: &anyCancellables)
@@ -150,7 +153,8 @@ final class Portal: ObservableObject {
             .store(in: &anyCancellables)
         
         state
-            .$walletCurrency
+            .wallet
+            .$currency
             .dropFirst()
             .sink { [weak self] currency in
                 self?.accountManager.updateWalletCurrency(code: currency.code)
@@ -161,11 +165,11 @@ final class Portal: ObservableObject {
     func updateWalletCurrency(code: String) {
         switch code {
         case "BTC":
-            state.walletCurrency = .btc
+            state.wallet.currency = .btc
         case "ETH":
-            state.walletCurrency = .eth
+            state.wallet.currency = .eth
         default:
-            state.walletCurrency = marketDataProvider.fiatCurrencies.map { Currency.fiat($0) }.first(where: { $0.code == code }) ?? .fiat(.init(code: code, name: "-"))
+            state.wallet.currency = marketDataProvider.fiatCurrencies.map { Currency.fiat($0) }.first(where: { $0.code == code }) ?? .fiat(.init(code: code, name: "-"))
         }
     }
  

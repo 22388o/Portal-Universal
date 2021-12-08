@@ -8,9 +8,28 @@
 import SwiftUI
 import Combine
 
+class WalletState: ObservableObject {
+    @Published var search = String()
+    @Published var coin: Coin = Coin.bitcoin()
+    @Published var currency: Currency = .fiat(USD)
+    @Published var switchState: HeaderSwitchState = .wallet
+}
+
+class ExchangeState: ObservableObject {
+    @Published var mode: ExchangeViewMode
+    
+    init() {
+        #if os(macOS)
+        mode = .full
+        #else
+        mode = UIScreen.main.bounds.width > 1180 ? .full : .compactRight
+        #endif
+    }
+}
+
 class PortalState: ObservableObject {
-    enum State {
-        case idle, currentAccount, createAccount, restoreAccount
+    enum Scene {
+        case idle, account, createAccount, restoreAccount
     }
     
     enum ModalViewState: Equatable {
@@ -25,30 +44,25 @@ class PortalState: ObservableObject {
              withdrawFromExchange(balance: ExchangeBalanceModel)
     }
     
-    @Published var current: State = .idle
-    @Published var searchRequest = String()
-    @Published var exchangeSceneState: PortalExchangeSceneState = .full
+    var userId = String()
+    
+    @Published var rootView: Scene = .idle
     @Published var loading: Bool = false
-    
-    @Published var mainScene: Scenes = .wallet
-    
-    @Published var selectedCoin: Coin = Coin.bitcoin()
-    @Published var walletCurrency: Currency = .fiat(USD)
     
     @Published var modalView: ModalViewState = .none
     
+    @ObservedObject var wallet: WalletState = WalletState()
+    @ObservedObject var exchange: ExchangeState = ExchangeState()
+    
     private var anyCancellable = Set<AnyCancellable>()
+    
     #if os(iOS)
     @Published var orientation = UIDeviceOrientation.unknown
     #endif
         
     init() {
-        #if os(macOS)
-        self.exchangeSceneState = .full
-        #else
-        self.exchangeSceneState = UIScreen.main.bounds.width > 1180 ? .full : .compactRight
-        
-        self.orientation = UIDevice.current.orientation
+        #if os(iOS)
+        orientation = UIDevice.current.orientation
 
         NotificationCenter
             .default
