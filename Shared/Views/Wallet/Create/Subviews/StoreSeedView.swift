@@ -46,9 +46,11 @@ struct StoreSeedView: View {
                 
                 Spacer().frame(height: 60)
                 
-                PButton(label: "Next", width: 180, height: 48, fontSize: 15, enabled: true) {
-                    withAnimation {
-                        viewModel.step = .test
+                HStack(spacing: 12) {
+                    PButton(label: "Next", width: 180, height: 48, fontSize: 15, enabled: true) {
+                        withAnimation {
+                            viewModel.step = .test
+                        }
                     }
                     .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     
