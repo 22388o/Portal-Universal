@@ -64,6 +64,16 @@ final class CreateAccountViewModel: ObservableObject {
         }
     }
     
+    func copyToClipboard() {
+        let seedString = test.seed.reduce(String(), { $0 + " " + $1 })
+        #if os(iOS)
+        UIPasteboard.general.string = seedString
+        #else
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(seedString, forType: NSPasteboard.PasteboardType.string)
+        #endif
+    }
+    
     private var mnemonicDereviation: MnemonicDerivation {
         switch btcAddressFormat {
         case 1:

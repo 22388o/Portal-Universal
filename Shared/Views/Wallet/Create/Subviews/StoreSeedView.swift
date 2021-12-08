@@ -50,8 +50,16 @@ struct StoreSeedView: View {
                     withAnimation {
                         viewModel.step = .test
                     }
+                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                    
+                    Text("Copy to clipboard")
+                        .underline()
+                        .foregroundColor(Color.txListTxType)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            viewModel.copyToClipboard()
+                        }
                 }
-                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
             }
             
             ZStack {
