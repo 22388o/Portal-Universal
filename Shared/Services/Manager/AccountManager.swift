@@ -23,7 +23,7 @@ final class AccountManager {
         } else {
             DispatchQueue.main.async {
                 Portal.shared.state.loading = false
-                Portal.shared.state.current = .createAccount
+                Portal.shared.state.rootView = .createAccount
             }
         }
     }

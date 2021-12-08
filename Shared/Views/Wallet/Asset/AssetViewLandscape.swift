@@ -78,7 +78,7 @@ struct AssetViewLandscape: View {
                 case .value:
                     MarketValueView(
                         timeframe: $viewModel.timeframe,
-                        currency: state.walletCurrency,
+                        currency: state.wallet.currency,
                         totalValue: viewModel.totalValue,
                         change: viewModel.change,
                         high: viewModel.highValue,
@@ -153,7 +153,7 @@ struct AssetViewLandscape: View {
                     .padding(.vertical, 15)
                     
                 case .transactions:
-                    RecentTxsView(coin: state.selectedCoin)
+                    RecentTxsView(coin: state.wallet.coin)
                         .transition(.identity)
                 case .alerts:
                     AlertsView(coin: viewModel.coin)

@@ -97,7 +97,7 @@ class PortfolioItem: ObservableObject {
                 let balanceAtTimestamp = balance(at: timestamp)
                 let value = point * balanceAtTimestamp
                 
-                switch Portal.shared.state.walletCurrency {
+                switch Portal.shared.state.wallet.currency {
                 case .btc:
                     return (value/btcUSDPrice).double
                 case .eth:
@@ -112,7 +112,7 @@ class PortfolioItem: ObservableObject {
                 let balanceAtTimestamp = balance(at: timestamp)
                 let value = point * balanceAtTimestamp
                 
-                switch Portal.shared.state.walletCurrency {
+                switch Portal.shared.state.wallet.currency {
                 case .btc:
                     return (value/btcUSDPrice).double
                 case .eth:

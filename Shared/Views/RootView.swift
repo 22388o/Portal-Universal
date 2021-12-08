@@ -14,15 +14,15 @@ struct RootView: View {
         ZStack {
             Color.portalWalletBackground
             
-            switch state.current {
+            switch state.rootView {
             case .idle:
                 Color.clear
-            case .currentAccount:
-                MainScene()
+            case .account:
+                AccountView()
                     .transition(AnyTransition.opacity)
                     .zIndex(6)
             case .createAccount:
-                CreateAccountScene(state: $state.current)
+                CreateAccountView(scene: $state.rootView)
                     .transition(AnyTransition.opacity)
                     .zIndex(2)
             case .restoreAccount:

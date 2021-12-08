@@ -15,7 +15,7 @@ struct PortfolioView: View {
             VStack(spacing: 0) {
                 MarketValueView(
                     timeframe: $viewModel.selectedTimeframe,
-                    currency: viewModel.state.walletCurrency,
+                    currency: viewModel.state.wallet.currency,
                     totalValue: viewModel.totalValue,
                     change: viewModel.change,
                     high: viewModel.highest,

@@ -11,7 +11,7 @@ struct OrderBookView: View {
     let orderBook: SocketOrderBook
     let tradingPair: TradingPairModel
 
-    @Binding var state: PortalExchangeSceneState
+    @Binding var state: ExchangeViewMode
     @State private var route: OrderBookRoute = .buy
     
     var body: some View {

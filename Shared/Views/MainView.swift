@@ -18,7 +18,7 @@ struct MainView: View {
         ZStack {
             Color.black.opacity(0.58).allowsHitTesting(false)
             
-            switch state.mainScene {
+            switch state.wallet.switchState {
             case .wallet:
                 #if os(macOS)
                 HStack(spacing: 0) {
@@ -31,7 +31,7 @@ struct MainView: View {
                                 .foregroundColor(Color.white)
                         }
                     }
-                    WalletView(state: state, viewModel: walletViewModel)
+                    WalletView(viewModel: walletViewModel)
                     AssetViewLandscape(viewModel: assetViewModel)
                         .zIndex(0)
                         .padding([.top, .trailing, .bottom], 8)
@@ -39,7 +39,7 @@ struct MainView: View {
                 #else
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
-                        WalletView(state: state, viewModel: walletViewModel)
+                        WalletView(viewModel: walletViewModel)
 
                         if state.orientation == .landscapeLeft || state.orientation == .landscapeRight {
                             AssetViewLandscape(viewModel: assetViewModel)

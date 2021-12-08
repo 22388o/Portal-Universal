@@ -19,6 +19,7 @@ final class AssetItemViewModel: ObservableObject {
     @Published private(set) var balanceString = String()
     @Published private(set) var adapterState: AdapterState = .notSynced(error: AdapterError.wrongParameters)
     @Published private(set) var syncProgressString = String()
+    @Published private(set) var selected: Bool = false
 
     @Published var syncProgress: Float = 0.01
     
@@ -68,11 +69,11 @@ final class AssetItemViewModel: ObservableObject {
         self.marketDataProvider = marketDataProvider
         
         self.selectedTimeframe = .day
-        self.currency = state.walletCurrency
+        self.currency = state.wallet.currency
         
         self.adapterState = adapter.balanceState
         
-        updateBalance()
+//        updateBalance()
         
         adapter.balanceUpdatedObservable
             .subscribeOn(serialQueueScheduler)
@@ -101,10 +102,16 @@ final class AssetItemViewModel: ObservableObject {
             })
             .disposed(by: disposeBag)
         
-        state.$walletCurrency
+        state.wallet.$currency
             .sink { [weak self] currency in
                 self?.currency = currency
                 self?.updateBalance()
+            }
+            .store(in: &subscriptions)
+        
+        state.wallet.$coin
+            .sink { [weak self] selected in
+                self?.selected = coin.code == selected.code
             }
             .store(in: &subscriptions)
     }

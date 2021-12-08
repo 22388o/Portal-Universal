@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct SeedTestView: View {
-    @ObservedObject private var viewModel: CreateWalletSceneViewModel
+    @ObservedObject private var viewModel: CreateAccountViewModel
     private var accountManager = Portal.shared.accountManager
     @ObservedObject private var state = Portal.shared.state
 
-    init(viewModel: CreateWalletSceneViewModel) {
+    init(viewModel: CreateAccountViewModel) {
         self.viewModel = viewModel
     }
     
@@ -86,7 +86,7 @@ struct SeedTestView: View {
 
 struct SeedTestView_Previews: PreviewProvider {
     static var previews: some View {
-        SeedTestView(viewModel: CreateWalletSceneViewModel(type: .mnemonic(words: [], salt: String())))
+        SeedTestView(viewModel: CreateAccountViewModel(type: .mnemonic(words: [], salt: String())))
             .frame(width: 750, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

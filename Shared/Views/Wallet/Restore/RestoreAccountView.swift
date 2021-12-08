@@ -38,7 +38,7 @@ struct RestoreAccountView: View {
                 HStack {
                     PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
                         withAnimation {
-                            state.current = .currentAccount
+                            state.rootView = .account
                         }
                     }
                     Spacer()
@@ -111,7 +111,7 @@ struct RestoreAccountView: View {
                         
                         PButton(label: "Create new account", width: 140, height: 30, fontSize: 12, enabled: true) {
                             withAnimation {
-                                state.current = .createAccount
+                                state.rootView = .createAccount
                             }
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)

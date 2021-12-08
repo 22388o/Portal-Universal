@@ -1,5 +1,5 @@
 //
-//  MainScene.swift
+//  AccountView.swift
 //  Portal
 //
 //  Created by Farid on 08.04.2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MainScene: View {
+struct AccountView: View {
     @ObservedObject var state = Portal.shared.state
     @StateObject var headerViewModel = HeaderViewModel.config()
     
@@ -24,7 +24,7 @@ struct MainScene: View {
                 
     var body: some View {
         ZStack(alignment: containerZStackAlignment) {
-            switch state.mainScene {
+            switch state.wallet.switchState {
             case .wallet:
                 Color.portalWalletBackground.allowsHitTesting(false)
             case .exchange:
@@ -60,7 +60,7 @@ struct MainScene: View {
 
 struct MainScene_Previews: PreviewProvider {
     static var previews: some View {
-        MainScene()
+        AccountView()
             .iPadLandscapePreviews()
     }
 }

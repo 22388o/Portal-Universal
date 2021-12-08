@@ -18,7 +18,7 @@ struct HeaderView: View {
     var body: some View {
         ZStack {
             HStack {
-                if viewModel.state.mainScene == .wallet {
+                if viewModel.state.wallet.switchState == .wallet {
                     Button(action: {
                         withAnimation(.easeIn(duration: 1.2)) {
                             viewModel.state.modalView = .switchAccount
@@ -46,8 +46,8 @@ struct HeaderView: View {
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.red)
                     }
-                    if viewModel.state.mainScene == .wallet {
-                        WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.walletCurrency).scaleEffect(0.85)
+                    if viewModel.state.wallet.switchState == .wallet {
+                        WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.wallet.currency).scaleEffect(0.85)
                         
                         Button(action: {
                             withAnimation(.easeIn(duration: 1.2)) {
@@ -92,7 +92,7 @@ struct HeaderView: View {
                 }
             }
             
-            AppSceneSwitch(state: $viewModel.state.mainScene)
+            AppSceneSwitch(state: $viewModel.state.wallet.switchState)
         }
     }
 }

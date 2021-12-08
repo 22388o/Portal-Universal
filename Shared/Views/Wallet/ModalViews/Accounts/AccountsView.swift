@@ -57,7 +57,7 @@ struct AccountsView: View {
                 
                 PButton(label: "Create new account", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
-                        viewModel.state.current = .createAccount
+                        viewModel.state.rootView = .createAccount
                         viewModel.state.modalView = .none
                     }
                 }
@@ -65,7 +65,7 @@ struct AccountsView: View {
                                 
                 PButton(label: "Restore account", width: 184, height: 32, fontSize: 12, enabled: true) {
                     withAnimation {
-                        viewModel.state.current = .restoreAccount
+                        viewModel.state.rootView = .restoreAccount
                         viewModel.state.modalView = .none
                     }
                 }

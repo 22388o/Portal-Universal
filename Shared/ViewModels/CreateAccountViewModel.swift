@@ -1,5 +1,5 @@
 //
-//  CreateWalletSceneViewModel.swift
+//  CreateAccountViewModel.swift
 //  Portal
 //
 //  Created by Farid on 24.06.2021.
@@ -8,8 +8,12 @@
 import Combine
 import HdWalletKit
 
-final class CreateWalletSceneViewModel: ObservableObject {
-    @Published var walletCreationStep: WalletCreationSteps = .createWalletName
+final class CreateAccountViewModel: ObservableObject {
+    enum Step {
+        case name, seed, test, confirmation
+    }
+    
+    @Published var step: Step = .name
     @Published var walletName = String()
     @Published var btcAddressFormat = BtcAddressFormat.segwit.rawValue
     @Published var test: SeedTestViewModel

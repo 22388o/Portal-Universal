@@ -50,7 +50,7 @@ final class PortfolioViewModel: ObservableObject {
         self.adapterManager = adapterManager
         self.marketDataProvider = marketDataProvider
         self.state = state
-        self.walletCurrency = state.walletCurrency
+        self.walletCurrency = state.wallet.currency
                                                         
         subscribe()
     }
@@ -80,7 +80,8 @@ final class PortfolioViewModel: ObservableObject {
             .store(in: &subscriptions)
         
         state
-            .$walletCurrency
+            .wallet
+            .$currency
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] currency in
@@ -150,7 +151,7 @@ final class PortfolioViewModel: ObservableObject {
         let prefix = "\(changeInPercents > 0 ? "+" : "-")"
         let percentChangeString = "(\(changeInPercents.double.rounded(toPlaces: 2))%)"
         let totalValue = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
-        let priceChange = abs(totalValue * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 5)
+        let priceChange = abs(totalValue * (changeInPercents/100)).formattedString(walletCurrency, decimals: 5)
 
         return "\(prefix)\(priceChange) \(percentChangeString)"
     }
@@ -193,7 +194,7 @@ final class PortfolioViewModel: ObservableObject {
         let high: Decimal
         let low: Decimal
         
-        switch state.walletCurrency {
+        switch state.wallet.currency {
         case .btc:
             low = lowestUSDValue/btcUSDPrice
             high = highestUSDValue/btcUSDPrice
@@ -205,7 +206,7 @@ final class PortfolioViewModel: ObservableObject {
             high = highestUSDValue * Decimal(fiatCurrency.rate)
         }
         
-        return ("\(low.formattedString(state.walletCurrency, decimals: 4))", "\(high.formattedString(walletCurrency, decimals: 4))")
+        return ("\(low.formattedString(walletCurrency, decimals: 4))", "\(high.formattedString(walletCurrency, decimals: 4))")
     }
     
     func updateBestWorstPerformingCoin() {

@@ -106,7 +106,7 @@ extension ManageAlertViewModel {
     static func config(coin: Coin) -> ManageAlertViewModel {
         let price = Portal.shared.marketDataProvider.ticker(coin: coin)?[.usd].price ?? 1
         let storage = Portal.shared.dbStorage
-        let userId = Portal.shared.userId
+        let userId = Portal.shared.state.userId
         let accountId = Portal.shared.accountManager.activeAccount?.id
         
         guard let id = accountId else {

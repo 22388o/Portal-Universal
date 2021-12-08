@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AppSceneSwitch: View {
-    @Binding var state: Scenes
+    @Binding var state: HeaderSwitchState
     
     var body: some View {
         ZStack {

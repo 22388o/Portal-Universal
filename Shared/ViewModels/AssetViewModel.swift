@@ -125,21 +125,23 @@ final class AssetViewModel: ObservableObject {
             highValue = marketData.yearHigh
         }
         
-        switch state.walletCurrency {
+        let currency = state.wallet.currency
+        
+        switch currency {
         case .btc:
             guard let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) else { return "-" }
             guard coin == .bitcoin() else {
-                return (highValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+                return (highValue/ticker[.usd].price).formattedString(currency, decimals: 4)
             }
             return "1 BTC"
         case .eth:
             guard let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) else { return "-" }
             guard coin == .ethereum() else {
-                return (highValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+                return (highValue/ticker[.usd].price).formattedString(currency, decimals: 4)
             }
             return "1 ETH"
         case .fiat(let fiatCurrency):
-            return (highValue * Decimal(fiatCurrency.rate)).formattedString(state.walletCurrency)
+            return (highValue * Decimal(fiatCurrency.rate)).formattedString(currency)
         }
     }
     
@@ -157,21 +159,23 @@ final class AssetViewModel: ObservableObject {
             lowValue = marketData.yearLow
         }
         
-        switch state.walletCurrency {
+        let currency = state.wallet.currency
+        
+        switch currency {
         case .btc:
             guard let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) else { return "-" }
             guard coin == .bitcoin() else {
-                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+                return (lowValue/ticker[.usd].price).formattedString(currency, decimals: 4)
             }
             return "1 BTC"
         case .eth:
             guard let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) else { return "-" }
             guard coin == .ethereum() else {
-                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+                return (lowValue/ticker[.usd].price).formattedString(currency, decimals: 4)
             }
             return "1 ETH"
         case .fiat(let fiatCurrency):
-            return (lowValue * Decimal(fiatCurrency.rate)).formattedString(state.walletCurrency)
+            return (lowValue * Decimal(fiatCurrency.rate)).formattedString(currency)
         }
     }
     
@@ -179,7 +183,7 @@ final class AssetViewModel: ObservableObject {
         let priceChange: Decimal?
         let quote: Ticker.Quote?
         
-        switch state.walletCurrency {
+        switch state.wallet.currency {
         case .btc:
             quote = ticker?[.btc]
         case .eth:
@@ -213,7 +217,7 @@ final class AssetViewModel: ObservableObject {
         marketDataProvider: IMarketDataProvider
     ) {
         self.state = state
-        self.coin = state.selectedCoin
+        self.coin = state.wallet.coin
         self.walletManager = walletManager
         self.adapterManager = adapterManager
         self.marketDataProvider = marketDataProvider
@@ -232,14 +236,14 @@ final class AssetViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        state.$walletCurrency
+        state.wallet.$currency
             .receive(on: RunLoop.main)
             .sink { [weak self] currency in
                 self?.update()
             }
             .store(in: &subscriptions)
         
-        state.$selectedCoin
+        state.wallet.$coin
             .receive(on: RunLoop.main)
             .sink { [weak self] coin in
                 self?.route = .value
@@ -272,8 +276,9 @@ final class AssetViewModel: ObservableObject {
         guard let ticker = self.ticker else { return }
         
         let currentPrice: Decimal
+        let currency = state.wallet.currency
         
-        switch state.walletCurrency {
+        switch currency {
         case .btc:
             currentPrice = ticker[.btc].price
         case .eth:
@@ -282,7 +287,7 @@ final class AssetViewModel: ObservableObject {
             currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
         }
         
-        totalValue = currentPrice.formattedString(state.walletCurrency, decimals: 4)
+        totalValue = currentPrice.formattedString(currency, decimals: 4)
                 
         let isInteger = adapter?.balance.rounded(toPlaces: 6).isInteger ?? true
         
@@ -310,12 +315,13 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func change(price: Decimal, percentChange: Decimal) -> String {
+        let currency = state.wallet.currency
         let prefix = percentChange > 0 ? "+" : "-"
-        let value = abs(price * (percentChange/100)).formattedString(state.walletCurrency, decimals: 3)
+        let value = abs(price * (percentChange/100)).formattedString(currency, decimals: 3)
         let percentChange = percentChange.double.roundToDecimal(2)
         let changeString = "\(prefix)\(value) (\(percentChange)%)"
         
-        switch state.walletCurrency {
+        switch currency {
         case .btc:
             guard coin == .bitcoin() else {
                 return changeString
@@ -372,7 +378,7 @@ final class AssetViewModel: ObservableObject {
             points = marketData.yearPoints
         }
         
-        switch state.walletCurrency {
+        switch state.wallet.currency {
         case .btc:
             return points.map{ $0/btcUSDPrice }
         case .eth:

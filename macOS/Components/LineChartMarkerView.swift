@@ -12,7 +12,7 @@ class LineChartMarkerView: MarkerView {
 
     override func refreshContent(entry: ChartDataEntry, highlight: Highlight) {
         super.refreshContent(entry: entry, highlight: highlight)
-        text = entry.y.formattedString(Portal.shared.state.walletCurrency)
+        text = entry.y.formattedString(Portal.shared.state.wallet.currency)
     }
 
     override func draw(context: CGContext, point: CGPoint) {
