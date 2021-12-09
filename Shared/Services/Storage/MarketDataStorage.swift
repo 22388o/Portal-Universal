@@ -25,6 +25,8 @@ final class MarketDataStorage: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     private var repository = Synchronized([CoinCode : CoinMarketData]())
     
+    var onMarketDataUpdatePublisher = PassthroughSubject<Void, Never>()
+    
     var tickers: [Ticker]? {
         cacheStorage.tickers
     }
@@ -32,11 +34,7 @@ final class MarketDataStorage: ObservableObject {
     var fiatCurrencies: [FiatCurrency] {
         cacheStorage.fiatCurrencies
     }
-    
-    @Published var marketDataReady: Bool = false
-    @Published var historicalDataReady: Bool = false
-    @Published var dataReady: Bool = false
-        
+            
     init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater, cacheStorage: IDBCacheStorage) {
         self.mdUpdater = mdUpdater
         self.fcUpdater = fcUpdater
@@ -50,6 +48,7 @@ final class MarketDataStorage: ObservableObject {
             .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
                 self.update(range, data)
+                self.onMarketDataUpdatePublisher.send()
             })
             .store(in: &cancellables)
         
@@ -57,9 +56,6 @@ final class MarketDataStorage: ObservableObject {
             .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
                 self.update(range, data)
-                if !self.historicalDataReady {
-                    self.historicalDataReady = true
-                }
             })
             .store(in: &cancellables)
         
@@ -83,12 +79,6 @@ final class MarketDataStorage: ObservableObject {
                 self.cacheStorage.store(fiatCurrencies: fiatCurrencies)
             })
             .store(in: &cancellables)
-        
-        Publishers.CombineLatest($historicalDataReady, $marketDataReady)
-            .sink { [weak self] historicalDataReady, marketDataReady in
-                self?.dataReady = historicalDataReady && marketDataReady
-            }
-            .store(in: &cancellables)
     }
     
     private func update(_ range: MarketDataRange, _ data: HistoricalTickerPrice) {
@@ -108,9 +98,6 @@ final class MarketDataStorage: ObservableObject {
                     data[points.key]?.monthPoints = points.value
                 case .year:
                     data[points.key]?.yearPoints = points.value
-                    if !self.marketDataReady {
-                        self.marketDataReady = true
-                    }
                 }
             })
         }
