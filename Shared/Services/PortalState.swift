@@ -43,24 +43,24 @@ class PortalState: ObservableObject {
              accountSettings,
              withdrawFromExchange(balance: ExchangeBalanceModel)
     }
-    
-    var userId = String()
-    
+        
     @Published var rootView: Scene = .idle
-    @Published var loading: Bool = false
-    
+    @Published var loading: Bool = true
     @Published var modalView: ModalViewState = .none
     
     @ObservedObject var wallet: WalletState = WalletState()
     @ObservedObject var exchange: ExchangeState = ExchangeState()
     
+    private(set) var userId: String
     private var anyCancellable = Set<AnyCancellable>()
     
     #if os(iOS)
     @Published var orientation = UIDeviceOrientation.unknown
     #endif
         
-    init() {
+    init(userId: String = UUID().uuidString) {
+        self.userId = userId
+        
         #if os(iOS)
         orientation = UIDevice.current.orientation
 
@@ -77,5 +77,9 @@ class PortalState: ObservableObject {
             }
             .store(in: &anyCancellable)
         #endif
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.loading = false
+        }
     }
 }

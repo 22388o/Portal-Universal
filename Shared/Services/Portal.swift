@@ -34,7 +34,7 @@ final class Portal: ObservableObject {
     let reachabilityService: ReachabilityService
     let pushNotificationService: PushNotificationService
     
-    @ObservedObject var state = PortalState()
+    @ObservedObject var state: PortalState
         
     private init() {
         reachabilityService = ReachabilityService()
@@ -47,6 +47,8 @@ final class Portal: ObservableObject {
         mixpanel.identify(distinctId: userId)
         
         Bugsnag.start()
+        
+        state = PortalState(userId: userId)
         
         localStorage = LocalStorage()
         
@@ -108,56 +110,39 @@ final class Portal: ObservableObject {
         
         pushNotificationService = PushNotificationService(appId: userId)
         pushNotificationService.registerForRemoteNotifications()
-        
-        state.userId = userId
-        
+                
         if let activeAccount = accountManager.activeAccount {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
         }
-                                
-        marketDataStorage.$dataReady
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] ready in
-                guard let self = self else { return }
-                if !ready && self.reachabilityService.isReachable {
-                    self.state.loading = true
-                } else {
-                    self.state.loading = false
-                }
-            })
-            .store(in: &anyCancellables)
                 
         adapterManager.adapterdReadyPublisher
             .receive(on: RunLoop.main)
-            .sink { [weak self] ready in
-                let hasAccount = self?.accountManager.activeAccount != nil
+            .sink { [unowned self] ready in
+                let hasAccount = self.accountManager.activeAccount != nil
                 if hasAccount && ready {
-                    if self?.state.rootView != .account {
-                        self?.state.rootView = .account
+                    if self.state.rootView != .account {
+                        self.state.rootView = .account
                     }
                 } else if hasAccount {
-                    self?.state.loading = false
-                    self?.state.rootView = .createAccount
+                    self.state.rootView = .createAccount
                 }
             }
             .store(in: &anyCancellables)
         
         accountManager.onActiveAccountUpdatePublisher
             .receive(on: RunLoop.main)
-            .sink { [weak self] account in
+            .sink { [unowned self] account in
                 if account != nil {
-                    self?.state.loading = false
-                    self?.updateWalletCurrency(code: account?.fiatCurrencyCode ?? "USD")
+                    self.state.loading = false
+                    self.updateWalletCurrency(code: account?.fiatCurrencyCode ?? "USD")
                 }
             }
             .store(in: &anyCancellables)
         
-        state
-            .wallet
-            .$currency
+        state.wallet.$currency
             .dropFirst()
-            .sink { [weak self] currency in
-                self?.accountManager.updateWalletCurrency(code: currency.code)
+            .sink { [unowned self] currency in
+                self.accountManager.updateWalletCurrency(code: currency.code)
             }
             .store(in: &anyCancellables)
     }
