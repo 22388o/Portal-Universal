@@ -54,7 +54,7 @@ final class MarketDataUpdater {
         for (index, id) in coinPaprikaCoinIds.enumerated() {
             print("Fetching ticker history \(id)")
             Coinpaprika.API.coinLatestOhlcv(id: id, quote: .usd)
-                .perform { (response) in
+                .perform { [unowned self] response in
                     switch response {
                     case .success(let response):
                         self.onUpdateHistoricalDataPublisher.send((.day, [coins[index].code : response.map{ MarketSnapshot.init($0) }]))

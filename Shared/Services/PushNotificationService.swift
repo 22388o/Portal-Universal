@@ -20,7 +20,7 @@ final class PushNotificationService: NSObject {
     func registerForRemoteNotifications() {
         UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, _ in
-                print("Permission granted: \(granted)")
+                print("Push notifications permission granted: \(granted)")
                 guard granted else { return }
                 self?.getNotificationSettings()
             }
@@ -37,7 +37,7 @@ final class PushNotificationService: NSObject {
     }
     
     func registerPushNotificationToken(_ token: String) {
-        print("Device Token: \(token)")
+        print("Push notification Device Token: \(token)")
         updater.update(devId: appId, token: token)
     }
     

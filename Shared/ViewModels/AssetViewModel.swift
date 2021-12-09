@@ -125,6 +125,8 @@ final class AssetViewModel: ObservableObject {
             highValue = marketData.yearHigh
         }
         
+        guard highValue > 0 else { return "-" }
+        
         let currency = state.wallet.currency
         
         switch currency {
@@ -158,6 +160,8 @@ final class AssetViewModel: ObservableObject {
         case .year:
             lowValue = marketData.yearLow
         }
+        
+        guard lowValue > 0 else { return "-" }
         
         let currency = state.wallet.currency
         
@@ -250,6 +254,15 @@ final class AssetViewModel: ObservableObject {
                 self?.coin = coin
                 self?.updateAdapter()
                 self?.update()
+            }
+            .store(in: &subscriptions)
+        
+        marketDataProvider
+            .onMarketDataUpdatePublisher
+            .debounce(for: 0.25, scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.chartDataEntries = self.assetChartDataEntries()
             }
             .store(in: &subscriptions)
     }
@@ -347,9 +360,6 @@ final class AssetViewModel: ObservableObject {
             points = chartDataPonts(timeframe: timeframe)
         } else {
             marketDataProvider.requestHistoricalData(coin: coin, timeframe: timeframe)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.chartDataEntries = self.assetChartDataEntries()
-            }
         }
         
         for (index, point) in points.enumerated() {
