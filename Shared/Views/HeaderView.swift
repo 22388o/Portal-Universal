@@ -42,8 +42,9 @@ struct HeaderView: View {
                 
                 HStack {
                     if viewModel.isOffline {
-                        Text("You are not connected to the Internet")
-                            .font(.mainFont(size: 14))
+                        Image("iconNoWiFi")
+                            .resizable()
+                            .frame(width: 20, height: 20)
                             .foregroundColor(Color.red)
                     }
                     if viewModel.state.wallet.switchState == .wallet {
