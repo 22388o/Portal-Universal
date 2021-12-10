@@ -123,7 +123,7 @@ final class Portal: ObservableObject {
                     if self.state.rootView != .account {
                         self.state.rootView = .account
                     }
-                } else if hasAccount {
+                } else if !hasAccount {
                     self.state.rootView = .createAccount
                 }
             }
