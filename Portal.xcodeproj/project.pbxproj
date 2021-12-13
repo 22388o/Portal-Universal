@@ -351,6 +351,8 @@
 		753E7E332756693300C96F33 /* BarChart+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E7E312756693300C96F33 /* BarChart+Extension.swift */; };
 		753E7E3527566B3B00C96F33 /* BarChartXAxixValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E7E3427566B3B00C96F33 /* BarChartXAxixValueFormatter.swift */; };
 		753E7E3627566B3B00C96F33 /* BarChartXAxixValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E7E3427566B3B00C96F33 /* BarChartXAxixValueFormatter.swift */; };
+		7542B5802763BEB7006B9786 /* AlertTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7542B57F2763BEB7006B9786 /* AlertTypePicker.swift */; };
+		7542B5822763BF6B006B9786 /* AlertTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7542B5812763BF6B006B9786 /* AlertTypePicker.swift */; };
 		7546CFCC2636980A00E8A8B7 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */; };
 		7546CFCD2636980A00E8A8B7 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
@@ -868,6 +870,8 @@
 		753E7E2E2756636500C96F33 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		753E7E312756693300C96F33 /* BarChart+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BarChart+Extension.swift"; sourceTree = "<group>"; };
 		753E7E3427566B3B00C96F33 /* BarChartXAxixValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartXAxixValueFormatter.swift; sourceTree = "<group>"; };
+		7542B57F2763BEB7006B9786 /* AlertTypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypePicker.swift; sourceTree = "<group>"; };
+		7542B5812763BF6B006B9786 /* AlertTypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypePicker.swift; sourceTree = "<group>"; };
 		7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItemView.swift; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		75503C5E264FFA250043FDEC /* MarketDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataProvider.swift; sourceTree = "<group>"; };
@@ -1299,6 +1303,7 @@
 				752229FE27145BA200003D3F /* ExchangeBalancePicker.swift */,
 				751A1CE42732BDB50024586B /* BtcNetworkPicker.swift */,
 				751A1CE62732BDE70024586B /* EthNetworkPicker.swift */,
+				7542B57F2763BEB7006B9786 /* AlertTypePicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1318,6 +1323,7 @@
 				751A1CE82732C06D0024586B /* BtcNetworkPicker.swift */,
 				751A1CEA2732C15C0024586B /* EthNetworkPicker.swift */,
 				75502B49273966B40075201B /* AssetViewPortrait.swift */,
+				7542B5812763BF6B006B9786 /* AlertTypePicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2141,6 +2147,7 @@
 				75B151022621DAB700542415 /* AssetViewLandscape.swift in Sources */,
 				75984F2E2648219B002CD1EA /* RestoreAccountView.swift in Sources */,
 				75A3F54226A57E63006B1823 /* Account.swift in Sources */,
+				7542B5822763BF6B006B9786 /* AlertTypePicker.swift in Sources */,
 				75308B0A26A19D7A0024AACD /* EvmAdapter.swift in Sources */,
 				7555644D26DD0E2F001B1C1A /* SocketOrderBook.swift in Sources */,
 				7517F8A026B802970020AECB /* AsyncImageView.swift in Sources */,
@@ -2428,6 +2435,7 @@
 				7555643526D8FB1A001B1C1A /* MyOrdersView.swift in Sources */,
 				752E533026FDDE6400FCDB0C /* Router.swift in Sources */,
 				7555644E26DD0E2F001B1C1A /* SocketOrderBook.swift in Sources */,
+				7542B5802763BEB7006B9786 /* AlertTypePicker.swift in Sources */,
 				750AE9AA26149DD900C45971 /* IMarketDataMockable.swift in Sources */,
 				75D476D4262DAC2B0006FD91 /* RecentTxsView.swift in Sources */,
 				7517F8A426B802DD0020AECB /* CoinImageView.swift in Sources */,

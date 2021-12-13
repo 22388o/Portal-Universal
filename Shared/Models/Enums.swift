@@ -336,6 +336,23 @@ enum MyOrdersRoute {
     case open, history
 }
 
+enum AlertType {
+    case worthMore(Coin), worthLess(Coin), incrases(Coin), discrases(Coin)
+    
+    var description: String {
+        switch self {
+        case .worthMore(let coin):
+            return "1.0 \(coin.code) is worth more than..."
+        case .worthLess(let coin):
+            return "1.0 \(coin.code) is worth less than..."
+        case .incrases(let coin):
+            return "Value of \(coin.code) incrases by..."
+        case .discrases(let coin):
+            return "Value of \(coin.code) discrases by..."
+        }
+    }
+}
+
 enum TxSortState {
     case all, sent, received, swapped
     
