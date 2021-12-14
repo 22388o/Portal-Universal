@@ -38,20 +38,20 @@ class ReachabilityService: ObservableObject {
     @Published private(set) var isReachable: Bool = false
     
     func startMonitoring() {
-        monitorForWifi.pathUpdateHandler = { [weak self] path in
-            self?.wifiStatus = path.status
+        monitorForWifi.pathUpdateHandler = { [unowned self] path in
+            self.wifiStatus = path.status
         }
-        monitorForCellular.pathUpdateHandler = { [weak self] path in
-            self?.cellularStatus = path.status
+        monitorForCellular.pathUpdateHandler = { [unowned self] path in
+            self.cellularStatus = path.status
         }
         
-        monitorForOtherConnections.pathUpdateHandler = { [weak self] path in
-            self?.otherConnectionsStatus = path.status
+        monitorForOtherConnections.pathUpdateHandler = { [unowned self] path in
+            self.otherConnectionsStatus = path.status
         }
         
         Publishers.Merge3($isReachableOnWifi, $isReachableOnCellular, $isReachableOnOtherConnection)
-            .sink { [weak self] output in
-                self?.isReachable = output
+            .sink { [unowned self] output in
+                self.isReachable = output
             }
             .store(in: &subscriptions)
         
