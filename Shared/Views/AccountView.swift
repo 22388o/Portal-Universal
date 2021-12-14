@@ -40,18 +40,16 @@ struct AccountView: View {
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
             }
-            .blur(radius: state.modalView != .none ? 4 : 0)
             .allowsHitTesting(!(state.modalView != .none))
             
             if state.modalView != .none {
-                Color.white.opacity(0.01)
+                Color.portalWalletBackground.opacity(0.82)
                     .onTapGesture {
                         withAnimation {
                             state.modalView = .none
                         }
                     }
                 WalletModalViews()
-//                    .zIndex(1)
             }
         }
     }
