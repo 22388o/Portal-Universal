@@ -5,7 +5,9 @@
 //  Created by farid on 12/6/21.
 //
 
+#if os(macOS)
 import Cocoa
+#endif
 import UserNotifications
 
 final class PushNotificationService: NSObject {
@@ -16,7 +18,7 @@ final class PushNotificationService: NSObject {
         self.appId = appId
         self.updater = PushTokenUpdater()
     }
-        
+    
     func registerForRemoteNotifications() {
         UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, _ in
@@ -31,7 +33,9 @@ final class PushNotificationService: NSObject {
             print("Notification settings: \(settings)")
             guard settings.authorizationStatus == .authorized else { return }
             DispatchQueue.main.async {
+#if os(macOS)
                 NSApplication.shared.registerForRemoteNotifications()
+#endif
             }
         }
     }
@@ -43,6 +47,7 @@ final class PushNotificationService: NSObject {
     
 }
 
+#if os(macOS)
 extension PushNotificationService: NSUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: NSUserNotificationCenter, shouldPresent notification: NSUserNotification) -> Bool { true }
     
@@ -50,3 +55,4 @@ extension PushNotificationService: NSUserNotificationCenterDelegate {
         print("did deliver notification")
     }
 }
+#endif
