@@ -88,6 +88,8 @@ struct AssetViewLandscape: View {
                         type: .asset
                     )
                     
+#if os(macOS)
+                    
                     ScrollView(showsIndicators: false) {
                         Spacer().frame(height: 30)
                         
@@ -152,8 +154,10 @@ struct AssetViewLandscape: View {
                     }
                     .padding(.vertical, 15)
                     
+#endif
+                    
                 case .transactions:
-                    RecentTxsView(coin: state.wallet.coin)
+                    RecentTxsView(viewModel: viewModel.txsViewModel)
                         .transition(.identity)
                 case .alerts:
                     AlertsView(coin: viewModel.coin)

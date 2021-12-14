@@ -35,7 +35,7 @@ struct WalletModalViews: View {
             case .accountSettings:
                 AccountSettingsView()
                     .animation(nil)
-                    .padding(.top, 40)
+                    .padding(.top, 50)
                     .padding(.trailing, 24)
             case .withdrawFromExchange(let balance):
                 WithdrawFromExchangeView(balance: balance)

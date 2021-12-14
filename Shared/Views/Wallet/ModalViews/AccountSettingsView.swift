@@ -43,12 +43,15 @@ struct AccountSettingsView: View {
                             .font(.mainFont(size: 14))
                     }
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 8)
                 
                 Toggle("Portfolio includes exchange balances:", isOn: $portfolioIncludesExchangeBalance)
                     .toggleStyle(SwitchToggleStyle())
                     .font(.mainFont(size: 12))
                     .foregroundColor(Color.lightActiveLabel)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
                 
                 Group {
                     VStack(spacing: 6) {

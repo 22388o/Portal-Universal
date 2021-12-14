@@ -37,7 +37,6 @@ struct AccountView: View {
                     .padding(.vertical, 24)
                 
                 MainView()
-                    .transition(.opacity)
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
             }
@@ -52,7 +51,7 @@ struct AccountView: View {
                         }
                     }
                 WalletModalViews()
-                    .zIndex(1)
+//                    .zIndex(1)
             }
         }
     }
