@@ -154,7 +154,8 @@ final class Portal: ObservableObject {
         case "ETH":
             state.wallet.currency = .eth
         default:
-            state.wallet.currency = marketDataProvider.fiatCurrencies.map { Currency.fiat($0) }.first(where: { $0.code == code }) ?? .fiat(.init(code: code, name: "-"))
+            let currency = Currency.fiat(.init(code: code, name: "-"))
+            state.wallet.currency = marketDataProvider.fiatCurrencies.map { Currency.fiat($0) }.first(where: { $0.code == code }) ?? currency
         }
     }
  
