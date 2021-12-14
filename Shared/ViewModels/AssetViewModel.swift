@@ -24,6 +24,7 @@ final class AssetViewModel: ObservableObject {
     @Published private(set) var canSend: Bool = false
     
     @ObservedObject private var state: PortalState
+    @ObservedObject var txsViewModel: TxsViewModel
         
     private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
     private let disposeBag = DisposeBag()
@@ -222,6 +223,12 @@ final class AssetViewModel: ObservableObject {
     ) {
         self.state = state
         self.coin = state.wallet.coin
+        
+        guard let viewModel = TxsViewModel.config(coin: coin) else {
+            fatalError("Cannot config TxsViewModel")
+        }
+        
+        self.txsViewModel = viewModel
         self.walletManager = walletManager
         self.adapterManager = adapterManager
         self.marketDataProvider = marketDataProvider
@@ -250,7 +257,10 @@ final class AssetViewModel: ObservableObject {
         state.wallet.$coin
             .receive(on: RunLoop.main)
             .sink { [weak self] coin in
-                self?.route = .value
+                guard let viewModel = TxsViewModel.config(coin: coin) else {
+                    fatalError("Cannot config TxsViewModel")
+                }
+                self?.txsViewModel = viewModel
                 self?.coin = coin
                 self?.updateAdapter()
                 self?.update()

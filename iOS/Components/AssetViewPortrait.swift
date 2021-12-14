@@ -10,11 +10,18 @@ import Charts
 import Coinpaprika
 
 struct AssetViewPortrait: View {
+    @StateObject private var txsViewModel: TxsViewModel
     @ObservedObject private var viewModel: AssetViewModel
     @ObservedObject private var state = Portal.shared.state
-    
+        
     init(viewModel: AssetViewModel) {
         self.viewModel = viewModel
+        
+        guard let vm = TxsViewModel.config(coin: viewModel.coin) else {
+            fatalError("Cannot config TxsViewModel")
+        }
+        
+        self._txsViewModel = StateObject(wrappedValue: vm)
     }
     
     var body: some View {
@@ -80,7 +87,7 @@ struct AssetViewPortrait: View {
                 case .value:
                     MarketValueView(
                         timeframe: $viewModel.timeframe,
-                        currency: state.walletCurrency,
+                        currency: state.wallet.currency,
                         totalValue: viewModel.totalValue,
                         change: viewModel.change,
                         high: viewModel.highValue,
@@ -90,7 +97,7 @@ struct AssetViewPortrait: View {
                         type: .asset
                     )
                 case .transactions:
-                    RecentTxsView(coin: state.selectedCoin)
+                    RecentTxsView(viewModel: txsViewModel)
                         .frame(height: 425)
                         .transition(.identity)
                 case .alerts:
