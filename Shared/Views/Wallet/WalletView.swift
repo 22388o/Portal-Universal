@@ -83,7 +83,7 @@ struct WalletView: View {
                     }
                 }
             }
-            .frame(minWidth: 650)
+            .frame(minWidth: 500)
         }
     }
 }
