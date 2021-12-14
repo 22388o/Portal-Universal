@@ -44,6 +44,7 @@ class PortalState: ObservableObject {
              withdrawFromExchange(balance: ExchangeBalanceModel)
     }
         
+    @Published var showPortfolio: Bool = true
     @Published var rootView: Scene = .idle
     @Published var loading: Bool = true
     @Published var modalView: ModalViewState = .none

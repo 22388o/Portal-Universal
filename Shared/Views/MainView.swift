@@ -22,13 +22,15 @@ struct MainView: View {
             case .wallet:
                 #if os(macOS)
                 HStack(spacing: 0) {
-                    ZStack {
-                        PortfolioView(viewModel: portfolioViewModel)
-                            .blur(radius: portfolioViewModel.empty ? 6 : 0)
-                        if portfolioViewModel.empty {
-                            Text("Portfolio is empty")
-                                .font(.mainFont(size: 14))
-                                .foregroundColor(Color.white)
+                    if state.showPortfolio {
+                        ZStack {
+                            PortfolioView(viewModel: portfolioViewModel)
+                                .blur(radius: portfolioViewModel.empty ? 6 : 0)
+                            if portfolioViewModel.empty {
+                                Text("Portfolio is empty")
+                                    .font(.mainFont(size: 14))
+                                    .foregroundColor(Color.white)
+                            }
                         }
                     }
                     WalletView(viewModel: walletViewModel)
@@ -39,10 +41,24 @@ struct MainView: View {
                 #else
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
+                        if state.showPortfolio && (state.orientation == .landscapeLeft || state.orientation == .landscapeRight) {
+                            ZStack {
+                                PortfolioView(viewModel: portfolioViewModel)
+                                    .blur(radius: portfolioViewModel.empty ? 6 : 0)
+                                if portfolioViewModel.empty {
+                                    Text("Portfolio is empty")
+                                        .font(.mainFont(size: 14))
+                                        .foregroundColor(Color.white)
+                                }
+                            }
+                            .transition(.move(edge: .leading).combined(with: .opacity))
+                        }
+                        
                         WalletView(viewModel: walletViewModel)
 
                         if state.orientation == .landscapeLeft || state.orientation == .landscapeRight {
                             AssetViewLandscape(viewModel: assetViewModel)
+                                .transition(.identity)
                                 .id(UUID())
                                 .padding([.top, .trailing, .bottom], 8)
 
@@ -50,6 +66,7 @@ struct MainView: View {
                     }
                     if state.orientation == .portrait || state.orientation == .portraitUpsideDown || state.orientation == .faceDown || state.orientation == .faceUp {
                         AssetViewPortrait(viewModel: assetViewModel)
+                            .transition(.identity)
                             .id(UUID())
                             .frame(height: 640)
                             .padding(.all, 8)
@@ -66,7 +83,6 @@ struct MainView: View {
                 }
             }
         }
-        .zIndex(0)
     }
 }
 

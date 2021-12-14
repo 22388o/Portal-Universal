@@ -17,7 +17,7 @@ struct HeaderView: View {
     
     var body: some View {
         ZStack {
-            HStack {
+            HStack(spacing: 12) {
                 if viewModel.state.wallet.switchState == .wallet {
                     Button(action: {
                         withAnimation(.easeIn(duration: 1.2)) {
@@ -35,9 +35,22 @@ struct HeaderView: View {
                         .foregroundColor(Color.white.opacity(0.82))
                     })
                     .buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: {
+                        withAnimation(.easeIn(duration: 0.25)) {
+                            viewModel.state.showPortfolio.toggle()
+                        }
+                    }, label: {
+                        Image("portfolioIcon")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(Color.white.opacity(0.82))
+                            .offset(y: 2)
+                    })
+                    .buttonStyle(PlainButtonStyle())
                 }
                 
-                Spacer().frame(minWidth: 690)
+                Spacer()
 
                 
                 HStack {
