@@ -25,6 +25,8 @@ def portal_shared_pods
   pod 'Mixpanel-swift'
   #Error monitoring
   pod 'Bugsnag'
+  #Tools
+  pod 'RxCombine'
 end
 
 
