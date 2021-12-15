@@ -138,10 +138,11 @@ final class PortfolioViewModel: ObservableObject {
     }
         
     private func updateLabels() {
-        totalValue = "\(assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }.formattedString(walletCurrency))"
-        empty = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 } == 0
+        let portfolioBalanceValue = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
+        totalValue = "\(portfolioBalanceValue.formattedString(walletCurrency))"
+        empty = portfolioBalanceValue == 0
         
-        change = calculateChange()
+        change = calculateChange(value: portfolioBalanceValue)
         
         lowest = lowString()
         highest = highString()
@@ -151,16 +152,14 @@ final class PortfolioViewModel: ObservableObject {
         exchangeBalances.removeAll()
     }
     
-    private func calculateChange() -> String {
+    private func calculateChange(value: Decimal) -> String {
         let balanceAtTimestamp = assets.map{ $0.balanceValue(for: walletCurrency, at: selectedTimeframe) }.reduce(0){ $0 + $1 }
-        let balanceNow = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
-        let change = balanceNow - balanceAtTimestamp
+        let change = value - balanceAtTimestamp
         let changeInPercents = balanceAtTimestamp > 0 ? (change/balanceAtTimestamp) * 100 : 100
         
         let prefix = "\(changeInPercents > 0 ? "+" : "-")"
         let percentChangeString = "(\(changeInPercents.double.rounded(toPlaces: 2))%)"
-        let totalValue = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
-        let priceChange = abs(totalValue * (changeInPercents/100)).formattedString(walletCurrency, decimals: 5)
+        let priceChange = abs(value * (changeInPercents/100)).formattedString(walletCurrency, decimals: 5)
 
         return "\(prefix)\(priceChange) \(percentChangeString)"
     }

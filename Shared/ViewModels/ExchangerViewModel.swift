@@ -18,13 +18,12 @@ final class ExchangerViewModel: ObservableObject {
     @Published var fiatValue = String()
     
     private var price: Double {
+        let priceValue = (ticker?[.usd].price ?? 0)
         switch currency {
-        case .btc:
-            return ((ticker?[.usd].price ?? 0)).double
-        case .eth:
-            return ((ticker?[.usd].price ?? 0)).double
+        case .btc, .eth:
+            return priceValue.double
         case .fiat(let fiatCurrency):
-            return ((ticker?[.usd].price ?? 0) * Decimal(fiatCurrency.rate)).double
+            return priceValue.double * fiatCurrency.rate
         }
     }
     
