@@ -35,7 +35,6 @@ struct MainView: View {
                     }
                     WalletView(viewModel: walletViewModel)
                     AssetViewLandscape(viewModel: assetViewModel)
-                        .zIndex(0)
                         .padding([.top, .trailing, .bottom], 8)
                 }
                 #else
@@ -76,6 +75,7 @@ struct MainView: View {
             case .exchange:
                 if Portal.shared.reachabilityService.isReachable {
                     ExchangeScene(state: state, viewModel: exchangeViewModel)
+                        .transition(.identity)
                 } else {
                     Text("Exchanges aren't avalible.")
                         .foregroundColor(Color.red)
