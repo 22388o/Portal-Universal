@@ -29,7 +29,7 @@ final class NotificationService: ObservableObject {
         accountId = accountManager.activeAccount?.id
         
         accountManager
-            .onActiveAccountUpdatePublisher
+            .onActiveAccountUpdate
             .sink { [weak self] account in
                 self?.accountId = account?.id
             }

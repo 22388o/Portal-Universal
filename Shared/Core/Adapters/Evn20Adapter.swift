@@ -92,11 +92,11 @@ extension Evm20Adapter: IAdapter {
 }
 
 extension Evm20Adapter: IBalanceAdapter {
-    var balanceStateUpdatedPublisher: AnyPublisher<Void, Never> {
+    var balanceStateUpdated: AnyPublisher<Void, Never> {
         evm20Kit.syncStateObservable.map { _ in () }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
     
-    var balanceUpdatedPublisher: AnyPublisher<Void, Never> {
+    var balanceUpdated: AnyPublisher<Void, Never> {
         evm20Kit.balanceObservable.map { _ in () }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
     
@@ -104,18 +104,9 @@ extension Evm20Adapter: IBalanceAdapter {
         convertToAdapterState(evmSyncState: evm20Kit.syncState)
     }
 
-    var balanceStateUpdatedObservable: Observable<Void> {
-        evm20Kit.syncStateObservable.map { _ in () }
-    }
-
     var balance: Decimal {
         balanceDecimal(kitBalance: evm20Kit.balance, decimal: decimal)
     }
-
-    var balanceUpdatedObservable: Observable<Void> {
-        evm20Kit.balanceObservable.map { _ in () }
-    }
-
 }
 
 extension Evm20Adapter: ISendEthereumAdapter {
@@ -154,7 +145,7 @@ extension Evm20Adapter: ITransactionsAdapter {
         convertToAdapterState(evmSyncState: evm20Kit.transactionsSyncState)
     }
     
-    var transactionStateUpdatedPublisher: AnyPublisher<Void, Never> {
+    var transactionStateUpdated: AnyPublisher<Void, Never> {
         evm20Kit
             .transactionsSyncStateObservable
             .map { _ in () }
@@ -162,7 +153,7 @@ extension Evm20Adapter: ITransactionsAdapter {
             .eraseToAnyPublisher()
     }
     
-    var transactionRecordsPublisher: AnyPublisher<[TransactionRecord], Never> {
+    var transactionRecords: AnyPublisher<[TransactionRecord], Never> {
         evm20Kit.transactionsObservable.map { [weak self] in
             $0.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
         }
@@ -171,7 +162,7 @@ extension Evm20Adapter: ITransactionsAdapter {
     }
     
     func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
-        return Future { [weak self] promisse in
+        Future { [weak self] promisse in
             let disposeBag = DisposeBag()
             
             try? self?.evm20Kit.transactionsSingle(from: nil, limit: nil)

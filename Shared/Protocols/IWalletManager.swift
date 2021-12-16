@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol IWalletManager: AnyObject {
-    var onWalletsUpdatePublisher: PassthroughSubject<[Wallet], Never> { get }
+    var onWalletsUpdate: PassthroughSubject<[Wallet], Never> { get }
     var activeWallets: [Wallet] { get }
     var wallets: [Wallet] { get }
     func preloadWallets()

@@ -67,7 +67,7 @@ final class TxsViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        transactionAdapter.transactionRecordsPublisher
+        transactionAdapter.transactionRecords
             .receive(on: RunLoop.main)
             .sink { [weak self] records in
                 self?.allTxs = records

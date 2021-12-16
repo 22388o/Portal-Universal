@@ -90,7 +90,7 @@ final class SendAssetViewModel: ObservableObject {
             }
             .store(in: &cancellable)
         
-        txsAdapter.transactionRecordsPublisher
+        txsAdapter.transactionRecords
             .receive(on: RunLoop.main)
             .sink { [weak self] records in
                 guard let self = self else { return }

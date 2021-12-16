@@ -68,7 +68,7 @@ final class PortfolioViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        adapterManager.adapterdReadyPublisher
+        adapterManager.adapterdReady
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
@@ -91,7 +91,7 @@ final class PortfolioViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        marketDataProvider.onMarketDataUpdatePublisher
+        marketDataProvider.onMarketDataUpdate
             .debounce(for: 0.25, scheduler: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateLabels()

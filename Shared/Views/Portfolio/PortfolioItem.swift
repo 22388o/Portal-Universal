@@ -74,7 +74,7 @@ class PortfolioItem: ObservableObject {
             }
             .store(in: &subscriptions)
 
-        balanceAdapter.balanceUpdatedPublisher
+        balanceAdapter.balanceUpdated
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] _ in
                 self?.balance = balanceAdapter.balance

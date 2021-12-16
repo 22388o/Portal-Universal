@@ -30,7 +30,7 @@ class HeaderViewModel: ObservableObject {
         currencies.append(Currency.eth)
         currencies.append(contentsOf: Portal.shared.marketDataProvider.fiatCurrencies.map{ Currency.fiat($0) })
         
-        accountManager.onActiveAccountUpdatePublisher
+        accountManager.onActiveAccountUpdate
             .receive(on: RunLoop.main)
             .sink { [weak self] account in
                 self?.accountName = account?.name ?? "-"

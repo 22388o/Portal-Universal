@@ -23,7 +23,7 @@ struct FiatSymbols: Codable {
 }
 
 final class FiatCurrenciesUpdater { 
-    let onUpdatePublisher = PassthroughSubject<[FiatCurrency], Never>()
+    let onFiatCurrenciesUpdate = PassthroughSubject<[FiatCurrency], Never>()
         
     private let jsonDecoder: JSONDecoder
     private let timer: RepeatingTimer
@@ -62,7 +62,7 @@ final class FiatCurrenciesUpdater {
                         print(error)
                     }
                 } receiveValue: { (rates, symbols) in
-                    onUpdatePublisher.send(
+                    onFiatCurrenciesUpdate.send(
                         zip(
                             symbols.sorted(by: { $0.key < $1.key }),
                             rates.sorted(by: { $0.key < $1.key })
@@ -79,7 +79,7 @@ final class FiatCurrenciesUpdater {
     }
     
     private func updateRatesPublisher() -> Future<Rates, NetworkError> {
-        return Future<Rates, NetworkError> { [unowned self] promise in
+        Future<Rates, NetworkError> { [unowned self] promise in
             guard let url = latestUrl else {
                 return promise(.failure(.inconsistentBehavior))
             }
@@ -103,7 +103,7 @@ final class FiatCurrenciesUpdater {
     }
     
     private func updateSymbolsPublisher() -> Future<[String : String], NetworkError> {
-        return Future<[String : String], NetworkError> { [unowned self] promise in
+        Future<[String : String], NetworkError> { [unowned self] promise in
             guard let url = symbolsUrl else {
                 return promise(.failure(.inconsistentBehavior))
             }

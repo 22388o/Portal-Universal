@@ -252,11 +252,11 @@ extension BitcoinBaseAdapter: BitcoinCoreDelegate {
 
 extension BitcoinBaseAdapter: IBalanceAdapter {
     
-    var balanceStateUpdatedPublisher: AnyPublisher<Void, Never> {
+    var balanceStateUpdated: AnyPublisher<Void, Never> {
         stateUpdatedSubject.eraseToAnyPublisher()
     }
     
-    var balanceUpdatedPublisher: AnyPublisher<Void, Never> {
+    var balanceUpdated: AnyPublisher<Void, Never> {
         balanceUpdatedSubject.eraseToAnyPublisher()
     }
 
@@ -331,20 +331,20 @@ extension BitcoinBaseAdapter: ITransactionsAdapter {
         abstractKit.lastBlockInfo.map { LastBlockInfo(height: $0.height, timestamp: $0.timestamp) }
     }
     
-    var transactionStateUpdatedPublisher: AnyPublisher<Void, Never> {
+    var transactionStateUpdated: AnyPublisher<Void, Never> {
         stateUpdatedSubject.eraseToAnyPublisher()
     }
     
-    var lastBlockUpdatedPublisher: AnyPublisher<Void, Never> {
+    var lastBlockUpdated: AnyPublisher<Void, Never> {
         lastBlockUpdatedSubject.eraseToAnyPublisher()
     }
     
-    var transactionRecordsPublisher: AnyPublisher<[TransactionRecord], Never> {
+    var transactionRecords: AnyPublisher<[TransactionRecord], Never> {
         transactionRecordsSubject.eraseToAnyPublisher()
     }
     
     func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
-        return Future { [weak self] promisse in
+        Future { [weak self] promisse in
             let disposeBag = DisposeBag()
             
             self?.abstractKit.transactions(fromUid: from?.uid, limit: limit)

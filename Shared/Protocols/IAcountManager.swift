@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol IAccountManager {
-    var onActiveAccountUpdatePublisher: PassthroughSubject<Account?, Never> { get }
+    var onActiveAccountUpdate: PassthroughSubject<Account?, Never> { get }
     var accounts: [Account] { get }
     var activeAccount: Account? { get }
     func account(id: String) -> Account?

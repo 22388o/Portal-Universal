@@ -91,7 +91,7 @@ final class Portal: ObservableObject {
         let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: dbStorage)
         marketDataProvider = MarketDataProvider(repository: marketDataStorage)
                         
-        let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: dbStorage)
+        let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, accountStorage: dbStorage)
         accountManager = AccountManager(accountStorage: accountStorage)
         
         let erc20Updater: IERC20Updater = ERC20Updater()
@@ -115,7 +115,7 @@ final class Portal: ObservableObject {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
         }
                 
-        adapterManager.adapterdReadyPublisher
+        adapterManager.adapterdReady
             .receive(on: RunLoop.main)
             .sink { [unowned self] ready in
                 let hasAccount = self.accountManager.activeAccount != nil
@@ -129,13 +129,13 @@ final class Portal: ObservableObject {
             }
             .store(in: &anyCancellables)
         
-        accountManager.onActiveAccountUpdatePublisher
+        accountManager.onActiveAccountUpdate
             .receive(on: RunLoop.main)
             .sink { [unowned self] account in
-                if account != nil {
-                    self.state.loading = false
-                    self.updateWalletCurrency(code: account?.fiatCurrencyCode ?? "USD")
-                }
+                guard let activeAccount = account else  { return }
+                
+                self.state.loading = false
+                self.updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
             }
             .store(in: &anyCancellables)
         

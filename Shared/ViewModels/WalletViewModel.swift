@@ -27,7 +27,7 @@ class WalletViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        adapterManager.adapterdReadyPublisher
+        adapterManager.adapterdReady
             .receive(on: DispatchQueue.global())
             .sink { [weak self] _ in
                 guard let self = self else { return }

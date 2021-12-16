@@ -40,7 +40,7 @@ final class AccountSettingsViewModel: ObservableObject {
         self.account = account
                 
         accountManager
-            .onActiveAccountUpdatePublisher
+            .onActiveAccountUpdate
             .sink { [weak self] account in
                 guard let self = self, let newAccount = account else { return }
                 self.onAccountUpdate(account: newAccount)

@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 final class AccountManager {
-    var onActiveAccountUpdatePublisher = PassthroughSubject<Account?, Never>()
+    var onActiveAccountUpdate = PassthroughSubject<Account?, Never>()
 
     private let accountStorage: AccountStorage
     
@@ -44,12 +44,12 @@ extension AccountManager: IAccountManager {
     
     func setActiveAccount(id: String) {
         accountStorage.setCurrentAccount(id: id)
-        onActiveAccountUpdatePublisher.send(accountStorage.activeAccount)
+        onActiveAccountUpdate.send(accountStorage.activeAccount)
     }
     
     func save(account: Account) {
         accountStorage.save(account: account)
-        onActiveAccountUpdatePublisher.send(account)
+        onActiveAccountUpdate.send(account)
     }
     
     func delete(account: Account) {

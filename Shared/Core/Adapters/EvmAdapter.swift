@@ -118,11 +118,11 @@ extension EvmAdapter: IBalanceAdapter {
         balanceDecimal(kitBalance: evmKit.accountState?.balance, decimal: EvmAdapter.decimal)
     }
     
-    var balanceStateUpdatedPublisher: AnyPublisher<Void, Never> {
+    var balanceStateUpdated: AnyPublisher<Void, Never> {
         evmKit.syncStateObservable.map { _ in() }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
     
-    var balanceUpdatedPublisher: AnyPublisher<Void, Never> {
+    var balanceUpdated: AnyPublisher<Void, Never> {
         evmKit.accountStateObservable.map { _ in() }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
 }
@@ -144,7 +144,7 @@ extension EvmAdapter: ITransactionsAdapter {
         convertToAdapterState(evmSyncState: evmKit.transactionsSyncState)
     }
     
-    var transactionStateUpdatedPublisher: AnyPublisher<Void, Never> {
+    var transactionStateUpdated: AnyPublisher<Void, Never> {
         evmKit
             .transactionsSyncStateObservable
             .map { _ in () }
@@ -152,7 +152,7 @@ extension EvmAdapter: ITransactionsAdapter {
             .eraseToAnyPublisher()
     }
         
-    var transactionRecordsPublisher: AnyPublisher<[TransactionRecord], Never> {
+    var transactionRecords: AnyPublisher<[TransactionRecord], Never> {
         evmKit.etherTransactionsObservable.map { [weak self] in
             $0.compactMap { self?.transactionRecord(fromTransaction: $0) }
         }
@@ -161,7 +161,7 @@ extension EvmAdapter: ITransactionsAdapter {
     }
     
     func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
-        return Future { [weak self] promisse in
+        Future { [weak self] promisse in
             let disposeBag = DisposeBag()
             
             self?.evmKit.etherTransactionsSingle(fromHash: from.flatMap { Data(hex: $0.transactionHash) }, limit: limit)

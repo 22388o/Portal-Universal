@@ -264,8 +264,7 @@ final class AssetViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        marketDataProvider
-            .onMarketDataUpdatePublisher
+        marketDataProvider.onMarketDataUpdate
             .debounce(for: 0.25, scheduler: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
@@ -283,7 +282,7 @@ final class AssetViewModel: ObservableObject {
             adapter = nil
         }
                 
-        adapter?.balanceUpdatedPublisher
+        adapter?.balanceUpdated
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] _ in
                 self?.update()

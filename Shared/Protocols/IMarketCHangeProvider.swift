@@ -11,7 +11,7 @@ import Coinpaprika
 import Combine
 
 protocol IMarketDataProvider {
-    var onMarketDataUpdatePublisher: PassthroughSubject<Void, Never> { get }
+    var onMarketDataUpdate: PassthroughSubject<Void, Never> { get }
     var fiatCurrencies: [FiatCurrency] { get }
     var tickers: [Ticker]? { get }
     func ticker(coin: Coin) -> Ticker?

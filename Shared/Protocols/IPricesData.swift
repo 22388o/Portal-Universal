@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 protocol IPricesData {
-    var onUpdatePublisher: PassthroughSubject<PriceResponse, Never> { get }
+    var onPricesUpdate: PassthroughSubject<PriceResponse, Never> { get }
     func updatePrices(for assets: String, _ competionHandler: @escaping ((Result<PriceResponse, NetworkError>) -> Void))
     func pause()
     func resume()

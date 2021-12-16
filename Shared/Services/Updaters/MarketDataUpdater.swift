@@ -11,9 +11,9 @@ import Combine
 import Coinpaprika
 
 final class MarketDataUpdater {
-    let onUpdateHistoricalPricePublisher = PassthroughSubject<(MarketDataRange, HistoricalTickerPrice), Never>()
-    let onUpdateHistoricalDataPublisher = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
-    let onTickersUpdatePublisher = PassthroughSubject<([Ticker]), Never>()
+    let onUpdateHistoricalPrice = PassthroughSubject<(MarketDataRange, HistoricalTickerPrice), Never>()
+    let onUpdateHistoricalData = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
+    let onTickersUpdate = PassthroughSubject<([Ticker]), Never>()
     
     private(set) var tickers: [Ticker]
     private var reachability: ReachabilityService
@@ -34,7 +34,7 @@ final class MarketDataUpdater {
                 switch response {
                 case .success(let tickers):
                     self.tickers = tickers
-                    self.onTickersUpdatePublisher.send(tickers)
+                    self.onTickersUpdate.send(tickers)
                 case .failure(let error):
                     print(error)
                 }
@@ -57,7 +57,7 @@ final class MarketDataUpdater {
                 .perform { [unowned self] response in
                     switch response {
                     case .success(let response):
-                        self.onUpdateHistoricalDataPublisher.send((.day, [coins[index].code : response.map{ MarketSnapshot.init($0) }]))
+                        self.onUpdateHistoricalData.send((.day, [coins[index].code : response.map{ MarketSnapshot.init($0) }]))
                     case .failure(let error):
                         print(error)
                     }
@@ -86,7 +86,7 @@ final class MarketDataUpdater {
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPricePublisher.send((.day, [coin.code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPrice.send((.day, [coin.code : response.map{ $0.price }]))
                         case .failure(let error):
                             print(error)
                         }
@@ -98,7 +98,7 @@ final class MarketDataUpdater {
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPricePublisher.send((.week, [coin.code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPrice.send((.week, [coin.code : response.map{ $0.price }]))
                         case .failure(let error):
                             print(error)
                         }
@@ -110,7 +110,7 @@ final class MarketDataUpdater {
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPricePublisher.send((.month, [coin.code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPrice.send((.month, [coin.code : response.map{ $0.price }]))
                         case .failure(let error):
                             print(error)
                         }
@@ -122,7 +122,7 @@ final class MarketDataUpdater {
                     .perform { [unowned self] (response) in
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPricePublisher.send((.year, [coin.code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPrice.send((.year, [coin.code : response.map{ $0.price }]))
                         case .failure(let error):
                             print(error)
                         }

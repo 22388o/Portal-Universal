@@ -25,7 +25,7 @@ final class MarketDataStorage: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     private var repository = Synchronized([CoinCode : CoinMarketData]())
     
-    var onMarketDataUpdatePublisher = PassthroughSubject<Void, Never>()
+    var onMarketDataUpdate = PassthroughSubject<Void, Never>()
     
     var tickers: [Ticker]? {
         cacheStorage.tickers
@@ -44,22 +44,22 @@ final class MarketDataStorage: ObservableObject {
     }
     
     private func bindServices() {
-        mdUpdater.onUpdateHistoricalPricePublisher
+        mdUpdater.onUpdateHistoricalPrice
             .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
                 self.update(range, data)
-                self.onMarketDataUpdatePublisher.send()
+                self.onMarketDataUpdate.send()
             })
             .store(in: &cancellables)
         
-        mdUpdater.onUpdateHistoricalDataPublisher
+        mdUpdater.onUpdateHistoricalData
             .sink(receiveValue: { [weak self] (range, data) in
                 guard let self = self else { return }
                 self.update(range, data)
             })
             .store(in: &cancellables)
         
-        mdUpdater.onTickersUpdatePublisher
+        mdUpdater.onTickersUpdate
             .receive(on: DispatchQueue.global(qos: .userInteractive))
             .sink(receiveValue: { [weak self] tickers in
                 guard let self = self else { return }
@@ -67,7 +67,7 @@ final class MarketDataStorage: ObservableObject {
             })
             .store(in: &cancellables)
         
-        fcUpdater.onUpdatePublisher
+        fcUpdater.onFiatCurrenciesUpdate
             .sink(receiveValue: { [weak self] currencies in
                 guard let self = self else { return }
                 

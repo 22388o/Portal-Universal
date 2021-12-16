@@ -12,8 +12,8 @@ protocol IBalanceAdapter {
     var balanceState: AdapterState { get }
     var balance: Decimal { get }
     var balanceLocked: Decimal? { get }
-    var balanceStateUpdatedPublisher: AnyPublisher<Void, Never> { get }
-    var balanceUpdatedPublisher: AnyPublisher<Void, Never> { get }
+    var balanceStateUpdated: AnyPublisher<Void, Never> { get }
+    var balanceUpdated: AnyPublisher<Void, Never> { get }
 }
 
 extension IBalanceAdapter {

@@ -71,14 +71,14 @@ final class AssetItemViewModel: ObservableObject {
         
         self.adapterState = adapter.balanceState
                         
-        adapter.balanceUpdatedPublisher
+        adapter.balanceUpdated
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateBalance()
             }
             .store(in: &subscriptions)
         
-        adapter.balanceStateUpdatedPublisher
+        adapter.balanceStateUpdated
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 let state = adapter.balanceState

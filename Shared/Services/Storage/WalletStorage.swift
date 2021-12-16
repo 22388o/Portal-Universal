@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class WalletStorage: IWalletStorage {
-    var onWalletsUpdatePublisher = PassthroughSubject<[Wallet], Never>()
+    var onWalletsUpdate = PassthroughSubject<[Wallet], Never>()
     
     private let coinManager: ICoinManager
     private let accountManager: IAccountManager
@@ -26,15 +26,13 @@ class WalletStorage: IWalletStorage {
     }
     
     private func subscribeForUpdates() {
-        accountManager
-            .onActiveAccountUpdatePublisher
+        accountManager.onActiveAccountUpdate
             .sink { [weak self] _ in
                 self?.syncWallets()
             }
             .store(in: &cancelabel)
         
-        coinManager
-            .onCoinsUpdatePublisher
+        coinManager.onCoinsUpdate
             .sink { [weak self] _ in
                 self?.syncWallets()
             }
@@ -50,7 +48,7 @@ class WalletStorage: IWalletStorage {
             }
         }
         
-        onWalletsUpdatePublisher.send(wallets)
+        onWalletsUpdate.send(wallets)
     }
     
     func wallets(account: Account) -> [Wallet] {

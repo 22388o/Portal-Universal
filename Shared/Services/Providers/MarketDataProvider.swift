@@ -10,7 +10,7 @@ import Coinpaprika
 import Combine
 
 final class MarketDataProvider {
-    var onMarketDataUpdatePublisher = PassthroughSubject<Void, Never>()
+    var onMarketDataUpdate = PassthroughSubject<Void, Never>()
 
     private let repository: IMarketDataProvider
     private var subscriptions = Set<AnyCancellable>()
@@ -21,10 +21,11 @@ final class MarketDataProvider {
     }
     
     private func subscribe() {
-        repository.onMarketDataUpdatePublisher.sink { [weak self] _ in
-            self?.onMarketDataUpdatePublisher.send()
-        }
-        .store(in: &subscriptions)
+        repository.onMarketDataUpdate
+            .sink { [weak self] _ in
+                self?.onMarketDataUpdate.send()
+            }
+            .store(in: &subscriptions)
     }
 }
 

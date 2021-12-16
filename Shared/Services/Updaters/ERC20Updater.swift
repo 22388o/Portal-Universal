@@ -9,11 +9,11 @@ import Foundation
 import Combine
 
 protocol IERC20Updater {
-    var onTokensUpdatePublisher: PassthroughSubject<[Erc20TokenCodable], Never> { get }
+    var onTokensUpdate: PassthroughSubject<[Erc20TokenCodable], Never> { get }
 }
 
 final class ERC20Updater: IERC20Updater {
-    var onTokensUpdatePublisher = PassthroughSubject<[Erc20TokenCodable], Never>()
+    var onTokensUpdate = PassthroughSubject<[Erc20TokenCodable], Never>()
     
     private var tokens: [Erc20TokenCodable] = []
     
@@ -42,7 +42,7 @@ final class ERC20Updater: IERC20Updater {
         guard let allTokens = try? jsonDecoder.decode([String : Erc20TokenCodable].self, from: data) else { return }
         
         tokens = allTokens.map{ $0.value }.filter { !$0.iconURL.isEmpty }
-        onTokensUpdatePublisher.send(tokens)
+        onTokensUpdate.send(tokens)
     }
     
     private func fetchTokens() {
@@ -59,7 +59,7 @@ final class ERC20Updater: IERC20Updater {
             } receiveValue: { [weak self] erc20Tokens in
                 let valildTokens = erc20Tokens.map{ $0.value }.filter { !$0.iconURL.isEmpty }
                 self?.tokens = valildTokens
-                self?.onTokensUpdatePublisher.send(valildTokens)
+                self?.onTokensUpdate.send(valildTokens)
             }
             .store(in: &subscriptions)
     }
