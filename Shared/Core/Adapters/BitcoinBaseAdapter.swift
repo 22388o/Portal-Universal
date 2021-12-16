@@ -11,17 +11,18 @@ import BitcoinCore
 import Hodler
 import RxSwift
 import HsToolKit
+import Combine
 
 class BitcoinBaseAdapter {
     private var confirmationsThreshold: Int
 
     private let abstractKit: AbstractKit
     private let coinRate: Decimal = pow(10, 8)
-
-    private let lastBlockUpdatedSubject = PublishSubject<Void>()
-    private let stateUpdatedSubject = PublishSubject<Void>()
-    private let balanceUpdatedSubject = PublishSubject<Void>()
-    let transactionRecordsSubject = PublishSubject<[TransactionRecord]>()
+    
+    private let lastBlockUpdatedSubject = PassthroughSubject<Void, Never>()
+    private let stateUpdatedSubject = PassthroughSubject<Void, Never>()
+    private let balanceUpdatedSubject = PassthroughSubject<Void, Never>()
+    private let transactionRecordsSubject = PassthroughSubject<[TransactionRecord], Never>()
 
     private(set) var balanceState: AdapterState {
         didSet {
@@ -191,71 +192,72 @@ extension BitcoinBaseAdapter: BitcoinCoreDelegate {
             records.append(transactionRecord(fromTransaction: info))
         }
 
-        transactionRecordsSubject.onNext(records)
+        transactionRecordsSubject.send(records)
     }
 
     func transactionsDeleted(hashes: [String]) {
+        
     }
 
     func balanceUpdated(balance: BalanceInfo) {
-        balanceUpdatedSubject.onNext(())
+        balanceUpdatedSubject.send()
     }
 
     func lastBlockInfoUpdated(lastBlockInfo: BlockInfo) {
         print(lastBlockInfo)
-        lastBlockUpdatedSubject.onNext(())
+        lastBlockUpdatedSubject.send()
     }
 
     func kitStateUpdated(state: BitcoinCore.KitState) {
         switch state {
         case .synced:
-            if case .synced = self.balanceState {
+            if case .synced = balanceState {
                 return
             }
 
-            self.balanceState = .synced
-            stateUpdatedSubject.onNext(())
+            balanceState = .synced
+            stateUpdatedSubject.send()
         case .notSynced(let error):
             let converted = error
 
-            if case .notSynced(let appError) = self.balanceState, "\(converted)" == "\(appError)" {
+            if case .notSynced(let appError) = balanceState, "\(converted)" == "\(appError)" {
                 return
             }
 
-            self.balanceState = .notSynced(error: converted)
-            stateUpdatedSubject.onNext(())
+            balanceState = .notSynced(error: converted)
+            stateUpdatedSubject.send()
         case .syncing(let progress):
             let newProgress = Int(progress * 100)
             let newDate = abstractKit.lastBlockInfo?.timestamp.map { Date(timeIntervalSince1970: Double($0)) }
 
-            if case let .syncing(currentProgress, currentDate) = self.balanceState, newProgress == currentProgress {
+            if case let .syncing(currentProgress, currentDate) = balanceState, newProgress == currentProgress {
                 if let currentDate = currentDate, let newDate = newDate, currentDate.isSameDay(as: newDate) {
                     return
                 }
             }
 
-            self.balanceState = .syncing(progress: newProgress, lastBlockDate: newDate)
-            stateUpdatedSubject.onNext(())
+            balanceState = .syncing(progress: newProgress, lastBlockDate: newDate)
+            stateUpdatedSubject.send()
         case .apiSyncing(let newCount):
-            if case .searchingTxs(let count) = self.balanceState, newCount == count {
+            if case .searchingTxs(let count) = balanceState, newCount == count {
                 return
             }
 
-            self.balanceState = .searchingTxs(count: newCount)
-            stateUpdatedSubject.onNext(())
+            balanceState = .searchingTxs(count: newCount)
+            stateUpdatedSubject.send()
         }
     }
 
 }
 
 extension BitcoinBaseAdapter: IBalanceAdapter {
-
-    var balanceStateUpdatedObservable: Observable<Void> {
-        stateUpdatedSubject.asObservable()
+    
+    var balanceStateUpdatedPublisher: AnyPublisher<Void, Never> {
+        stateUpdatedSubject.eraseToAnyPublisher()
     }
-
-    var balanceUpdatedObservable: Observable<Void> {
-        balanceUpdatedSubject.asObservable()
+    
+    var balanceUpdatedPublisher: AnyPublisher<Void, Never> {
+        balanceUpdatedSubject.eraseToAnyPublisher()
     }
 
     var balance: Decimal {
@@ -297,22 +299,20 @@ extension BitcoinBaseAdapter {
             return 0
         }
     }
-
-    func sendSingle(amount: Decimal, address: String, feeRate: Int, pluginData: [UInt8: IBitcoinPluginData] = [:], sortMode: TransactionDataSortMode) -> Single<Void> {
+    
+    func send(amount: Decimal, address: String, feeRate: Int, pluginData: [UInt8: IBitcoinPluginData] = [:], sortMode: TransactionDataSortMode) -> Future<Void, Error> {
         let satoshiAmount = convertToSatoshi(value: amount)
         let sortType = convertToKitSortMode(sort: sortMode)
 
-        return Single.create { [weak self] observer in
+        return Future { [weak self] promisse in
             do {
                 if let adapter = self {
                     _ = try adapter.abstractKit.send(to: address, value: satoshiAmount, feeRate: feeRate, sortType: sortType, pluginData: pluginData)
                 }
-                observer(.success(()))
+                promisse(.success(()))
             } catch {
-                observer(.error(error))
+                promisse(.failure(error))
             }
-
-            return Disposables.create()
         }
     }
 
@@ -330,26 +330,34 @@ extension BitcoinBaseAdapter: ITransactionsAdapter {
     var lastBlockInfo: LastBlockInfo? {
         abstractKit.lastBlockInfo.map { LastBlockInfo(height: $0.height, timestamp: $0.timestamp) }
     }
-
-    var transactionStateUpdatedObservable: Observable<Void> {
-        stateUpdatedSubject.asObservable()
+    
+    var transactionStateUpdatedPublisher: AnyPublisher<Void, Never> {
+        stateUpdatedSubject.eraseToAnyPublisher()
     }
-
-    var lastBlockUpdatedObservable: Observable<Void> {
-        lastBlockUpdatedSubject.asObservable()
+    
+    var lastBlockUpdatedPublisher: AnyPublisher<Void, Never> {
+        lastBlockUpdatedSubject.eraseToAnyPublisher()
     }
-
-    var transactionRecordsObservable: Observable<[TransactionRecord]> {
-        transactionRecordsSubject.asObservable()
+    
+    var transactionRecordsPublisher: AnyPublisher<[TransactionRecord], Never> {
+        transactionRecordsSubject.eraseToAnyPublisher()
     }
-
-    func transactionsSingle(from: TransactionRecord?, limit: Int) -> Single<[TransactionRecord]> {
-        abstractKit.transactions(fromUid: from?.uid, limit: limit)
-                .map { [weak self] transactions -> [TransactionRecord] in
-                    transactions.compactMap {
-                        self?.transactionRecord(fromTransaction: $0)
+    
+    func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
+        return Future { [weak self] promisse in
+            let disposeBag = DisposeBag()
+            
+            self?.abstractKit.transactions(fromUid: from?.uid, limit: limit)
+                    .map { transactions -> [TransactionRecord] in
+                        transactions.compactMap {
+                            self?.transactionRecord(fromTransaction: $0)
+                        }
                     }
-                }
+                    .subscribe(onSuccess: { records in
+                        promisse(.success(records))
+                    })
+                    .disposed(by: disposeBag)
+        }
     }
 
     func rawTransaction(hash: String) -> String? {

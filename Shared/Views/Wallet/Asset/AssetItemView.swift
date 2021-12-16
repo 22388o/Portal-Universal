@@ -94,8 +94,13 @@ struct AssetItemView_Previews: PreviewProvider {
 }
 
 import RxSwift
+import Combine
 
 struct MockedBalanceAdapter: IBalanceAdapter {
+    var balanceStateUpdatedPublisher: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
+    var balanceUpdatedPublisher: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
     var balanceState: AdapterState = .synced
     
     var balanceStateUpdatedObservable: Observable<Void> = Observable.just(())

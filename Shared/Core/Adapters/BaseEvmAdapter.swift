@@ -7,7 +7,7 @@
 //
 
 import EthereumKit
-import RxSwift
+import Combine
 import BigInt
 import HsToolKit
 
@@ -49,9 +49,13 @@ extension BaseEvmAdapter {
     var lastBlockInfo: LastBlockInfo? {
         evmKit.lastBlockHeight.map { LastBlockInfo(height: $0, timestamp: nil) }
     }
-
-    var lastBlockUpdatedObservable: Observable<Void> {
-        evmKit.lastBlockHeightObservable.map { _ in () }
+    
+    var lastBlockUpdatedPublisher: AnyPublisher<Void, Never> {
+        evmKit
+            .lastBlockHeightObservable
+            .map { _ in () }
+            .publisher.catch { _ in Just(()) }
+            .eraseToAnyPublisher()
     }
 
 }

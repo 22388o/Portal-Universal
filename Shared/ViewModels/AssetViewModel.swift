@@ -8,7 +8,6 @@
 
 import SwiftUI
 import Combine
-import RxSwift
 import Charts
 import Coinpaprika
 
@@ -26,8 +25,6 @@ final class AssetViewModel: ObservableObject {
     @ObservedObject private var state: PortalState
     @ObservedObject var txsViewModel: TxsViewModel
         
-    private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
-    private let disposeBag = DisposeBag()
     private let marketDataProvider: IMarketDataProvider
     private let walletManager: IWalletManager
     private let adapterManager: IAdapterManager
@@ -285,14 +282,13 @@ final class AssetViewModel: ObservableObject {
         } else {
             adapter = nil
         }
-        
-        adapter?.balanceUpdatedObservable
-            .subscribeOn(serialQueueScheduler)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+                
+        adapter?.balanceUpdatedPublisher
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
                 self?.update()
             })
-            .disposed(by: disposeBag)
+            .store(in: &subscriptions)
     }
     
     private func update() {

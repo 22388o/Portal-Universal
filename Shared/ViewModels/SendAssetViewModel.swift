@@ -90,23 +90,21 @@ final class SendAssetViewModel: ObservableObject {
             }
             .store(in: &cancellable)
         
-        txsAdapter.transactionRecordsObservable
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] records in
+        txsAdapter.transactionRecordsPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] records in
                 guard let self = self else { return }
                 let updatedTxs = records.filter{ !self.transactions.contains($0) }
                 self.transactions.append(contentsOf: updatedTxs.filter{ $0.type != .incoming })
-            })
-            .disposed(by: disposeBag)
-        
-        txsAdapter.transactionsSingle(from: nil, limit: 100)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-            .observeOn(MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] records in
+            }
+            .store(in: &cancellable)
+
+        txsAdapter.transactions(from: nil, limit: 100)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] records in
                 self?.transactions = records.filter{ $0.type != .incoming }
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: &cancellable)
     }
     
     deinit {
@@ -206,15 +204,15 @@ final class SendAssetViewModel: ObservableObject {
     func send() {
         switch coin.type {
         case .bitcoin:
-            sendBtcAdapter?
-                .sendSingle(amount: amount, address: receiverAddress, feeRate: feeRate, pluginData: [:], sortMode: .shuffle)
-                .subscribe(onSuccess: { [weak self] _ in
+            sendBtcAdapter?.send(amount: amount, address: receiverAddress, feeRate: feeRate, pluginData: [:], sortMode: .shuffle)
+                .receive(on: RunLoop.main)
+                .sink(receiveCompletion: { completion in
+                    
+                }, receiveValue: { [weak self] _ in
                     print("Btc tx sent")
                     self?.reset()
-                }, onError: { error in
-                    print("Sending btc error: \(error.localizedDescription)")
                 })
-                .disposed(by: disposeBag)
+                .store(in: &cancellable)
         case .ethereum:
             guard
                 let amountToSend = BigUInt(amount.roundedString(decimal: coin.decimal)),

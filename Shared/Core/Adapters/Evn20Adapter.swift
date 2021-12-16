@@ -4,10 +4,11 @@
 //
 //  Created by Farid on 16.07.2021.
 //
-
+import Combine
+import RxCombine
+import RxSwift
 import EthereumKit
 import Erc20Kit
-import RxSwift
 import BigInt
 import HsToolKit
 import class Erc20Kit.Transaction
@@ -91,7 +92,14 @@ extension Evm20Adapter: IAdapter {
 }
 
 extension Evm20Adapter: IBalanceAdapter {
-
+    var balanceStateUpdatedPublisher: AnyPublisher<Void, Never> {
+        evm20Kit.syncStateObservable.map { _ in () }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
+    }
+    
+    var balanceUpdatedPublisher: AnyPublisher<Void, Never> {
+        evm20Kit.balanceObservable.map { _ in () }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
+    }
+    
     var balanceState: AdapterState {
         convertToAdapterState(evmSyncState: evm20Kit.syncState)
     }
@@ -145,28 +153,35 @@ extension Evm20Adapter: ITransactionsAdapter {
     var transactionState: AdapterState {
         convertToAdapterState(evmSyncState: evm20Kit.transactionsSyncState)
     }
-
-    var transactionStateUpdatedObservable: Observable<Void> {
-        evm20Kit.transactionsSyncStateObservable.map { _ in () }
+    
+    var transactionStateUpdatedPublisher: AnyPublisher<Void, Never> {
+        evm20Kit
+            .transactionsSyncStateObservable
+            .map { _ in () }
+            .publisher.catch { _ in Just(()) }
+            .eraseToAnyPublisher()
     }
-
-    var transactionRecordsObservable: Observable<[TransactionRecord]> {
+    
+    var transactionRecordsPublisher: AnyPublisher<[TransactionRecord], Never> {
         evm20Kit.transactionsObservable.map { [weak self] in
             $0.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
         }
+        .publisher.catch { _ in Just([]) }
+        .eraseToAnyPublisher()
     }
-
-    func transactionsSingle(from: TransactionRecord?, limit: Int) -> Single<[TransactionRecord]> {
-        do {
-            let fromData = from.flatMap { record in
-                Data(hex: record.transactionHash)
-            }
-            return try evm20Kit.transactionsSingle(from: nil, limit: nil)
-                    .map { [weak self] transactions -> [TransactionRecord] in
-                        transactions.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
-                    }
-        } catch {
-            return Single.error(error)
+    
+    func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
+        return Future { [weak self] promisse in
+            let disposeBag = DisposeBag()
+            
+            try? self?.evm20Kit.transactionsSingle(from: nil, limit: nil)
+                .map { transactions -> [TransactionRecord] in
+                    transactions.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
+                }
+                .subscribe(onSuccess: { records in
+                    promisse(.success(records))
+                })
+                .disposed(by: disposeBag)
         }
     }
 

@@ -8,7 +8,6 @@
 import SwiftUI
 import Combine
 import Coinpaprika
-import RxSwift
 
 final class AssetItemViewModel: ObservableObject {
     let adapter: IBalanceAdapter
@@ -25,8 +24,7 @@ final class AssetItemViewModel: ObservableObject {
     
     private let notificationService: NotificationService
     private let marketDataProvider: IMarketDataProvider
-    private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
-    private let disposeBag = DisposeBag()
+
     private var subscriptions = Set<AnyCancellable>()
     
     private let selectedTimeframe: Timeframe
@@ -72,19 +70,17 @@ final class AssetItemViewModel: ObservableObject {
         self.currency = state.wallet.currency
         
         self.adapterState = adapter.balanceState
-                
-        adapter.balanceUpdatedObservable
-            .subscribeOn(serialQueueScheduler)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+                        
+        adapter.balanceUpdatedPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
                 self?.updateBalance()
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: &subscriptions)
         
-        adapter.balanceStateUpdatedObservable
-            .subscribeOn(serialQueueScheduler)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+        adapter.balanceStateUpdatedPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
                 let state = adapter.balanceState
                 if case let .syncing(currentProgress, _) = state {
                     let progress = Float(currentProgress)/100
@@ -97,8 +93,8 @@ final class AssetItemViewModel: ObservableObject {
                     print("\(coin.code) synced")
                 }
                 self?.adapterState = state
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: &subscriptions)
         
         state.wallet.$currency
             .sink { [weak self] currency in

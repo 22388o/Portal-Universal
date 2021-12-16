@@ -10,6 +10,7 @@ import EthereumKit
 import RxSwift
 import BigInt
 import HsToolKit
+import Combine
 
 final class EvmAdapter: BaseEvmAdapter {
     static let decimal = 18
@@ -113,18 +114,17 @@ extension EvmAdapter: IBalanceAdapter {
         convertToAdapterState(evmSyncState: evmKit.syncState)
     }
 
-    var balanceStateUpdatedObservable: Observable<Void> {
-        evmKit.syncStateObservable.map { _ in () }
-    }
-
     var balance: Decimal {
         balanceDecimal(kitBalance: evmKit.accountState?.balance, decimal: EvmAdapter.decimal)
     }
-
-    var balanceUpdatedObservable: Observable<Void> {
-        evmKit.accountStateObservable.map { _ in () }
+    
+    var balanceStateUpdatedPublisher: AnyPublisher<Void, Never> {
+        evmKit.syncStateObservable.map { _ in() }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
-
+    
+    var balanceUpdatedPublisher: AnyPublisher<Void, Never> {
+        evmKit.accountStateObservable.map { _ in() }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
+    }
 }
 
 extension EvmAdapter: ISendEthereumAdapter {
@@ -136,7 +136,6 @@ extension EvmAdapter: ISendEthereumAdapter {
 }
 
 extension EvmAdapter: ITransactionsAdapter {
-
     var coin: Coin {
         Coin(type: .ethereum, code: "ETH", name: "Etherium", decimal: 18, iconUrl: String())
     }
@@ -144,22 +143,38 @@ extension EvmAdapter: ITransactionsAdapter {
     var transactionState: AdapterState {
         convertToAdapterState(evmSyncState: evmKit.transactionsSyncState)
     }
-
-    var transactionStateUpdatedObservable: Observable<Void> {
-        evmKit.transactionsSyncStateObservable.map { _ in () }
+    
+    var transactionStateUpdatedPublisher: AnyPublisher<Void, Never> {
+        evmKit
+            .transactionsSyncStateObservable
+            .map { _ in () }
+            .publisher.catch { _ in Just(()) }
+            .eraseToAnyPublisher()
     }
-
-    var transactionRecordsObservable: Observable<[TransactionRecord]> {
+        
+    var transactionRecordsPublisher: AnyPublisher<[TransactionRecord], Never> {
         evmKit.etherTransactionsObservable.map { [weak self] in
             $0.compactMap { self?.transactionRecord(fromTransaction: $0) }
         }
+        .publisher.catch { _ in Just([]) }
+        .eraseToAnyPublisher()
     }
-
-    func transactionsSingle(from: TransactionRecord?, limit: Int) -> Single<[TransactionRecord]> {
-        evmKit.etherTransactionsSingle(fromHash: from.flatMap { Data(hex: $0.transactionHash) }, limit: limit)
-                .map { [weak self] transactions -> [TransactionRecord] in
-                    transactions.compactMap { self?.transactionRecord(fromTransaction: $0) }
-                }
+    
+    func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
+        return Future { [weak self] promisse in
+            let disposeBag = DisposeBag()
+            
+            self?.evmKit.etherTransactionsSingle(fromHash: from.flatMap { Data(hex: $0.transactionHash) }, limit: limit)
+                    .map { transactions -> [TransactionRecord] in
+                        transactions.compactMap {
+                            self?.transactionRecord(fromTransaction: $0)
+                        }
+                    }
+                    .subscribe(onSuccess: { records in
+                        promisse(.success(records))
+                    })
+                    .disposed(by: disposeBag)
+        }
     }
 
     func rawTransaction(hash: String) -> String? {

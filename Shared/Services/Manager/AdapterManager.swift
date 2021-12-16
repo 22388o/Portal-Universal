@@ -6,11 +6,9 @@
 //
 
 import Foundation
-import RxSwift
 import Combine
 
 final class AdapterManager {
-    private let disposeBag = DisposeBag()
     private var cancellable = Set<AnyCancellable>()
 
     private let adapterFactory: IAdapterFactory
