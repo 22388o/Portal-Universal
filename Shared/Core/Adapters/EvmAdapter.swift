@@ -128,7 +128,19 @@ extension EvmAdapter: IBalanceAdapter {
 }
 
 extension EvmAdapter: ISendEthereumAdapter {
-
+    func send(address: Address, value: BigUInt, transactionInput: Data, gasPrice: Int, gasLimit: Int, nonce: Int?) -> Future<FullTransaction, Error> {
+        Future { [weak self] promisse in
+            let disposeBag = DisposeBag()
+            self?.evmKit.sendSingle(address: address, value: value, gasPrice: gasPrice, gasLimit: 21000)
+                .subscribe(onSuccess: { transaction in
+                    promisse(.success(transaction))
+                }, onError: { error in
+                    promisse(.failure(error))
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    
     func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData {
         evmKit.transferTransactionData(to: address, value: amount)
     }

@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 
 protocol IFeeRateProvider {
     var feeRatePriorityList: [FeeRatePriority] { get }
     var defaultFeeRatePriority: FeeRatePriority { get }
-    var recommendedFeeRate: Single<Int> { get }
-    func feeRate(priority: FeeRatePriority) -> Single<Int>
+    var recommendedFeeRate: Future<Int, Never> { get }
+    func feeRate(priority: FeeRatePriority) -> Future<Int, Never>
 }
 
 extension IFeeRateProvider {
@@ -25,12 +25,14 @@ extension IFeeRateProvider {
         .recommended
     }
 
-    func feeRate(priority: FeeRatePriority) -> Single<Int> {
+    func feeRate(priority: FeeRatePriority) -> Future<Int, Never> {
         if case let .custom(value, _) = priority {
-            return Single.just(value)
+            return Future { promisse in
+                promisse(.success(value))
+            }
+        } else {
+            return recommendedFeeRate
         }
-
-        return recommendedFeeRate
     }
 
 }
