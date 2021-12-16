@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import Combine
-import RxSwift
 import Coinpaprika
 import EthereumKit
 import BigInt
@@ -39,8 +38,7 @@ final class SendAssetViewModel: ObservableObject {
     private var ticker: Ticker?
     private var feeRate: Int = 8 //medium
     
-    private var cancellable = Set<AnyCancellable>()
-    private let disposeBag = DisposeBag()
+    private var subscriptions = Set<AnyCancellable>()
     
     init(
         coin: Coin,
@@ -71,24 +69,21 @@ final class SendAssetViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .compactMap { Decimal(string: $0) }
             .assign(to: \.amount, on: self)
-            .store(in: &cancellable)
+            .store(in: &subscriptions)
         
         feeRateProvider.feeRate(priority: .high)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-            .observeOn(MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] feeRate in
+            .receive(on: RunLoop.main)
+            .sink { [weak self] feeRate in
                 self?.feeRate = feeRate
-            }, onError: { error in
-                print(error.localizedDescription)
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: &subscriptions)
         
         Publishers.CombineLatest($amount, $receiverAddress)
             .receive(on: RunLoop.main)
             .sink { [weak self] (amount, address) in
                 self?.validate(address: address, amount: amount)
             }
-            .store(in: &cancellable)
+            .store(in: &subscriptions)
         
         txsAdapter.transactionRecords
             .receive(on: RunLoop.main)
@@ -97,14 +92,14 @@ final class SendAssetViewModel: ObservableObject {
                 let updatedTxs = records.filter{ !self.transactions.contains($0) }
                 self.transactions.append(contentsOf: updatedTxs.filter{ $0.type != .incoming })
             }
-            .store(in: &cancellable)
+            .store(in: &subscriptions)
 
         txsAdapter.transactions(from: nil, limit: 100)
             .receive(on: RunLoop.main)
             .sink { [weak self] records in
                 self?.transactions = records.filter{ $0.type != .incoming }
             }
-            .store(in: &cancellable)
+            .store(in: &subscriptions)
     }
     
     deinit {
@@ -212,7 +207,7 @@ final class SendAssetViewModel: ObservableObject {
                     print("Btc tx sent")
                     self?.reset()
                 })
-                .store(in: &cancellable)
+                .store(in: &subscriptions)
         case .ethereum:
             guard
                 let amountToSend = BigUInt(amount.roundedString(decimal: coin.decimal)),
@@ -221,18 +216,21 @@ final class SendAssetViewModel: ObservableObject {
             else {
                 return
             }
-            
-            Portal.shared.feeRateProvider.ethereumGasPrice
-                .flatMap { gasPrice in
-                    return provider.evmKit.sendSingle(address: recepientAddress, value: amountToSend, gasPrice: gasPrice, gasLimit: 21000)
-                }
-                .subscribe(onSuccess: { [weak self] transaction in
-                    print(transaction.transaction.hash.hex)
-                    self?.reset()
-                }, onError: { error in
-                    print("Sending ether error: \(error.localizedDescription)")
-                })
-                .disposed(by: disposeBag)
+                        
+            Portal.shared.feeRateProvider.ethereumGasPrice.sink { gasPrice in
+                provider.send(address: recepientAddress, value: amountToSend, transactionInput: Data(), gasPrice: gasPrice, gasLimit: 21000, nonce: nil)
+                    .receive(on: RunLoop.main)
+                    .sink { completion in
+                        if case let .failure(error) = completion {
+                            print("Sending ether error: \(error.localizedDescription)")
+                        }
+                    } receiveValue: { [weak self] transaction in
+                        print(transaction.transaction.hash.hex)
+                        self?.reset()
+                    }
+                    .store(in: &self.subscriptions)
+            }
+            .store(in: &subscriptions)
         case .erc20(_ ):
             guard
                 let amountToSend = BigUInt(amount.roundedString(decimal: coin.decimal)),
@@ -244,16 +242,7 @@ final class SendAssetViewModel: ObservableObject {
             
             let transactionData = provider.transactionData(amount: amountToSend, address: recepientAddress)
             
-            Portal.shared.feeRateProvider.ethereumGasPrice
-                .flatMap { gasPrice in
-                    return provider.evmKit.sendSingle(transactionData: transactionData, gasPrice: gasPrice, gasLimit: 21000)
-                }
-                .subscribe(onSuccess: { transaction in
-                    print(transaction.transaction.hash.hex)
-                }, onError: { error in
-                    print("Sending erc20 error: \(error)")
-                })
-                .disposed(by: disposeBag)
+//
         }
     }
     

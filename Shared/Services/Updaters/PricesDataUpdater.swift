@@ -12,12 +12,15 @@ import Combine
 typealias PriceResponse = Dictionary<String, Dictionary<String, MarketPrice>>
 
 final class PricesDataUpdater: IPricesData {
-    var onUpdatePublisher = PassthroughSubject<PriceResponse, Never>()
+    var onPricesUpdate = PassthroughSubject<PriceResponse, Never>()
     
     private let jsonDecoder: JSONDecoder
     private let timer: RepeatingTimer
     private var task: URLSessionTask?
     private var urlSession: URLSession
+    private var url: URL? {
+        URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR")
+    }
         
     init(
         jsonDecoder: JSONDecoder = JSONDecoder(),
@@ -38,7 +41,7 @@ final class PricesDataUpdater: IPricesData {
                 guard let self = self else { return }
                 switch result {
                 case let .success(prices):
-                    self.onUpdatePublisher.send(prices)
+                    self.onPricesUpdate.send(prices)
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -48,7 +51,7 @@ final class PricesDataUpdater: IPricesData {
     }
             
     func updatePrices(for assets: String, _ competionHandler: @escaping ((Result<PriceResponse, NetworkError>) -> Void)) {
-        guard let url = URL(string: "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR") else {
+        guard let url = self.url else {
             competionHandler(.failure(.missingURL))
             return
         }

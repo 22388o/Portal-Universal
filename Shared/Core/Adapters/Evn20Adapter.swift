@@ -110,6 +110,11 @@ extension Evm20Adapter: IBalanceAdapter {
 }
 
 extension Evm20Adapter: ISendEthereumAdapter {
+    func send(address: Address, value: BigUInt, transactionInput: Data, gasPrice: Int, gasLimit: Int, nonce: Int?) -> Future<FullTransaction, Error> {
+        Future { promiss in
+            
+        }
+    }
 
     func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData {
         evm20Kit.transferTransactionData(to: address, value: amount)

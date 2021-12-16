@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 final class AdapterManager {
-    private var cancellable = Set<AnyCancellable>()
+    private var subscriptions = Set<AnyCancellable>()
 
     private let adapterFactory: IAdapterFactory
     private let ethereumKitManager: EthereumKitManager
@@ -31,7 +31,7 @@ final class AdapterManager {
             .sink { [weak self] wallets in
                 self?.initAdapters(wallets: wallets)
             }
-            .store(in: &cancellable)
+            .store(in: &subscriptions)
     }
 
     private func initAdapters(wallets: [Wallet]) {
