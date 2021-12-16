@@ -93,7 +93,6 @@ struct AssetItemView_Previews: PreviewProvider {
     }
 }
 
-import RxSwift
 import Combine
 
 struct MockedBalanceAdapter: IBalanceAdapter {
