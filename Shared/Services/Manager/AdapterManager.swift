@@ -105,7 +105,7 @@ extension AdapterManager: IAdapterManager {
             }
         }
 
-        ethereumKitManager.evmKit?.refresh()
+        ethereumKitManager.ethereumKit?.refresh()
     }
 
     func refreshAdapters(wallets: [Wallet]) {
@@ -123,9 +123,9 @@ extension AdapterManager: IAdapterManager {
         let adapter = adapters[wallet]
 
         switch adapter {
-        case is BaseEvmAdapter:
+        case is BaseEthereumAdapter:
             switch wallet.coin.type {
-            case .ethereum, .erc20: ethereumKitManager.evmKit?.refresh()
+            case .ethereum, .erc20: ethereumKitManager.ethereumKit?.refresh()
             default: ()
             }
         default:

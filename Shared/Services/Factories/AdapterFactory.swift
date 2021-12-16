@@ -21,12 +21,12 @@ class AdapterFactory: IAdapterFactory {
         case .bitcoin:
             return try? BitcoinAdapter(wallet: wallet, syncMode: .fast)
         case .ethereum:
-            if let evmKit = try? ethereumKitManager.evmKit(account: wallet.account) {
-                return EvmAdapter(evmKit: evmKit, confirmationsThreshold: wallet.account.confirmationsThreshold)
+            if let ethKit = try? ethereumKitManager.kit(account: wallet.account) {
+                return EthereumAdapter(ethKit: ethKit, confirmationsThreshold: wallet.account.confirmationsThreshold)
             }
         case let .erc20(address):
-            if let evmKit = try? ethereumKitManager.evmKit(account: wallet.account) {
-                return try? Evm20Adapter(evmKit: evmKit, contractAddress: address, decimal: wallet.coin.decimal, confirmationsThreshold: wallet.account.confirmationsThreshold)
+            if let ethKit = try? ethereumKitManager.kit(account: wallet.account) {
+                return try? Erc20Adapter(ethKit: ethKit, contractAddress: address, decimal: wallet.coin.decimal, confirmationsThreshold: wallet.account.confirmationsThreshold)
             }
         }
 

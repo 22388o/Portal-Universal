@@ -1,5 +1,5 @@
 //
-//  EvmAdapter.swift
+//  EthereumAdapter.swift
 //  Portal
 //
 //  Created by Farid on 10.07.2021.
@@ -12,13 +12,13 @@ import BigInt
 import HsToolKit
 import Combine
 
-final class EvmAdapter: BaseEvmAdapter {
+final class EthereumAdapter: BaseEthereumAdapter {
     static let decimal = 18
     private var confirmationsThreshold: Int
 
-    init(evmKit: EthereumKit.Kit, confirmationsThreshold: Int) {
+    init(ethKit: EthereumKit.Kit, confirmationsThreshold: Int) {
         self.confirmationsThreshold = confirmationsThreshold
-        super.init(evmKit: evmKit, decimal: EvmAdapter.decimal)
+        super.init(kit: ethKit, decimal: EthereumAdapter.decimal)
     }
 
     private func convertAmount(amount: BigUInt, fromAddress: EthereumKit.Address) -> Decimal {
@@ -26,7 +26,7 @@ final class EvmAdapter: BaseEvmAdapter {
             return 0
         }
 
-        let fromMine = fromAddress == evmKit.receiveAddress
+        let fromMine = fromAddress == ethereumKit.receiveAddress
         let sign: FloatingPointSign = fromMine ? .minus : .plus
         return Decimal(sign: sign, exponent: -decimal, significand: significand)
     }
@@ -80,7 +80,7 @@ final class EvmAdapter: BaseEvmAdapter {
 
 }
 
-extension EvmAdapter {
+extension EthereumAdapter {
 
     static func clear(except excludedWalletIds: [String]) throws {
         try EthereumKit.Kit.clear(exceptFor: excludedWalletIds)
@@ -88,7 +88,7 @@ extension EvmAdapter {
 
 }
 
-extension EvmAdapter: IAdapter {
+extension EthereumAdapter: IAdapter {
 
     func start() {
 //        evmKit.start()
@@ -103,35 +103,35 @@ extension EvmAdapter: IAdapter {
     }
 
     var debugInfo: String {
-        evmKit.debugInfo
+        ethereumKit.debugInfo
     }
 
 }
 
-extension EvmAdapter: IBalanceAdapter {
+extension EthereumAdapter: IBalanceAdapter {
 
     var balanceState: AdapterState {
-        convertToAdapterState(evmSyncState: evmKit.syncState)
+        convertToAdapterState(evmSyncState: ethereumKit.syncState)
     }
 
     var balance: Decimal {
-        balanceDecimal(kitBalance: evmKit.accountState?.balance, decimal: EvmAdapter.decimal)
+        balanceDecimal(kitBalance: ethereumKit.accountState?.balance, decimal: EthereumAdapter.decimal)
     }
     
     var balanceStateUpdated: AnyPublisher<Void, Never> {
-        evmKit.syncStateObservable.map { _ in() }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
+        ethereumKit.syncStateObservable.map { _ in() }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
     
     var balanceUpdated: AnyPublisher<Void, Never> {
-        evmKit.accountStateObservable.map { _ in() }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
+        ethereumKit.accountStateObservable.map { _ in() }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
 }
 
-extension EvmAdapter: ISendEthereumAdapter {
+extension EthereumAdapter: ISendEthereumAdapter {
     func send(address: Address, value: BigUInt, transactionInput: Data, gasPrice: Int, gasLimit: Int, nonce: Int?) -> Future<FullTransaction, Error> {
         Future { [weak self] promisse in
             let disposeBag = DisposeBag()
-            self?.evmKit.sendSingle(address: address, value: value, gasPrice: gasPrice, gasLimit: 21000)
+            self?.ethereumKit.sendSingle(address: address, value: value, gasPrice: gasPrice, gasLimit: 21000)
                 .subscribe(onSuccess: { transaction in
                     promisse(.success(transaction))
                 }, onError: { error in
@@ -142,22 +142,22 @@ extension EvmAdapter: ISendEthereumAdapter {
     }
     
     func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData {
-        evmKit.transferTransactionData(to: address, value: amount)
+        ethereumKit.transferTransactionData(to: address, value: amount)
     }
 
 }
 
-extension EvmAdapter: ITransactionsAdapter {
+extension EthereumAdapter: ITransactionsAdapter {
     var coin: Coin {
         Coin(type: .ethereum, code: "ETH", name: "Etherium", decimal: 18, iconUrl: String())
     }
     
     var transactionState: AdapterState {
-        convertToAdapterState(evmSyncState: evmKit.transactionsSyncState)
+        convertToAdapterState(evmSyncState: ethereumKit.transactionsSyncState)
     }
     
     var transactionStateUpdated: AnyPublisher<Void, Never> {
-        evmKit
+        ethereumKit
             .transactionsSyncStateObservable
             .map { _ in () }
             .publisher.catch { _ in Just(()) }
@@ -165,7 +165,7 @@ extension EvmAdapter: ITransactionsAdapter {
     }
         
     var transactionRecords: AnyPublisher<[TransactionRecord], Never> {
-        evmKit.etherTransactionsObservable.map { [weak self] in
+        ethereumKit.etherTransactionsObservable.map { [weak self] in
             $0.compactMap { self?.transactionRecord(fromTransaction: $0) }
         }
         .publisher.catch { _ in Just([]) }
@@ -176,7 +176,7 @@ extension EvmAdapter: ITransactionsAdapter {
         Future { [weak self] promisse in
             let disposeBag = DisposeBag()
             
-            self?.evmKit.etherTransactionsSingle(fromHash: from.flatMap { Data(hex: $0.transactionHash) }, limit: limit)
+            self?.ethereumKit.etherTransactionsSingle(fromHash: from.flatMap { Data(hex: $0.transactionHash) }, limit: limit)
                     .map { transactions -> [TransactionRecord] in
                         transactions.compactMap {
                             self?.transactionRecord(fromTransaction: $0)

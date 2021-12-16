@@ -113,8 +113,8 @@
 		750D63C7268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D63C5268B2B4300643FD3 /* TimeframeButtonsView.swift */; };
 		750D63C9268B2B9500643FD3 /* FiatCurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D63C8268B2B9500643FD3 /* FiatCurrencyView.swift */; };
 		750D63CA268B2B9500643FD3 /* FiatCurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750D63C8268B2B9500643FD3 /* FiatCurrencyView.swift */; };
-		75110D6626A1C11A00BDD6C0 /* Evn20Adapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75110D6526A1C11A00BDD6C0 /* Evn20Adapter.swift */; };
-		75110D6726A1C11A00BDD6C0 /* Evn20Adapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75110D6526A1C11A00BDD6C0 /* Evn20Adapter.swift */; };
+		75110D6626A1C11A00BDD6C0 /* Erc20Adapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75110D6526A1C11A00BDD6C0 /* Erc20Adapter.swift */; };
+		75110D6726A1C11A00BDD6C0 /* Erc20Adapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75110D6526A1C11A00BDD6C0 /* Erc20Adapter.swift */; };
 		75110D6926A1FAE000BDD6C0 /* IErc20Adapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75110D6826A1FAE000BDD6C0 /* IErc20Adapter.swift */; };
 		75110D6A26A1FAE000BDD6C0 /* IErc20Adapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75110D6826A1FAE000BDD6C0 /* IErc20Adapter.swift */; };
 		75110D6C26A1FB3100BDD6C0 /* ISendEthereumAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75110D6B26A1FB3100BDD6C0 /* ISendEthereumAdapter.swift */; };
@@ -261,10 +261,10 @@
 		75308AE826A028F30024AACD /* IFeeRateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AE426A028F30024AACD /* IFeeRateProvider.swift */; };
 		75308AEA26A0291F0024AACD /* BitcoinCore + Holder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AE926A0291F0024AACD /* BitcoinCore + Holder.swift */; };
 		75308AEB26A0291F0024AACD /* BitcoinCore + Holder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AE926A0291F0024AACD /* BitcoinCore + Holder.swift */; };
-		75308B0826A19D7A0024AACD /* BaseEvmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0626A19D7A0024AACD /* BaseEvmAdapter.swift */; };
-		75308B0926A19D7A0024AACD /* BaseEvmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0626A19D7A0024AACD /* BaseEvmAdapter.swift */; };
-		75308B0A26A19D7A0024AACD /* EvmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0726A19D7A0024AACD /* EvmAdapter.swift */; };
-		75308B0B26A19D7A0024AACD /* EvmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0726A19D7A0024AACD /* EvmAdapter.swift */; };
+		75308B0826A19D7A0024AACD /* BaseEthereumAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0626A19D7A0024AACD /* BaseEthereumAdapter.swift */; };
+		75308B0926A19D7A0024AACD /* BaseEthereumAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0626A19D7A0024AACD /* BaseEthereumAdapter.swift */; };
+		75308B0A26A19D7A0024AACD /* EthereumAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0726A19D7A0024AACD /* EthereumAdapter.swift */; };
+		75308B0B26A19D7A0024AACD /* EthereumAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308B0726A19D7A0024AACD /* EthereumAdapter.swift */; };
 		75315ECF2757A80C007F9037 /* AlertItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75315ECE2757A80C007F9037 /* AlertItemView.swift */; };
 		75315ED02757A80C007F9037 /* AlertItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75315ECE2757A80C007F9037 /* AlertItemView.swift */; };
 		75327D51270C92CB00F4484B /* BinanceBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75327D50270C92CB00F4484B /* BinanceBalance.swift */; };
@@ -773,7 +773,7 @@
 		750D63C2268B2B0800643FD3 /* ValueCurrencySwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueCurrencySwitchView.swift; sourceTree = "<group>"; };
 		750D63C5268B2B4300643FD3 /* TimeframeButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeframeButtonsView.swift; sourceTree = "<group>"; };
 		750D63C8268B2B9500643FD3 /* FiatCurrencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiatCurrencyView.swift; sourceTree = "<group>"; };
-		75110D6526A1C11A00BDD6C0 /* Evn20Adapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evn20Adapter.swift; sourceTree = "<group>"; };
+		75110D6526A1C11A00BDD6C0 /* Erc20Adapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc20Adapter.swift; sourceTree = "<group>"; };
 		75110D6826A1FAE000BDD6C0 /* IErc20Adapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IErc20Adapter.swift; sourceTree = "<group>"; };
 		75110D6B26A1FB3100BDD6C0 /* ISendEthereumAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISendEthereumAdapter.swift; sourceTree = "<group>"; };
 		7515D368275907EC0096D561 /* Portal (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Portal (iOS).entitlements"; sourceTree = "<group>"; };
@@ -838,8 +838,8 @@
 		75308ADF26A028940024AACD /* EthereumFeeRateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumFeeRateProvider.swift; sourceTree = "<group>"; };
 		75308AE426A028F30024AACD /* IFeeRateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IFeeRateProvider.swift; sourceTree = "<group>"; };
 		75308AE926A0291F0024AACD /* BitcoinCore + Holder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BitcoinCore + Holder.swift"; sourceTree = "<group>"; };
-		75308B0626A19D7A0024AACD /* BaseEvmAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseEvmAdapter.swift; sourceTree = "<group>"; };
-		75308B0726A19D7A0024AACD /* EvmAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvmAdapter.swift; sourceTree = "<group>"; };
+		75308B0626A19D7A0024AACD /* BaseEthereumAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseEthereumAdapter.swift; sourceTree = "<group>"; };
+		75308B0726A19D7A0024AACD /* EthereumAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EthereumAdapter.swift; sourceTree = "<group>"; };
 		75315ECE2757A80C007F9037 /* AlertItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItemView.swift; sourceTree = "<group>"; };
 		75327D50270C92CB00F4484B /* BinanceBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinanceBalance.swift; sourceTree = "<group>"; };
 		75327D53270C940400F4484B /* OrderItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemView.swift; sourceTree = "<group>"; };
@@ -1201,9 +1201,9 @@
 				75308AEE26A02C0B0024AACD /* Compatibility */,
 				751B6543269CA218001B759C /* BitcoinAdapter.swift */,
 				751B6542269CA218001B759C /* BitcoinBaseAdapter.swift */,
-				75308B0626A19D7A0024AACD /* BaseEvmAdapter.swift */,
-				75308B0726A19D7A0024AACD /* EvmAdapter.swift */,
-				75110D6526A1C11A00BDD6C0 /* Evn20Adapter.swift */,
+				75308B0626A19D7A0024AACD /* BaseEthereumAdapter.swift */,
+				75308B0726A19D7A0024AACD /* EthereumAdapter.swift */,
+				75110D6526A1C11A00BDD6C0 /* Erc20Adapter.swift */,
 			);
 			path = Adapters;
 			sourceTree = "<group>";
@@ -2100,7 +2100,7 @@
 				7527130A261BAAE8008C962C /* StoreSeedView.swift in Sources */,
 				750AE9BD26149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
 				75110D6C26A1FB3100BDD6C0 /* ISendEthereumAdapter.swift in Sources */,
-				75308B0826A19D7A0024AACD /* BaseEvmAdapter.swift in Sources */,
+				75308B0826A19D7A0024AACD /* BaseEthereumAdapter.swift in Sources */,
 				750AE8E72614992400C45971 /* MarketDataUpdater.swift in Sources */,
 				756C3C6A26EA8F84009530A9 /* ExchangeDataUpdater.swift in Sources */,
 				7555643D26DCED22001B1C1A /* OrderBookRouteSwitch.swift in Sources */,
@@ -2148,7 +2148,7 @@
 				75984F2E2648219B002CD1EA /* RestoreAccountView.swift in Sources */,
 				75A3F54226A57E63006B1823 /* Account.swift in Sources */,
 				7542B5822763BF6B006B9786 /* AlertTypePicker.swift in Sources */,
-				75308B0A26A19D7A0024AACD /* EvmAdapter.swift in Sources */,
+				75308B0A26A19D7A0024AACD /* EthereumAdapter.swift in Sources */,
 				7555644D26DD0E2F001B1C1A /* SocketOrderBook.swift in Sources */,
 				7517F8A026B802970020AECB /* AsyncImageView.swift in Sources */,
 				752E532F26FDDE6400FCDB0C /* Router.swift in Sources */,
@@ -2244,7 +2244,7 @@
 				75308AD126A027E60024AACD /* IAppConfigProvider.swift in Sources */,
 				751B6558269D994D001B759C /* IDepositAdapter.swift in Sources */,
 				75C95C8C2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
-				75110D6626A1C11A00BDD6C0 /* Evn20Adapter.swift in Sources */,
+				75110D6626A1C11A00BDD6C0 /* Erc20Adapter.swift in Sources */,
 				756C3C7C26EA9C1D009530A9 /* MarketLimitSwitch.swift in Sources */,
 				753364A826F3399A0073B0A4 /* ExchangeSetupViewModel.swift in Sources */,
 				758F3AEC26A9BE3C00F345E1 /* HeaderViewModel.swift in Sources */,
@@ -2376,7 +2376,7 @@
 				7555642426D8F0DD001B1C1A /* ExchangeScene.swift in Sources */,
 				7537DEFF2701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */,
 				75F5CD7F2684C418005ECA5B /* Data+Extension.swift in Sources */,
-				75308B0926A19D7A0024AACD /* BaseEvmAdapter.swift in Sources */,
+				75308B0926A19D7A0024AACD /* BaseEthereumAdapter.swift in Sources */,
 				756C66BC264038E900CD22B2 /* ManageAlertView.swift in Sources */,
 				755782F726087905000E1686 /* Persistence.swift in Sources */,
 				7517F89326B1743F0020AECB /* CoinStorage.swift in Sources */,
@@ -2465,7 +2465,7 @@
 				75A3F53A26A57D35006B1823 /* WalletStorage.swift in Sources */,
 				7574C34B2619DCE400299131 /* CreateAccountView.swift in Sources */,
 				755D9FE0275FB64800EE363D /* AlertsViewModel.swift in Sources */,
-				75308B0B26A19D7A0024AACD /* EvmAdapter.swift in Sources */,
+				75308B0B26A19D7A0024AACD /* EthereumAdapter.swift in Sources */,
 				75F5CD8E2684C5FA005ECA5B /* CircularProgressBar.swift in Sources */,
 				758F3AE726A9B84F00F345E1 /* NotificationView.swift in Sources */,
 				750AE9C626149DD900C45971 /* IBalanceProvider.swift in Sources */,
@@ -2520,7 +2520,7 @@
 				750C36BE261F2DE80088CCED /* AppSceneSwitch.swift in Sources */,
 				758F3AED26A9BE3C00F345E1 /* HeaderViewModel.swift in Sources */,
 				752E531426FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */,
-				75110D6726A1C11A00BDD6C0 /* Evn20Adapter.swift in Sources */,
+				75110D6726A1C11A00BDD6C0 /* Erc20Adapter.swift in Sources */,
 				755782F526087905000E1686 /* RootView.swift in Sources */,
 				750AE8EC2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */,
 				751B6553269D9902001B759C /* IBalanceAdapter.swift in Sources */,

@@ -11,7 +11,7 @@ import Erc20Kit
 
 final class EthereumKitManager {
     private let appConfigProvider: IAppConfigProvider
-    weak var evmKit: EthereumKit.Kit?
+    weak var ethereumKit: EthereumKit.Kit?
 
     private var currentAccount: Account?
 
@@ -19,9 +19,9 @@ final class EthereumKitManager {
         self.appConfigProvider = appConfigProvider
     }
 
-    func evmKit(account: Account) throws -> EthereumKit.Kit {
-        if let evmKit = evmKit, let currentAccount = currentAccount, currentAccount == account {
-            return evmKit
+    func kit(account: Account) throws -> EthereumKit.Kit {
+        if let ethKit = ethereumKit, let currentAccount = currentAccount, currentAccount == account {
+            return ethKit
         }
 
         guard let seed = account.type.mnemonicSeed else {
@@ -38,7 +38,7 @@ final class EthereumKitManager {
             throw AdapterError.wrongParameters
         }
         
-        let evmKit = try EthereumKit.Kit.instance(
+        let ethKit = try EthereumKit.Kit.instance(
             seed: seed,
             networkType: networkType,
             syncSource: syncSource,
@@ -47,19 +47,19 @@ final class EthereumKitManager {
             minLogLevel: .error
         )
         
-        evmKit.add(decorator: Erc20Kit.Kit.getDecorator())
-        evmKit.add(transactionSyncer: Erc20Kit.Kit.getTransactionSyncer(evmKit: evmKit))
+        ethKit.add(decorator: Erc20Kit.Kit.getDecorator())
+        ethKit.add(transactionSyncer: Erc20Kit.Kit.getTransactionSyncer(evmKit: ethKit))
 
-        evmKit.start()
+        ethKit.start()
 
-        self.evmKit = evmKit
+        self.ethereumKit = ethKit
         currentAccount = account
         
-        return evmKit
+        return ethKit
     }
 
     var statusInfo: [(String, Any)]? {
-        evmKit?.statusInfo()
+        ethereumKit?.statusInfo()
     }
 
 }
