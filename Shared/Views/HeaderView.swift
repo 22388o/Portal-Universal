@@ -20,7 +20,7 @@ struct HeaderView: View {
             HStack(spacing: 12) {
                 if viewModel.state.wallet.switchState == .wallet {
                     Button(action: {
-                        withAnimation(.easeIn(duration: 1.2)) {
+                        withAnimation(.easeIn(duration: 0.0)) {
                             viewModel.state.modalView = .switchAccount
                         }
                     }, label: {
@@ -64,7 +64,7 @@ struct HeaderView: View {
                         WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.wallet.currency).scaleEffect(0.85)
                         
                         Button(action: {
-                            withAnimation(.easeIn(duration: 1.2)) {
+                            withAnimation(.easeIn(duration: 0.0)) {
                                 viewModel.state.modalView = .accountSettings
                             }
                         }, label: {

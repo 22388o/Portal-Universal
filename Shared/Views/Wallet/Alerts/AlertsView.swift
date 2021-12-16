@@ -53,9 +53,9 @@ struct AlertsView: View {
             .frame(width: 256)
             
             PButton(label: "Manage alerts", width: 256, height: 32, fontSize: 12, enabled: true) {
-                withAnimation {
+//                withAnimation {
                     Portal.shared.state.modalView = .createAlert
-                }
+//                }
             }
             .padding(.bottom, 41)
         }
