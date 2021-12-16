@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import Combine
 import FeeRateKit
 
 class BitcoinFeeRateProvider: IFeeRateProvider {
@@ -28,13 +29,15 @@ class BitcoinFeeRateProvider: IFeeRateProvider {
         ]
     }
 
-    var recommendedFeeRate: Single<Int> { feeRateProvider.bitcoinFeeRate(blockCount: mediumPriorityBlockCount) }
+    var recommendedFeeRate: Future<Int, Never> {
+        feeRateProvider.bitcoinFeeRate(blockCount: mediumPriorityBlockCount)
+    }
 
     var defaultFeeRatePriority: FeeRatePriority {
         .medium
     }
 
-    func feeRate(priority: FeeRatePriority) -> Single<Int> {
+    func feeRate(priority: FeeRatePriority) -> Future<Int, Never> {
         switch priority {
         case .low:
             return feeRateProvider.bitcoinFeeRate(blockCount: lowPriorityBlockCount)
@@ -45,7 +48,7 @@ class BitcoinFeeRateProvider: IFeeRateProvider {
         case .recommended:
             return feeRateProvider.bitcoinFeeRate(blockCount: mediumPriorityBlockCount)
         case let .custom(value, _):
-            return Single.just(value)
+            return Future { promisse in promisse(.success(value))}
         }
     }
 

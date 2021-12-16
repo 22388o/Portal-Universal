@@ -8,9 +8,11 @@
 import Foundation
 import FeeRateKit
 import RxSwift
+import Combine
 
 class FeeRateProvider {
     private let feeRateKit: FeeRateKit.Kit
+    let disposeBag = DisposeBag()
 
     init(appConfigProvider: IAppConfigProvider) {
         let providerConfig = FeeProviderConfig(
@@ -26,28 +28,65 @@ class FeeRateProvider {
 
     // Fee rates
 
-    var ethereumGasPrice: Single<Int> {
-        feeRateKit.ethereum
+    var ethereumGasPrice: Future<Int, Never> {
+        Future { [unowned self] promisse in
+            self.feeRateKit.ethereum
+                .subscribe(onSuccess: { price in
+                    promisse(.success(price))
+                })
+                .disposed(by: self.disposeBag)
+        }
     }
 
-    var binanceSmartChainGasPrice: Single<Int> {
-        feeRateKit.binanceSmartChain
+    var binanceSmartChainGasPrice: Future<Int, Never> {
+        Future { [unowned self] promisse in
+            self.feeRateKit.binanceSmartChain
+                .subscribe(onSuccess: { price in
+                    promisse(.success(price))
+                })
+                .disposed(by: self.disposeBag)
+        }
     }
 
-    var litecoinFeeRate: Single<Int> {
-        feeRateKit.litecoin
+    var litecoinFeeRate: Future<Int, Never> {
+        Future { [unowned self] promisse in
+            self.feeRateKit.litecoin
+                .subscribe(onSuccess: { price in
+                    promisse(.success(price))
+                })
+                .disposed(by: self.disposeBag)
+        }
     }
 
-    var bitcoinCashFeeRate: Single<Int> {
-        feeRateKit.bitcoinCash
+    var bitcoinCashFeeRate: Future<Int, Never> {
+        Future { [unowned self] promisse in
+            self.feeRateKit.bitcoinCash
+                .subscribe(onSuccess: { price in
+                    promisse(.success(price))
+                })
+                .disposed(by: self.disposeBag)
+        }
     }
 
-    var dashFeeRate: Single<Int> {
-        feeRateKit.dash
+    var dashFeeRate: Future<Int, Never> {
+        Future { [unowned self] promisse in
+            self.feeRateKit.dash
+                .subscribe(onSuccess: { price in
+                    promisse(.success(price))
+                })
+                .disposed(by: self.disposeBag)
+        }
     }
 
-    func bitcoinFeeRate(blockCount: Int) -> Single<Int> {
-        feeRateKit.bitcoin(blockCount: blockCount)
+    func bitcoinFeeRate(blockCount: Int) -> Future<Int, Never> {
+        Future { [unowned self] promisse in
+            self.feeRateKit.bitcoin(blockCount: blockCount)
+                .subscribe(onSuccess: { rate in
+                    promisse(.success(rate))
+                })
+                .disposed(by: self.disposeBag)
+                
+        }
     }
 
 }
