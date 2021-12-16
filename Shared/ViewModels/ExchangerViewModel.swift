@@ -12,13 +12,20 @@ import Coinpaprika
 
 final class ExchangerViewModel: ObservableObject {
     let coin: Coin
-    let fiat: FiatCurrency
+    let currency: Currency
     
     @Published var assetValue = String()
     @Published var fiatValue = String()
     
     private var price: Double {
-        ((ticker?[.usd].price ?? 0) * Decimal(fiat.rate)).double
+        switch currency {
+        case .btc:
+            return ((ticker?[.usd].price ?? 0)).double
+        case .eth:
+            return ((ticker?[.usd].price ?? 0)).double
+        case .fiat(let fiatCurrency):
+            return ((ticker?[.usd].price ?? 0) * Decimal(fiatCurrency.rate)).double
+        }
     }
     
     private var subscriptions = Set<AnyCancellable>()
@@ -27,11 +34,11 @@ final class ExchangerViewModel: ObservableObject {
         Portal.shared.marketDataProvider.ticker(coin: coin)
     }
     
-    init(coin: Coin, fiat: FiatCurrency) {
+    init(coin: Coin, currency: Currency) {
         print("ExchangerViewModel init")
 
         self.coin = coin
-        self.fiat = fiat
+        self.currency = currency
         
         $assetValue
             .removeDuplicates()
@@ -69,6 +76,6 @@ final class ExchangerViewModel: ObservableObject {
     }
     
     deinit {
-        print("ExchangerViewModel deinit")
+//        print("ExchangerViewModel deinit")
     }
 }

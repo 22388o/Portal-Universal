@@ -61,7 +61,11 @@ struct ExchangeBalancesView: View {
                     ExchangeBalanceItem(
                         balanceItem: balance,
                         iconUrl: tradingPairs.first(where: {$0.base == balance.asset})?.icon,
-                        selected: false
+                        onWithdraw: {
+                            withAnimation(.easeIn(duration: 1.2)) {
+                                Portal.shared.state.modalView = .withdrawFromExchange(balance: balance)
+                            }
+                        }
                     )
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                     .contentShape(Rectangle())

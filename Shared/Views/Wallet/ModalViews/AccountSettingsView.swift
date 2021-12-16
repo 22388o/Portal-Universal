@@ -9,6 +9,7 @@ import SwiftUI
  
 struct AccountSettingsView: View {
     @ObservedObject private var viewModel: AccountSettingsViewModel
+    @State private var portfolioIncludesExchangeBalance = false
     
     init() {
         self.viewModel = AccountSettingsViewModel.config()
@@ -37,11 +38,17 @@ struct AccountSettingsView: View {
                         Text("Tx confirmation threshold:")
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.lightActiveLabel)
+                        Spacer()
                         Text("\(viewModel.confirmationThreshold)")
                             .font(.mainFont(size: 14))
                     }
                 }
-                .padding([.top, .horizontal])
+                .padding()
+                
+                Toggle("Portfolio includes exchange balances:", isOn: $portfolioIncludesExchangeBalance)
+                    .toggleStyle(SwitchToggleStyle())
+                    .font(.mainFont(size: 12))
+                    .foregroundColor(Color.lightActiveLabel)
                 
                 Group {
                     VStack(spacing: 6) {
@@ -83,7 +90,7 @@ struct AccountSettingsView: View {
                 PButton(label: "Apply", width: 80, height: 30, fontSize: 12, enabled: viewModel.canApplyChanges) {
                     withAnimation(.easeInOut(duration: 0.3)) {
                         viewModel.applySettings()
-                        Portal.shared.state.accountSettings.toggle()
+                        Portal.shared.state.modalView = .accountSettings
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
@@ -98,7 +105,7 @@ struct AccountSettingsView: View {
         #if os(iOS)
         300
         #else
-        216
+        280
         #endif
     }
 }

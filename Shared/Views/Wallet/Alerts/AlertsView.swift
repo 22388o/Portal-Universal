@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AlertsView: View {
     let coin: Coin
-    @Binding var createAlert: Bool
     
     var body: some View {
         VStack {
@@ -35,7 +34,7 @@ struct AlertsView: View {
 
 struct AlertsView_Previews: PreviewProvider {
     static var previews: some View {
-        AlertsView(coin: Coin.bitcoin(), createAlert: .constant(false))
+        AlertsView(coin: Coin.bitcoin())
             .frame(width: 304, height: 480)
             .previewLayout(PreviewLayout.sizeThatFits)
     }

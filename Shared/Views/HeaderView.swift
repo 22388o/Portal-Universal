@@ -9,9 +9,9 @@ import SwiftUI
 import Combine
 
 struct HeaderView: View {
-    @ObservedObject private var viewModel: PortalHeaderViewModel
+    @ObservedObject private var viewModel: HeaderViewModel
     
-    init(viewModel: PortalHeaderViewModel) {
+    init(viewModel: HeaderViewModel) {
         self.viewModel = viewModel
     }
     
@@ -21,7 +21,7 @@ struct HeaderView: View {
                 if viewModel.state.mainScene == .wallet {
                     Button(action: {
                         withAnimation(.easeIn(duration: 1.2)) {
-                            viewModel.state.switchWallet.toggle()
+                            viewModel.state.modalView = .switchAccount
                         }
                     }, label: {
                         HStack {
@@ -37,7 +37,8 @@ struct HeaderView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
-                Spacer()
+                Spacer().frame(minWidth: 690)
+
                 
                 HStack {
                     if viewModel.isOffline {
@@ -45,11 +46,12 @@ struct HeaderView: View {
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.red)
                     }
-                    
                     if viewModel.state.mainScene == .wallet {
+                        WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.walletCurrency).scaleEffect(0.85)
+                        
                         Button(action: {
-                            withAnimation(.easeIn(duration: 0.4)) {
-                                viewModel.state.accountSettings.toggle()
+                            withAnimation(.easeIn(duration: 1.2)) {
+                                viewModel.state.modalView = .accountSettings
                             }
                         }, label: {
                             Image("iconSettings")
@@ -61,9 +63,9 @@ struct HeaderView: View {
                     }
                     
                     Button(action: {
-                        withAnimation(.easeIn(duration: 0.4)) {
+                        withAnimation(.easeIn(duration: 1.2)) {
                             viewModel.markAllNotificationsViewed()
-                            viewModel.state.allNotifications.toggle()
+                            viewModel.state.modalView = .allNotifications
                         }
                     }, label: {
                         ZStack(alignment: .topTrailing) {
@@ -90,14 +92,13 @@ struct HeaderView: View {
                 }
             }
             
-            AppSceneSwitch(state: $viewModel.state.mainScene)            
+            AppSceneSwitch(state: $viewModel.state.mainScene)
         }
-        .frame(minWidth: 600)
     }
 }
 
 struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        HeaderView(viewModel: PortalHeaderViewModel.config())
+        HeaderView(viewModel: HeaderViewModel.config())
     }
 }

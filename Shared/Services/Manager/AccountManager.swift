@@ -68,6 +68,13 @@ extension AccountManager: IAccountManager {
         setActiveAccount(id: account.id)
     }
     
+    func updateWalletCurrency(code: String) {
+        if let account = activeAccount, account.fiatCurrencyCode != code {
+            account.fiatCurrencyCode = code
+            accountStorage.update(account: account)
+        }
+    }
+    
     func clear() {
         accountStorage.clear()
     }

@@ -13,6 +13,7 @@ protocol IAccountManager {
     var accounts: [Account] { get }
     var activeAccount: Account? { get }
     func account(id: String) -> Account?
+    func updateWalletCurrency(code: String)
     func setActiveAccount(id: String)
     func save(account: Account)
     func update(account: Account)

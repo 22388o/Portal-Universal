@@ -16,12 +16,14 @@ import AppKit
 extension Charts.PieChartView {
     func applyStandardSettings() {
         holeRadiusPercent = 0.85
-        rotationAngle = 25
+        rotationAngle = 65
         holeColor = nil
         transparentCircleRadiusPercent = 0
         legend.enabled = false
         chartDescription.enabled = false
         noDataText = "No coins in the wallet"
+        rotationEnabled = false
+        animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
         #if os(iOS)
         transparentCircleColor = UIColor.clear
         noDataTextColor = UIColor(white: 1, alpha: 0.4)

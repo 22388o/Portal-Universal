@@ -22,6 +22,43 @@ extension Decimal {
     func dollarFormatted() -> String {
         StringFormatter.localizedValueString(value: self, symbol: "$")
     }
+    
+    func formattedString(_ currency: Currency, decimals: Int = 5) -> String {
+        let formatter = NumberFormatter()
+
+        switch currency {
+        case .btc:
+            formatter.numberStyle = .decimal
+            formatter.maximumFractionDigits = decimals
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return (formatter.string(from: self as NSDecimalNumber) ?? "-") + " BTC"
+        case .eth:
+            formatter.numberStyle = .decimal
+            formatter.maximumFractionDigits = decimals
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return (formatter.string(from: self as NSDecimalNumber) ?? "-") + " ETH"
+        case .fiat(let fiatCurrency):
+            formatter.currencySymbol = fiatCurrency.symbol
+            formatter.groupingSize = 3
+            formatter.numberStyle = .currency
+            formatter.maximumFractionDigits = 2
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return formatter.string(from: self as NSDecimalNumber) ?? "-"
+        }
+    }
+    
+    func formattedDecimalString() -> String {
+        let formatter = NumberFormatter()
+        formatter.groupingSize = 3
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.minimumIntegerDigits = 1
+        return formatter.string(from: self as NSDecimalNumber) ?? "-"
+    }
 }
 
 extension Double {
@@ -29,10 +66,10 @@ extension Double {
         StringFormatter.localizedValueString(value: self, symbol: "$")
     }
     func btcFormatted() -> String {
-        roundToDecimal(3).toString() + " BTC"
+        roundToDecimal(6).toString() + " BTC"
     }
     func ethFormatted() -> String {
-        roundToDecimal(3).toString() + " ETH"
+        roundToDecimal(6).toString() + " ETH"
     }
     func rounded(toPlaces places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
@@ -73,6 +110,33 @@ extension Double {
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = 18
         return String(formatter.string(from: number) ?? "")
+    }
+    
+    func formattedString(_ currency: Currency, decimals: Int = 5) -> String {
+        let formatter = NumberFormatter()
+
+        switch currency {
+        case .btc:
+            formatter.numberStyle = .decimal
+            formatter.maximumFractionDigits = decimals
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return (formatter.string(from: NSNumber(value: self)) ?? "-") + " BTC"
+        case .eth:
+            formatter.numberStyle = .decimal
+            formatter.maximumFractionDigits = decimals
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return (formatter.string(from: NSNumber(value: self)) ?? "-") + " ETH"
+        case .fiat(let fiatCurrency):
+            formatter.currencySymbol = fiatCurrency.symbol
+            formatter.groupingSize = 3
+            formatter.numberStyle = .currency
+            formatter.maximumFractionDigits = 2
+            formatter.minimumFractionDigits = 0
+            formatter.minimumIntegerDigits = 1
+            return formatter.string(from: NSNumber(value: self)) ?? "-"
+        }
     }
 }
 

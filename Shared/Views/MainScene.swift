@@ -9,14 +9,15 @@ import SwiftUI
 
 struct MainScene: View {
     @ObservedObject var state = Portal.shared.state
-    @StateObject var headerViewModel = PortalHeaderViewModel.config()
+    @StateObject var headerViewModel = HeaderViewModel.config()
     
     var containerZStackAlignment: Alignment {
-        if state.switchWallet {
+        switch state.modalView {
+        case .switchAccount:
             return .topLeading
-        } else if state.allNotifications || state.accountSettings {
+        case .allNotifications, .accountSettings:
             return .topTrailing
-        } else {
+        default:
             return .center
         }
     }
@@ -40,14 +41,14 @@ struct MainScene: View {
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
             }
-            .blur(radius: state.modalViewIsPresented ? 4 : 0)
-            .allowsHitTesting(!state.modalViewIsPresented)
+            .blur(radius: state.modalView != .none ? 4 : 0)
+            .allowsHitTesting(!(state.modalView != .none))
             
-            if state.modalViewIsPresented || state.allNotifications {
+            if state.modalView != .none {
                 Color.white.opacity(0.01)
                     .onTapGesture {
                         withAnimation {
-                            state.dismissModalView()
+                            state.modalView = .none
                         }
                     }
                 WalletModalViews()

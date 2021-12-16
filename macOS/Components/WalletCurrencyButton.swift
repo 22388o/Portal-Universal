@@ -1,5 +1,5 @@
 //
-//  FiatCurrencyButton.swift
+//  WalletCurrencyButton.swift
 //  Portal (macOS)
 //
 //  Created by Farid on 27.08.2021.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct FiatCurrencyButton: View {
-    let currencies: [FiatCurrency]
-    @Binding var selectedCurrrency: FiatCurrency
+struct WalletCurrencyButton: View {
+    let currencies: [Currency]
+    @Binding var selectedCurrrency: Currency
         
     var body: some View {
         ZStack(alignment: .leading) {
@@ -28,7 +28,7 @@ struct FiatCurrencyButton: View {
                         .offset(y: 1)
                 }
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Fiat currency")
+                    Text("Wallet currency")
                         .font(.mainFont(size: 12))
                         .foregroundColor(Color.white.opacity(0.5))
                     Text(selectedCurrrency.code)
@@ -56,7 +56,7 @@ struct FiatCurrencyButton: View {
 
 struct FiatCurrencyButton_Previews: PreviewProvider {
     static var previews: some View {
-        FiatCurrencyButton(currencies: [], selectedCurrrency: .constant(USD))
+        WalletCurrencyButton(currencies: [], selectedCurrrency: .constant(.fiat(USD)))
             .frame(width: 158, height: 40)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

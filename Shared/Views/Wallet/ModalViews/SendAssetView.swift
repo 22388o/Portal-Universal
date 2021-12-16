@@ -9,15 +9,13 @@ import SwiftUI
 
 struct SendAssetView: View {
     @ObservedObject private var viewModel: SendAssetViewModel
-    @Binding var presented: Bool
     @State private var showConfirmationAlert: Bool = false
         
-    init(coin: Coin, fiatCurrency: FiatCurrency, presented: Binding<Bool>) {
-        guard let viewModel = SendAssetViewModel.config(coin: coin, fiatCurrency: fiatCurrency) else {
+    init(coin: Coin, currency: Currency) {
+        guard let viewModel = SendAssetViewModel.config(coin: coin, currency: currency) else {
             fatalError("Cannot config SendAssetViewModel")
         }
         self.viewModel = viewModel
-        self._presented = presented
     }
     
     var body: some View {
@@ -167,7 +165,7 @@ struct SendAssetView: View {
         .alert(isPresented: $showConfirmationAlert) {
             Alert(title: Text("Success"), message: Text("Transaction was sent!"), dismissButton: .default(Text("Awesome"), action: {
                 withAnimation {
-                    presented.toggle()
+                    Portal.shared.state.modalView = .none
                 }
             }))
         }
@@ -178,8 +176,7 @@ struct SendAssetView_Previews: PreviewProvider {
     static var previews: some View {
         SendAssetView(
             coin: Coin.bitcoin(),
-            fiatCurrency: USD,
-            presented: .constant(false)
+            currency: .fiat(USD)
         )
             .frame(width: 576, height: 662)
             .padding()

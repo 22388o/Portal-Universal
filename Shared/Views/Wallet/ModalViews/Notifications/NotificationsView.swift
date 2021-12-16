@@ -46,14 +46,6 @@ struct NotificationsView: View {
                 }
                 
                 Spacer()
-                
-                PButton(label: "Close", width: 80, height: 30, fontSize: 12, enabled: true) {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        Portal.shared.state.allNotifications.toggle()
-                    }
-                }
-                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
-                .padding()
             }
         }
         .frame(width: 288, height: 250)

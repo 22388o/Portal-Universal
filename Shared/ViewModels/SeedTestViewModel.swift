@@ -27,7 +27,7 @@ final class SeedTestViewModel: ObservableObject {
     }
     
     deinit {
-        print("\(#function) deinit")
+//        print("\(#function) deinit")
     }
     
     func setup() {

@@ -17,12 +17,6 @@ struct WebView: NSViewRepresentable {
         Coordinator(self)
     }
     
-//    func onLoadStatusChanged(perform: ((Bool, Error?) -> Void)?) -> some View {
-//        var copy = self
-//        copy.loadStatusChanged = perform
-//        return copy
-//    }
-    
     class Coordinator: NSObject, WKNavigationDelegate {
         let parent: WebView
         

@@ -13,79 +13,237 @@ import Charts
 import Coinpaprika
 
 final class AssetViewModel: ObservableObject {
-    var coin: Coin
-    
-    @ObservedObject private var state: PortalState
-    @Published var selectedTimeframe: Timeframe = .day
-    @Published var valueCurrencySwitchState: ValueCurrencySwitchState = .fiat
+    @Published var timeframe: Timeframe = .day
+    @Published var route: AssetViewRoute = .value
     
     @Published private(set) var balance = String()
     @Published private(set) var totalValue = String()
-    @Published private(set) var price = String()
     @Published private(set) var change = String()
     @Published private(set) var chartDataEntries = [ChartDataEntry]()
     @Published private(set) var currency: Currency = .fiat(USD)
     @Published private(set) var canSend: Bool = false
-    @Published var loadingData: Bool = false
-    @Published var route: AssetViewRoute = .value
+    
+    @ObservedObject private var state: PortalState
         
     private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
     private let disposeBag = DisposeBag()
-    private var subscriptions = Set<AnyCancellable>()
-    private var fiatCurrency: FiatCurrency
-    
-    private var marketDataProvider: IMarketDataProvider
+    private let marketDataProvider: IMarketDataProvider
     private let walletManager: IWalletManager
     private let adapterManager: IAdapterManager
+    private var subscriptions = Set<AnyCancellable>()
+        
+    private var marketData: CoinMarketData {
+        marketDataProvider.marketData(coin: coin)
+    }
     
+    private var ticker: Ticker? {
+        marketDataProvider.ticker(coin: coin)
+    }
+    
+    private var btcUSDPrice: Decimal {
+        marketDataProvider.ticker(coin: .bitcoin())?[.usd].price ?? 1
+    }
+    
+    private var ethUSDPrice: Decimal {
+        marketDataProvider.ticker(coin: .ethereum())?[.usd].price ?? 1
+    }
+    
+    var coin: Coin
     var adapter: IBalanceAdapter?
-        
-    var dayHigh: String {
-        let dayHigh: Decimal = marketDataProvider.marketData(coin: coin).dayHigh
-        return "\(fiatCurrency.symbol)\((dayHigh * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
+    
+    var rank: String {
+        if let ticker = self.ticker {
+            return "#\(ticker.rank)"
+        } else {
+            return "-"
+        }
     }
     
-    var dayLow: String {
-        let dayLow: Decimal = marketDataProvider.marketData(coin: coin).dayLow
-        return "\(fiatCurrency.symbol)\((dayLow * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
+    var totalSupply: String {
+        if let ticker = self.ticker {
+            return ticker.totalSupply.formattedDecimalString() + " " + coin.code
+        } else {
+            return "-"
+        }
+    }
+    
+    var maxSupply: String {
+        if let ticker = self.ticker {
+            if ticker.maxSupply > 0 {
+                return ticker.maxSupply.formattedDecimalString() + " " + coin.code
+            } else {
+                return "Unlimited"
+            }
+        } else {
+            return "-"
+        }
+    }
+    
+    var marketCap: String {
+        if let ticker = self.ticker, let quote = ticker[.usd] {
+            return quote.marketCap.formattedString(.fiat(USD))
+        } else {
+            return "-"
+        }
+    }
+    
+    var athPrice: String {
+        if let ticker = self.ticker, let quote = ticker[.usd], let athPrice = quote.athPrice  {
+            return athPrice.formattedString(.fiat(USD))
+        } else {
+            return "-"
+        }
+    }
+    
+    var athDate: String {
+        if let ticker = self.ticker, let quote = ticker[.usd], let athPrice = quote.athDate  {
+            return athPrice.timeAgoSinceDate(shortFormat: false)
+        } else {
+            return "-"
+        }
+    }
+    
+    var volume24h: String {
+        if let ticker = self.ticker, let quote = ticker[.usd] {
+            return quote.volume24h.formattedString(.fiat(USD))
+        } else {
+            return "-"
+        }
+    }
+    
+    var percentFromPriceAth: String {
+        if let ticker = self.ticker, let quote = ticker[.usd], let percentFromPriceAth = quote.percentFromPriceAth {
+            return "\(percentFromPriceAth.rounded(toPlaces: 2))%"
+        } else {
+            return "-"
+        }
+    }
+            
+    var highValue: String {
+        let highValue: Decimal
+        
+        switch timeframe {
+        case .day:
+            highValue = marketData.dayHigh
+        case .week:
+            highValue = marketData.weekHigh
+        case .month:
+            highValue = marketData.monthHigh
+        case .year:
+            highValue = marketData.yearHigh
+        }
+        
+        switch state.walletCurrency {
+        case .btc:
+            guard let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) else { return "-" }
+            guard coin == .bitcoin() else {
+                return (highValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+            }
+            return "1 BTC"
+        case .eth:
+            guard let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) else { return "-" }
+            guard coin == .ethereum() else {
+                return (highValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+            }
+            return "1 ETH"
+        case .fiat(let fiatCurrency):
+            return (highValue * Decimal(fiatCurrency.rate)).formattedString(state.walletCurrency)
+        }
+    }
+    
+    var lowValue: String {
+        let lowValue: Decimal
+        
+        switch timeframe {
+        case .day:
+            lowValue = marketData.dayLow
+        case .week:
+            lowValue = marketData.weekLow
+        case .month:
+            lowValue = marketData.monthLow
+        case .year:
+            lowValue = marketData.yearLow
+        }
+        
+        switch state.walletCurrency {
+        case .btc:
+            guard let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) else { return "-" }
+            guard coin == .bitcoin() else {
+                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+            }
+            return "1 BTC"
+        case .eth:
+            guard let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) else { return "-" }
+            guard coin == .ethereum() else {
+                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+            }
+            return "1 ETH"
+        case .fiat(let fiatCurrency):
+            return (lowValue * Decimal(fiatCurrency.rate)).formattedString(state.walletCurrency)
+        }
+    }
+    
+    var changeLabelColor: Color {
+        let priceChange: Decimal?
+        let quote: Ticker.Quote?
+        
+        switch state.walletCurrency {
+        case .btc:
+            quote = ticker?[.btc]
+        case .eth:
+            quote = ticker?[.eth]
+        case .fiat:
+            quote = ticker?[.usd]
+        }
+        
+        switch timeframe {
+        case .day:
+            priceChange = quote?.percentChange24h
+        case .week:
+            priceChange = quote?.percentChange7d
+        case .month:
+            priceChange = quote?.percentChange30d
+        case .year:
+            priceChange = quote?.percentChange1y
+        }
+        
+        guard let pChange = priceChange else {
+            return .white
+        }
+        
+        return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
     }
         
-    init(state: PortalState, walletManager: IWalletManager, adapterManager: IAdapterManager, marketDataProvider: IMarketDataProvider) {
+    init(
+        state: PortalState,
+        walletManager: IWalletManager,
+        adapterManager: IAdapterManager,
+        marketDataProvider: IMarketDataProvider
+    ) {
         self.state = state
         self.coin = state.selectedCoin
         self.walletManager = walletManager
         self.adapterManager = adapterManager
-        self.fiatCurrency = state.fiatCurrency
         self.marketDataProvider = marketDataProvider
-                                
-        $selectedTimeframe
+        self.subscribeForUpdates()
+    }
+    
+    deinit {
+//        print("Deinit - \(coin.code)")
+    }
+    
+    private func subscribeForUpdates() {
+        $timeframe
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.updateValues()
+                self?.update()
             }
             .store(in: &subscriptions)
         
-        $valueCurrencySwitchState
+        state.$walletCurrency
             .receive(on: RunLoop.main)
-            .sink { [weak self] state in
-                self?.updateValues()
-            }
-            .store(in: &subscriptions)
-        
-        $loadingData
-            .dropFirst()
-            .receive(on: RunLoop.main)
-            .sink { [weak self] loading in
-                if !loading {
-                    self?.chartDataEntries = self?.assetChartDataEntries() ?? []
-                }
-            }
-            .store(in: &subscriptions)
-        
-        state.$fiatCurrency
             .sink { [weak self] currency in
-                self?.fiatCurrency = currency
-                self?.updateValues()
+                self?.update()
             }
             .store(in: &subscriptions)
         
@@ -95,13 +253,9 @@ final class AssetViewModel: ObservableObject {
                 self?.route = .value
                 self?.coin = coin
                 self?.updateAdapter()
-                self?.updateValues()
+                self?.update()
             }
             .store(in: &subscriptions)
-    }
-    
-    deinit {
-        print("Deinit - \(coin.code)")
     }
     
     private func updateAdapter() {
@@ -117,41 +271,38 @@ final class AssetViewModel: ObservableObject {
             .subscribeOn(serialQueueScheduler)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
-                self?.updateValues()
+                self?.update()
             })
             .disposed(by: disposeBag)
     }
     
-    private func updateValues() {
-        guard let ticker = marketDataProvider.ticker(coin: coin) else { return }
-        
-        let symbol = fiatCurrency.symbol
-        let isInteger = adapter?.balance.rounded(toPlaces: 6).isInteger ?? true
-        
-        if isInteger {
-            self.balance = "\(adapter?.balance ?? 0)"
-        } else {
-            self.balance = "\(adapter?.balance.rounded(toPlaces: 6) ?? 0)"
-        }
-        
-        price = "\(symbol)\((ticker[.usd].price * Decimal(fiatCurrency.rate)).double.rounded(toPlaces: 2))"
+    private func update() {
+        guard let ticker = self.ticker else { return }
         
         let currentPrice: Decimal
         
-        switch valueCurrencySwitchState {
-        case .fiat:
-            totalValue = "\(symbol)\((ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
-            currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
+        switch state.walletCurrency {
         case .btc:
-            totalValue = "\((ticker[.btc].price).rounded(toPlaces: 2)) BTC"
             currentPrice = ticker[.btc].price
         case .eth:
-            totalValue = "\((ticker[.eth].price).rounded(toPlaces: 2)) ETH"
             currentPrice = ticker[.eth].price
+        case .fiat(let fiatCurrency):
+            currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
         }
+        
+        totalValue = currentPrice.formattedString(state.walletCurrency, decimals: 4)
+                
+        let isInteger = adapter?.balance.rounded(toPlaces: 6).isInteger ?? true
+        
+        if isInteger {
+            balance = "\(adapter?.balance ?? 0)"
+        } else {
+            balance = "\(adapter?.balance.rounded(toPlaces: 6) ?? 0)"
+        }
+        
         let percentChange: Decimal
         
-        switch selectedTimeframe {
+        switch timeframe {
         case .day:
             percentChange = ticker[.usd].percentChange24h
         case .week:
@@ -167,34 +318,20 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func change(currentPrice: Decimal, changeInPercents: Decimal) -> String {
-        switch valueCurrencySwitchState {
-        case .fiat:
-            return "\(changeInPercents > 0 ? "+" : "-")\(fiatCurrency.symbol)\(abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)) (\(changeInPercents.double.rounded(toPlaces: 2))%)"
+        switch state.walletCurrency {
         case .btc:
-            return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)) BTC (\(changeInPercents.double.rounded(toPlaces: 2))%)"
+            guard coin == .bitcoin() else {
+                return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+            }
+            return " "
         case .eth:
-            return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)) ETH (\(changeInPercents.double.rounded(toPlaces: 2))%)"
+            guard coin == .ethereum() else {
+                return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+            }
+            return " "
+        case .fiat:
+            return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
         }
-    }
-    
-    var changeLabelColor: Color {
-        let priceChange: Decimal?
-        switch selectedTimeframe {
-        case .day:
-            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange24h
-        case .week:
-            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange7d
-        case .month:
-            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange30d
-        case .year:
-            priceChange = marketDataProvider.ticker(coin: coin)?[.usd].percentChange1y
-        }
-        
-        guard let pChange = priceChange else {
-            return .white
-        }
-        
-        return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
     }
     
     private func assetChartDataEntries() -> [ChartDataEntry] {
@@ -203,19 +340,17 @@ final class AssetViewModel: ObservableObject {
         var chartDataEntries = [ChartDataEntry]()
         var points = [Decimal]()
         
-        if hasChartData(timeframe: selectedTimeframe) {
-            points = chartDataPonts(timeframe: selectedTimeframe)
+        if hasChartData(timeframe: timeframe) {
+            points = chartDataPonts(timeframe: timeframe)
         } else {
-            loadingData = true
-            marketDataProvider.requestHistoricalData(coin: coin, timeframe: selectedTimeframe)
+            marketDataProvider.requestHistoricalData(coin: coin, timeframe: timeframe)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.loadingData = false
+                self.chartDataEntries = self.assetChartDataEntries()
             }
         }
         
-        let xIndexes = Array(0..<points.count).map { x in Double(x) }
         for (index, point) in points.enumerated() {
-            let dataEntry = ChartDataEntry(x: xIndexes[index], y: point.double)
+            let dataEntry = ChartDataEntry(x: Double(index), y: point.double)
             chartDataEntries.append(dataEntry)
         }
         
@@ -227,15 +362,26 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func chartDataPonts(timeframe: Timeframe) -> [Decimal] {
+        let points: [Decimal]
+        
         switch timeframe {
         case .day:
-            return marketDataProvider.marketData(coin: coin).dayPoints
+            points = marketData.dayPoints
         case .week:
-            return marketDataProvider.marketData(coin: coin).weekPoints
+            points = marketData.weekPoints
         case .month:
-            return marketDataProvider.marketData(coin: coin).monthPoints
+            points = marketData.monthPoints
         case .year:
-            return marketDataProvider.marketData(coin: coin).yearPoints
+            points = marketData.yearPoints
+        }
+        
+        switch state.walletCurrency {
+        case .btc:
+            return points.map{ $0/btcUSDPrice }
+        case .eth:
+            return points.map{ $0/ethUSDPrice }
+        case .fiat(let fiatCurrency):
+            return points.map{ $0 * Decimal(fiatCurrency.rate) }
         }
     }
 }

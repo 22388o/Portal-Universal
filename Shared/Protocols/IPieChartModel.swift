@@ -11,38 +11,31 @@ import SwiftUI
 import Charts
 
 protocol IBarChartViewModel {
-    var assets: [IAsset] { get }
-    var colors: [Color] { get }
+    var assets: [PortfolioItem] { get }
 }
 
 extension IBarChartViewModel {
-    var colors: [Color] {
-        []//assets.map{ $0.coin.color }
-    }
     var totalValueCurrency: Currency {
         .fiat(USD)
     }
     
     var totalPortfolioValue: Double {
-        0//assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency).double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
+        assets.map{ $0.balanceValue.double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
     }
     
-    func barChartData() -> (entries: [BarChartDataEntry], colors: [Color]) {
+    func barChartData() -> (entries: [BarChartDataEntry], colors: [Color], labels: [String]) {
         let minimumValue: Double = 5 //In %
         
         var assetAllocationValues = [Double]()
         var others = [Double]()
-        var colors = [Color]()
+        var colors = [Color(red: 242/255, green: 169/255, blue: 0/255), .blue]
         var labels = [String]()
-        var icons = [Image]()
         
         for asset in assets {
             let size = allocationSizeInPercents(for: asset)
             if size >= minimumValue {
                 assetAllocationValues.append(size)
-                labels.append(asset.coin.code + " \(size)%")
-//                colors.append(asset.coin.color)
-//                icons.append(asset.coin.icon)
+                labels.append(asset.coin.code)
             } else {
                 others.append(size)
             }
@@ -56,33 +49,44 @@ extension IBarChartViewModel {
             entries.append(entry)
         }
         
-//        //Add others
-//
-//        let othersSize = others.reduce(0, {$0 + $1}).rounded(toPlaces: 4)
-////        let othersLabel = "Others \(othersSize)%"
-//        let entry = BarChartDataEntry(x: Double(entries.count + 1), y: othersSize)
-//        entries.append(entry)
-//
-////        colors.append(.gray)
+        //Add others
+
+        let othersSize = others.reduce(0, {$0 + $1}).rounded(toPlaces: 4)
+        if othersSize > 0 {
+            let entry = BarChartDataEntry(x: Double(entries.count), y: othersSize)
+            entries.append(entry)
+            labels.append("Others")
+            colors.append(.gray)
+        }
         
-        return (entries, colors)
+        return (entries, colors, labels)
     }
     
-    func allocationSizeInPercents(for asset: IAsset) -> Double {
-        return 0
-//        let value = asset.balanceProvider.balance(currency: totalValueCurrency).double
-//        return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
+    func allocationSizeInPercents(for asset: PortfolioItem) -> Double {
+        let value = (asset.balance * asset.price).double
+        return ((value/totalPortfolioValue) * 100)//.rounded(toPlaces: 2)
     }
     
     func assetAllocationBarChartData() -> BarChartData {
         let barData = barChartData()
-        let set = BarChartDataSet(values: barData.entries, label: String())
-        #if os(iOS)
-        set.colors = barData.colors.map {UIColor($0)}
-        #else
-        set.colors = barData.colors.map {$0.nsColor}
-        #endif
-        return BarChartData(dataSet: set)
+        var dataSets: [BarChartDataSet] = []
+        
+        for (index, entry) in barData.entries.enumerated() {
+            let set = BarChartDataSet(values: [entry], label: barData.labels[index])
+            set.valueFormatter = BarChartXAxixValueFormatter()
+            #if os(iOS)
+            set.colors = [UIColor(barData.colors[index])]
+            set.valueFont = UIFont(name: "Avenir-Medium", size: 12.0)!
+            set.valueTextColor = UIColor(white: 1, alpha: 0.5)
+            #else
+            set.colors = [barData.colors[index].nsColor]
+            set.valueFont = NSFont(name: "Avenir-Medium", size: 12.0)!
+            set.valueTextColor = NSColor(white: 1, alpha: 0.5)
+            #endif
+            dataSets.append(set)
+        }
+        
+        return BarChartData(dataSets: dataSets)
     }
 }
 #if os(macOS)
@@ -109,7 +113,7 @@ extension Color {
 #endif
 
 protocol IPieChartModel {
-    var assets: [IAsset] { get }
+    var assets: [PortfolioItem] { get }
 }
 
 extension IPieChartModel {
@@ -118,8 +122,7 @@ extension IPieChartModel {
     }
     
     var totalPortfolioValue: Double {
-        return 0
-//        assets.map{ $0.balanceProvider.balance(currency: totalValueCurrency).double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
+        assets.map{ $0.balanceValue.double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
     }
     
     func pieChartData() -> (entries: [PieChartDataEntry], colors: [Color]) {
@@ -127,7 +130,7 @@ extension IPieChartModel {
         
         var assetAllocationValues = [Double]()
         var others = [Double]()
-        var colors = [Color]()
+        var colors = [Color(red: 242/255, green: 169/255, blue: 0/255), .blue]
         var labels = [String]()
         
         for asset in assets {
@@ -152,19 +155,20 @@ extension IPieChartModel {
         //Add others
         
         let othersSize = others.reduce(0, {$0 + $1}).rounded(toPlaces: 4)
-        let othersLabel = "Others \(othersSize)%"
-        let entry = PieChartDataEntry(value: othersSize, label: othersLabel)
-        entries.append(entry)
-        
-        colors.append(.gray)
+        if othersSize > 0 {
+            let othersLabel = "Others \(othersSize)%"
+            let entry = PieChartDataEntry(value: othersSize, label: othersLabel)
+            entries.append(entry)
+            
+            colors.append(.gray)
+        }
         
         return (entries, colors)
     }
     
-    func allocationSizeInPercents(for asset: IAsset) -> Double {
-        return 0
-//        let value = asset.balanceProvider.balance(currency: totalValueCurrency).double
-//        return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
+    func allocationSizeInPercents(for asset: PortfolioItem) -> Double {
+        let value = asset.balanceValue.double
+        return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
     }
     
     func assetAllocationChartData() -> PieChartData {

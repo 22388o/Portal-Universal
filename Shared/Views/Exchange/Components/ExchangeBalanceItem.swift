@@ -8,15 +8,35 @@
 import SwiftUI
 
 struct ExchangeBalanceItem: View {
-    let balanceItem: ExchangeBalanceModel
-    let iconUrl: String?
-    let selected: Bool
+    private let balanceItem: ExchangeBalanceModel
+    private let iconUrl: String?
+    private let onWithdraw: () -> ()
+    
+    @State private var onPointerOver = false
+    
+    init(balanceItem: ExchangeBalanceModel, iconUrl: String?, onWithdraw: @escaping () -> ()) {
+        self.balanceItem = balanceItem
+        self.iconUrl = iconUrl
+        self.onWithdraw = onWithdraw
+    }
     
     var body: some View {
         ZStack {
-            if selected {
+            if onPointerOver {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color(red: 88/255, green: 106/255, blue: 130/255, opacity: 0.3))
+                
+                HStack {
+                    Spacer()
+                    Text("Withdraw")
+                        .font(.mainFont(size: 12, bold: false))
+                        .foregroundColor(.gray)
+                        .padding(.trailing, 12)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            onWithdraw()
+                        }
+                }
             }
             
             HStack {
@@ -27,18 +47,21 @@ struct ExchangeBalanceItem: View {
                 Spacer()
             }
             .font(.mainFont(size: 12, bold: false))
-            .foregroundColor(.gray)
+            .foregroundColor(onPointerOver ? .white : .gray)
             .padding(.horizontal, 8)
         }
         .frame(height: 32)
+        .onHover { over in
+            onPointerOver = over
+        }
     }
 }
 
 struct ExchangeBalanceItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ExchangeBalanceItem(balanceItem: ExchangeBalanceModel.BTC(), iconUrl: nil, selected: true)
-            ExchangeBalanceItem(balanceItem: ExchangeBalanceModel.ETH(), iconUrl: nil, selected: false)
+            ExchangeBalanceItem(balanceItem: ExchangeBalanceModel.BTC(), iconUrl: nil, onWithdraw: {})
+            ExchangeBalanceItem(balanceItem: ExchangeBalanceModel.ETH(), iconUrl: nil, onWithdraw: {})
         }
     }
 }

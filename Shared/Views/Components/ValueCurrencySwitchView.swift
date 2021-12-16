@@ -8,21 +8,18 @@
 import SwiftUI
 
 struct ValueCurrencySwitchView: View {
-    @Binding var state: ValueCurrencySwitchState
-    let fiatCurrency: FiatCurrency
+    @Binding var state: Currency
     let type: AssetMarketValueViewType
     
     var body: some View {
         HStack(spacing: 12) {
             FiatCurrencyView(
                 size: 20,
-                state: $state,
-                currency: .constant(.fiat(fiatCurrency))
+                currency: $state
             )
             .contentShape(Rectangle())
             .onTapGesture {
-                guard state != .fiat else { return }
-                state = .fiat
+                guard state == .btc || state == .eth else { return }
             }
             
             Group {
@@ -52,6 +49,6 @@ struct ValueCurrencySwitchView: View {
 
 struct ValueCurrencySwitchView_Previews: PreviewProvider {
     static var previews: some View {
-        ValueCurrencySwitchView(state: .constant(.btc), fiatCurrency: USD, type: .asset)
+        ValueCurrencySwitchView(state: .constant(.fiat(USD)), type: .asset)
     }
 }

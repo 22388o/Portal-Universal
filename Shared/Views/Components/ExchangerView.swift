@@ -68,8 +68,7 @@ struct ExchangerView: View {
                 HStack(spacing: 8) {
                     FiatCurrencyView(
                         size: 24,
-                        state: .constant(.btc),
-                        currency: .constant(.fiat(viewModel.fiat))
+                        currency: .constant(viewModel.currency)
                     )
                     .frame(width: 24, height: 24)
                     
@@ -98,7 +97,7 @@ struct ExchangerView: View {
                         .textFieldStyle(PlainTextFieldStyle())
                     #endif
                     
-                    Text(viewModel.fiat.code)
+                    Text(viewModel.currency.code)
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
                 .modifier(TextFieldModifier(cornerRadius: 26))
@@ -115,7 +114,7 @@ struct ExchangerView: View {
 
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangerView(viewModel: .init(coin: Coin.bitcoin(), fiat: USD), isValid: .constant(true))
+        ExchangerView(viewModel: .init(coin: Coin.bitcoin(), currency: .fiat(USD)), isValid: .constant(true))
             .frame(width: 550, height: 200)
             .previewLayout(PreviewLayout.sizeThatFits)
     }

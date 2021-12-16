@@ -12,44 +12,36 @@ struct WalletModalViews: View {
     
     var body: some View {
         Group {
-            if state.sendAsset {
+            switch state.modalView {
+            case .sendAsset:
                 SendAssetView(
                     coin: state.selectedCoin,
-                    fiatCurrency: state.fiatCurrency,
-                    presented: $state.sendAsset
+                    currency: state.walletCurrency
                 )
-            }
-            if state.receiveAsset {
+            case .receiveAsset:
                 ReceiveAssetsView(coin: state.selectedCoin)
-            }
-            if state.allTransactions {
+            case .allTransactions:
                 AssetTxView(coin: state.selectedCoin)
-            }
-            if state.createAlert {
-                //CreateAlertView(asset: state.selectedAsset, presented: $state.createAlert)
-            }
-            
-            if state.switchWallet {
+            case .switchAccount:
                 AccountsView()
                     .animation(nil)
                     .padding(.top, 24)
                     .padding(.leading, 24)
-            }
-            
-            if state.allNotifications {
+            case .allNotifications:
                 NotificationsView()
                     .animation(nil)
                     .padding(.top, 24)
                     .padding(.trailing, 24)
-            }
-            
-            if state.accountSettings {
+            case .accountSettings:
                 AccountSettingsView()
                     .animation(nil)
-                    .padding(.top, 24)
+                    .padding(.top, 40)
                     .padding(.trailing, 24)
+            case .withdrawFromExchange(let balance):
+                WithdrawFromExchangeView(balance: balance)
+            default:
+                EmptyView()
             }
-            
         }
         .transition(AnyTransition.identity)
     }

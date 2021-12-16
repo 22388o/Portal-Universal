@@ -11,7 +11,7 @@ import SwiftUI
 struct PieChartRepresentableView: UIViewRepresentable {
     let viewModel: IPieChartModel
 
-    init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel()) {
+    init(viewModel: AssetAllocationViewModel) {
         self.viewModel = viewModel
     }
     

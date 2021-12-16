@@ -35,7 +35,7 @@ final class SendAssetViewModel: ObservableObject {
     private let sendBtcAdapter: ISendBitcoinAdapter?
     private let sendEthAdapter: ISendEthereumAdapter?
     private let feeRateProvider: IFeeRateProvider
-    private let fiatCurrency: FiatCurrency
+    private let currency: Currency
     private var ticker: Ticker?
     private var feeRate: Int = 8 //medium
     
@@ -49,7 +49,7 @@ final class SendAssetViewModel: ObservableObject {
         feeRateProvider: IFeeRateProvider,
         sendBitcoinAdapter: ISendBitcoinAdapter?,
         sendEtherAdapter: ISendEthereumAdapter?,
-        fiatCurrency: FiatCurrency,
+        currency: Currency,
         ticker: Ticker?
     ) {
         
@@ -62,9 +62,8 @@ final class SendAssetViewModel: ObservableObject {
         self.ticker = ticker
         self.lastBlockInfo = txsAdapter.lastBlockInfo
         
-        self.exchangerViewModel = .init(coin: coin, fiat: fiatCurrency)
-        
-        self.fiatCurrency = fiatCurrency
+        self.exchangerViewModel = .init(coin: coin, currency: currency)
+        self.currency = currency
         
         updateBalance()
         
@@ -111,7 +110,7 @@ final class SendAssetViewModel: ObservableObject {
     }
     
     deinit {
-        print("send asset view model deinited")
+//        print("send asset view model deinited")
     }
     
     private func validate(address: String, amount: Decimal) {
@@ -120,13 +119,13 @@ final class SendAssetViewModel: ObservableObject {
         if fee > 0 {
             switch coin.type {
             case .bitcoin:
-                txFee = "\(fee) \(coin.code) (\((fee * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
+                txFee = ""//"\(fee) \(coin.code) (\((fee * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
             default:
                 let gasPrice = feeRate
                 let gasLimit = 21000
                 let etherTxFee = gasPrice * gasLimit / 1_000_000_000
                 
-                txFee = "\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
+                txFee = ""//"\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
             }
         } else {
             txFee = String()
@@ -191,7 +190,14 @@ final class SendAssetViewModel: ObservableObject {
         let balance = balanceAdapter.balance
         
         if let ticker = ticker {
-            balanceString = "\(balance) \(coin.code) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+            switch currency {
+            case .btc:
+                balanceString = "\(balance) \(coin.code) (\(currency.symbol)" + "\((balance * ticker[.btc].price).rounded(toPlaces: 2)) \(currency.code))"
+            case .eth:
+                balanceString = "\(balance) \(coin.code) (\(currency.symbol)" + "\((balance * ticker[.eth].price).rounded(toPlaces: 2)) \(currency.code))"
+            case .fiat(let fiatCurrency):
+                balanceString = "\(balance) \(coin.code) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+            }
         } else {
             balanceString = "\(balance) \(coin.code)"
         }
@@ -267,7 +273,7 @@ final class SendAssetViewModel: ObservableObject {
 }
 
 extension SendAssetViewModel {
-    static func config(coin: Coin, fiatCurrency: FiatCurrency) -> SendAssetViewModel? {
+    static func config(coin: Coin, currency: Currency) -> SendAssetViewModel? {
         let walletManager: IWalletManager = Portal.shared.walletManager
         let adapterManager: IAdapterManager = Portal.shared.adapterManager
         let feeProvider: FeeRateProvider = Portal.shared.feeRateProvider
@@ -295,7 +301,7 @@ extension SendAssetViewModel {
                 feeRateProvider: feesProvider,
                 sendBitcoinAdapter: sendBTCAdapter,
                 sendEtherAdapter: nil,
-                fiatCurrency: fiatCurrency,
+                currency: currency,
                 ticker: ticker
             )
             
@@ -310,7 +316,7 @@ extension SendAssetViewModel {
                 feeRateProvider: feesProvider,
                 sendBitcoinAdapter: nil,
                 sendEtherAdapter: sendEtherAdapter,
-                fiatCurrency: fiatCurrency,
+                currency: currency,
                 ticker: ticker
             )
         }

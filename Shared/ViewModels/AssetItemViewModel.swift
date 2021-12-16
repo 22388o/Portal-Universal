@@ -23,11 +23,17 @@ final class AssetItemViewModel: ObservableObject {
     @Published var syncProgress: Float = 0.01
     
     private let notificationService: NotificationService
+    private let marketDataProvider: MarketDataProvider
     private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
     private let disposeBag = DisposeBag()
     private var subscriptions = Set<AnyCancellable>()
     
-    private let ticker: Ticker?
+    private let selectedTimeframe: Timeframe
+    private var currency: Currency
+    
+    private var ticker: Ticker? {
+        marketDataProvider.ticker(coin: coin)
+    }
     
     var changeLabelColor: Color {
         let priceChange: Decimal?
@@ -49,17 +55,20 @@ final class AssetItemViewModel: ObservableObject {
         return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
     }
     
-    private let selectedTimeframe: Timeframe
-    private var fiatCurrency: FiatCurrency
-    
-    init(coin: Coin, adapter: IBalanceAdapter, state: PortalState, ticker: Ticker?, notificationService: NotificationService) {
+    init(
+        coin: Coin,
+        adapter: IBalanceAdapter,
+        state: PortalState,
+        notificationService: NotificationService,
+        marketDataProvider: MarketDataProvider
+    ) {
         self.coin = coin
         self.adapter = adapter
-        self.ticker = ticker
         self.notificationService = notificationService
+        self.marketDataProvider = marketDataProvider
         
         self.selectedTimeframe = .day
-        self.fiatCurrency = state.fiatCurrency
+        self.currency = state.walletCurrency
         
         self.adapterState = adapter.balanceState
         
@@ -92,9 +101,9 @@ final class AssetItemViewModel: ObservableObject {
             })
             .disposed(by: disposeBag)
         
-        state.$fiatCurrency
+        state.$walletCurrency
             .sink { [weak self] currency in
-                self?.fiatCurrency = currency
+                self?.currency = currency
                 self?.updateBalance()
             }
             .store(in: &subscriptions)
@@ -109,32 +118,42 @@ final class AssetItemViewModel: ObservableObject {
     }
     
     private func updateValues(spendable: Decimal, unspendable: Decimal?, ticker: Ticker) {
-        let currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
+        let currentPrice: Decimal
+        
+        switch currency {
+        case .btc:
+            currentPrice = ticker[.btc].price
+            totalValueString = (spendable * ticker[.btc].price).double.btcFormatted()
+        case .eth:
+            currentPrice = ticker[.eth].price
+            totalValueString = (spendable * ticker[.eth].price).double.ethFormatted()
+        case .fiat(let fiatCurrency):
+            currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
+            totalValueString = (spendable * currentPrice).formattedString(currency)
+        }
+        
         let changeInPercents = ticker[.usd].percentChange24h
         let prefix = "\(changeInPercents > 0 ? "+" : "-")"
-        let symbol = fiatCurrency.symbol
         let percentChangeString = "(\(changeInPercents.double.rounded(toPlaces: 2))%)"
-        let priceChange = abs(currentPrice * (changeInPercents/100)).double.rounded(toPlaces: 2)
-        
-        changeString = "\(prefix)\(symbol)\(priceChange) \(percentChangeString)"
-        
+        let priceChange = abs(currentPrice * (changeInPercents/100)).formattedString(currency, decimals: 3)
+
+        changeString = "\(prefix)\(priceChange) \(percentChangeString)"
+
         let isInteger = spendable.rounded(toPlaces: 4).isInteger
         let updatedBalanceString: String
-        
+
         if let unspendable = unspendable, unspendable > 0 {
             updatedBalanceString = isInteger ? "\(spendable) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)" : "\(spendable.rounded(toPlaces: 6)) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)"
         } else {
             updatedBalanceString = isInteger ? "\(spendable) \(coin.code)" : "\(spendable.rounded(toPlaces: 6)) \(coin.code)"
         }
-        
+
         if balanceString != updatedBalanceString && !balanceString.isEmpty {
             balanceString = updatedBalanceString
             notificationService.notify(PNotification(message: "\(coin.code) balance updated: \(balanceString)"))
         } else {
             balanceString = updatedBalanceString
         }
-        
-        totalValueString = "\(symbol)\((spendable * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2))"
     }
     
     deinit {
@@ -146,10 +165,9 @@ extension AssetItemViewModel {
     static func config(coin: Coin, adapter: IBalanceAdapter) -> AssetItemViewModel {
         let state = Portal.shared.state
         let marketDataProvider = Portal.shared.marketDataProvider
-        let ticker = marketDataProvider.ticker(coin: coin)
         let notificationService = Portal.shared.notificationService
         
-        return AssetItemViewModel(coin: coin, adapter: adapter, state: state, ticker: ticker, notificationService: notificationService)
+        return AssetItemViewModel(coin: coin, adapter: adapter, state: state, notificationService: notificationService, marketDataProvider: marketDataProvider)
     }
 }
 

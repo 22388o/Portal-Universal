@@ -8,7 +8,6 @@
 
 import BitcoinKit
 import BitcoinCore
-import RxSwift
 
 final class BitcoinAdapter: BitcoinBaseAdapter {
     private let bitcoinKit: Kit

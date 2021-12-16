@@ -10,7 +10,6 @@ import SwiftUI
 struct FiatCurrencyView: View {
     let size: CGFloat
 
-    @Binding var state: ValueCurrencySwitchState
     @Binding var currency: Currency
 
     private let selectedBgColor = Color(red: 194.0/255.0, green: 194.0/255.0, blue: 199.0/255.0)
@@ -21,15 +20,33 @@ struct FiatCurrencyView: View {
     var body: some View {
         Text(currency.symbol)
             .font(size > 16 ? Font.mainFont(size: 16) : Font.mainFont(size: 12))
-            .foregroundColor(state == .fiat ? textColor : selectedTextColor)
+            .foregroundColor(foregroundColor)
             .frame(width: size, height: size)
-            .background(state == .fiat ? bgColor : selectedBgColor)
+            .background(backgroundColor)
             .cornerRadius(size/2)
+    }
+    
+    var foregroundColor: Color {
+        switch currency {
+        case .btc, .eth:
+            return selectedTextColor
+        default:
+            return textColor
+        }
+    }
+    
+    var backgroundColor: Color {
+        switch currency {
+        case .btc, .eth:
+            return selectedBgColor
+        default:
+            return bgColor
+        }
     }
 }
 
 struct FiatCurrencyView_Previews: PreviewProvider {
     static var previews: some View {
-        FiatCurrencyView(size: 40, state: .constant(.btc), currency: .constant(Currency.btc))
+        FiatCurrencyView(size: 40, currency: .constant(Currency.btc))
     }
 }

@@ -46,31 +46,28 @@ struct AssetViewLandscape: View {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
                             withAnimation(.easeIn(duration: 1.2)) {
-                                state.receiveAsset.toggle()
+                                state.modalView = .receiveAsset
                             }
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                         
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: viewModel.canSend) {
                             withAnimation(.easeIn(duration: 1.2)) {
-                                state.sendAsset.toggle()
+                                state.modalView = .sendAsset
                             }
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     }
                     PButton(label: "Send to exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
-                        withAnimation(.easeInOut(duration: 0.4)) {
+                        withAnimation(.easeIn(duration: 1.2)) {
                             
                         }
                     }
-//                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
-                    
                     PButton(label: "Withdraw from exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
-                        withAnimation(.easeIn(duration: 0.2)) {
+                        withAnimation(.easeIn(duration: 1.2)) {
                             
                         }
                     }
-//                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 }
                 
                 Spacer().frame(height: 10)
@@ -80,22 +77,94 @@ struct AssetViewLandscape: View {
                 switch viewModel.route {
                 case .value:
                     MarketValueView(
-                        timeframe: $viewModel.selectedTimeframe,
-                        valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
-                        fiatCurrency: $state.fiatCurrency,
+                        timeframe: $viewModel.timeframe,
+                        currency: state.walletCurrency,
                         totalValue: viewModel.totalValue,
                         change: viewModel.change,
-                        high: viewModel.dayHigh,
-                        low: viewModel.dayLow,
+                        high: viewModel.highValue,
+                        low: viewModel.lowValue,
                         chartDataEntries: viewModel.chartDataEntries,
                         landscape: true,
                         type: .asset
                     )
+                    
+                    ScrollView(showsIndicators: false) {
+                        Spacer().frame(height: 30)
+                        
+                        VStack(spacing: 12) {
+                            VStack(spacing: 8) {
+                                Text("Coinpaprika rank")
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
+                                Text(viewModel.rank)
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
+                            }
+                            VStack(spacing: 8) {
+                                Text("MarketCap")
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
+                                Text(viewModel.marketCap)
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
+                            }
+                            VStack(spacing: 8) {
+                                Text("24h volume")
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
+                                Text(viewModel.volume24h)
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
+                            }
+                            VStack(spacing: 8) {
+                                Text("Total supply")
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
+                                Text(viewModel.totalSupply)
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
+                            }
+                            VStack(spacing: 8) {
+                                Text("Max supply")
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
+                                Text(viewModel.maxSupply)
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
+                            }
+                            VStack(spacing: 8) {
+                                Text("ATH price")
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
+                                Text(viewModel.athPrice)
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
+                            }
+                            VStack(spacing: 8) {
+                                Text("Percent from ATH price")
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
+                                Text(viewModel.percentFromPriceAth)
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
+                            }
+                            VStack(spacing: 8) {
+                                Text("ATH date")
+                                    .font(Font.mainFont())
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
+                                Text(viewModel.athDate)
+                                    .font(Font.mainFont(size: 15))
+                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
+                            }
+                        }
+                    }
+                    .padding(.vertical, 15)
+                    
                 case .transactions:
                     RecentTxsView(coin: state.selectedCoin)
                         .transition(.identity)
                 case .alerts:
-                    AlertsView(coin: viewModel.coin, createAlert: $state.createAlert)
+                    AlertsView(coin: viewModel.coin)
                         .transition(.identity)
                 }
             }

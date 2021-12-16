@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct AssetAllocationViewModel: IPieChartModel, IBarChartViewModel {
-    var assets: [IAsset]
+    let assets: [PortfolioItem]
     let isLineChart: Bool
     
-    init(assets: [IAsset] = WalletMock().assets.map{ $0 }) {
-        print("Asset allocation view model init")
+    init(assets: [PortfolioItem]) {
         self.assets = assets
         self.isLineChart = false
     }

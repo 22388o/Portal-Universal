@@ -11,7 +11,7 @@ import Charts
 
 extension LineChartView {
     func applyStandardSettings() {
-        minOffset = 0
+//        minOffset = 0
         maxVisibleCount = 0
         dragEnabled = false
         chartDescription.enabled = false
@@ -26,11 +26,15 @@ extension LineChartView {
         xAxis.drawAxisLineEnabled = false
         
         let yaxis = getAxis(YAxis.AxisDependency.left)
-        yaxis.drawLabelsEnabled = false
+        yaxis.labelPosition = .insideChart
+        yaxis.drawAxisLineEnabled = false
+        yaxis.drawLabelsEnabled = true
         yaxis.enabled = false
         
         let xaxis = getAxis(YAxis.AxisDependency.right)
+        xaxis.labelPosition = .insideChart
         xaxis.drawLabelsEnabled = true
+        xaxis.drawAxisLineEnabled = false
         xaxis.enabled = false
         
         autoScaleMinMaxEnabled = true

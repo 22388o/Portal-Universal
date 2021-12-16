@@ -11,16 +11,17 @@ import Charts
 struct PieChartRepresentableView: NSViewRepresentable {
     let viewModel: IPieChartModel
 
-    init(viewModel: AssetAllocationViewModel = AssetAllocationViewModel()) {
+    init(viewModel: AssetAllocationViewModel) {
         self.viewModel = viewModel
     }
     
     func makeNSView(context: Context) -> PieChartView {
         let pieChart = PieChartView()
         pieChart.applyStandardSettings()
-        pieChart.data = viewModel.assetAllocationChartData()
         return pieChart
     }
 
-    func updateNSView(_ uiView: PieChartView, context: Context) {}
+    func updateNSView(_ pieChart: PieChartView, context: Context) {
+        pieChart.data = viewModel.assetAllocationChartData()
+    }
 }

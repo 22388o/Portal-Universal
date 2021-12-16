@@ -44,14 +44,14 @@ struct AssetViewPortrait: View {
                         HStack {
                             PButton(label: "Recieve", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: true) {
                                 withAnimation(.easeIn(duration: 1.2)) {
-                                    state.receiveAsset.toggle()
+                                    state.modalView = .receiveAsset
                                 }
                             }
                             .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                             
                             PButton(label: "Send", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: viewModel.canSend) {
                                 withAnimation(.easeIn(duration: 1.2)) {
-                                    state.sendAsset.toggle()
+                                    state.modalView = .sendAsset
                                 }
                             }
                             .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
@@ -79,13 +79,12 @@ struct AssetViewPortrait: View {
                 switch viewModel.route {
                 case .value:
                     MarketValueView(
-                        timeframe: $viewModel.selectedTimeframe,
-                        valueCurrencyViewSate: $viewModel.valueCurrencySwitchState,
-                        fiatCurrency: $state.fiatCurrency,
+                        timeframe: $viewModel.timeframe,
+                        currency: state.walletCurrency,
                         totalValue: viewModel.totalValue,
                         change: viewModel.change,
-                        high: viewModel.dayHigh,
-                        low: viewModel.dayLow,
+                        high: viewModel.highValue,
+                        low: viewModel.lowValue,
                         chartDataEntries: viewModel.chartDataEntries,
                         landscape: false,
                         type: .asset
@@ -95,7 +94,7 @@ struct AssetViewPortrait: View {
                         .frame(height: 425)
                         .transition(.identity)
                 case .alerts:
-                    AlertsView(coin: viewModel.coin, createAlert: $state.createAlert)
+                    AlertsView(coin: viewModel.coin)
                         .frame(height: 425)
                         .transition(.identity)
                 }

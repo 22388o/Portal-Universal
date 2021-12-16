@@ -12,6 +12,7 @@ struct MainView: View {
     @StateObject private var walletViewModel = WalletViewModel.config()
     @StateObject private var assetViewModel = AssetViewModel.config()
     @StateObject private var exchangeViewModel = ExchangeViewModel.config()
+    @StateObject private var portfolioViewModel = PortfolioViewModel.config()
     
     var body: some View {
         ZStack {
@@ -21,6 +22,7 @@ struct MainView: View {
             case .wallet:
                 #if os(macOS)
                 HStack(spacing: 0) {
+                    PortfolioView(viewModel: portfolioViewModel)
                     WalletView(state: state, viewModel: walletViewModel)
                     AssetViewLandscape(viewModel: assetViewModel)
                         .zIndex(0)

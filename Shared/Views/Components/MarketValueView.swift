@@ -10,8 +10,7 @@ import Charts
 
 struct MarketValueView: View {
     @Binding var timeframe: Timeframe
-    @Binding var valueCurrencyViewSate: ValueCurrencySwitchState
-    @Binding var fiatCurrency: FiatCurrency
+    @State var currency: Currency
     
     let totalValue: String
     let change: String
@@ -34,9 +33,7 @@ struct MarketValueView: View {
                         .font(Font.mainFont(size: 12))
                         .foregroundColor(type == .asset ? Color.coinViewRouteButtonActive : Color.white.opacity(0.5))
                         .padding(.vertical, 6)
-                    
-                    ValueCurrencySwitchView(state: $valueCurrencyViewSate, fiatCurrency: fiatCurrency, type: type)
-                    
+                                        
                     Text(totalValue)
                         .lineLimit(1)
                         .font(Font.mainFont(size: 26))
@@ -59,6 +56,7 @@ struct MarketValueView: View {
                         .font(Font.mainFont())
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
                     Text(high)
+                        .frame(width: 90)
                         .font(Font.mainFont(size: 15))
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
                 }
@@ -68,6 +66,7 @@ struct MarketValueView: View {
                         .font(Font.mainFont())
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.5) : Color.white.opacity(0.5))
                     Text(low)
+                        .frame(width: 90)
                         .font(Font.mainFont(size: 15))
                         .foregroundColor(type == .asset ? Color.lightActiveLabel.opacity(0.8) : Color.white.opacity(0.8))
 
@@ -83,8 +82,7 @@ struct AssetMarketValueView_Previews: PreviewProvider {
     static var previews: some View {
         MarketValueView(
             timeframe: .constant(.day),
-            valueCurrencyViewSate: .constant(.fiat),
-            fiatCurrency: .constant(USD),
+            currency: .fiat(USD),
             totalValue: "$2836.211",
             change: "-$423 (3.46%)",
             high: "$0.0",

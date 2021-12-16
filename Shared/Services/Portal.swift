@@ -95,6 +95,10 @@ final class Portal: ObservableObject {
         
         let adapterFactory = AdapterFactory(appConfigProvider: appConfigProvider, ethereumKitManager: ethereumKitManager)
         adapterManager = AdapterManager(adapterFactory: adapterFactory, ethereumKitManager: ethereumKitManager, walletManager: walletManager)
+                
+        if let activeAccount = accountManager.activeAccount {
+            updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
+        }
                                 
         marketDataStorage.$dataReady
             .receive(on: RunLoop.main)
@@ -123,15 +127,35 @@ final class Portal: ObservableObject {
             .store(in: &anyCancellables)
         
         accountManager.onActiveAccountUpdatePublisher
-            .debounce(for: 2, scheduler: RunLoop.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] account in
                 if account != nil {
                     self?.state.loading = false
+                    self?.updateWalletCurrency(code: account?.fiatCurrencyCode ?? "USD")
                 }
+            }
+            .store(in: &anyCancellables)
+        
+        state
+            .$walletCurrency
+            .dropFirst()
+            .sink { [weak self] currency in
+                self?.accountManager.updateWalletCurrency(code: currency.code)
             }
             .store(in: &anyCancellables)
     }
     
+    func updateWalletCurrency(code: String) {
+        switch code {
+        case "BTC":
+            state.walletCurrency = .btc
+        case "ETH":
+            state.walletCurrency = .eth
+        default:
+            state.walletCurrency = marketDataProvider.fiatCurrencies.map { Currency.fiat($0) }.first(where: { $0.code == code }) ?? .fiat(.init(code: code, name: "-"))
+        }
+    }
+ 
     func onTerminate() {
 
     }
@@ -144,4 +168,3 @@ final class Portal: ObservableObject {
 
     }
 }
-

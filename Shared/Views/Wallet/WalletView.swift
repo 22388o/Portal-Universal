@@ -16,7 +16,8 @@ struct WalletView: View {
             VStack(spacing: 0) {
                 HStack(spacing: 14) {
                     AssetSearchField(search: $state.searchRequest)
-                    FiatCurrencyButton(currencies: viewModel.fiatCurrencies, selectedCurrrency: $state.fiatCurrency)
+//                    Text("Manage")
+//                        .font(.mainFont(size: 14))
                 }
                 .padding([.top, .horizontal], 24)
                 .padding(.bottom, 19)
@@ -85,7 +86,7 @@ struct WalletView: View {
                     }
                 }
             }
-            .frame(minWidth: 600)
+            .frame(minWidth: 650)
         }
     }
 }

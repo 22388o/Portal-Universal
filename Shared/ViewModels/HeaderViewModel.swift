@@ -1,5 +1,5 @@
 //
-//  PortalHeaderViewModel.swift
+//  HeaderViewModel.swift
 //  Portal
 //
 //  Created by Farid on 22.07.2021.
@@ -8,12 +8,14 @@
 import Foundation
 import Combine
 
-class PortalHeaderViewModel: ObservableObject {
+class HeaderViewModel: ObservableObject {
     @Published var accountName = String()
     @Published var state = Portal.shared.state
     @Published var hasBadge: Bool = false
     @Published var newAlerts: Int = 0
     @Published var isOffline: Bool = false
+    
+    var currencies: [Currency] = []
     
     private var notificationService: NotificationService
     private var reachabillityService: ReachabilityService
@@ -23,6 +25,10 @@ class PortalHeaderViewModel: ObservableObject {
         self.accountName = accountManager.activeAccount?.name ?? "-"
         self.notificationService = notificationService
         self.reachabillityService = reachabilityService
+        
+        currencies.append(Currency.btc)
+        currencies.append(Currency.eth)
+        currencies.append(contentsOf: Portal.shared.marketDataProvider.fiatCurrencies.map{ Currency.fiat($0) })
         
         accountManager.onActiveAccountUpdatePublisher
             .receive(on: RunLoop.main)
@@ -53,13 +59,13 @@ class PortalHeaderViewModel: ObservableObject {
     }
 }
 
-extension PortalHeaderViewModel {
-    static func config() -> PortalHeaderViewModel {
+extension HeaderViewModel {
+    static func config() -> HeaderViewModel {
         let accountManager = Portal.shared.accountManager
         let notificationService = Portal.shared.notificationService
         let reachabilityService = Portal.shared.reachabilityService
         
-        return PortalHeaderViewModel(
+        return HeaderViewModel(
             accountManager: accountManager,
             notificationService: notificationService,
             reachabilityService: reachabilityService
