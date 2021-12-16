@@ -93,14 +93,6 @@ struct AssetViewLandscape: View {
                         
                         VStack(spacing: 12) {
                             VStack(spacing: 8) {
-                                Text("Coinpaprika rank")
-                                    .font(Font.mainFont())
-                                    .foregroundColor(Color.lightActiveLabel.opacity(0.5))
-                                Text(viewModel.rank)
-                                    .font(Font.mainFont(size: 15))
-                                    .foregroundColor(Color.lightActiveLabel.opacity(0.8))
-                            }
-                            VStack(spacing: 8) {
                                 Text("MarketCap")
                                     .font(Font.mainFont())
                                     .foregroundColor(Color.lightActiveLabel.opacity(0.5))

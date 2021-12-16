@@ -50,15 +50,7 @@ final class AssetViewModel: ObservableObject {
     
     var coin: Coin
     var adapter: IBalanceAdapter?
-    
-    var rank: String {
-        if let ticker = self.ticker {
-            return "#\(ticker.rank)"
-        } else {
-            return "-"
-        }
-    }
-    
+        
     var totalSupply: String {
         if let ticker = self.ticker {
             return ticker.totalSupply.formattedDecimalString() + " " + coin.code
@@ -313,24 +305,29 @@ final class AssetViewModel: ObservableObject {
             percentChange = ticker[.usd].percentChange1y
         }
         
-        change = change(currentPrice: currentPrice, changeInPercents: percentChange)
+        change = change(price: currentPrice, percentChange: percentChange)
         chartDataEntries = assetChartDataEntries()
     }
     
-    private func change(currentPrice: Decimal, changeInPercents: Decimal) -> String {
+    private func change(price: Decimal, percentChange: Decimal) -> String {
+        let prefix = percentChange > 0 ? "+" : "-"
+        let value = abs(price * (percentChange/100)).formattedString(state.walletCurrency, decimals: 3)
+        let percentChange = percentChange.double.roundToDecimal(2)
+        let changeString = "\(prefix)\(value) (\(percentChange)%)"
+        
         switch state.walletCurrency {
         case .btc:
             guard coin == .bitcoin() else {
-                return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+                return changeString
             }
             return " "
         case .eth:
             guard coin == .ethereum() else {
-                return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+                return changeString
             }
             return " "
         case .fiat:
-            return "\(changeInPercents > 0 ? "+" : "-")\(abs(currentPrice * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 3)) (\(changeInPercents.double.roundToDecimal(2))%)"
+            return changeString
         }
     }
     

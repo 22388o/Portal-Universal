@@ -274,10 +274,10 @@ final class SendAssetViewModel: ObservableObject {
 
 extension SendAssetViewModel {
     static func config(coin: Coin, currency: Currency) -> SendAssetViewModel? {
-        let walletManager: IWalletManager = Portal.shared.walletManager
-        let adapterManager: IAdapterManager = Portal.shared.adapterManager
-        let feeProvider: FeeRateProvider = Portal.shared.feeRateProvider
-        let mdProvider: MarketDataProvider = Portal.shared.marketDataProvider
+        let walletManager = Portal.shared.walletManager
+        let adapterManager = Portal.shared.adapterManager
+        let feeRateProvider = Portal.shared.feeRateProvider
+        let mdProvider = Portal.shared.marketDataProvider
         
         guard
             let wallet = walletManager.activeWallets.first(where: { $0.coin == coin }),
@@ -292,7 +292,7 @@ extension SendAssetViewModel {
         switch coin.type {
         case .bitcoin:
             let sendBTCAdapter = adapterManager.adapter(for: coin) as? ISendBitcoinAdapter
-            let feesProvider = BitcoinFeeRateProvider(feeRateProvider: feeProvider)
+            let feesProvider = BitcoinFeeRateProvider(feeRateProvider: feeRateProvider)
             
             return SendAssetViewModel(
                 coin: coin,
@@ -307,7 +307,7 @@ extension SendAssetViewModel {
             
         case .ethereum, .erc20(address: _):
             let sendEtherAdapter = adapterManager.adapter(for: coin) as? ISendEthereumAdapter
-            let feesProvider = EthereumFeeRateProvider(feeRateProvider: feeProvider)
+            let feesProvider = EthereumFeeRateProvider(feeRateProvider: feeRateProvider)
             
             return SendAssetViewModel(
                 coin: coin,

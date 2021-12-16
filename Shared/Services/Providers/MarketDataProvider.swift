@@ -8,7 +8,7 @@
 import Foundation
 import Coinpaprika
 
-final class MarketDataProvider: ObservableObject {
+final class MarketDataProvider {
     private let repository: IMarketDataProvider
     
     init(repository: IMarketDataProvider) {

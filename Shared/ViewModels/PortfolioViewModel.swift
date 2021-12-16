@@ -24,11 +24,12 @@ final class PortfolioViewModel: ObservableObject {
     @Published var selectedTimeframe: Timeframe = .day
     @Published var state: PortalState
     @Published private var walletCurrency: Currency
+    @Published var empty: Bool = true
     
     private var subscriptions = Set<AnyCancellable>()
     private var walletManager: IWalletManager
     private var adapterManager: IAdapterManager
-    private var marketDataProvider: MarketDataProvider
+    private var marketDataProvider: IMarketDataProvider
     private var exchangeBalances = [String: Double]()
     
     private var btcUSDPrice: Decimal {
@@ -41,8 +42,8 @@ final class PortfolioViewModel: ObservableObject {
     
     init(
         walletManager: IWalletManager,
-        adapterManager: AdapterManager,
-        marketDataProvider: MarketDataProvider,
+        adapterManager: IAdapterManager,
+        marketDataProvider: IMarketDataProvider,
         state: PortalState
     ) {
         self.walletManager = walletManager
@@ -123,19 +124,13 @@ final class PortfolioViewModel: ObservableObject {
         
         self.updateCharts()
     }
-    
+        
     private func updateLabels() {
         totalValue = "\(assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }.formattedString(walletCurrency))"
+        empty = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 } == 0
         
-        let changeInPercents: Decimal = assets.map{ $0.marketData.changeInPercents(tf: selectedTimeframe)}.reduce(0) { $0 + $1 }
-
-        let prefix = "\(changeInPercents > 0 ? "+" : "-")"
-        let percentChangeString = "(\(changeInPercents.double.rounded(toPlaces: 2))%)"
-        let totalValue = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
-        let priceChange = abs(totalValue * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 5)
-
-        change = "\(prefix)\(priceChange) \(percentChangeString)"
-
+        change = calculateChange()
+        
         let lowestHighest = lowestHighestStrings()
 
         lowest = lowestHighest.lowest
@@ -144,6 +139,20 @@ final class PortfolioViewModel: ObservableObject {
         updateBestWorstPerformingCoin()
         
         exchangeBalances.removeAll()
+    }
+    
+    private func calculateChange() -> String {
+        let balanceAtTimestamp = assets.map{ $0.balanceValue(for: walletCurrency, at: selectedTimeframe) }.reduce(0){ $0 + $1 }
+        let balanceNow = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
+        let change = balanceNow - balanceAtTimestamp
+        let changeInPercents = balanceAtTimestamp > 0 ? (change/balanceAtTimestamp) * 100 : 100
+        
+        let prefix = "\(changeInPercents > 0 ? "+" : "-")"
+        let percentChangeString = "(\(changeInPercents.double.rounded(toPlaces: 2))%)"
+        let totalValue = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
+        let priceChange = abs(totalValue * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 5)
+
+        return "\(prefix)\(priceChange) \(percentChangeString)"
     }
     
     private func updateCharts() {

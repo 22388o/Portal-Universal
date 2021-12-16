@@ -26,6 +26,8 @@
 	<string>${etherscan_api_key}</string>
 	<key>FixerApiKey</key>
 	<string>${fixer_api_key}</string>
+	<key>MixpanelToken</key>
+	<string>${mixpanel_token}</string>
 	<key>InfuraProjectId</key>
 	<string>${infura_project_id}</string>
 	<key>InfuraProjectSecret</key>

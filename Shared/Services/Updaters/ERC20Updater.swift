@@ -1,5 +1,5 @@
 //
-//  ERC20TokensUpdater.swift
+//  ERC20Updater.swift
 //  Portal
 //
 //  Created by Farid on 03.08.2021.
@@ -8,7 +8,11 @@
 import Foundation
 import Combine
 
-final class ERC20TokensUpdater {
+protocol IERC20Updater {
+    var onTokensUpdatePublisher: PassthroughSubject<[Erc20TokenCodable], Never> { get }
+}
+
+final class ERC20Updater: IERC20Updater {
     var onTokensUpdatePublisher = PassthroughSubject<[Erc20TokenCodable], Never>()
     
     private var tokens: [Erc20TokenCodable] = []
@@ -30,7 +34,7 @@ final class ERC20TokensUpdater {
         
         self.urlSession = URLSession(configuration: config)
         
-        updateErc20TokensData()
+        fetchTokens()
     }
     
     private func loadLocallyStoredTokens() {
@@ -41,7 +45,7 @@ final class ERC20TokensUpdater {
         onTokensUpdatePublisher.send(tokens)
     }
     
-    private func updateErc20TokensData() {
+    private func fetchTokens() {
         guard let url = self.url else { return }
         
         urlSession.dataTaskPublisher(for: url)

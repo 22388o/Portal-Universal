@@ -15,6 +15,7 @@ protocol IAppConfigProvider {
     var pricesUpdateInterval: Int { get }
     var fiatCurrenciesUpdateInterval: Int { get }
     var keychainStorageID: String { get }
+    var mixpanelToken: String { get }
     var infuraCredentials: (id: String, secret: String?) { get }
     var etherscanKey: String { get }
     var fixerApiKey: String { get }

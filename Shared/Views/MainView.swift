@@ -22,7 +22,15 @@ struct MainView: View {
             case .wallet:
                 #if os(macOS)
                 HStack(spacing: 0) {
-                    PortfolioView(viewModel: portfolioViewModel)
+                    ZStack {
+                        PortfolioView(viewModel: portfolioViewModel)
+                            .blur(radius: portfolioViewModel.empty ? 6 : 0)
+                        if portfolioViewModel.empty {
+                            Text("Portfolio is empty")
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.white)
+                        }
+                    }
                     WalletView(state: state, viewModel: walletViewModel)
                     AssetViewLandscape(viewModel: assetViewModel)
                         .zIndex(0)

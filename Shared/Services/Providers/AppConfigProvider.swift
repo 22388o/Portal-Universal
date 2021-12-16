@@ -38,6 +38,10 @@ class AppConfigProvider: IAppConfigProvider {
     var fixerApiKey: String {
         (Bundle.main.object(forInfoDictionaryKey: "FixerApiKey") as? String) ?? ""
     }
+    
+    var mixpanelToken: String {
+        (Bundle.main.object(forInfoDictionaryKey: "MixpanelToken") as? String) ?? ""
+    }
 
     let currencyCodes: [String] = ["USD", "EUR", "GBP", "JPY"]
     let feeRateAdjustedForCurrencyCodes: [String] = ["USD", "EUR"]

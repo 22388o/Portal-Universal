@@ -39,6 +39,8 @@ struct WalletModalViews: View {
                     .padding(.trailing, 24)
             case .withdrawFromExchange(let balance):
                 WithdrawFromExchangeView(balance: balance)
+            case .createAlert:
+                ManageAlertView(coin: state.selectedCoin)
             default:
                 EmptyView()
             }
