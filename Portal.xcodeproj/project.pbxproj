@@ -353,6 +353,8 @@
 		753E7E3627566B3B00C96F33 /* BarChartXAxixValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E7E3427566B3B00C96F33 /* BarChartXAxixValueFormatter.swift */; };
 		7542B5802763BEB7006B9786 /* AlertTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7542B57F2763BEB7006B9786 /* AlertTypePicker.swift */; };
 		7542B5822763BF6B006B9786 /* AlertTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7542B5812763BF6B006B9786 /* AlertTypePicker.swift */; };
+		7542B588276CD8B7006B9786 /* web3.swift in Frameworks */ = {isa = PBXBuildFile; productRef = 7542B587276CD8B7006B9786 /* web3.swift */; };
+		7542B58A276CD8CE006B9786 /* web3.swift in Frameworks */ = {isa = PBXBuildFile; productRef = 7542B589276CD8CE006B9786 /* web3.swift */; };
 		7546CFCC2636980A00E8A8B7 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */; };
 		7546CFCD2636980A00E8A8B7 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
@@ -716,11 +718,6 @@
 		AF1AF44B2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
 		AF1AF44C2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
 		AFA3D7052721B7440000F3BD /* PortalAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA3D7042721B7440000F3BD /* PortalAppDelegate.swift */; };
-		75F5CDB92684CE91005ECA5B /* PieChartUIKitVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB82684CE91005ECA5B /* PieChartUIKitVIew.swift */; };
-		75F5CDBA2684CE91005ECA5B /* PieChartUIKitVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB82684CE91005ECA5B /* PieChartUIKitVIew.swift */; };
-		75F5CDBC2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */; };
-		75F5CDBD2684CEB3005ECA5B /* BarChartUIKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDBB2684CEB3005ECA5B /* BarChartUIKitView.swift */; };
-		FA3FD80D26F1194200953727 /* web3.swift in Frameworks */ = {isa = PBXBuildFile; productRef = FA3FD80C26F1194200953727 /* web3.swift */; };
 		FA3FD81326FCC8A200953727 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81226FCC8A200953727 /* TokenSelector.swift */; };
 		FA3FD81426FCC8A200953727 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81226FCC8A200953727 /* TokenSelector.swift */; };
 		FA3FD81A26FCC98500953727 /* Erc20Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81926FCC98500953727 /* Erc20Token.swift */; };
@@ -1066,7 +1063,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA3FD80D26F1194200953727 /* web3.swift in Frameworks */,
+				7542B58A276CD8CE006B9786 /* web3.swift in Frameworks */,
 				5943885CDFB1C0DCB277A5D6 /* Pods_Portal__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1075,6 +1072,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7542B588276CD8B7006B9786 /* web3.swift in Frameworks */,
 				38ADC71E533EB3177E55D088 /* Pods_Portal__macOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1820,8 +1818,8 @@
 			dependencies = (
 			);
 			name = "Portal (iOS)";
-            packageProductDependencies = (
-				FA3FD80C26F1194200953727 /* web3.swift */,
+			packageProductDependencies = (
+				7542B589276CD8CE006B9786 /* web3.swift */,
 			);
 			productName = "Portal (iOS)";
 			productReference = 755782CE26087904000E1686 /* Portal.app */;
@@ -1842,6 +1840,9 @@
 			dependencies = (
 			);
 			name = "Portal (macOS)";
+			packageProductDependencies = (
+				7542B587276CD8B7006B9786 /* web3.swift */,
+			);
 			productName = "Portal (macOS)";
 			productReference = 755782D626087904000E1686 /* Portal.app */;
 			productType = "com.apple.product-type.application";
@@ -1917,7 +1918,7 @@
 			);
 			mainGroup = 755782BE26087903000E1686;
 			packageReferences = (
-				FA3FD80B26F1194200953727 /* XCRemoteSwiftPackageReference "web3" */,
+				7542B586276CD8B7006B9786 /* XCRemoteSwiftPackageReference "web3" */,
 			);
 			productRefGroup = 755782CF26087904000E1686 /* Products */;
 			projectDirPath = "";
@@ -2561,7 +2562,7 @@
 				75C95C8D2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
 				7599A7982695D63900562009 /* MainView.swift in Sources */,
 				752E532026FDDE6400FCDB0C /* JSONParameterEncoder.swift in Sources */,
-				7599A7982695D63900562009 /* WalletMainView.swift in Sources */,
+				7599A7982695D63900562009 /* MainView.swift in Sources */,
 				FA3FD81426FCC8A200953727 /* TokenSelector.swift in Sources */,
 				75308AE626A028F30024AACD /* IFeeRateProvider.swift in Sources */,
 				756C3C6E26EA9AE1009530A9 /* ExchangeSetup.swift in Sources */,
@@ -3210,20 +3211,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FA3FD80B26F1194200953727 /* XCRemoteSwiftPackageReference "web3" */ = {
+		7542B586276CD8B7006B9786 /* XCRemoteSwiftPackageReference "web3" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/argentlabs/web3.swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.8.1;
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA3FD80C26F1194200953727 /* web3.swift */ = {
+		7542B587276CD8B7006B9786 /* web3.swift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FA3FD80B26F1194200953727 /* XCRemoteSwiftPackageReference "web3" */;
+			package = 7542B586276CD8B7006B9786 /* XCRemoteSwiftPackageReference "web3" */;
+			productName = web3.swift;
+		};
+		7542B589276CD8CE006B9786 /* web3.swift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7542B586276CD8B7006B9786 /* XCRemoteSwiftPackageReference "web3" */;
 			productName = web3.swift;
 		};
 /* End XCSwiftPackageProductDependency section */

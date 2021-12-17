@@ -55,7 +55,7 @@ struct TokenSelector: View {
 
 struct TokenSelector_Previews: PreviewProvider {
     static var previews: some View {
-        FiatCurrencyButton(currencies: [], selectedCurrrency: .constant(USD))
+        WalletCurrencyButton(currencies: [], selectedCurrrency: .constant(Currency.fiat(USD)))
             .frame(width: 158, height: 40)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

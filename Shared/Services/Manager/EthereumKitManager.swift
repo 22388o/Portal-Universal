@@ -72,7 +72,7 @@ final class EthereumKitManager {
     }
     
     func publicKey() -> String? {
-        return evmKit?.address.hex
+        return ethereumKit?.address.hex
     }
     
 }

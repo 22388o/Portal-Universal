@@ -312,7 +312,7 @@ enum ExchangeViewMode {
 }
 
 enum HeaderSwitchState {
-    case wallet, exchange
+    case wallet, exchange, dex
 }
 
 enum MarketLimitSwitchState {

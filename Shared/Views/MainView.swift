@@ -66,6 +66,8 @@ struct MainView: View {
                         .foregroundColor(Color.red)
                         .font(.mainFont(size: 18))
                 }
+            case .dex:
+                EmptyView()
             }
         }
     }

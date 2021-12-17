@@ -44,7 +44,7 @@ struct SwapperView: View {
                         .foregroundColor(Color.lightActiveLabelNew)*/
                     
                 }
-                .modifier(TextFieldModifier())
+                .modifier(TextFieldModifier(cornerRadius: 24))
                 .frame(width: 444)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
@@ -77,7 +77,7 @@ struct SwapperView: View {
                     
                      
                 }
-                .modifier(TextFieldModifier())
+                .modifier(TextFieldModifier(cornerRadius: 24))
                 .frame(width: 444)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
@@ -89,7 +89,8 @@ struct SwapperView: View {
                     selectedCurrrency: $viewModel.selectionB
                 ).offset(x: 150, y:-50)
                 
-                HStack(spacing: 8){                    Text("Slippage").foregroundColor(Color.coinViewRouteButtonInactive)
+                HStack(spacing: 8){
+                    Text("Slippage").foregroundColor(Color.coinViewRouteButtonInactive)
                     Text(viewModel.slippage).foregroundColor(Color.coinViewRouteButtonInactive)
                 }.offset(x: 0, y:-25)
                                 

@@ -27,7 +27,7 @@ struct AccountView: View {
             switch state.wallet.switchState {
             case .wallet:
                 Color.portalWalletBackground.allowsHitTesting(false)
-            case .exchange:
+            case .exchange, .dex:
                 Color.portalSwapBackground.allowsHitTesting(false)
             }
             
