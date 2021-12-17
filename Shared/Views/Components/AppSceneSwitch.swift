@@ -53,6 +53,21 @@ struct AppSceneSwitch: View {
                             state = .exchange
                         }
                     }
+                    
+                    HStack {
+                        Spacer()
+                        Text("DEX")
+                            .font(.mainFont(size: 12))
+                            .foregroundColor(
+                                state == .dex ? Color.walletExchangeSwitchActentLabel : Color.white.opacity(0.82)
+                            )
+                        Spacer()
+                    }
+                    .onTapGesture {
+                        withAnimation {
+                            state = .dex
+                        }
+                    }
                 }
             }
         }
