@@ -23,16 +23,8 @@ struct MainView: View {
                 #if os(macOS)
                 HStack(spacing: 0) {
                     if state.showPortfolio {
-                        ZStack {
-                            PortfolioView(viewModel: portfolioViewModel)
-                                .blur(radius: portfolioViewModel.empty ? 6 : 0)
-                            if portfolioViewModel.empty {
-                                Text("Portfolio is empty")
-                                    .font(.mainFont(size: 14))
-                                    .foregroundColor(Color.white)
-                            }
-                        }
-                        .transition(.move(edge: .leading).combined(with: .opacity))
+                        PortfolioView(viewModel: portfolioViewModel)
+                            .transition(.move(edge: .leading).combined(with: .opacity))
                     }
                     WalletView(viewModel: walletViewModel)
                     AssetViewLandscape(viewModel: assetViewModel)
@@ -42,16 +34,8 @@ struct MainView: View {
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
                         if state.showPortfolio && (state.orientation == .landscapeLeft || state.orientation == .landscapeRight) {
-                            ZStack {
-                                PortfolioView(viewModel: portfolioViewModel)
-                                    .blur(radius: portfolioViewModel.empty ? 6 : 0)
-                                if portfolioViewModel.empty {
-                                    Text("Portfolio is empty")
-                                        .font(.mainFont(size: 14))
-                                        .foregroundColor(Color.white)
-                                }
-                            }
-                            .transition(.move(edge: .leading).combined(with: .opacity))
+                            PortfolioView(viewModel: portfolioViewModel)
+                                .transition(.move(edge: .leading).combined(with: .opacity))
                         }
                         
                         WalletView(viewModel: walletViewModel)
