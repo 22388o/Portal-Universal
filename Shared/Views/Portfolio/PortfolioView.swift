@@ -34,7 +34,7 @@ struct PortfolioView: View {
                         if let coin = viewModel.bestPerforming {
                             HStack {
                                 CoinImageView(size: 15, url: coin.icon)
-                                Text(viewModel.bestPerforming?.code ?? "-")
+                                Text(coin.code)
                                     .font(Font.mainFont(size: 15))
                                     .foregroundColor(Color.white.opacity(0.8))
                             }
@@ -52,7 +52,7 @@ struct PortfolioView: View {
                         if let coin = viewModel.worstPerforming {
                             HStack {
                                 CoinImageView(size: 15, url: coin.icon)
-                                Text(viewModel.worstPerforming?.code ?? "-")
+                                Text(coin.code)
                                     .font(Font.mainFont(size: 15))
                                     .foregroundColor(Color.white.opacity(0.8))
                             }
@@ -95,10 +95,7 @@ struct PortfolioView: View {
                 .foregroundColor(Color.white.opacity(0.11))
                 
         }
-        .onAppear {
-            viewModel.updatePortfolioData(timeframe: .day)
-        }
-    }		
+    }
 }
 
 struct PortfolioView_Previews: PreviewProvider {

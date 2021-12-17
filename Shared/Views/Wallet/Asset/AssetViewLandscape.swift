@@ -45,14 +45,14 @@ struct AssetViewLandscape: View {
                 VStack(spacing: 8) {
                     HStack {
                         PButton(label: "Recieve", width: 124, height: 32, fontSize: 12, enabled: true) {
-                            withAnimation(.easeIn(duration: 0)) {
+                            withAnimation(.easeIn(duration: 3.0)) {
                                 state.modalView = .receiveAsset
                             }
                         }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                         
                         PButton(label: "Send", width: 124, height: 32, fontSize: 12, enabled: viewModel.canSend) {
-                            withAnimation(.easeIn(duration: 0)) {
+                            withAnimation(.easeIn(duration: 3.0)) {
                                 state.modalView = .sendAsset
                             }
                         }

@@ -20,7 +20,7 @@ struct HeaderView: View {
             HStack(spacing: 12) {
                 if viewModel.state.wallet.switchState == .wallet {
                     Button(action: {
-                        withAnimation(.easeIn(duration: 0.0)) {
+                        withAnimation(.easeIn(duration: 3.0)) {
                             viewModel.state.modalView = .switchAccount
                         }
                     }, label: {
@@ -36,14 +36,18 @@ struct HeaderView: View {
                     })
                     .buttonStyle(PlainButtonStyle())
                     
+                    Text("|")
+                        .font(.mainFont(size: 12))
+                        .foregroundColor(Color.white.opacity(0.6))
+                    
                     Button(action: {
-                        withAnimation(.easeIn(duration: 0.25)) {
+                        withAnimation(.easeInOut(duration: 0.1)) {
                             viewModel.state.showPortfolio.toggle()
                         }
                     }, label: {
                         Image("portfolioIcon")
                             .resizable()
-                            .frame(width: 20, height: 20)
+                            .frame(width: 18, height: 18)
                             .foregroundColor(Color.white.opacity(0.82))
                             .offset(y: 2)
                     })
@@ -64,7 +68,7 @@ struct HeaderView: View {
                         WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.wallet.currency).scaleEffect(0.85)
                         
                         Button(action: {
-                            withAnimation(.easeIn(duration: 0.0)) {
+                            withAnimation(.easeIn(duration: 3.0)) {
                                 viewModel.state.modalView = .accountSettings
                             }
                         }, label: {
@@ -77,7 +81,7 @@ struct HeaderView: View {
                     }
                     
                     Button(action: {
-                        withAnimation(.easeIn(duration: 1.2)) {
+                        withAnimation(.easeIn(duration: 3.0)) {
                             viewModel.markAllNotificationsViewed()
                             viewModel.state.modalView = .allNotifications
                         }

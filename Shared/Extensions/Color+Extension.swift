@@ -118,4 +118,7 @@ extension Color {
     static var pButtonShadowColor: Color {
         Color(red: 24.0/255.0, green: 22.0/255.0, blue: 40.0/255.0)
     }
+    static var modalViewStrokeColor: Color {
+        Color(red: 20.0/255.0, green: 60.0/255.0, blue: 79.0/255.0)
+    }
 }

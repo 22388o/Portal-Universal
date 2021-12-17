@@ -32,6 +32,7 @@ struct MainView: View {
                                     .foregroundColor(Color.white)
                             }
                         }
+                        .transition(.move(edge: .leading).combined(with: .opacity))
                     }
                     WalletView(viewModel: walletViewModel)
                     AssetViewLandscape(viewModel: assetViewModel)

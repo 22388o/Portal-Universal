@@ -24,7 +24,7 @@ struct SendAssetView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black, lineWidth: 6)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
                 )
             
             CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
@@ -32,7 +32,7 @@ struct SendAssetView: View {
                 .cornerRadius(32)
                 .overlay(
                     RoundedRectangle(cornerRadius: 32)
-                        .stroke(Color.black, lineWidth: 1)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
                 )
                 .offset(y: -32)
                         
@@ -117,7 +117,7 @@ struct SendAssetView: View {
                 Divider()
                 
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 8)
                         .fill(Color.exchangerFieldBackground)
                     
                     ScrollView {
