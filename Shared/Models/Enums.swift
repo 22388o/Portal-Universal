@@ -311,7 +311,7 @@ enum ExchangeViewMode {
     case full, compactLeft, compactRight
 }
 
-enum HeaderSwitchState {
+enum HeaderSwitchState: CaseIterable {
     case wallet, exchange, dex
 }
 
