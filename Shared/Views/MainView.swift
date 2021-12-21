@@ -13,12 +13,14 @@ struct MainView: View {
     @StateObject private var assetViewModel = AssetViewModel.config()
     @StateObject private var exchangeViewModel = ExchangeViewModel.config()
     @StateObject private var portfolioViewModel = PortfolioViewModel.config()
+    @StateObject private var swapperViewModel = SwapperViewModel.config()
+    @State private var switchState: HeaderSwitchState = .wallet
     
     var body: some View {
         ZStack {
             Color.black.opacity(0.58).allowsHitTesting(false)
             
-            switch state.wallet.switchState {
+            switch switchState {
             case .wallet:
                 #if os(macOS)
                 HStack(spacing: 0) {
@@ -67,8 +69,11 @@ struct MainView: View {
                         .font(.mainFont(size: 18))
                 }
             case .dex:
-                EmptyView()
+                SwapperView(state: state, viewModel: swapperViewModel)
             }
+        }
+        .onReceive(state.wallet.$switchState) { newState in
+            self.switchState = newState
         }
     }
 }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AppSceneSwitch: View {
+    private let switchWidth: CGFloat = 256
+    
     @Binding var state: HeaderSwitchState
     
     var body: some View {
@@ -16,10 +18,10 @@ struct AppSceneSwitch: View {
                 .fill(Color.white.opacity(0.14))
                 .shadow(color: Color.black.opacity(0.12), radius: 5, x: 0, y: 2)
             
-            ZStack(alignment: state == .wallet ? .leading : .trailing) {
+            ZStack(alignment: zStackAlignment) {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color.white.opacity(0.83))
-                    .frame(width: 128)
+                    .frame(width: switchWidth / CGFloat(HeaderSwitchState.allCases.count))
                     .shadow(color: Color.black.opacity(0.12), radius: 5, x: 0, y: 2)
                 
                 HStack(spacing: 0) {
@@ -71,7 +73,18 @@ struct AppSceneSwitch: View {
                 }
             }
         }
-        .frame(width: 256, height: 40)
+        .frame(width: switchWidth, height: 40)
+    }
+    
+    private var zStackAlignment: Alignment {
+        switch state {
+        case .wallet:
+            return .leading
+        case .exchange:
+            return .center
+        case .dex:
+            return .trailing
+        }
     }
 }
 

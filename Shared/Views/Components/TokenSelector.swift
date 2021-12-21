@@ -8,55 +8,38 @@
 import SwiftUI
 
 struct TokenSelector: View {
-    let currencies: [Erc20Token]
-    @Binding var selectedCurrrency: Erc20Token
+    let tokens: [Erc20Token]
+    @Binding var selectedToken: Erc20Token
         
     var body: some View {
-        ZStack(alignment: .leading) {
+        ZStack {
             RoundedRectangle(cornerRadius: 24)
-                .fill(Color.white.opacity(0.94))
-                .opacity(0.14)
+                .frame(width: 120, height: 40)
+                .foregroundColor(Color.white.opacity(0.1))
         }
         .overlay(
             Menu {
-                ForEach(currencies, id: \.contractAddress) { currency in
-                    Button("\(currency.symbol) \(currency.name)") {
-                        selectedCurrrency = currency
+                ForEach(tokens, id: \.contractAddress) { token in
+                    Button("\(token.symbol) \(token.name)") {
+                        selectedToken = token
                     }
                 }
             } label: {
-                HStack(spacing: 8) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white.opacity(0.5))
-                            .frame(width: 24, height: 24)
-                        Text(selectedCurrrency.symbol)
-                            .font(.mainFont(size: 16))
-                            .foregroundColor(Color.exchangerFieldBackgroundNew)
-                            .offset(y: 1)
-                    }
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("Select Token")
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.white.opacity(0.5))
-                        Text(selectedCurrrency.symbol)
-                            .font(.mainFont(size: 15))
-                            .foregroundColor(Color.white.opacity(0.64))
-                        CoinImageView(size: 24, url: selectedCurrrency.iconURL).offset(x:10, y:-15)
-                    }
+                HStack {
+                    Text(selectedToken.symbol)
+                        .font(.mainFont(size: 15))
+                        .foregroundColor(Color.white.opacity(0.8))
+                    CoinImageView(size: 24, url: selectedToken.iconURL)
                 }
-                .offset(x: -30)
             }
-            .offset(x: 15)
         )
-        .frame(width: 158, height: 40)
     }
 }
 
 struct TokenSelector_Previews: PreviewProvider {
     static var previews: some View {
-        WalletCurrencyButton(currencies: [], selectedCurrrency: .constant(Currency.fiat(USD)))
-            .frame(width: 158, height: 40)
+        TokenSelector(tokens: [], selectedToken: .constant(.MATIC))
+            .frame(width: 120, height: 48)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()
             .background(
