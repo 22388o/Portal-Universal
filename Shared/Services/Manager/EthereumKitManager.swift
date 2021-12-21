@@ -9,12 +9,18 @@ import Foundation
 import EthereumKit
 import Erc20Kit
 import HdWalletKit
+import Combine
 
 final class EthereumKitManager {
+    let currentAccountSubject = CurrentValueSubject<Account?, Never>(nil)
     private let appConfigProvider: IAppConfigProvider
     weak var ethereumKit: EthereumKit.Kit?
 
-    private var currentAccount: Account?
+    private var currentAccount: Account? {
+        didSet {
+            currentAccountSubject.send(currentAccount)
+        }
+    }
 
     init(appConfigProvider: IAppConfigProvider) {
         self.appConfigProvider = appConfigProvider
@@ -64,11 +70,10 @@ final class EthereumKitManager {
     }
 
     func privateKey() -> HDPrivateKey? {
-        guard let seed = currentAccount?.type.mnemonicSeed else {
-            print("NO SEED FOUND")
+        guard let seed = currentAccount?.type.mnemonicSeed, let networkType = currentAccount?.ethNetworkType else {
             return nil
         }
-        return try? Kit.privateKey(seed: seed)
+        return try? Kit.privateKey(seed: seed, networkType: networkType)
     }
     
     func publicKey() -> String? {
