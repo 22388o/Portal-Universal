@@ -1,5 +1,5 @@
 //
-//  FiatCurrencyButton.swift
+//  TokenSelector.swift
 //  Portal
 //
 //  Created by Farid on 11.04.2021.

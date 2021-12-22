@@ -488,6 +488,7 @@
 		7581901026E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */; };
 		7581901226EA753E00E0691B /* ExchangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901126EA753D00E0691B /* ExchangeManager.swift */; };
 		7581901326EA753E00E0691B /* ExchangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901126EA753D00E0691B /* ExchangeManager.swift */; };
+		75821D66277343AD004A65A2 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75821D65277343AD004A65A2 /* TokenSelector.swift */; };
 		758F3ADD26A81A4700F345E1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */; };
 		758F3AE026A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
 		758F3AE126A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
@@ -719,7 +720,6 @@
 		AF1AF44C2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
 		AFA3D7052721B7440000F3BD /* PortalAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA3D7042721B7440000F3BD /* PortalAppDelegate.swift */; };
 		FA3FD81326FCC8A200953727 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81226FCC8A200953727 /* TokenSelector.swift */; };
-		FA3FD81426FCC8A200953727 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81226FCC8A200953727 /* TokenSelector.swift */; };
 		FA3FD81A26FCC98500953727 /* Erc20Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81926FCC98500953727 /* Erc20Token.swift */; };
 		FA3FD81B26FCC98500953727 /* Erc20Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81926FCC98500953727 /* Erc20Token.swift */; };
 		FA70527126CEB4BD000EE935 /* SwapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70527026CEB4BD000EE935 /* SwapperView.swift */; };
@@ -958,6 +958,7 @@
 		7574C3492619DCE400299131 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersRouteSwitch.swift; sourceTree = "<group>"; };
 		7581901126EA753D00E0691B /* ExchangeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeManager.swift; sourceTree = "<group>"; };
+		75821D65277343AD004A65A2 /* TokenSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelector.swift; sourceTree = "<group>"; };
 		758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAccountStorage.swift; sourceTree = "<group>"; };
 		758F3AE226A9AA2100F345E1 /* AccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStorage.swift; sourceTree = "<group>"; };
@@ -1201,7 +1202,6 @@
 				75A00BD626D3FC7000ABCA7E /* LazyVStack_.swift */,
 				FA70527026CEB4BD000EE935 /* SwapperView.swift */,
 				FA70528926D54D06000EE935 /* TokenCurrencyView.swift */,
-				FA3FD81226FCC8A200953727 /* TokenSelector.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1329,6 +1329,7 @@
 				751A1CE42732BDB50024586B /* BtcNetworkPicker.swift */,
 				751A1CE62732BDE70024586B /* EthNetworkPicker.swift */,
 				7542B57F2763BEB7006B9786 /* AlertTypePicker.swift */,
+				75821D65277343AD004A65A2 /* TokenSelector.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1349,6 +1350,7 @@
 				751A1CEA2732C15C0024586B /* EthNetworkPicker.swift */,
 				75502B49273966B40075201B /* AssetViewPortrait.swift */,
 				7542B5812763BF6B006B9786 /* AlertTypePicker.swift */,
+				FA3FD81226FCC8A200953727 /* TokenSelector.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2331,6 +2333,7 @@
 				7537DEFA2701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
 				75327D55270C940400F4484B /* OrderItemView.swift in Sources */,
 				75C95C632614CC0400B0EE10 /* Color+Extension.swift in Sources */,
+				75821D66277343AD004A65A2 /* TokenSelector.swift in Sources */,
 				752229FB271435C900003D3F /* ExchangePicker.swift in Sources */,
 				756C3C6826EA8F55009530A9 /* ExchangeModel.swift in Sources */,
 				75C95C4B2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
@@ -2563,7 +2566,6 @@
 				7599A7982695D63900562009 /* MainView.swift in Sources */,
 				752E532026FDDE6400FCDB0C /* JSONParameterEncoder.swift in Sources */,
 				7599A7982695D63900562009 /* MainView.swift in Sources */,
-				FA3FD81426FCC8A200953727 /* TokenSelector.swift in Sources */,
 				75308AE626A028F30024AACD /* IFeeRateProvider.swift in Sources */,
 				756C3C6E26EA9AE1009530A9 /* ExchangeSetup.swift in Sources */,
 				750C36BE261F2DE80088CCED /* AppSceneSwitch.swift in Sources */,

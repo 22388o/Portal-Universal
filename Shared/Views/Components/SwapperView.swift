@@ -16,7 +16,7 @@ struct SwapperView: View {
         self.state = state
         self.viewModel = viewModel
     }
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("SWAP")
@@ -26,6 +26,7 @@ struct SwapperView: View {
             
             VStack(spacing: 4) {
                 ZStack {
+#if os(iOS)
                     TextField(String(), text: $viewModel.base.value)
                         .foregroundColor(Color.white)
                         .modifier(
@@ -43,7 +44,26 @@ struct SwapperView: View {
                             RoundedRectangle(cornerRadius: 24)
                                 .stroke(Color.white.opacity(0.1), lineWidth: 1)
                         )
-                                        
+#else
+                    TextField(String(), text: $viewModel.base.value)
+                        .foregroundColor(Color.white)
+                        .background(Color.clear)
+                        .modifier(
+                            PlaceholderStyle(
+                                showPlaceHolder: viewModel.base.value.isEmpty,
+                                placeholder: "0"
+                            )
+                        )
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .frame(height: 20)
+                        .padding(12)
+                        .cornerRadius(24)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                        )
+#endif
+                    
                     HStack {
                         Spacer()
                         TokenSelector(
@@ -58,6 +78,7 @@ struct SwapperView: View {
                     .padding()
                 
                 ZStack {
+#if os(iOS)
                     TextField(String(), text: $viewModel.quote.value)
                         .allowsHitTesting(false)
                         .foregroundColor(Color.white)
@@ -76,7 +97,27 @@ struct SwapperView: View {
                             RoundedRectangle(cornerRadius: 24)
                                 .stroke(Color.white.opacity(0.1), lineWidth: 1)
                         )
-                                        
+#else
+                    TextField(String(), text: $viewModel.quote.value)
+                        .allowsHitTesting(false)
+                        .foregroundColor(Color.white)
+                        .background(Color.clear)
+                        .modifier(
+                            PlaceholderStyle(
+                                showPlaceHolder: viewModel.quote.value.isEmpty,
+                                placeholder: "0"
+                            )
+                        )
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .frame(height: 20)
+                        .padding(12)
+                        .cornerRadius(24)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                        )
+#endif
+                    
                     HStack {
                         Spacer()
                         TokenSelector(
@@ -86,7 +127,7 @@ struct SwapperView: View {
                             .padding(.trailing, 2)
                     }
                 }
-                                
+                
                 HStack(spacing: 8){
                     Text("Slippage")
                     Text(viewModel.slippage)
@@ -101,7 +142,7 @@ struct SwapperView: View {
                     }
                 }
                 .padding(.vertical)
-                                               
+                
                 PButton(label: "APPROVE SOURCE TOKEN", width: 444, height: 55, fontSize: 18, enabled: true) {
                     withAnimation(.easeIn(duration: 0.2)) {
                         viewModel.approveToken()
@@ -111,6 +152,7 @@ struct SwapperView: View {
             }
         }
         .frame(width: 444)
+        .padding()
     }
 }
 
