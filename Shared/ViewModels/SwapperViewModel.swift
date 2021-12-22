@@ -21,11 +21,11 @@ final class SwapperViewModel: ObservableObject {
         
         init(token: Erc20Token) {
             self.token = token
-            self.value = String()
+            self.value = "0"
         }
     }
-    
-    private struct EthereumKeyStorage: EthereumKeyStorageProtocol {
+    // Uses in replacement of web3's EthereumKeyLocalStorage, which stores raw private key in device documents folder ☠️
+    private struct TempKeyStorage: EthereumKeyStorageProtocol {
         let key: HDPrivateKey
         
         func storePrivateKey(key: Data) throws {}
@@ -39,10 +39,11 @@ final class SwapperViewModel: ObservableObject {
     private var walletEthereumAddress: EthereumAddress
     private var manager: EthereumKitManager
     
-    var tokenList : [Erc20Token] = [.LINK, .WETH, .BAND, .UNI, .MATIC, .USDT, .DAI]
+     private(set) var tokenList : [Erc20Token] = [.LINK, .WETH, .BAND, .UNI, .MATIC, .USDT, .DAI]
     
-    @Published var base: SwapItem = SwapItem(token: .WETH)
-    @Published var quote: SwapItem = SwapItem(token: .DAI)
+    @Published var canSwap = false
+    @Published var base = SwapItem(token: .WETH)
+    @Published var quote = SwapItem(token: .DAI)
     @Published var slippage = String("0")
     
     private var subscriptions = Set<AnyCancellable>()
@@ -147,6 +148,7 @@ final class SwapperViewModel: ObservableObject {
         guard let clientUrl = URL(string: "https://ropsten.infura.io/v3/" + infuraId) else { return }
         client = EthereumClient(url: clientUrl)
         
+        //Init new web3 account on every ether wallet update
         manager.currentAccountSubject.sink { [weak self] subject in
             guard subject != nil else { return }
             self?.initWeb3Account()
@@ -154,7 +156,6 @@ final class SwapperViewModel: ObservableObject {
         .store(in: &subscriptions)
         
         base.$value
-            .removeDuplicates()
             .compactMap { BigUInt($0) }
             .flatMap { bigInt in
                 self.getAmountsOut(value: bigInt)
@@ -162,6 +163,15 @@ final class SwapperViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] value in
                 self?.quote.value = "\(value)"
+                self?.canSwap = !(self?.base.value.isEmpty ?? true) && value > 0
+            }
+            .store(in: &subscriptions)
+        
+        //Reset value on swap items token update
+        Publishers.Merge(base.$token, quote.$token)
+            .sink { [weak self] _ in
+                self?.base.value = "0"
+                self?.quote.value = "0"
             }
             .store(in: &subscriptions)
     }
@@ -169,7 +179,7 @@ final class SwapperViewModel: ObservableObject {
     private func initWeb3Account() {
         guard let privKey = manager.privateKey(), let pubKey = manager.publicKey() else { return }
         
-        let keyStorage = EthereumKeyStorage(key: privKey)
+        let keyStorage = TempKeyStorage(key: privKey)
         
         guard let account = try? EthereumAccount(keyStorage: keyStorage) else {
             print("CANNOT INIT ETH ACCOUNT ERROR")
@@ -189,6 +199,7 @@ final class SwapperViewModel: ObservableObject {
             //            self?.slippage = (BigUInt(10000000000000000)/value).description + "%"
             
             guard
+                value > 0,
                 let baseContractAddress = self?.base.token.contractAddress,
                 let quoteContractAddress = self?.quote.token.contractAddress
             else {
@@ -290,6 +301,7 @@ final class SwapperViewModel: ObservableObject {
             to: walletEthereumAddress,
             deadline: deadline
         )
+        
         guard
             let transaction = try? calldata.transaction(),
             let account = self.account

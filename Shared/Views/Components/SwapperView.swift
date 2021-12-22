@@ -20,9 +20,9 @@ struct SwapperView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("SWAP")
-                .font(.mainFont(size: 33))
+                .font(.mainFont(size: 35))
                 .foregroundColor(Color.coinViewRouteButtonInactive)
-
+                .padding()
             
             VStack(spacing: 4) {
                 ZStack {
@@ -59,6 +59,7 @@ struct SwapperView: View {
                 
                 ZStack {
                     TextField(String(), text: $viewModel.quote.value)
+                        .allowsHitTesting(false)
                         .foregroundColor(Color.white)
                         .modifier(
                             PlaceholderStyle(
@@ -93,7 +94,7 @@ struct SwapperView: View {
                 .foregroundColor(Color.coinViewRouteButtonInactive)
                 .padding()
                 
-                PButton(label: "SWAP", width: 444, height: 55, fontSize: 18, enabled: true) {
+                PButton(label: "SWAP", width: 444, height: 55, fontSize: 18, enabled: viewModel.canSwap) {
                     withAnimation(.easeIn(duration: 0.2)) {
                         print("Swap")
                         viewModel.doSwap()
