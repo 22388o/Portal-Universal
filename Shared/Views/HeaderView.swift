@@ -65,7 +65,7 @@ struct HeaderView: View {
                             .foregroundColor(Color.red)
                     }
                     if viewModel.state.wallet.switchState == .wallet {
-                        WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.wallet.currency).scaleEffect(0.85)
+                        WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.wallet.currency)
                         
                         Button(action: {
                             withAnimation(.easeIn(duration: 3.0)) {

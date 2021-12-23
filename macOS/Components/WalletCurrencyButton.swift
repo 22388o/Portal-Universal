@@ -21,18 +21,18 @@ struct WalletCurrencyButton: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.white.opacity(0.5))
-                        .frame(width: 24, height: 24)
+                        .frame(width: 20, height: 20)
                     Text(selectedCurrrency.symbol)
-                        .font(.mainFont(size: 16))
+                        .font(.mainFont(size: 14))
                         .foregroundColor(Color.exchangerFieldBackgroundNew)
                         .offset(y: 1)
                 }
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Wallet currency")
-                        .font(.mainFont(size: 12))
+                        .font(.mainFont(size: 10))
                         .foregroundColor(Color.white.opacity(0.5))
                     Text(selectedCurrrency.code)
-                        .font(.mainFont(size: 15))
+                        .font(.mainFont(size: 13))
                         .foregroundColor(Color.white.opacity(0.64))
                 }
             }
@@ -50,7 +50,7 @@ struct WalletCurrencyButton: View {
             )
             .menuButtonStyle(BorderlessButtonMenuButtonStyle())
         }
-        .frame(width: 158, height: 40)
+        .frame(width: 134.4, height: 34)
     }
 }
 
