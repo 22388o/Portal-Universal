@@ -71,13 +71,7 @@ final class PortfolioViewModel: ObservableObject {
         adapterManager.adapterdReady
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                guard let self = self else { return }
-            
-                self.assets = self.configuredItems()
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
-                    self.updatePortfolioData(timeframe: self.selectedTimeframe)
-                })
+                self?.assets = self?.configuredItems() ?? []
             }
             .store(in: &subscriptions)
         
@@ -102,10 +96,20 @@ final class PortfolioViewModel: ObservableObject {
         reachabilityService.$isReachable
             .dropFirst()
             .debounce(for: 1, scheduler: RunLoop.main)
-            .sink { reachable in
+            .sink { [weak self] reachable in
+                guard let self = self else { return }
+                
                 if reachable {
                     self.updatePortfolioData(timeframe: self.selectedTimeframe)
                 }
+            }
+            .store(in: &subscriptions)
+        
+        $assets
+            .delay(for: .seconds(0.1), scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updatePortfolioData(timeframe: self.selectedTimeframe)
             }
             .store(in: &subscriptions)
     }
