@@ -19,7 +19,7 @@ struct AccountSettingsView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color.white.opacity(0.94))
-                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
+                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
             
             VStack(spacing: 0) {
                 HStack {
