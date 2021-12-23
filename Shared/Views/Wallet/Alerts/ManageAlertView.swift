@@ -20,12 +20,17 @@ struct ManageAlertView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black.opacity(0.7), lineWidth: 8)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
+                        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
                 )
             
-            CoinImageView(size: 64, url: viewModel.coin.icon)
-                .background(Color.black)
+            CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
+                .background(Color.white)
                 .cornerRadius(32)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 32)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
+                )
                 .offset(y: -32)
             
             VStack(spacing: 0) {
@@ -145,9 +150,7 @@ struct ManageAlertView: View {
                         .fill(Color.exchangerFieldBackground)
                     
                     ScrollView {
-                        LazyVStack_(alignment: .leading) {
-                            Spacer().frame(height: 8)
-                            
+                        LazyVStack_(alignment: .leading, spacing: 0) {
                             ForEach(viewModel.alerts) { alert in
                                 HStack(spacing: 0) {
                                     HStack {
@@ -173,6 +176,9 @@ struct ManageAlertView: View {
                                 .padding(.vertical, 2)
                                 .padding(.horizontal, 50)
                                 .frame(maxWidth: .infinity)
+                                .frame(height: 30)
+                                
+                                Divider()
                             }
                             .font(.mainFont(size: 12))
                         }
