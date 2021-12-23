@@ -1113,8 +1113,8 @@
 			isa = PBXGroup;
 			children = (
 				75308AB226A0215C0024AACD /* Portal.swift */,
-				755EBC2D272194D400B56B89 /* ReachabilityService.swift */,
 				75A3F52626A57B99006B1823 /* PortalState.swift */,
+				755EBC2D272194D400B56B89 /* ReachabilityService.swift */,
 				750D63B52689C32B00643FD3 /* NotificationService.swift */,
 				755D9FD4275E6DD000EE363D /* PushNotificationService.swift */,
 				75A3F53B26A57D5C006B1823 /* Storage */,
