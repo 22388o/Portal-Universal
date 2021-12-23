@@ -18,6 +18,7 @@ final class SendAssetViewModel: ObservableObject {
     @Published var receiverAddress = String()
     @Published var memo = String()
     @Published var amountIsValid: Bool = true
+    @Published var txFeePriority: FeeRatePriority = .medium
     
     @Published private(set) var txFee = String()
     @Published private(set) var addressIsValid: Bool = true
@@ -25,6 +26,8 @@ final class SendAssetViewModel: ObservableObject {
     @Published private(set) var balanceString: String = String()
     @Published private(set) var transactions: [TransactionRecord] = []
     @Published private(set) var lastBlockInfo: LastBlockInfo?
+    
+    @Published private var feeRate: Int = 1 //medium
     
     @ObservedObject private(set) var exchangerViewModel: ExchangerViewModel
     
@@ -36,7 +39,6 @@ final class SendAssetViewModel: ObservableObject {
     private let feeRateProvider: IFeeRateProvider
     private let currency: Currency
     private var ticker: Ticker?
-    private var feeRate: Int = 8 //medium
     
     private var subscriptions = Set<AnyCancellable>()
     
@@ -71,16 +73,20 @@ final class SendAssetViewModel: ObservableObject {
             .assign(to: \.amount, on: self)
             .store(in: &subscriptions)
         
-        feeRateProvider.feeRate(priority: .high)
+        $txFeePriority
+            .flatMap { priority in
+                self.feeRateProvider.feeRate(priority: priority)
+            }
             .receive(on: RunLoop.main)
             .sink { [weak self] feeRate in
                 self?.feeRate = feeRate
             }
             .store(in: &subscriptions)
         
-        Publishers.CombineLatest($amount, $receiverAddress)
+        Publishers.CombineLatest3($amount, $receiverAddress, $feeRate)
             .receive(on: RunLoop.main)
-            .sink { [weak self] (amount, address) in
+            .sink { [weak self] (amount, address, rate) in
+                guard !address.isEmpty else { return }
                 self?.validate(address: address, amount: amount)
             }
             .store(in: &subscriptions)
@@ -110,15 +116,29 @@ final class SendAssetViewModel: ObservableObject {
         let fee = self.fee(amount: amount, address: address)
         
         if fee > 0 {
+            let price = ticker?[.usd].price ?? 1
+
             switch coin.type {
             case .bitcoin:
-                txFee = ""//"\(fee) \(coin.code) (\((fee * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
+                switch currency {
+                case .fiat(let fiatCurrency):
+                    txFee = "\(fee) \(coin.code) (\((fee * price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+                case .btc, .eth:
+                    let usd: FiatCurrency = USD
+                    txFee = "\(fee) \(coin.code) (\((fee * price * Decimal(usd.rate)).rounded(toPlaces: 2)) \(usd.code))"
+                }
             default:
                 let gasPrice = feeRate
                 let gasLimit = 21000
                 let etherTxFee = gasPrice * gasLimit / 1_000_000_000
                 
-                txFee = ""//"\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * ticker![.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code)) tx fee - Fast Speed"
+                switch currency {
+                case .fiat(let fiatCurrency):
+                    txFee = "\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+                case .btc, .eth:
+                    let usd: FiatCurrency = USD
+                    txFee = "\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * price * Decimal(usd.rate)).rounded(toPlaces: 2)) \(usd.code))"
+                }
             }
         } else {
             txFee = String()
