@@ -670,6 +670,8 @@
 		75E5E08F26EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E5E08D26EF8FF500C05568 /* FloatingPoint+Extension.swift */; };
 		75E7BD1D26DFA28C00AA6A3F /* ExchangeOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E7BD1C26DFA28C00AA6A3F /* ExchangeOrderModel.swift */; };
 		75E7BD1E26DFA28C00AA6A3F /* ExchangeOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E7BD1C26DFA28C00AA6A3F /* ExchangeOrderModel.swift */; };
+		75EF8D5E2783463700F69A6E /* TxFeesPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EF8D5D2783463700F69A6E /* TxFeesPicker.swift */; };
+		75EF8D6027834A3700F69A6E /* TxFeesPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EF8D5F27834A3700F69A6E /* TxFeesPicker.swift */; };
 		75F5CD7E2684C418005ECA5B /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CD7D2684C418005ECA5B /* Data+Extension.swift */; };
 		75F5CD7F2684C418005ECA5B /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CD7D2684C418005ECA5B /* Data+Extension.swift */; };
 		75F5CD802684C418005ECA5B /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CD7D2684C418005ECA5B /* Data+Extension.swift */; };
@@ -1031,6 +1033,8 @@
 		75DBD2BC26359D080050AE08 /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		75E5E08D26EF8FF500C05568 /* FloatingPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extension.swift"; sourceTree = "<group>"; };
 		75E7BD1C26DFA28C00AA6A3F /* ExchangeOrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeOrderModel.swift; sourceTree = "<group>"; };
+		75EF8D5D2783463700F69A6E /* TxFeesPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxFeesPicker.swift; sourceTree = "<group>"; };
+		75EF8D5F27834A3700F69A6E /* TxFeesPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxFeesPicker.swift; sourceTree = "<group>"; };
 		75F5CD7D2684C418005ECA5B /* Data+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
 		75F5CD822684C4D1005ECA5B /* PortalTx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalTx.swift; sourceTree = "<group>"; };
 		75F5CD872684C541005ECA5B /* TxsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxsViewModel.swift; sourceTree = "<group>"; };
@@ -1330,6 +1334,7 @@
 				751A1CE62732BDE70024586B /* EthNetworkPicker.swift */,
 				7542B57F2763BEB7006B9786 /* AlertTypePicker.swift */,
 				75821D65277343AD004A65A2 /* TokenSelector.swift */,
+				75EF8D5D2783463700F69A6E /* TxFeesPicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1351,6 +1356,7 @@
 				75502B49273966B40075201B /* AssetViewPortrait.swift */,
 				7542B5812763BF6B006B9786 /* AlertTypePicker.swift */,
 				FA3FD81226FCC8A200953727 /* TokenSelector.swift */,
+				75EF8D5F27834A3700F69A6E /* TxFeesPicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2075,6 +2081,7 @@
 				75A3F54526A57EBB006B1823 /* Wallet.swift in Sources */,
 				75F5CDBC2684CEB3005ECA5B /* BarChartRepresentableView.swift in Sources */,
 				75B151502622FA7D00542415 /* TimeframeSwitch.swift in Sources */,
+				75EF8D6027834A3700F69A6E /* TxFeesPicker.swift in Sources */,
 				FA3FD81A26FCC98500953727 /* Erc20Token.swift in Sources */,
 				FA70527126CEB4BD000EE935 /* SwapperView.swift in Sources */,
 				750AE90D26149A8C00C45971 /* CoinMarketData.swift in Sources */,
@@ -2591,6 +2598,7 @@
 				755D9FDB275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */,
 				750AE90A26149A8C00C45971 /* Coin.swift in Sources */,
 				750AE9B226149DD900C45971 /* ICoinKit.swift in Sources */,
+				75EF8D5E2783463700F69A6E /* TxFeesPicker.swift in Sources */,
 				7555643226D8FB08001B1C1A /* OrderBookView.swift in Sources */,
 				7599A7952695D5E400562009 /* HeaderView.swift in Sources */,
 				755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */,

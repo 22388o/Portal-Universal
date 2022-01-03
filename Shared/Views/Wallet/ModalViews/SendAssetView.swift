@@ -167,52 +167,6 @@ struct SendAssetView: View {
     }
 }
 
-struct TxFeesPicker: View {
-    let txFee: String
-    @Binding var txFeePriority: FeeRatePriority
-    
-    var body: some View {
-        ZStack {
-            if !txFee.isEmpty {
-                HStack {
-                    Text("Tx fee: \(txFee)")
-                        .font(.mainFont(size: 12))
-                        .foregroundColor(Color.coinViewRouteButtonInactive)
-                    
-                    
-                    
-                    Text("\(txFeePriority.title)")
-                        .underline()
-                        .foregroundColor(Color.txListTxType)
-                        .contentShape(Rectangle())
-                }
-                
-                MenuButton(
-                    label: EmptyView(),
-                    content: {
-                        Button("\(FeeRatePriority.low.title) ~ 60 min") {
-                            txFeePriority = .low
-                        }
-                        Button("\(FeeRatePriority.medium.title) ~ 30 min") {
-                            txFeePriority = .medium
-                        }
-                        Button("\(FeeRatePriority.high.title) ~ 10 min") {
-                            txFeePriority = .high
-                        }
-                    }
-                )
-                .menuButtonStyle(BorderlessButtonMenuButtonStyle())
-                .frame(width: 120)
-                .offset(x: 90)
-            } else {
-                Text(" ")
-                    .font(.mainFont(size: 12))
-                    .foregroundColor(Color.coinViewRouteButtonInactive)
-            }
-        }
-    }
-}
-
 struct SendAssetView_Previews: PreviewProvider {
     static var previews: some View {
         SendAssetView(
