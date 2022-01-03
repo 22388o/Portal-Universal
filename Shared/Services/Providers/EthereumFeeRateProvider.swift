@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 import FeeRateKit
 
 class EthereumFeeRateProvider: IFeeRateProvider {
@@ -19,7 +19,7 @@ class EthereumFeeRateProvider: IFeeRateProvider {
         self.feeRateProvider = feeRateProvider
     }
 
-    var recommendedFeeRate: Single<Int> { feeRateProvider.ethereumGasPrice }
+    var recommendedFeeRate: Future<Int, Never> { feeRateProvider.ethereumGasPrice }
     var feeRatePriorityList: [FeeRatePriority] {
         [.recommended, .custom(value: lower, range: lower...upper)]
     }

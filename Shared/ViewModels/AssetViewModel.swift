@@ -8,7 +8,6 @@
 
 import SwiftUI
 import Combine
-import RxSwift
 import Charts
 import Coinpaprika
 
@@ -24,9 +23,8 @@ final class AssetViewModel: ObservableObject {
     @Published private(set) var canSend: Bool = false
     
     @ObservedObject private var state: PortalState
+    @ObservedObject var txsViewModel: TxsViewModel
         
-    private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
-    private let disposeBag = DisposeBag()
     private let marketDataProvider: IMarketDataProvider
     private let walletManager: IWalletManager
     private let adapterManager: IAdapterManager
@@ -125,21 +123,25 @@ final class AssetViewModel: ObservableObject {
             highValue = marketData.yearHigh
         }
         
-        switch state.walletCurrency {
+        guard highValue > 0 else { return "-" }
+        
+        let currency = state.wallet.currency
+        
+        switch currency {
         case .btc:
             guard let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) else { return "-" }
             guard coin == .bitcoin() else {
-                return (highValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+                return (highValue/ticker[.usd].price).formattedString(currency, decimals: 4)
             }
             return "1 BTC"
         case .eth:
             guard let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) else { return "-" }
             guard coin == .ethereum() else {
-                return (highValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+                return (highValue/ticker[.usd].price).formattedString(currency, decimals: 4)
             }
             return "1 ETH"
         case .fiat(let fiatCurrency):
-            return (highValue * Decimal(fiatCurrency.rate)).formattedString(state.walletCurrency)
+            return (highValue * Decimal(fiatCurrency.rate)).formattedString(currency)
         }
     }
     
@@ -157,21 +159,25 @@ final class AssetViewModel: ObservableObject {
             lowValue = marketData.yearLow
         }
         
-        switch state.walletCurrency {
+        guard lowValue > 0 else { return "-" }
+        
+        let currency = state.wallet.currency
+        
+        switch currency {
         case .btc:
             guard let ticker = marketDataProvider.ticker(coin: Coin.bitcoin()) else { return "-" }
             guard coin == .bitcoin() else {
-                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+                return (lowValue/ticker[.usd].price).formattedString(currency, decimals: 4)
             }
             return "1 BTC"
         case .eth:
             guard let ticker = marketDataProvider.ticker(coin: Coin.ethereum()) else { return "-" }
             guard coin == .ethereum() else {
-                return (lowValue/ticker[.usd].price).formattedString(state.walletCurrency, decimals: 4)
+                return (lowValue/ticker[.usd].price).formattedString(currency, decimals: 4)
             }
             return "1 ETH"
         case .fiat(let fiatCurrency):
-            return (lowValue * Decimal(fiatCurrency.rate)).formattedString(state.walletCurrency)
+            return (lowValue * Decimal(fiatCurrency.rate)).formattedString(currency)
         }
     }
     
@@ -179,7 +185,7 @@ final class AssetViewModel: ObservableObject {
         let priceChange: Decimal?
         let quote: Ticker.Quote?
         
-        switch state.walletCurrency {
+        switch state.wallet.currency {
         case .btc:
             quote = ticker?[.btc]
         case .eth:
@@ -213,7 +219,13 @@ final class AssetViewModel: ObservableObject {
         marketDataProvider: IMarketDataProvider
     ) {
         self.state = state
-        self.coin = state.selectedCoin
+        self.coin = state.wallet.coin
+        
+        guard let viewModel = TxsViewModel.config(coin: coin) else {
+            fatalError("Cannot config TxsViewModel")
+        }
+        
+        self.txsViewModel = viewModel
         self.walletManager = walletManager
         self.adapterManager = adapterManager
         self.marketDataProvider = marketDataProvider
@@ -232,20 +244,31 @@ final class AssetViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        state.$walletCurrency
+        state.wallet.$currency
             .receive(on: RunLoop.main)
             .sink { [weak self] currency in
                 self?.update()
             }
             .store(in: &subscriptions)
         
-        state.$selectedCoin
+        state.wallet.$coin
             .receive(on: RunLoop.main)
             .sink { [weak self] coin in
-                self?.route = .value
+                guard let viewModel = TxsViewModel.config(coin: coin) else {
+                    fatalError("Cannot config TxsViewModel")
+                }
+                self?.txsViewModel = viewModel
                 self?.coin = coin
                 self?.updateAdapter()
                 self?.update()
+            }
+            .store(in: &subscriptions)
+        
+        marketDataProvider.onMarketDataUpdate
+            .debounce(for: 0.25, scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.chartDataEntries = self.assetChartDataEntries()
             }
             .store(in: &subscriptions)
     }
@@ -258,22 +281,22 @@ final class AssetViewModel: ObservableObject {
         } else {
             adapter = nil
         }
-        
-        adapter?.balanceUpdatedObservable
-            .subscribeOn(serialQueueScheduler)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+                
+        adapter?.balanceUpdated
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
                 self?.update()
             })
-            .disposed(by: disposeBag)
+            .store(in: &subscriptions)
     }
     
     private func update() {
         guard let ticker = self.ticker else { return }
         
         let currentPrice: Decimal
+        let currency = state.wallet.currency
         
-        switch state.walletCurrency {
+        switch currency {
         case .btc:
             currentPrice = ticker[.btc].price
         case .eth:
@@ -282,7 +305,7 @@ final class AssetViewModel: ObservableObject {
             currentPrice = ticker[.usd].price * Decimal(fiatCurrency.rate)
         }
         
-        totalValue = currentPrice.formattedString(state.walletCurrency, decimals: 4)
+        totalValue = currentPrice.formattedString(currency, decimals: 4)
                 
         let isInteger = adapter?.balance.rounded(toPlaces: 6).isInteger ?? true
         
@@ -310,12 +333,13 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func change(price: Decimal, percentChange: Decimal) -> String {
+        let currency = state.wallet.currency
         let prefix = percentChange > 0 ? "+" : "-"
-        let value = abs(price * (percentChange/100)).formattedString(state.walletCurrency, decimals: 3)
+        let value = abs(price * (percentChange/100)).formattedString(currency, decimals: 3)
         let percentChange = percentChange.double.roundToDecimal(2)
         let changeString = "\(prefix)\(value) (\(percentChange)%)"
         
-        switch state.walletCurrency {
+        switch currency {
         case .btc:
             guard coin == .bitcoin() else {
                 return changeString
@@ -341,9 +365,6 @@ final class AssetViewModel: ObservableObject {
             points = chartDataPonts(timeframe: timeframe)
         } else {
             marketDataProvider.requestHistoricalData(coin: coin, timeframe: timeframe)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.chartDataEntries = self.assetChartDataEntries()
-            }
         }
         
         for (index, point) in points.enumerated() {
@@ -372,7 +393,7 @@ final class AssetViewModel: ObservableObject {
             points = marketData.yearPoints
         }
         
-        switch state.walletCurrency {
+        switch state.wallet.currency {
         case .btc:
             return points.map{ $0/btcUSDPrice }
         case .eth:

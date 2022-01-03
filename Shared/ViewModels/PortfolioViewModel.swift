@@ -30,6 +30,7 @@ final class PortfolioViewModel: ObservableObject {
     private var walletManager: IWalletManager
     private var adapterManager: IAdapterManager
     private var marketDataProvider: IMarketDataProvider
+    private var reachabilityService: ReachabilityService
     private var exchangeBalances = [String: Double]()
     
     private var btcUSDPrice: Decimal {
@@ -44,13 +45,15 @@ final class PortfolioViewModel: ObservableObject {
         walletManager: IWalletManager,
         adapterManager: IAdapterManager,
         marketDataProvider: IMarketDataProvider,
+        reachabilityService: ReachabilityService,
         state: PortalState
     ) {
         self.walletManager = walletManager
         self.adapterManager = adapterManager
         self.marketDataProvider = marketDataProvider
+        self.reachabilityService = reachabilityService
         self.state = state
-        self.walletCurrency = state.walletCurrency
+        self.walletCurrency = state.wallet.currency
                                                         
         subscribe()
     }
@@ -65,28 +68,48 @@ final class PortfolioViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        adapterManager.adapterdReadyPublisher
+        adapterManager.adapterdReady
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                guard let self = self else { return }
-            
-                self.assets = self.configuredItems()
-                self.updatePortfolioData(timeframe: self.selectedTimeframe)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
-                    self.updateCharts()
-                })
+                self?.assets = self?.configuredItems() ?? []
             }
             .store(in: &subscriptions)
         
-        state
-            .$walletCurrency
+        state.wallet.$currency
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] currency in
                 self?.walletCurrency = currency
                 self?.updateLabels()
                 self?.updateCharts()
+            }
+            .store(in: &subscriptions)
+        
+        marketDataProvider.onMarketDataUpdate
+            .debounce(for: 0.25, scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateLabels()
+                self?.updateCharts()
+            }
+            .store(in: &subscriptions)
+        
+        reachabilityService.$isReachable
+            .dropFirst()
+            .debounce(for: 1, scheduler: RunLoop.main)
+            .sink { [weak self] reachable in
+                guard let self = self else { return }
+                
+                if reachable {
+                    self.updatePortfolioData(timeframe: self.selectedTimeframe)
+                }
+            }
+            .store(in: &subscriptions)
+        
+        $assets
+            .delay(for: .seconds(0.1), scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updatePortfolioData(timeframe: self.selectedTimeframe)
             }
             .store(in: &subscriptions)
     }
@@ -109,48 +132,38 @@ final class PortfolioViewModel: ObservableObject {
     }
     
     func updatePortfolioData(timeframe: Timeframe) {
-        updateLabels()
-        
         for asset in assets {
             if !asset.hasChartData(timeframe: timeframe) {
                 marketDataProvider.requestHistoricalData(coin: asset.coin, timeframe: timeframe)
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    self.updateLabels()
-                    self.updateCharts()
-                }
             }
         }
-        
-        self.updateCharts()
+        updateLabels()
+        updateCharts()
     }
         
     private func updateLabels() {
-        totalValue = "\(assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }.formattedString(walletCurrency))"
-        empty = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 } == 0
+        let portfolioBalanceValue = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
+        totalValue = "\(portfolioBalanceValue.formattedString(walletCurrency))"
+        empty = portfolioBalanceValue == 0
         
-        change = calculateChange()
+        change = calculateChange(value: portfolioBalanceValue)
         
-        let lowestHighest = lowestHighestStrings()
-
-        lowest = lowestHighest.lowest
-        highest = lowestHighest.highest
+        lowest = lowString()
+        highest = highString()
 
         updateBestWorstPerformingCoin()
         
         exchangeBalances.removeAll()
     }
     
-    private func calculateChange() -> String {
+    private func calculateChange(value: Decimal) -> String {
         let balanceAtTimestamp = assets.map{ $0.balanceValue(for: walletCurrency, at: selectedTimeframe) }.reduce(0){ $0 + $1 }
-        let balanceNow = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
-        let change = balanceNow - balanceAtTimestamp
+        let change = value - balanceAtTimestamp
         let changeInPercents = balanceAtTimestamp > 0 ? (change/balanceAtTimestamp) * 100 : 100
         
         let prefix = "\(changeInPercents > 0 ? "+" : "-")"
         let percentChangeString = "(\(changeInPercents.double.rounded(toPlaces: 2))%)"
-        let totalValue = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
-        let priceChange = abs(totalValue * (changeInPercents/100)).formattedString(state.walletCurrency, decimals: 5)
+        let priceChange = abs(value * (changeInPercents/100)).formattedString(walletCurrency, decimals: 5)
 
         return "\(prefix)\(priceChange) \(percentChangeString)"
     }
@@ -186,26 +199,42 @@ final class PortfolioViewModel: ObservableObject {
         self.chartDataEntries = chartDataEntries
     }
     
-    private func lowestHighestStrings() -> (lowest: String, highest: String) {
-        let lowestUSDValue = assets.map{$0.highestLowestValue(timeframe: selectedTimeframe).low * 1}.reduce(0){$0 + $1}
-        let highestUSDValue = assets.map{$0.highestLowestValue(timeframe: selectedTimeframe).high * 1}.reduce(0){$0 + $1}
+    private func lowString() -> String {
+        let lowUSDValue = assets.map{$0.highestLowestValue(timeframe: selectedTimeframe).low * 1}.reduce(0){$0 + $1}
         
-        let high: Decimal
         let low: Decimal
         
-        switch state.walletCurrency {
+        switch state.wallet.currency {
         case .btc:
-            low = lowestUSDValue/btcUSDPrice
-            high = highestUSDValue/btcUSDPrice
+            low = lowUSDValue/btcUSDPrice
         case .eth:
-            low = lowestUSDValue/ethUSDPrice
-            high = highestUSDValue/ethUSDPrice
+            low = lowUSDValue/ethUSDPrice
         case .fiat(let fiatCurrency):
-            low = lowestUSDValue * Decimal(fiatCurrency.rate)
-            high = highestUSDValue * Decimal(fiatCurrency.rate)
+            low = lowUSDValue * Decimal(fiatCurrency.rate)
         }
         
-        return ("\(low.formattedString(state.walletCurrency, decimals: 4))", "\(high.formattedString(walletCurrency, decimals: 4))")
+        guard low > 0 else { return "-"}
+        
+        return ("\(low.formattedString(walletCurrency, decimals: 4))")
+    }
+    
+    private func highString() -> String {
+        let highUSDValue = assets.map{$0.highestLowestValue(timeframe: selectedTimeframe).high * 1}.reduce(0){$0 + $1}
+        
+        let high: Decimal
+        
+        switch state.wallet.currency {
+        case .btc:
+            high = highUSDValue/btcUSDPrice
+        case .eth:
+            high = highUSDValue/ethUSDPrice
+        case .fiat(let fiatCurrency):
+            high = highUSDValue * Decimal(fiatCurrency.rate)
+        }
+        
+        guard high > 0 else { return "-"}
+        
+        return ("\(high.formattedString(walletCurrency, decimals: 4))")
     }
     
     func updateBestWorstPerformingCoin() {
@@ -237,12 +266,14 @@ extension PortfolioViewModel {
         let walletManager = Portal.shared.walletManager
         let adapterManager = Portal.shared.adapterManager
         let marketData = Portal.shared.marketDataProvider
+        let reachabilityService = Portal.shared.reachabilityService
         let state = Portal.shared.state
         
         return PortfolioViewModel(
             walletManager: walletManager,
             adapterManager: adapterManager,
             marketDataProvider: marketData,
+            reachabilityService: reachabilityService,
             state: state
         )
     }

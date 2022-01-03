@@ -8,7 +8,6 @@
 import SwiftUI
 import Combine
 import Coinpaprika
-import RxSwift
 
 final class AssetItemViewModel: ObservableObject {
     let adapter: IBalanceAdapter
@@ -19,13 +18,13 @@ final class AssetItemViewModel: ObservableObject {
     @Published private(set) var balanceString = String()
     @Published private(set) var adapterState: AdapterState = .notSynced(error: AdapterError.wrongParameters)
     @Published private(set) var syncProgressString = String()
+    @Published private(set) var selected: Bool = false
 
     @Published var syncProgress: Float = 0.01
     
     private let notificationService: NotificationService
     private let marketDataProvider: IMarketDataProvider
-    private let serialQueueScheduler = SerialDispatchQueueScheduler(qos: .utility)
-    private let disposeBag = DisposeBag()
+
     private var subscriptions = Set<AnyCancellable>()
     
     private let selectedTimeframe: Timeframe
@@ -37,20 +36,20 @@ final class AssetItemViewModel: ObservableObject {
     
     var changeLabelColor: Color {
         let priceChange: Decimal?
+        let ticker = ticker?[.usd]
+        
         switch selectedTimeframe {
         case .day:
-            priceChange = ticker?[.usd].percentChange24h
+            priceChange = ticker?.percentChange24h
         case .week:
-            priceChange = ticker?[.usd].percentChange7d
+            priceChange = ticker?.percentChange7d
         case .month:
-            priceChange = ticker?[.usd].percentChange30d
+            priceChange = ticker?.percentChange30d
         case .year:
-            priceChange = ticker?[.usd].percentChange1y
+            priceChange = ticker?.percentChange1y
         }
         
-        guard let pChange = priceChange else {
-            return .white
-        }
+        guard let pChange = priceChange else { return .white }
         
         return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
     }
@@ -68,24 +67,20 @@ final class AssetItemViewModel: ObservableObject {
         self.marketDataProvider = marketDataProvider
         
         self.selectedTimeframe = .day
-        self.currency = state.walletCurrency
+        self.currency = state.wallet.currency
         
         self.adapterState = adapter.balanceState
-        
-        updateBalance()
-        
-        adapter.balanceUpdatedObservable
-            .subscribeOn(serialQueueScheduler)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+                        
+        adapter.balanceUpdated
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
                 self?.updateBalance()
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: &subscriptions)
         
-        adapter.balanceStateUpdatedObservable
-            .subscribeOn(serialQueueScheduler)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+        adapter.balanceStateUpdated
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
                 let state = adapter.balanceState
                 if case let .syncing(currentProgress, _) = state {
                     let progress = Float(currentProgress)/100
@@ -98,13 +93,19 @@ final class AssetItemViewModel: ObservableObject {
                     print("\(coin.code) synced")
                 }
                 self?.adapterState = state
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: &subscriptions)
         
-        state.$walletCurrency
+        state.wallet.$currency
             .sink { [weak self] currency in
                 self?.currency = currency
                 self?.updateBalance()
+            }
+            .store(in: &subscriptions)
+        
+        state.wallet.$coin
+            .sink { [weak self] selected in
+                self?.selected = coin.code == selected.code
             }
             .store(in: &subscriptions)
     }

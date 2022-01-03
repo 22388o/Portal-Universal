@@ -95,10 +95,10 @@ final class ExchangeViewModel: ObservableObject {
             })
             .store(in: &subscriptions)
         
-        state
-            .$mainScene.sink { [weak self] scene in
+        state.wallet.$switchState
+            .sink { [weak self] scene in
                 switch scene {
-                case .wallet:
+                case .wallet, .dex:
                     self?.resetSocketIfNeeded()
                 case .exchange:
                     self?.updateSocket()

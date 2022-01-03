@@ -1,5 +1,5 @@
 //
-//  MainScene.swift
+//  AccountView.swift
 //  Portal
 //
 //  Created by Farid on 08.04.2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MainScene: View {
+struct AccountView: View {
     @ObservedObject var state = Portal.shared.state
     @StateObject var headerViewModel = HeaderViewModel.config()
     
@@ -24,10 +24,10 @@ struct MainScene: View {
                 
     var body: some View {
         ZStack(alignment: containerZStackAlignment) {
-            switch state.mainScene {
+            switch state.wallet.switchState {
             case .wallet:
                 Color.portalWalletBackground.allowsHitTesting(false)
-            case .exchange:
+            case .exchange, .dex:
                 Color.portalSwapBackground.allowsHitTesting(false)
             }
             
@@ -37,22 +37,22 @@ struct MainScene: View {
                     .padding(.vertical, 24)
                 
                 MainView()
-                    .transition(.opacity)
                     .cornerRadius(8)
                     .padding([.leading, .bottom, .trailing], 24)
             }
-            .blur(radius: state.modalView != .none ? 4 : 0)
+            .blur(radius: state.modalView != .none ? 3 : 0)
             .allowsHitTesting(!(state.modalView != .none))
             
             if state.modalView != .none {
-                Color.white.opacity(0.01)
+                Color.portalWalletBackground.opacity(0.72)
+                    .transition(.identity)
+                    .animation(nil)
                     .onTapGesture {
                         withAnimation {
                             state.modalView = .none
                         }
                     }
                 WalletModalViews()
-                    .zIndex(1)
             }
         }
     }
@@ -60,7 +60,7 @@ struct MainScene: View {
 
 struct MainScene_Previews: PreviewProvider {
     static var previews: some View {
-        MainScene()
+        AccountView()
             .iPadLandscapePreviews()
     }
 }

@@ -11,6 +11,7 @@ import Combine
 import CoreData
 import Mixpanel
 import Bugsnag
+import SwiftUI
 
 final class Portal: ObservableObject {
     static let shared = Portal()
@@ -32,9 +33,8 @@ final class Portal: ObservableObject {
     let exchangeManager: ExchangeManager
     let reachabilityService: ReachabilityService
     let pushNotificationService: PushNotificationService
-    let userId: String
     
-    @Published var state = PortalState()
+    @ObservedObject var state: PortalState
         
     private init() {
         reachabilityService = ReachabilityService()
@@ -43,10 +43,12 @@ final class Portal: ObservableObject {
         appConfigProvider = AppConfigProvider()
         
         let mixpanel = Mixpanel.initialize(token: appConfigProvider.mixpanelToken)
-        userId = mixpanel.distinctId
+        let userId = mixpanel.distinctId
         mixpanel.identify(distinctId: userId)
         
         Bugsnag.start()
+        
+        state = PortalState(userId: userId)
         
         localStorage = LocalStorage()
         
@@ -89,7 +91,7 @@ final class Portal: ObservableObject {
         let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: dbStorage)
         marketDataProvider = MarketDataProvider(repository: marketDataStorage)
                         
-        let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, storage: dbStorage)
+        let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, accountStorage: dbStorage)
         accountManager = AccountManager(accountStorage: accountStorage)
         
         let erc20Updater: IERC20Updater = ERC20Updater()
@@ -112,48 +114,36 @@ final class Portal: ObservableObject {
         if let activeAccount = accountManager.activeAccount {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
         }
-                                
-        marketDataStorage.$dataReady
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] ready in
-                guard let self = self else { return }
-                if !ready && self.reachabilityService.isReachable {
-                    self.state.loading = true
-                } else {
-                    self.state.loading = false
-                }
-            })
-            .store(in: &anyCancellables)
                 
-        adapterManager.adapterdReadyPublisher
+        adapterManager.adapterdReady
             .receive(on: RunLoop.main)
-            .sink { [weak self] ready in
-                if ready && self?.accountManager.activeAccount != nil {
-                    if self?.state.current != .currentAccount {
-                        self?.state.current = .currentAccount
+            .sink { [unowned self] ready in
+                let hasAccount = self.accountManager.activeAccount != nil
+                if hasAccount && ready {
+                    if self.state.rootView != .account {
+                        self.state.rootView = .account
                     }
-                } else if self?.accountManager.activeAccount == nil {
-                    self?.state.loading = false
-                    self?.state.current = .createAccount
+                    self.state.wallet.coin = .bitcoin()
+                } else if !hasAccount {
+                    self.state.rootView = .createAccount
                 }
             }
             .store(in: &anyCancellables)
         
-        accountManager.onActiveAccountUpdatePublisher
+        accountManager.onActiveAccountUpdate
             .receive(on: RunLoop.main)
-            .sink { [weak self] account in
-                if account != nil {
-                    self?.state.loading = false
-                    self?.updateWalletCurrency(code: account?.fiatCurrencyCode ?? "USD")
-                }
+            .sink { [unowned self] account in
+                guard let activeAccount = account else  { return }
+                
+                self.state.loading = false
+                self.updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
             }
             .store(in: &anyCancellables)
         
-        state
-            .$walletCurrency
+        state.wallet.$currency
             .dropFirst()
-            .sink { [weak self] currency in
-                self?.accountManager.updateWalletCurrency(code: currency.code)
+            .sink { [unowned self] currency in
+                self.accountManager.updateWalletCurrency(code: currency.code)
             }
             .store(in: &anyCancellables)
     }
@@ -161,11 +151,12 @@ final class Portal: ObservableObject {
     func updateWalletCurrency(code: String) {
         switch code {
         case "BTC":
-            state.walletCurrency = .btc
+            state.wallet.currency = .btc
         case "ETH":
-            state.walletCurrency = .eth
+            state.wallet.currency = .eth
         default:
-            state.walletCurrency = marketDataProvider.fiatCurrencies.map { Currency.fiat($0) }.first(where: { $0.code == code }) ?? .fiat(.init(code: code, name: "-"))
+            let currency = Currency.fiat(.init(code: code, name: "-"))
+            state.wallet.currency = marketDataProvider.fiatCurrencies.map { Currency.fiat($0) }.first(where: { $0.code == code }) ?? currency
         }
     }
  

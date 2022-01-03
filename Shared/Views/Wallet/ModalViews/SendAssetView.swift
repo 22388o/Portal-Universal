@@ -24,7 +24,8 @@ struct SendAssetView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black, lineWidth: 6)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
+                        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
                 )
             
             CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
@@ -32,12 +33,12 @@ struct SendAssetView: View {
                 .cornerRadius(32)
                 .overlay(
                     RoundedRectangle(cornerRadius: 32)
-                        .stroke(Color.black, lineWidth: 1)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
                 )
                 .offset(y: -32)
                         
             VStack(spacing: 0) {
-                VStack(spacing: 16) {
+                VStack(spacing: 8) {
                     VStack {
                         Text("Send \(viewModel.coin.name)")
                             .font(.mainFont(size: 23))
@@ -46,44 +47,38 @@ struct SendAssetView: View {
                             .font(.mainFont(size: 14))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                     }
-                    VStack {
-                        HStack(spacing: 4) {
-                            Text("You have")
-                                .foregroundColor(Color.coinViewRouteButtonInactive)
-                            Text(viewModel.balanceString)
-                                .foregroundColor(Color.orange)
-                        }
-                        .font(.mainFont(size: 12))
-                        
-                        if !viewModel.txFee.isEmpty {
-                            Text(viewModel.txFee)
-                                .font(.mainFont(size: 12))
-                                .foregroundColor(Color.coinViewRouteButtonInactive)
-                        } else {
-                            Text("Validate the form to calculate transaction fee")
-                                .font(.mainFont(size: 12))
-                                .foregroundColor(Color.coinViewRouteButtonInactive)
-                        }
-
+                    
+                    HStack(spacing: 4) {
+                        Text("You have")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+                        Text(viewModel.balanceString)
+                            .foregroundColor(Color.orange)
                     }
+                    .font(.mainFont(size: 12))
                 }
                 .padding(.top, 57)
                 .padding(.bottom, 16)
                                 
-                VStack(spacing: 23) {
-                    ExchangerView(viewModel: viewModel.exchangerViewModel, isValid: $viewModel.amountIsValid)
-            
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Send to...")
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.coinViewRouteButtonInactive)
+                VStack(spacing: 18) {
+                    VStack(spacing: 12) {
+                        VStack(spacing: 10) {
+                            ExchangerView(viewModel: viewModel.exchangerViewModel, isValid: $viewModel.amountIsValid)
+                            TxFeesPicker(txFee: viewModel.txFee, txFeePriority: $viewModel.txFeePriority)
+                        }
+                
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Send to...")
+                                .font(.mainFont(size: 12))
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
 
-                        PTextField(text: $viewModel.receiverAddress, placeholder: "Reciever address", upperCase: false, width: 480, height: 48)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 24)
-                                    .stroke(viewModel.addressIsValid ? Color.clear : Color.red, lineWidth: 1)
-                            )
+                            PTextField(text: $viewModel.receiverAddress, placeholder: "Reciever address", upperCase: false, width: 480, height: 48)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 24)
+                                        .stroke(viewModel.addressIsValid ? Color.clear : Color.red, lineWidth: 1)
+                                )
+                        }
                     }
+                    
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Private description / memo (optional)")
                             .font(.mainFont(size: 12))
@@ -117,11 +112,11 @@ struct SendAssetView: View {
                 Divider()
                 
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 8)
                         .fill(Color.exchangerFieldBackground)
                     
                     ScrollView {
-                        LazyVStack_(alignment: .leading) {
+                        LazyVStack_(alignment: .leading, spacing: 0) {
                             ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.transactionHash) { tx in
                                 VStack(spacing: 0) {
                                     HStack(spacing: 0) {
@@ -147,13 +142,13 @@ struct SendAssetView: View {
                                             .padding(.leading, 28)
                                     }
                                     .font(.mainFont(size: 12))
-                                    .padding(.vertical, 12)
-                                    
-                                    Divider()
                                 }
                                 .id(tx.transactionHash)
                                 .foregroundColor(.coinViewRouteButtonInactive)
+                                .frame(height: 30)
                                 .frame(maxWidth: .infinity)
+                                
+                                Divider()
                             }
                         }
                     }

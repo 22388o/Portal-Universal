@@ -23,7 +23,7 @@ extension Charts.PieChartView {
         chartDescription.enabled = false
         noDataText = "No coins in the wallet"
         rotationEnabled = false
-        animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
+//        animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
         #if os(iOS)
         transparentCircleColor = UIColor.clear
         noDataTextColor = UIColor(white: 1, alpha: 0.4)

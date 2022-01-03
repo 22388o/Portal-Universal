@@ -34,9 +34,9 @@ struct BtcNetworkPicker: View {
                     Button("testNet") {
                         btcNetwork = .testNet
                     }
-                    Button("regTest") {
-                        btcNetwork = .regTest
-                    }
+//                    Button("regTest") {
+//                        btcNetwork = .regTest
+//                    }
                 }
             )
             .menuButtonStyle(BorderlessButtonMenuButtonStyle())

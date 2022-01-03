@@ -7,13 +7,11 @@
 
 import Foundation
 import BitcoinCore
-import RxSwift
 import Combine
 
 final class TxsViewModel: ObservableObject {
-    private let disposeBag = DisposeBag()
-    private var cancellable: AnyCancellable?
     let coin: Coin
+    
     private var allTxs: [TransactionRecord] = [] {
         didSet {
             updateTxList()
@@ -26,6 +24,7 @@ final class TxsViewModel: ObservableObject {
     
     private var transactionAdapter: ITransactionsAdapter
     private var balance: Decimal
+    private var subscriptions = Set<AnyCancellable>()
     
     var balanceString: String {
         return "\(balance) \(coin.code)"
@@ -60,28 +59,27 @@ final class TxsViewModel: ObservableObject {
         self.transactionAdapter = transactionAdapter
         self.lastBlockInfo = transactionAdapter.lastBlockInfo
         
-        cancellable = $txSortState
+        $txSortState
             .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 self?.updateTxList()
             }
+            .store(in: &subscriptions)
         
-        transactionAdapter.transactionRecordsObservable
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] records in
+        transactionAdapter.transactionRecords
+            .receive(on: RunLoop.main)
+            .sink { [weak self] records in
                 self?.allTxs = records
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: &subscriptions)
         
-        transactionAdapter.transactionsSingle(from: nil, limit: 100)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .observeOn(MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] records in
+        transactionAdapter.transactions(from: nil, limit: 100)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] records in
                 self?.allTxs = records
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: &subscriptions)
     }
     
     func updateTxList() {

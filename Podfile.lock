@@ -88,6 +88,11 @@ PODS:
   - Mixpanel-swift/Complete (2.10.3)
   - ObjectMapper (4.2.0)
   - OpenSslKit-Universal.swift (1.2.2)
+  - RxCombine (1.6.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.1.3):
+    - RxSwift (~> 5)
   - RxSwift (5.1.3)
   - Secp256k1Kit-Universal.swift (1.1)
   - Socket.IO-Client-Swift (15.2.0):
@@ -152,6 +157,7 @@ DEPENDENCIES:
   - KeychainAccess
   - Kingfisher (~> 6.3.0)
   - Mixpanel-swift
+  - RxCombine
   - Socket.IO-Client-Swift (~> 15.2.0)
   - Sparkle
 
@@ -186,6 +192,8 @@ SPEC REPOS:
     - Mixpanel-swift
     - ObjectMapper
     - OpenSslKit-Universal.swift
+    - RxCombine
+    - RxRelay
     - RxSwift
     - Secp256k1Kit-Universal.swift
     - Socket.IO-Client-Swift
@@ -244,6 +252,8 @@ SPEC CHECKSUMS:
   Mixpanel-swift: 3220daad7d82ff50cf9b8c3e31efed5bad426978
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   OpenSslKit-Universal.swift: 9c17dc8bb84c19b707c81e9f0ef960e563b3ea5a
+  RxCombine: 81552341b3239e99d5ffea4e48bf11b3f9b638c3
+  RxRelay: 5a18c2eb2d68326ebaf0112f80d837ae41b92b97
   RxSwift: 915abbdfb62214aa89ccd0b194d44fb478019b27
   Secp256k1Kit-Universal.swift: 31f631f8796ee06dfd7df9687a83a1123dec7045
   Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
@@ -261,6 +271,6 @@ SPEC CHECKSUMS:
   SwiftNIOWebSocket: 9649cc901b956f0e992f69f7138866b349f7638a
   UIExtensions-Stripped.swift: 2ed2ea244fc7e3b16581a8c316f9363179ec1644
 
-PODFILE CHECKSUM: 3b0815535111d247366026ce1d17b5f57f788596
+PODFILE CHECKSUM: 7d8c6506a2ab7e48453c9195ac10ad768383b563
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

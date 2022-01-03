@@ -13,36 +13,38 @@ struct MainView: View {
     @StateObject private var assetViewModel = AssetViewModel.config()
     @StateObject private var exchangeViewModel = ExchangeViewModel.config()
     @StateObject private var portfolioViewModel = PortfolioViewModel.config()
+    @StateObject private var swapperViewModel = SwapperViewModel.config()
+    @State private var switchState: HeaderSwitchState = .wallet
     
     var body: some View {
         ZStack {
             Color.black.opacity(0.58).allowsHitTesting(false)
             
-            switch state.mainScene {
+            switch switchState {
             case .wallet:
                 #if os(macOS)
                 HStack(spacing: 0) {
-                    ZStack {
+                    if state.showPortfolio {
                         PortfolioView(viewModel: portfolioViewModel)
-                            .blur(radius: portfolioViewModel.empty ? 6 : 0)
-                        if portfolioViewModel.empty {
-                            Text("Portfolio is empty")
-                                .font(.mainFont(size: 14))
-                                .foregroundColor(Color.white)
-                        }
+                            .transition(.move(edge: .leading).combined(with: .opacity))
                     }
-                    WalletView(state: state, viewModel: walletViewModel)
+                    WalletView(viewModel: walletViewModel)
                     AssetViewLandscape(viewModel: assetViewModel)
-                        .zIndex(0)
                         .padding([.top, .trailing, .bottom], 8)
                 }
                 #else
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
-                        WalletView(state: state, viewModel: walletViewModel)
+                        if state.showPortfolio && (state.orientation == .landscapeLeft || state.orientation == .landscapeRight) {
+                            PortfolioView(viewModel: portfolioViewModel)
+                                .transition(.move(edge: .leading).combined(with: .opacity))
+                        }
+                        
+                        WalletView(viewModel: walletViewModel)
 
                         if state.orientation == .landscapeLeft || state.orientation == .landscapeRight {
                             AssetViewLandscape(viewModel: assetViewModel)
+                                .transition(.identity)
                                 .id(UUID())
                                 .padding([.top, .trailing, .bottom], 8)
 
@@ -50,6 +52,7 @@ struct MainView: View {
                     }
                     if state.orientation == .portrait || state.orientation == .portraitUpsideDown || state.orientation == .faceDown || state.orientation == .faceUp {
                         AssetViewPortrait(viewModel: assetViewModel)
+                            .transition(.identity)
                             .id(UUID())
                             .frame(height: 640)
                             .padding(.all, 8)
@@ -59,14 +62,19 @@ struct MainView: View {
             case .exchange:
                 if Portal.shared.reachabilityService.isReachable {
                     ExchangeScene(state: state, viewModel: exchangeViewModel)
+                        .transition(.identity)
                 } else {
                     Text("Exchanges aren't avalible.")
                         .foregroundColor(Color.red)
                         .font(.mainFont(size: 18))
                 }
+            case .dex:
+                SwapperView(state: state, viewModel: swapperViewModel)
             }
         }
-        .zIndex(0)
+        .onReceive(state.wallet.$switchState) { newState in
+            self.switchState = newState
+        }
     }
 }
 

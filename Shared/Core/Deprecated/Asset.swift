@@ -31,6 +31,7 @@ final class Asset: IAsset {
     private(set) var qrCodeProvider: IQRCodeProvider
     
     private var disposeBag = DisposeBag()
+    private var subscriptions = Set<AnyCancellable>()
         
     init(account: IAccount, coin: Coin) {
         self.id = UUID()
@@ -108,14 +109,14 @@ final class Asset: IAsset {
             
             switch self?.coin.type {
             case .bitcoin:
-                weakSelf.sendBtcAdapter?
-                    .sendSingle(amount: amount, address: address, feeRate: feeRate, pluginData: [:], sortMode: sortMode)
-                    .subscribe(onSuccess: { _ in
+                weakSelf.sendBtcAdapter?.send(amount: amount, address: address, feeRate: feeRate, pluginData: [:], sortMode: sortMode)
+                    .receive(on: RunLoop.main)
+                    .sink(receiveCompletion: { completion in
+                        
+                    }, receiveValue: { _ in
                         promisse(.success(()))
-                    }, onError: { error in
-                        promisse(.failure(error))
                     })
-                    .disposed(by: weakSelf.disposeBag)
+                    .store(in: &weakSelf.subscriptions)
             case .ethereum:
                 
                 promisse(.success(()))

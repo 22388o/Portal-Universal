@@ -20,13 +20,11 @@ struct AssetAllocationView: View {
     }
     
     var body: some View {
-        ZStack {
-            if isBarChart {
-                BarChartRepresentableView(viewModel: viewModel)
-                    .padding(.bottom, 10)
-            } else {
-                PieChartRepresentableView(viewModel: viewModel)
-            }
+        if isBarChart {
+            BarChartRepresentableView(viewModel: viewModel)
+                .padding(.bottom, 10)
+        } else {
+            PieChartRepresentableView(viewModel: viewModel)
         }
     }
 }

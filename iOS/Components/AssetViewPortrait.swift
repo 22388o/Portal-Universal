@@ -10,11 +10,18 @@ import Charts
 import Coinpaprika
 
 struct AssetViewPortrait: View {
+    @StateObject private var txsViewModel: TxsViewModel
     @ObservedObject private var viewModel: AssetViewModel
     @ObservedObject private var state = Portal.shared.state
-    
+        
     init(viewModel: AssetViewModel) {
         self.viewModel = viewModel
+        
+        guard let vm = TxsViewModel.config(coin: viewModel.coin) else {
+            fatalError("Cannot config TxsViewModel")
+        }
+        
+        self._txsViewModel = StateObject(wrappedValue: vm)
     }
     
     var body: some View {
@@ -43,14 +50,14 @@ struct AssetViewPortrait: View {
                     VStack(spacing: 8) {
                         HStack {
                             PButton(label: "Recieve", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: true) {
-                                withAnimation(.easeIn(duration: 1.2)) {
+                                withAnimation(.easeIn(duration: 3.0)) {
                                     state.modalView = .receiveAsset
                                 }
                             }
                             .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                             
                             PButton(label: "Send", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: viewModel.canSend) {
-                                withAnimation(.easeIn(duration: 1.2)) {
+                                withAnimation(.easeIn(duration: 3.0)) {
                                     state.modalView = .sendAsset
                                 }
                             }
@@ -80,7 +87,7 @@ struct AssetViewPortrait: View {
                 case .value:
                     MarketValueView(
                         timeframe: $viewModel.timeframe,
-                        currency: state.walletCurrency,
+                        currency: state.wallet.currency,
                         totalValue: viewModel.totalValue,
                         change: viewModel.change,
                         high: viewModel.highValue,
@@ -90,7 +97,7 @@ struct AssetViewPortrait: View {
                         type: .asset
                     )
                 case .transactions:
-                    RecentTxsView(coin: state.selectedCoin)
+                    RecentTxsView(viewModel: txsViewModel)
                         .frame(height: 425)
                         .transition(.identity)
                 case .alerts:

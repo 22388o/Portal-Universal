@@ -247,11 +247,11 @@ enum FeeRatePriority: Equatable {
 
     var title: String {
         switch self {
-        case .low: return "send.tx_speed_low"
-        case .medium: return "send.tx_speed_recommended"
-        case .recommended: return "send.tx_speed_recommended"
-        case .high: return "send.tx_speed_high"
-        case .custom: return "send.tx_speed_custom"
+        case .low: return "Low"
+        case .medium: return "Medium"
+        case .recommended: return "Recommended"
+        case .high: return "High"
+        case .custom: return "Custom"
         }
     }
 
@@ -307,16 +307,12 @@ enum TransactionDataSortMode: String, CaseIterable {
     }
 }
 
-enum WalletCreationSteps {
-    case createWalletName, seed, test, confirmation
-}
-
-enum PortalExchangeSceneState {
+enum ExchangeViewMode {
     case full, compactLeft, compactRight
 }
 
-enum Scenes {
-    case wallet, exchange
+enum HeaderSwitchState: CaseIterable {
+    case wallet, exchange, dex
 }
 
 enum MarketLimitSwitchState {
@@ -338,6 +334,23 @@ enum OrderBookRoute {
 
 enum MyOrdersRoute {
     case open, history
+}
+
+enum AlertType {
+    case worthMore(Coin), worthLess(Coin), incrases(Coin), discrases(Coin)
+    
+    var description: String {
+        switch self {
+        case .worthMore(let coin):
+            return "1.0 \(coin.code) is worth more than..."
+        case .worthLess(let coin):
+            return "1.0 \(coin.code) is worth less than..."
+        case .incrases(let coin):
+            return "Value of \(coin.code) incrases by..."
+        case .discrases(let coin):
+            return "Value of \(coin.code) discrases by..."
+        }
+    }
 }
 
 enum TxSortState {

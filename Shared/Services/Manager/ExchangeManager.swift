@@ -35,14 +35,14 @@ final class ExchangeManager: ObservableObject {
     }
     
     private func setupSubscriptions() {
-        exchangeDataUpdater.onExchangesUpdatePublisher
+        exchangeDataUpdater.onExchangesUpdate
             .sink(receiveValue: { [weak self] models in
                 self?.allSupportedExchanges = models.filter{$0.id == "binance"}
                 self?.updateBalances()
             })
             .store(in: &subscriptions)
         
-        exchangeDataUpdater.onTraidingPairsUpdatePublisher
+        exchangeDataUpdater.onTraidingPairsUpdate
             .sink(receiveValue: { [weak self] models in
                 self?.tradingPairs = models
             })

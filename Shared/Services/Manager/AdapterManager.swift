@@ -6,12 +6,10 @@
 //
 
 import Foundation
-import RxSwift
 import Combine
 
 final class AdapterManager {
-    private let disposeBag = DisposeBag()
-    private var cancellable = Set<AnyCancellable>()
+    private var subscriptions = Set<AnyCancellable>()
 
     private let adapterFactory: IAdapterFactory
     private let ethereumKitManager: EthereumKitManager
@@ -20,7 +18,7 @@ final class AdapterManager {
     private let queue = DispatchQueue(label: "tides.universal.portal.adapter_manager", qos: .userInitiated)
     private var adapters = [Wallet: IAdapter]()
     
-    var adapterdReadyPublisher = CurrentValueSubject<Bool, Never>(false)
+    var adapterdReady = CurrentValueSubject<Bool, Never>(false)
 
     init(adapterFactory: IAdapterFactory, ethereumKitManager: EthereumKitManager, walletManager: IWalletManager) {
         self.adapterFactory = adapterFactory
@@ -29,11 +27,11 @@ final class AdapterManager {
         
         initAdapters(wallets: walletManager.activeWallets)
         
-        walletManager.onWalletsUpdatePublisher
+        walletManager.onWalletsUpdate
             .sink { [weak self] wallets in
                 self?.initAdapters(wallets: wallets)
             }
-            .store(in: &cancellable)
+            .store(in: &subscriptions)
     }
 
     private func initAdapters(wallets: [Wallet]) {
@@ -62,7 +60,7 @@ final class AdapterManager {
 
         queue.async {
             self.adapters = newAdapters
-            self.adapterdReadyPublisher.send(true)
+            self.adapterdReady.send(true)
         }
 
         removedAdapters.forEach { adapter in
@@ -107,7 +105,7 @@ extension AdapterManager: IAdapterManager {
             }
         }
 
-        ethereumKitManager.evmKit?.refresh()
+        ethereumKitManager.ethereumKit?.refresh()
     }
 
     func refreshAdapters(wallets: [Wallet]) {
@@ -125,9 +123,9 @@ extension AdapterManager: IAdapterManager {
         let adapter = adapters[wallet]
 
         switch adapter {
-        case is BaseEvmAdapter:
+        case is BaseEthereumAdapter:
             switch wallet.coin.type {
-            case .ethereum, .erc20: ethereumKitManager.evmKit?.refresh()
+            case .ethereum, .erc20: ethereumKitManager.ethereumKit?.refresh()
             default: ()
             }
         default:

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ExchangeSelectorView: View {
-    @Binding var state: PortalExchangeSceneState
+    @Binding var state: ExchangeViewMode
     @Binding var selectorState: ExchangeSelectorState
     let exchanges: [ExchangeModel]
     let panelWidth: CGFloat

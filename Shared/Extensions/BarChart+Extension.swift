@@ -26,7 +26,7 @@ extension Charts.BarChartView {
         legend.drawInside = false
 
         extraBottomOffset = 20
-        animate(xAxisDuration: 0.0, yAxisDuration: 1.0)
+//        animate(xAxisDuration: 0.0, yAxisDuration: 1.0)
         
         leftAxis.drawAxisLineEnabled = false
         leftAxis.drawGridLinesEnabled = false

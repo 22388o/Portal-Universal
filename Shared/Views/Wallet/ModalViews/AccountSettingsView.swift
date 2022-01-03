@@ -19,7 +19,7 @@ struct AccountSettingsView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color.white.opacity(0.94))
-                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
+                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
             
             VStack(spacing: 0) {
                 HStack {
@@ -43,12 +43,15 @@ struct AccountSettingsView: View {
                             .font(.mainFont(size: 14))
                     }
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 8)
                 
                 Toggle("Portfolio includes exchange balances:", isOn: $portfolioIncludesExchangeBalance)
                     .toggleStyle(SwitchToggleStyle())
                     .font(.mainFont(size: 12))
                     .foregroundColor(Color.lightActiveLabel)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
                 
                 Group {
                     VStack(spacing: 6) {

@@ -17,10 +17,10 @@ struct HeaderView: View {
     
     var body: some View {
         ZStack {
-            HStack {
-                if viewModel.state.mainScene == .wallet {
+            HStack(spacing: 12) {
+                if viewModel.state.wallet.switchState == .wallet {
                     Button(action: {
-                        withAnimation(.easeIn(duration: 1.2)) {
+                        withAnimation(.easeIn(duration: 3.0)) {
                             viewModel.state.modalView = .switchAccount
                         }
                     }, label: {
@@ -35,22 +35,40 @@ struct HeaderView: View {
                         .foregroundColor(Color.white.opacity(0.82))
                     })
                     .buttonStyle(PlainButtonStyle())
+                    
+                    Text("|")
+                        .font(.mainFont(size: 12))
+                        .foregroundColor(Color.white.opacity(0.6))
+                    
+                    Button(action: {
+                        withAnimation(.easeInOut(duration: 0.1)) {
+                            viewModel.state.showPortfolio.toggle()
+                        }
+                    }, label: {
+                        Image("portfolioIcon")
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                            .foregroundColor(Color.white.opacity(0.82))
+                            .offset(y: 2)
+                    })
+                    .buttonStyle(PlainButtonStyle())
                 }
                 
-                Spacer().frame(minWidth: 690)
+                Spacer()
 
                 
                 HStack {
                     if viewModel.isOffline {
-                        Text("You are not connected to the Internet")
-                            .font(.mainFont(size: 14))
+                        Image("iconNoWiFi")
+                            .resizable()
+                            .frame(width: 20, height: 20)
                             .foregroundColor(Color.red)
                     }
-                    if viewModel.state.mainScene == .wallet {
-                        WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.walletCurrency).scaleEffect(0.85)
+                    if viewModel.state.wallet.switchState == .wallet {
+                        WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.wallet.currency)
                         
                         Button(action: {
-                            withAnimation(.easeIn(duration: 1.2)) {
+                            withAnimation(.easeIn(duration: 3.0)) {
                                 viewModel.state.modalView = .accountSettings
                             }
                         }, label: {
@@ -63,7 +81,7 @@ struct HeaderView: View {
                     }
                     
                     Button(action: {
-                        withAnimation(.easeIn(duration: 1.2)) {
+                        withAnimation(.easeIn(duration: 3.0)) {
                             viewModel.markAllNotificationsViewed()
                             viewModel.state.modalView = .allNotifications
                         }
@@ -92,7 +110,7 @@ struct HeaderView: View {
                 }
             }
             
-            AppSceneSwitch(state: $viewModel.state.mainScene)
+            AppSceneSwitch(state: $viewModel.state.wallet.switchState)
         }
     }
 }

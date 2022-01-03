@@ -15,9 +15,9 @@ struct StoreSeedView: View {
     Make 100% sure you have all the words, in that same order, and continue when you’re ready.
     """
         
-    @ObservedObject private var viewModel: CreateWalletSceneViewModel
+    @ObservedObject private var viewModel: CreateAccountViewModel
     
-    init(viewModel: CreateWalletSceneViewModel) {
+    init(viewModel: CreateAccountViewModel) {
         self.viewModel = viewModel
     }
     
@@ -47,9 +47,9 @@ struct StoreSeedView: View {
                 Spacer().frame(height: 60)
                 
                 HStack(spacing: 12) {
-                    PButton(label: "Next", width: 140, height: 40, fontSize: 15, enabled: true) {
+                    PButton(label: "Next", width: 180, height: 48, fontSize: 15, enabled: true) {
                         withAnimation {
-                            viewModel.walletCreationStep = .test
+                            viewModel.step = .test
                         }
                     }
                     .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
@@ -106,7 +106,7 @@ struct StoreSeedView: View {
 
 struct StoreSeedView_Previews: PreviewProvider {
     static var previews: some View {
-        StoreSeedView(viewModel: CreateWalletSceneViewModel(type: .mnemonic(words: [], salt: String())))
+        StoreSeedView(viewModel: CreateAccountViewModel(type: .mnemonic(words: [], salt: String())))
             .frame(width: 750, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

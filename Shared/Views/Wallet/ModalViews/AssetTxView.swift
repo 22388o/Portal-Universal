@@ -25,13 +25,17 @@ struct AssetTxView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black.opacity(0.7), lineWidth: 8)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
                 )
                 .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
             
             CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
                 .background(Color.white)
                 .cornerRadius(32)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 32)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
+                )
                 .offset(y: -32)
             
             HStack {
@@ -71,7 +75,7 @@ struct AssetTxView: View {
                     TxHeaderView()
                     
                     ZStack {
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 8)
                             .fill(Color.exchangerFieldBorder)
                         
                         ScrollView {

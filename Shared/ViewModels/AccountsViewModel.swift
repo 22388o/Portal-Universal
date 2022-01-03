@@ -36,7 +36,7 @@ class AccountsViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.manager.setActiveAccount(id: id)
             self.activeAcount = self.manager.activeAccount
-            self.state.selectedCoin = Coin.bitcoin()
+            self.state.wallet.coin = Coin.bitcoin()
         }
     }
     

@@ -1,5 +1,5 @@
 //
-//  CreateAccountScene.swift
+//  CreateAccountView.swift
 //  Portal
 //
 //  Created by Farid on 04.04.2021.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct CreateAccountScene: View {
-    @Binding var state: PortalState.State
+struct CreateAccountView: View {
+    @Binding var scene: PortalState.Scene
     
-    @StateObject private var viewModel = CreateWalletSceneViewModel(
-        type: CreateWalletSceneViewModel.mnemonicAccountType()
+    @StateObject private var viewModel = CreateAccountViewModel(
+        type: CreateAccountViewModel.mnemonicAccountType()
     )
     
     var body: some View {
@@ -36,7 +36,7 @@ struct CreateAccountScene: View {
                 HStack {
                     PButton(label: "Go back", width: 80, height: 30, fontSize: 12, enabled: true) {
                         withAnimation {
-                            Portal.shared.state.current = .currentAccount
+                            Portal.shared.state.rootView = .account
                         }
                     }
                     Spacer()
@@ -49,7 +49,7 @@ struct CreateAccountScene: View {
                 Color.black.opacity(0.58)
                                 
                 HStack(spacing: 0) {
-                    if viewModel.walletCreationStep == .createWalletName {
+                    if viewModel.step == .name {
                         TopCoinView()
                             .frame(width: 312)
                             .transition(AnyTransition.move(edge: .leading).combined(with: .opacity))
@@ -59,13 +59,13 @@ struct CreateAccountScene: View {
                         Rectangle()
                             .foregroundColor(Color.white)
                             .cornerRadius(5)
-                            .padding(viewModel.walletCreationStep == .createWalletName ? [.vertical, .trailing] : .all, 8)
+                            .padding(viewModel.step == .name ? [.vertical, .trailing] : .all, 8)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                         
                         Group {
-                            switch viewModel.walletCreationStep {
-                            case .createWalletName:
-                                CreateWalletNameView(state: $state, viewModel: viewModel)
+                            switch viewModel.step {
+                            case .name:
+                                AccountNameView(scene: $scene, viewModel: viewModel)
                             case .seed:
                                 StoreSeedView(viewModel: viewModel)
                             case .test:
@@ -95,7 +95,7 @@ struct CreateAccountScene: View {
 
 struct CreateAccountScene_Previews: PreviewProvider {
     static var previews: some View {
-        CreateAccountScene(state: .constant(.createAccount))
+        CreateAccountView(scene: .constant(.createAccount))
             .iPadLandscapePreviews()
     }
 }

@@ -6,18 +6,16 @@
 //
 
 import Foundation
-import RxSwift
 import Combine
 
 final class WalletManager {
-    var onWalletsUpdatePublisher = PassthroughSubject<[Wallet], Never>()
+    var onWalletsUpdate = PassthroughSubject<[Wallet], Never>()
     
     private let accountManager: IAccountManager
     private let storage: IWalletStorage
-    private let disposeBag = DisposeBag()
-    private var cancellable = Set<AnyCancellable>()
+    private var subscriptions = Set<AnyCancellable>()
 
-    private let subject = PublishSubject<[Wallet]>()
+    private let subject = PassthroughSubject<[Wallet], Never>()
 
     private let queue = DispatchQueue(label: "tides.universal.portal.wallet_manager", qos: .userInitiated)
 
@@ -31,25 +29,25 @@ final class WalletManager {
         cachedWallets = storage.wallets
         handleUpdate(activeAccount: accountManager.activeAccount)
         
-        accountManager.onActiveAccountUpdatePublisher
+        accountManager.onActiveAccountUpdate
             .sink { [weak self] account in
                 self?.handleUpdate(activeAccount: account)
             }
-            .store(in: &cancellable)
+            .store(in: &subscriptions)
         
-        storage.onWalletsUpdatePublisher
+        storage.onWalletsUpdate
             .sink { [weak self] _ in
                 self?.handleUpdate(activeAccount: accountManager.activeAccount)
             }
-            .store(in: &cancellable)
+            .store(in: &subscriptions)
     }
 
     private func notify() {
-        subject.onNext(cachedWallets)
+        subject.send(cachedWallets)
     }
 
     private func notifyActiveWallets() {
-        onWalletsUpdatePublisher.send(cachedActiveWallets)
+        onWalletsUpdate.send(cachedActiveWallets)
     }
 
     private func handleUpdate(activeAccount: Account?) {
@@ -70,10 +68,6 @@ extension WalletManager: IWalletManager {
 
     var wallets: [Wallet] {
         queue.sync { cachedWallets }
-    }
-
-    var walletsUpdatedObservable: Observable<[Wallet]> {
-        subject.asObservable()
     }
 
     func preloadWallets() {

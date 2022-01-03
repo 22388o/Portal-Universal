@@ -20,12 +20,17 @@ struct ManageAlertView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black.opacity(0.7), lineWidth: 8)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
+                        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
                 )
             
-            CoinImageView(size: 64, url: viewModel.coin.icon)
-                .background(Color.black)
+            CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
+                .background(Color.white)
                 .cornerRadius(32)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 32)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
+                )
                 .offset(y: -32)
             
             VStack(spacing: 0) {
@@ -145,9 +150,7 @@ struct ManageAlertView: View {
                         .fill(Color.exchangerFieldBackground)
                     
                     ScrollView {
-                        LazyVStack_(alignment: .leading) {
-                            Spacer().frame(height: 8)
-                            
+                        LazyVStack_(alignment: .leading, spacing: 0) {
                             ForEach(viewModel.alerts) { alert in
                                 HStack(spacing: 0) {
                                     HStack {
@@ -173,6 +176,9 @@ struct ManageAlertView: View {
                                 .padding(.vertical, 2)
                                 .padding(.horizontal, 50)
                                 .frame(maxWidth: .infinity)
+                                .frame(height: 30)
+                                
+                                Divider()
                             }
                             .font(.mainFont(size: 12))
                         }
@@ -189,81 +195,5 @@ struct ManageAlertView: View {
 struct CreateAlertView_Previews: PreviewProvider {
     static var previews: some View {
         ManageAlertView(coin: Coin.bitcoin())
-    }
-}
-
-enum AlertType {
-    case worthMore(Coin), worthLess(Coin), incrases(Coin), discrases(Coin)
-    
-    var description: String {
-        switch self {
-        case .worthMore(let coin):
-            return "1.0 \(coin.code) is worth more than..."
-        case .worthLess(let coin):
-            return "1.0 \(coin.code) is worth less than..."
-        case .incrases(let coin):
-            return "Value of \(coin.code) incrases by..."
-        case .discrases(let coin):
-            return "Value of \(coin.code) discrases by..."
-        }
-    }
-}
-
-struct AlertTypePicker: View {
-    let coin: Coin
-    @Binding var type: AlertType
-        
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 24)
-                        .stroke(Color.exchangerFieldBorder, lineWidth: 1)
-                )
-            
-            HStack {
-                Text(type.description)
-                    .font(.mainFont(size: 14))
-                    .foregroundColor(Color.coinViewRouteButtonActive)
-                Spacer()
-                Image("optionArrowDownDark")
-            }
-            .padding(.horizontal, 18)
-            
-            MenuButton(
-                label: EmptyView(),
-                content: {
-                    Button("1.0 \(coin.code) is worth more than...") {
-                        type = .worthMore(coin)
-                    }
-                    Button("1.0 \(coin.code) is worth less than...") {
-                        type = .worthLess(coin)
-                    }
-                    Button("Value of \(coin.code) incrases by...") {
-                        type = .incrases(coin)
-                    }
-                    Button("Value of \(coin.code) discrases by...") {
-                        type = .discrases(coin)
-                    }
-                }
-            )
-            .menuButtonStyle(BorderlessButtonMenuButtonStyle())
-        }
-    }
-}
-
-struct AlertTypePicker_Previews: PreviewProvider {
-    static var previews: some View {
-        AlertTypePicker(coin: .bitcoin(), type: .constant(.worthMore(.bitcoin())))
-            .frame(width: 158, height: 40)
-            .previewLayout(PreviewLayout.sizeThatFits)
-            .padding()
-            .background(
-                ZStack {
-                    Color.portalWalletBackground
-                    Color.black.opacity(0.58)
-                }
-            )
     }
 }

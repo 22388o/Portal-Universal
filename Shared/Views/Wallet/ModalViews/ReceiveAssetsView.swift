@@ -23,7 +23,8 @@ struct ReceiveAssetsView: View {
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black, lineWidth: 6)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
+                        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
                 )
             
             CoinImageView(size: 64, url: coin.icon, placeholderForegroundColor: .black)
@@ -31,7 +32,7 @@ struct ReceiveAssetsView: View {
                 .cornerRadius(32)
                 .overlay(
                     RoundedRectangle(cornerRadius: 32)
-                        .stroke(Color.black, lineWidth: 1)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
                 )
                 .offset(y: -32)
                         
@@ -51,14 +52,14 @@ struct ReceiveAssetsView: View {
                     if let image = viewModel.qrCode {
                         image
                             .resizable()
-                            .frame(width: 128, height: 128)
+                            .frame(width: 180, height: 180)
                     }
                     VStack(alignment: .leading) {
                         Text("Address")
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.coinViewRouteButtonActive)
                         Text(viewModel.receiveAddress)
-                            .font(.mainFont(size: 16))
+                            .font(.mainFont(size: 14))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
                         
                         Spacer().frame(height: 25)
@@ -82,6 +83,8 @@ struct ReceiveAssetsView: View {
                             }
                         }
                     }
+                    .padding(.leading)
+                    
                     Spacer()
                 }
                 

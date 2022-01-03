@@ -1,1 +1,1 @@
-${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL
+${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSslKit-Universal.swift/OpenSSL.framework

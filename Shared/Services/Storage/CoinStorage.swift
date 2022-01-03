@@ -10,7 +10,7 @@ import Combine
 import Coinpaprika
 
 final class CoinStorage: ICoinStorage {
-    var onCoinsUpdatePublisher = PassthroughSubject<[Coin], Never>()
+    var onCoinsUpdate = PassthroughSubject<[Coin], Never>()
     
     var coins: [Coin] = []
     
@@ -26,7 +26,7 @@ final class CoinStorage: ICoinStorage {
     }
     
     private func subscribe() {
-        updater.onTokensUpdatePublisher//.combineLatest(marketData.$tickersReady)
+        updater.onTokensUpdate
             .sink { [weak self] tokens in
                 guard let self = self else { return }
                 if !tokens.isEmpty {
@@ -42,7 +42,7 @@ final class CoinStorage: ICoinStorage {
                     .sorted(by: { $0.code < $1.code })
                     
                     self.coins = coins
-                    self.onCoinsUpdatePublisher.send(coins)
+                    self.onCoinsUpdate.send(coins)
                 }
             }
             .store(in: &subscriptions)

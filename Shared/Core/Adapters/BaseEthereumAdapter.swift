@@ -1,5 +1,5 @@
 //
-//  BaseEvmAdapter.swift
+//  BaseEthereumAdapter.swift
 //  Portal
 //
 //  Created by Farid on 10.07.2021.
@@ -7,17 +7,17 @@
 //
 
 import EthereumKit
-import RxSwift
+import Combine
 import BigInt
 import HsToolKit
 
-class BaseEvmAdapter {
-    let evmKit: EthereumKit.Kit
+class BaseEthereumAdapter {
+    let ethereumKit: EthereumKit.Kit
 
     let decimal: Int
 
-    init(evmKit: EthereumKit.Kit, decimal: Int) {
-        self.evmKit = evmKit
+    init(kit: EthereumKit.Kit, decimal: Int) {
+        self.ethereumKit = kit
         self.decimal = decimal
     }
 
@@ -44,22 +44,22 @@ class BaseEvmAdapter {
 }
 
 // ITransactionsAdapter
-extension BaseEvmAdapter {
+extension BaseEthereumAdapter {
 
     var lastBlockInfo: LastBlockInfo? {
-        evmKit.lastBlockHeight.map { LastBlockInfo(height: $0, timestamp: nil) }
+        ethereumKit.lastBlockHeight.map { LastBlockInfo(height: $0, timestamp: nil) }
     }
-
-    var lastBlockUpdatedObservable: Observable<Void> {
-        evmKit.lastBlockHeightObservable.map { _ in () }
+    
+    var lastBlockUpdated: AnyPublisher<Void, Never> {
+        ethereumKit.lastBlockHeightObservable.map { _ in () }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
 
 }
 
-extension BaseEvmAdapter: IDepositAdapter {
+extension BaseEthereumAdapter: IDepositAdapter {
 
     var receiveAddress: String {
-        evmKit.receiveAddress.eip55
+        ethereumKit.receiveAddress.eip55
     }
 
 }

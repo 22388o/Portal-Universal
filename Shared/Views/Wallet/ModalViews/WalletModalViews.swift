@@ -15,13 +15,13 @@ struct WalletModalViews: View {
             switch state.modalView {
             case .sendAsset:
                 SendAssetView(
-                    coin: state.selectedCoin,
-                    currency: state.walletCurrency
+                    coin: state.wallet.coin,
+                    currency: state.wallet.currency
                 )
             case .receiveAsset:
-                ReceiveAssetsView(coin: state.selectedCoin)
+                ReceiveAssetsView(coin: state.wallet.coin)
             case .allTransactions:
-                AssetTxView(coin: state.selectedCoin)
+                AssetTxView(coin: state.wallet.coin)
             case .switchAccount:
                 AccountsView()
                     .animation(nil)
@@ -35,12 +35,12 @@ struct WalletModalViews: View {
             case .accountSettings:
                 AccountSettingsView()
                     .animation(nil)
-                    .padding(.top, 40)
+                    .padding(.top, 50)
                     .padding(.trailing, 24)
             case .withdrawFromExchange(let balance):
                 WithdrawFromExchangeView(balance: balance)
             case .createAlert:
-                ManageAlertView(coin: state.selectedCoin)
+                ManageAlertView(coin: state.wallet.coin)
             default:
                 EmptyView()
             }

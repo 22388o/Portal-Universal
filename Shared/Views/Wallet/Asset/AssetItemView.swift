@@ -9,19 +9,17 @@ import SwiftUI
 
 struct AssetItemView: View {
     @ObservedObject private var viewModel: AssetItemViewModel
-    let selected: Bool
     let onTap: () -> ()
             
-    init(viewModel: AssetItemViewModel, selected: Bool, onTap: @escaping () -> ()) {
+    init(viewModel: AssetItemViewModel, onTap: @escaping () -> ()) {
         self.viewModel = viewModel
-        self.selected = selected
         self.onTap = onTap
     }
         
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 5)
-                .fill(selected ? Color.white : Color.clear)
+                .fill(viewModel.selected ? Color.white : Color.clear)
             
             ZStack {
                 HStack {
@@ -41,7 +39,7 @@ struct AssetItemView: View {
                                 if !viewModel.syncProgressString.isEmpty {
                                     Text(viewModel.syncProgressString)
                                         .font(.mainFont(size: 14))
-                                        .foregroundColor(selected ? .gray : Color(red: 160/255, green: 190/255, blue: 186/255, opacity: 1))
+                                        .foregroundColor(viewModel.selected ? .gray : Color(red: 160/255, green: 190/255, blue: 186/255, opacity: 1))
                                 }
                             }
                         } else {
@@ -60,7 +58,7 @@ struct AssetItemView: View {
                     .transition(.identity)
             }
             .font(.mainFont(size: 18))
-            .foregroundColor(selected ? .black : Color(red: 160/255, green: 190/255, blue: 186/255, opacity: 1))
+            .foregroundColor(viewModel.selected ? .black : Color(red: 160/255, green: 190/255, blue: 186/255, opacity: 1))
             .contentShape(Rectangle())
             .onTapGesture {
                 onTap()
@@ -75,13 +73,11 @@ struct AssetItemView_Previews: PreviewProvider {
         Group {
             AssetItemView(
                 viewModel: AssetItemViewModel.config(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter()),
-                selected: true,
                 onTap: {}
             )
             
             AssetItemView(
                 viewModel: AssetItemViewModel.config(coin: Coin.bitcoin(), adapter: MockedBalanceAdapter()),
-                selected: false,
                 onTap: {}
             )
         }
@@ -97,16 +93,16 @@ struct AssetItemView_Previews: PreviewProvider {
     }
 }
 
-import RxSwift
+import Combine
 
 struct MockedBalanceAdapter: IBalanceAdapter {
+    var balanceStateUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
+    var balanceUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
     var balanceState: AdapterState = .synced
-    
-    var balanceStateUpdatedObservable: Observable<Void> = Observable.just(())
-    
+        
     var balance: Decimal = 2.25
-    
-    var balanceUpdatedObservable: Observable<Void> = Observable.just(())
-    
+        
     init() {}
 }

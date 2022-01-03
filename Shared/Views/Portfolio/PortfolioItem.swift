@@ -6,7 +6,7 @@
 //
 
 import Coinpaprika
-import RxSwift
+import Combine
 
 class PortfolioItem: ObservableObject {
     let coin: Coin
@@ -17,7 +17,7 @@ class PortfolioItem: ObservableObject {
     
     private let balanceAdapter: IBalanceAdapter
     private let marketDataProvider: IMarketDataProvider
-    private var disposeBag = DisposeBag()
+    private var subscriptions = Set<AnyCancellable>()
     
     private var btcUSDPrice: Decimal {
         marketDataProvider.ticker(coin: .bitcoin())?[.usd].price ?? 1
@@ -67,22 +67,19 @@ class PortfolioItem: ObservableObject {
         self.balance = balanceAdapter.balance
         self.price = marketDataProvider.ticker(coin: coin)?[.usd].price ?? 1
         
-        transactionAdapter.transactionsSingle(from: nil, limit: 1000)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .observeOn(MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] records in
+        transactionAdapter.transactions(from: nil, limit: 1000)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] records in
                 self?.transactions = records
-            })
-            .disposed(by: disposeBag)
-        
-        balanceAdapter
-            .balanceUpdatedObservable
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+            }
+            .store(in: &subscriptions)
+
+        balanceAdapter.balanceUpdated
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
                 self?.balance = balanceAdapter.balance
             })
-            .disposed(by: disposeBag)
+            .store(in: &subscriptions)
     }
     
     private func values(timeframe: Timeframe, points: [Decimal]) -> [Double] {
@@ -97,7 +94,7 @@ class PortfolioItem: ObservableObject {
                 let balanceAtTimestamp = balance(at: timestamp)
                 let value = point * balanceAtTimestamp
                 
-                switch Portal.shared.state.walletCurrency {
+                switch Portal.shared.state.wallet.currency {
                 case .btc:
                     return (value/btcUSDPrice).double
                 case .eth:
@@ -112,7 +109,7 @@ class PortfolioItem: ObservableObject {
                 let balanceAtTimestamp = balance(at: timestamp)
                 let value = point * balanceAtTimestamp
                 
-                switch Portal.shared.state.walletCurrency {
+                switch Portal.shared.state.wallet.currency {
                 case .btc:
                     return (value/btcUSDPrice).double
                 case .eth:

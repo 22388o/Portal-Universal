@@ -1,0 +1,6 @@
+framework module RxCombine {
+  umbrella header "RxCombine-macOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

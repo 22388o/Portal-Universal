@@ -18,9 +18,10 @@ struct PieChartRepresentableView: UIViewRepresentable {
     func makeUIView(context: Context) -> PieChartView {
         let pieChart = PieChartView()
         pieChart.applyStandardSettings()
-        pieChart.data = viewModel.assetAllocationChartData()
         return pieChart
     }
 
-    func updateUIView(_ uiView: PieChartView, context: Context) {}
+    func updateUIView(_ pieChart: PieChartView, context: Context) {
+        pieChart.data = viewModel.assetAllocationChartData()
+    }
 }

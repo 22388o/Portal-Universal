@@ -18,7 +18,7 @@ struct AccountsView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color.white.opacity(0.94))
-                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
+                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
             
             VStack(spacing: 0) {
                 HStack {
@@ -56,16 +56,16 @@ struct AccountsView: View {
                 .padding(.bottom, 16)
                 
                 PButton(label: "Create new account", width: 184, height: 32, fontSize: 12, enabled: true) {
-                    withAnimation {
-                        viewModel.state.current = .createAccount
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        viewModel.state.rootView = .createAccount
                         viewModel.state.modalView = .none
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                                 
                 PButton(label: "Restore account", width: 184, height: 32, fontSize: 12, enabled: true) {
-                    withAnimation {
-                        viewModel.state.current = .restoreAccount
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        viewModel.state.rootView = .restoreAccount
                         viewModel.state.modalView = .none
                     }
                 }

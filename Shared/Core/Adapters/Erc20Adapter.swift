@@ -1,29 +1,30 @@
 //
-//  Evn20Adapter.swift
+//  Erc20Adapter.swift
 //  Portal
 //
 //  Created by Farid on 16.07.2021.
 //
-
+import Combine
+import RxCombine
+import RxSwift
 import EthereumKit
 import Erc20Kit
-import RxSwift
 import BigInt
 import HsToolKit
 import class Erc20Kit.Transaction
 
-class Evm20Adapter: BaseEvmAdapter {
-    let evm20Kit: Erc20Kit.Kit
+class Erc20Adapter: BaseEthereumAdapter {
+    let erc20Kit: Erc20Kit.Kit
     private let confirmationsThreshold: Int
     private let contractAddress: EthereumKit.Address
 
-    init(evmKit: EthereumKit.Kit, contractAddress: String, decimal: Int, confirmationsThreshold: Int) throws {
+    init(ethKit: EthereumKit.Kit, contractAddress: String, decimal: Int, confirmationsThreshold: Int) throws {
         let address = try EthereumKit.Address(hex: contractAddress)
-        evm20Kit = try Erc20Kit.Kit.instance(ethereumKit: evmKit, contractAddress: address)
+        erc20Kit = try Erc20Kit.Kit.instance(ethereumKit: ethKit, contractAddress: address)
         self.contractAddress = address
         self.confirmationsThreshold = confirmationsThreshold
 
-        super.init(evmKit: evmKit, decimal: decimal)
+        super.init(kit: ethKit, decimal: decimal)
     }
 
     private func transactionRecord(fromTransaction fullTransaction: FullTransaction) -> TransactionRecord {
@@ -70,62 +71,65 @@ class Evm20Adapter: BaseEvmAdapter {
 
 }
 
-extension Evm20Adapter: IAdapter {
+extension Erc20Adapter: IAdapter {
 
     func start() {
-        evm20Kit.start()
+        erc20Kit.start()
     }
 
     func stop() {
-        evm20Kit.stop()
+        erc20Kit.stop()
     }
 
     func refresh() {
-        evm20Kit.refresh()
+        erc20Kit.refresh()
     }
 
     var debugInfo: String {
-        evmKit.debugInfo
+        ethereumKit.debugInfo
     }
 
 }
 
-extension Evm20Adapter: IBalanceAdapter {
-
-    var balanceState: AdapterState {
-        convertToAdapterState(evmSyncState: evm20Kit.syncState)
+extension Erc20Adapter: IBalanceAdapter {
+    var balanceStateUpdated: AnyPublisher<Void, Never> {
+        erc20Kit.syncStateObservable.map { _ in () }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
     }
-
-    var balanceStateUpdatedObservable: Observable<Void> {
-        evm20Kit.syncStateObservable.map { _ in () }
+    
+    var balanceUpdated: AnyPublisher<Void, Never> {
+        erc20Kit.balanceObservable.map { _ in () }.publisher.catch { _ in Just(()) }.eraseToAnyPublisher()
+    }
+    
+    var balanceState: AdapterState {
+        convertToAdapterState(evmSyncState: erc20Kit.syncState)
     }
 
     var balance: Decimal {
-        balanceDecimal(kitBalance: evm20Kit.balance, decimal: decimal)
+        balanceDecimal(kitBalance: erc20Kit.balance, decimal: decimal)
     }
-
-    var balanceUpdatedObservable: Observable<Void> {
-        evm20Kit.balanceObservable.map { _ in () }
-    }
-
 }
 
-extension Evm20Adapter: ISendEthereumAdapter {
+extension Erc20Adapter: ISendEthereumAdapter {
+    func send(address: Address, value: BigUInt, transactionInput: Data, gasPrice: Int, gasLimit: Int, nonce: Int?) -> Future<FullTransaction, Error> {
+        Future { promiss in
+            
+        }
+    }
 
     func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData {
-        evm20Kit.transferTransactionData(to: address, value: amount)
+        erc20Kit.transferTransactionData(to: address, value: amount)
     }
 
 }
 
-extension Evm20Adapter: IErc20Adapter {
+extension Erc20Adapter: IErc20Adapter {
 
     var pendingTransactions: [TransactionRecord] {
-        evm20Kit.pendingTransactions().map { transactionRecord(fromTransaction: $0.fullTransaction) }
+        erc20Kit.pendingTransactions().map { transactionRecord(fromTransaction: $0.fullTransaction) }
     }
 
     func allowanceSingle(spenderAddress: EthereumKit.Address, defaultBlockParameter: DefaultBlockParameter = .latest) -> Single<Decimal> {
-        evm20Kit.allowanceSingle(spenderAddress: spenderAddress, defaultBlockParameter: defaultBlockParameter)
+        erc20Kit.allowanceSingle(spenderAddress: spenderAddress, defaultBlockParameter: defaultBlockParameter)
                 .map { [unowned self] allowanceString in
                     if let significand = Decimal(string: allowanceString) {
                         return Decimal(sign: .plus, exponent: -self.decimal, significand: significand)
@@ -137,36 +141,43 @@ extension Evm20Adapter: IErc20Adapter {
 
 }
 
-extension Evm20Adapter: ITransactionsAdapter {
+extension Erc20Adapter: ITransactionsAdapter {
     var coin: Coin {
         Coin(type: .erc20(address: contractAddress.hex), code: "ERC20", name: "ERC20 token", decimal: 0, iconUrl: String())
     }
 
     var transactionState: AdapterState {
-        convertToAdapterState(evmSyncState: evm20Kit.transactionsSyncState)
+        convertToAdapterState(evmSyncState: erc20Kit.transactionsSyncState)
     }
-
-    var transactionStateUpdatedObservable: Observable<Void> {
-        evm20Kit.transactionsSyncStateObservable.map { _ in () }
+    
+    var transactionStateUpdated: AnyPublisher<Void, Never> {
+        erc20Kit
+            .transactionsSyncStateObservable
+            .map { _ in () }
+            .publisher.catch { _ in Just(()) }
+            .eraseToAnyPublisher()
     }
-
-    var transactionRecordsObservable: Observable<[TransactionRecord]> {
-        evm20Kit.transactionsObservable.map { [weak self] in
+    
+    var transactionRecords: AnyPublisher<[TransactionRecord], Never> {
+        erc20Kit.transactionsObservable.map { [weak self] in
             $0.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
         }
+        .publisher.catch { _ in Just([]) }
+        .eraseToAnyPublisher()
     }
-
-    func transactionsSingle(from: TransactionRecord?, limit: Int) -> Single<[TransactionRecord]> {
-        do {
-            let fromData = from.flatMap { record in
-                Data(hex: record.transactionHash)
-            }
-            return try evm20Kit.transactionsSingle(from: nil, limit: nil)
-                    .map { [weak self] transactions -> [TransactionRecord] in
-                        transactions.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
-                    }
-        } catch {
-            return Single.error(error)
+    
+    func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
+        Future { [weak self] promisse in
+            let disposeBag = DisposeBag()
+            
+            try? self?.erc20Kit.transactionsSingle(from: nil, limit: nil)
+                .map { transactions -> [TransactionRecord] in
+                    transactions.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
+                }
+                .subscribe(onSuccess: { records in
+                    promisse(.success(records))
+                })
+                .disposed(by: disposeBag)
         }
     }
 

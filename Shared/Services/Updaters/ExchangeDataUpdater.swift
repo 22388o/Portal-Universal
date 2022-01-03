@@ -9,8 +9,8 @@ import Foundation
 import Combine
 
 final class ExchangeDataUpdater {
-    let onExchangesUpdatePublisher = PassthroughSubject<[ExchangeModel], Never>()
-    let onTraidingPairsUpdatePublisher = PassthroughSubject<[TradingPairModel], Never>()
+    let onExchangesUpdate = PassthroughSubject<[ExchangeModel], Never>()
+    let onTraidingPairsUpdate = PassthroughSubject<[TradingPairModel], Never>()
     
     private let baseUrl: String = "https://cryptomarket-api.herokuapp.com/"
     private let supportedExchangesIds: String = "binance,coinbasepro,kraken"
@@ -49,7 +49,7 @@ final class ExchangeDataUpdater {
                     print(error.localizedDescription)
                 }
             } receiveValue: { [weak self] exchanges in
-                self?.onExchangesUpdatePublisher.send(exchanges)
+                self?.onExchangesUpdate.send(exchanges)
             }
             .store(in: &subscriptions)
     }
@@ -65,7 +65,7 @@ final class ExchangeDataUpdater {
                     print(error.localizedDescription)
                 }
             } receiveValue: { [weak self] traidingPairs in
-                self?.onTraidingPairsUpdatePublisher.send(traidingPairs)
+                self?.onTraidingPairsUpdate.send(traidingPairs)
             }
             .store(in: &subscriptions)
     }

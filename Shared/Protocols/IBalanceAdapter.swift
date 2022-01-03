@@ -6,14 +6,14 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 
 protocol IBalanceAdapter {
     var balanceState: AdapterState { get }
-    var balanceStateUpdatedObservable: Observable<Void> { get }
     var balance: Decimal { get }
     var balanceLocked: Decimal? { get }
-    var balanceUpdatedObservable: Observable<Void> { get }
+    var balanceStateUpdated: AnyPublisher<Void, Never> { get }
+    var balanceUpdated: AnyPublisher<Void, Never> { get }
 }
 
 extension IBalanceAdapter {

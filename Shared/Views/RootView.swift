@@ -14,21 +14,18 @@ struct RootView: View {
         ZStack {
             Color.portalWalletBackground
             
-            switch state.current {
+            switch state.rootView {
             case .idle:
                 Color.clear
-            case .currentAccount:
-                MainScene()
-                    .transition(AnyTransition.opacity)
-                    .zIndex(6)
-            case .createAccount:
-                CreateAccountScene(state: $state.current)
-                    .transition(AnyTransition.opacity)
-                    .zIndex(2)
+            case .account:
+                AccountView()
+                    .transition(.identity)
+	            case .createAccount:
+                CreateAccountView(scene: $state.rootView)
+                    .transition(.scale(scale: 0.99))
             case .restoreAccount:
                 RestoreAccountView()
-                    .transition(AnyTransition.opacity)
-                    .zIndex(3)
+                    .transition(.scale(scale: 0.99))
             }
         }
         .isLocked(locked: $state.loading)

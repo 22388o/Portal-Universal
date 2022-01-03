@@ -12,7 +12,7 @@ struct ExchangeScene: View {
     @ObservedObject var viewModel: ExchangeViewModel
     
     private var paddingForState: Edge.Set {
-        switch viewModel.state.exchangeSceneState {
+        switch viewModel.state.exchange.mode {
         case .full:
             return [.vertical, .trailing]
         case .compactLeft:
@@ -77,10 +77,10 @@ struct ExchangeScene: View {
     var body: some View {
         if viewModel.isLoggedIn {
             HStack(spacing: 0) {
-                if viewModel.state.exchangeSceneState != .compactLeft {
+                if viewModel.state.exchange.mode != .compactLeft {
                     VStack(spacing: 0) {
                         ExchangeSelectorView(
-                            state: $viewModel.state.exchangeSceneState,
+                            state: $viewModel.state.exchange.mode,
                             selectorState: $viewModel.exchangeSelectorState,
                             exchanges: viewModel.syncedExchanges,
                             panelWidth: leftPanelWidth
@@ -153,12 +153,12 @@ struct ExchangeScene: View {
                             }
                         }
                         
-                        if viewModel.state.exchangeSceneState != .compactRight {
+                        if viewModel.state.exchange.mode != .compactRight {
                             VStack(spacing: 0) {
                                 OrderBookView(
                                     orderBook: viewModel.orderBook ?? SocketOrderBook(tradingPair: TradingPairModel.mltBtc(), data: NSDictionary()),
                                     tradingPair: viewModel.currentPair ?? TradingPairModel.mltBtc(),
-                                    state: $viewModel.state.exchangeSceneState
+                                    state: $viewModel.state.exchange.mode
                                 )
                                 .frame(width: rigthPanelWidth)//350
                                 .frame(minHeight: 374, maxHeight: .infinity)

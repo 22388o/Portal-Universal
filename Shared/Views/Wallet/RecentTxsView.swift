@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct RecentTxsView: View {
-    @StateObject private var viewModel: TxsViewModel
+    @ObservedObject private var viewModel: TxsViewModel
     @ObservedObject private var state = Portal.shared.state
     
-    init(coin: Coin) {
-        guard let viewModel = TxsViewModel.config(coin: coin) else {
-            fatalError("Cannot config TxsViewModel")
-        }
-        self._viewModel = StateObject(wrappedValue: viewModel)
+    init(viewModel: TxsViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -74,7 +71,7 @@ struct RecentTxsView: View {
                 .frame(width: 256)
                 
                 PButton(label: "See all transactions", width: 256, height: 32, fontSize: 12, enabled: true) {
-                    withAnimation {
+                    withAnimation(.easeIn(duration: 3.0)) {
                         state.modalView = .allTransactions
                     }
                 }
@@ -88,6 +85,6 @@ struct RecentTxsView: View {
 
 struct RecentTxsView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentTxsView(coin: Coin.bitcoin())
+        RecentTxsView(viewModel: TxsViewModel.config(coin: Coin.bitcoin())!)
     }
 }

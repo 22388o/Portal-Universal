@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RxSwift
+import Combine
 
 protocol ISendBitcoinAdapter {
     var balance: Decimal { get }
@@ -15,5 +15,5 @@ protocol ISendBitcoinAdapter {
     func minimumSendAmount(address: String?) -> Decimal
     func validate(address: String, pluginData: [UInt8: IBitcoinPluginData]) throws
     func fee(amount: Decimal, feeRate: Int, address: String?, pluginData: [UInt8: IBitcoinPluginData]) -> Decimal
-    func sendSingle(amount: Decimal, address: String, feeRate: Int, pluginData: [UInt8: IBitcoinPluginData], sortMode: TransactionDataSortMode) -> Single<Void>
+    func send(amount: Decimal, address: String, feeRate: Int, pluginData: [UInt8: IBitcoinPluginData], sortMode: TransactionDataSortMode) -> Future<Void, Error>
 }

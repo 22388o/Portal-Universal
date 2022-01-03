@@ -10,12 +10,12 @@ import Foundation
 class AccountStorage {
     private let localStorage: ILocalStorage
     private let secureStorage: IKeychainStorage
-    private let storage: IAccountStorage
+    private let accountStorage: IAccountStorage
 
-    init(localStorage: ILocalStorage, secureStorage: IKeychainStorage, storage: IAccountStorage) {
+    init(localStorage: ILocalStorage, secureStorage: IKeychainStorage, accountStorage: IAccountStorage) {
         self.localStorage = localStorage
         self.secureStorage = secureStorage
-        self.storage = storage
+        self.accountStorage = accountStorage
     }
 
     private func createAccount(record: AccountRecord) -> Account? {
@@ -46,7 +46,7 @@ class AccountStorage {
             _ = try store(salt, id: id, typeName: typeName, keyName: .salt)
         }
         
-        return AccountRecord(id: id, name: account.name, bip: account.mnemonicDereviation, context: storage.context)
+        return AccountRecord(id: id, name: account.name, bip: account.mnemonicDereviation, context: accountStorage.context)
     }
 
     private func clearSecureStorage(account: Account) throws {
@@ -99,34 +99,34 @@ extension AccountStorage {
     var activeAccount: Account? {
         guard
             let currentAccountID = localStorage.getCurrentAccountID(),
-            let record = storage.allAccountRecords.first(where: { $0.id == currentAccountID })
+            let record = accountStorage.allAccountRecords.first(where: { $0.id == currentAccountID })
         else { return nil }
         
         return createAccount(record: record)
     }
 
     var allAccounts: [Account] {
-        storage.allAccountRecords.compactMap { createAccount(record: $0) }
+        accountStorage.allAccountRecords.compactMap { createAccount(record: $0) }
     }
 
     func save(account: Account) {
         if let record = try? createRecord(account: account) {
-            storage.save(accountRecord: record)
+            accountStorage.save(accountRecord: record)
             localStorage.setCurrentAccountID(record.id)
         }
     }
 
     func delete(account: Account) {
-        storage.deleteAccountRecord(by: account.id)
+        accountStorage.deleteAccountRecord(by: account.id)
         try? clearSecureStorage(account: account)
     }
 
     func delete(accountId: String) {
-        storage.deleteAccountRecord(by: accountId)
+        accountStorage.deleteAccountRecord(by: accountId)
     }
 
     func clear() {
-        storage.deleteAllAccountRecords()
+        accountStorage.deleteAllAccountRecords()
     }
     
     func setCurrentAccount(id: String) {
@@ -134,7 +134,7 @@ extension AccountStorage {
     }
 
     func update(account: Account) {
-        storage.update(account: account)
+        accountStorage.update(account: account)
     }
 }
 

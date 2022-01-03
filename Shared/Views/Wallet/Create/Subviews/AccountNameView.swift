@@ -1,5 +1,5 @@
 //
-//  CreateWalletNameView.swift
+//  AccountNameView.swift
 //  Portal
 //
 //  Created by Farid on 03.04.2021.
@@ -8,9 +8,9 @@
 import SwiftUI
 import Combine
 
-struct CreateWalletNameView: View {
-    @Binding var state: PortalState.State
-    @ObservedObject var viewModel: CreateWalletSceneViewModel
+struct AccountNameView: View {
+    @Binding var scene: PortalState.Scene
+    @ObservedObject var viewModel: CreateAccountViewModel
         
     var body: some View {
         VStack(spacing: 0) {
@@ -32,7 +32,7 @@ struct CreateWalletNameView: View {
                 WalletNameInputView(name: $viewModel.walletName)
                 PButton(label: "Continue", width: 124, height: 48, fontSize: 15, enabled: viewModel.nameIsValid) {
                     withAnimation {
-                        viewModel.walletCreationStep = .seed
+                        viewModel.step = .seed
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
@@ -69,7 +69,7 @@ struct CreateWalletNameView: View {
                         .foregroundColor(Color.txListTxType)
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            state = .restoreAccount
+                            scene = .restoreAccount
                         }
                 }
                 .font(.mainFont(size: 16))
@@ -85,7 +85,7 @@ struct CreateWalletNameView: View {
 
 struct CreateWalletNameView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateWalletNameView(state: .constant(.createAccount), viewModel: CreateWalletSceneViewModel(type: .mnemonic(words: [], salt: "")))
+        AccountNameView(scene: .constant(.createAccount), viewModel: CreateAccountViewModel(type: .mnemonic(words: [], salt: "")))
             .frame(width: 656, height: 656)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct WalletView: View {
-    @ObservedObject var state: PortalState
+    @ObservedObject var state = Portal.shared.state.wallet
     @ObservedObject var viewModel: WalletViewModel
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 0) {
                 HStack(spacing: 14) {
-                    AssetSearchField(search: $state.searchRequest)
+                    AssetSearchField(search: $state.search)
 //                    Text("Manage")
 //                        .font(.mainFont(size: 14))
                 }
@@ -47,14 +47,12 @@ struct WalletView: View {
                         Spacer()
                     }
                 } else {
-                    if state.searchRequest.isEmpty {
+                    if state.search.isEmpty {
                         List(viewModel.items) { item in
-                            AssetItemView(
-                                viewModel: item.viewModel,
-                                selected: state.selectedCoin.code == item.viewModel.coin.code,
+                            AssetItemView(viewModel: item.viewModel,
                                 onTap: {
-                                    if item.viewModel.coin.code != state.selectedCoin.code {
-                                        state.selectedCoin = item.viewModel.coin
+                                    if item.viewModel.coin.code != state.coin.code {
+                                        state.coin = item.viewModel.coin
                                     }
                                 }
                             )
@@ -66,14 +64,13 @@ struct WalletView: View {
                         .listStyle(SidebarListStyle())
                     } else {
                         List(viewModel.items.filter {
-                                $0.viewModel.coin.code.lowercased().contains(state.searchRequest.lowercased()) ||
-                                    $0.viewModel.coin.name.lowercased().contains(state.searchRequest.lowercased())}) { item in
-                            AssetItemView(
-                                viewModel: item.viewModel,
-                                selected: state.selectedCoin.code == item.viewModel.coin.code,
+                            $0.viewModel.coin.code.lowercased().contains(state.search.lowercased()) ||
+                            $0.viewModel.coin.name.lowercased().contains(state.search.lowercased())}) { item in
+                                
+                            AssetItemView(viewModel: item.viewModel,
                                 onTap: {
-                                    if item.viewModel.coin.code != state.selectedCoin.code {
-                                        state.selectedCoin = item.viewModel.coin
+                                    if item.viewModel.coin.code != state.coin.code {
+                                        state.coin = item.viewModel.coin
                                     }
                                 }
                             )
@@ -86,7 +83,7 @@ struct WalletView: View {
                     }
                 }
             }
-            .frame(minWidth: 650)
+            .frame(minWidth: 500)
         }
     }
 }
@@ -96,7 +93,7 @@ struct WalletView_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            WalletView(state: Portal.shared.state, viewModel: WalletViewModel.config())
+            WalletView(state: Portal.shared.state.wallet, viewModel: WalletViewModel.config())
         }
         .frame(width: .infinity, height: 430)
         .previewLayout(PreviewLayout.sizeThatFits)

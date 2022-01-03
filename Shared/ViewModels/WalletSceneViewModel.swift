@@ -13,9 +13,7 @@ final class WalletSceneViewModel: ObservableObject {
     @Published var walletName: String
     @Published var account: IAccount
     @Published var fiatCurrency: FiatCurrency
-    
-//    @ObservedObject var portfolioViewModel: PortfolioViewModel
-    
+
     @Published private(set) var fiatCurrencies: [FiatCurrency] = []
     
     init(account: IAccount, userCurrrency: FiatCurrency, allCurrencies: [FiatCurrency]) {
@@ -26,15 +24,7 @@ final class WalletSceneViewModel: ObservableObject {
         self.walletName = account.name
         self.fiatCurrencies = allCurrencies
         
-        print("wallet name: \(account.name)")
-                                
-//        $fiatCurrency.sink { (currency) in
-//            let walletCurrencyCode = wallet.fiatCurrencyCode
-//            if currency.code != walletCurrencyCode {
-//                wallet.updateFiatCurrency(currency)
-//            }
-//        }
-//        .store(in: &anyCancellable)
+        print("wallet name: \(account.name)")                                
     }
     
     deinit {
