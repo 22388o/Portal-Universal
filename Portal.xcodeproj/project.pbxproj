@@ -1050,7 +1050,6 @@
 		75F5CDB82684CE91005ECA5B /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		75F5CDBB2684CEB3005ECA5B /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
 		AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extension.swift"; sourceTree = "<group>"; };
-		AF22D6B3270392E2000AAEB2 /* Build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Build.sh; sourceTree = "<group>"; };
 		AFA3D7042721B7440000F3BD /* PortalAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalAppDelegate.swift; sourceTree = "<group>"; };
 		BC9A9F3CB0318CDC9451AD23 /* Pods_Portal__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E103E7237471B0E12F767D1B /* Pods-Portal (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (iOS).release.xcconfig"; path = "Target Support Files/Pods-Portal (iOS)/Pods-Portal (iOS).release.xcconfig"; sourceTree = "<group>"; };
@@ -1477,7 +1476,6 @@
 		755782BE26087903000E1686 = {
 			isa = PBXGroup;
 			children = (
-				AF22D6B3270392E2000AAEB2 /* Build.sh */,
 				750D63BC2689D9F200643FD3 /* alert.mp3 */,
 				755782C326087903000E1686 /* Shared */,
 				755782D026087904000E1686 /* iOS */,
@@ -2948,7 +2946,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "iOS/Portal (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -2983,7 +2981,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "iOS/Portal (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -3020,7 +3018,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3055,7 +3053,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

@@ -24,14 +24,14 @@
 	<string>${etherscan_api_key}</string>
 	<key>FixerApiKey</key>
 	<string>${fixer_api_key}</string>
-	<key>MixpanelToken</key>
-	<string>${mixpanel_token}</string>
 	<key>InfuraProjectId</key>
 	<string>${infura_project_id}</string>
 	<key>InfuraProjectSecret</key>
 	<string>${infura_project_secret}</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MixpanelToken</key>
+	<string>${mixpanel_token}</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
