@@ -83,21 +83,16 @@ final class MarketDataStorage: ObservableObject {
     
     private func update(_ range: MarketDataRange, _ data: HistoricalTickerPrice) {
         for points in data {
-            if repository.value[points.key] == nil {
-                repository.writer({ (data) in
-                    data[points.key] = CoinMarketData()
-                })
-            }
             repository.writer({ (data) in
                 switch range {
                 case .day:
-                    data[points.key]?.dayPoints = points.value
+                    data[points.key, default: CoinMarketData()].dayPoints = points.value
                 case .week:
-                    data[points.key]?.weekPoints = points.value
+                    data[points.key, default: CoinMarketData()].weekPoints = points.value
                 case .month:
-                    data[points.key]?.monthPoints = points.value
+                    data[points.key, default: CoinMarketData()].monthPoints = points.value
                 case .year:
-                    data[points.key]?.yearPoints = points.value
+                    data[points.key, default: CoinMarketData()].yearPoints = points.value
                 }
             })
         }
@@ -105,15 +100,10 @@ final class MarketDataStorage: ObservableObject {
     
     private func update(_ range: MarketDataRange, _ data: HistoricalDataResponse) {
         for snap in data {
-            if repository.value[snap.key] == nil {
-                repository.writer({ (data) in
-                    data[snap.key] = CoinMarketData()
-                })
-            }
-            self.repository.writer({ (data) in
+            repository.writer({ (data) in
                 switch range {
                 case .day:
-                    data[snap.key]?.dayOhlc = snap.value
+                    data[snap.key, default: CoinMarketData()].dayOhlc = snap.value
                 default:
                     break
                 }
@@ -123,14 +113,9 @@ final class MarketDataStorage: ObservableObject {
         
     private func update(_ prices: PriceResponse) {
         for price in prices {
-            if repository.value[price.key] == nil {
-                repository.writer({ (data) in
-                    data[price.key] = CoinMarketData()
-                })
-            }
             for currency in price.value {
                 repository.writer({ (data) in
-                    data[price.key]?.priceData = currency.value
+                    data[price.key, default: CoinMarketData()].priceData = currency.value
                 })
             }
         }
