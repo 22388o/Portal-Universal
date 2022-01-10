@@ -8,12 +8,13 @@
 import Foundation
 import Combine
 import Coinpaprika
-import web3
+//import web3
 
 import BigInt
 import HdWalletKit
 
 final class SwapperViewModel: ObservableObject {
+    
     //SwapItem container
     class SwapItem: ObservableObject {
         @Published var token: Erc20Token
@@ -24,6 +25,7 @@ final class SwapperViewModel: ObservableObject {
             self.value = "0"
         }
     }
+    /*
     // Uses in replacement of web3's EthereumKeyLocalStorage, which stores raw private key in device documents folder ☠️
     private struct TempKeyStorage: EthereumKeyStorageProtocol {
         let key: HDPrivateKey
@@ -38,7 +40,7 @@ final class SwapperViewModel: ObservableObject {
     private var account: EthereumAccount?
     private var walletEthereumAddress: EthereumAddress
     private var manager: EthereumKitManager
-    
+    */
      private(set) var tokenList : [Erc20Token] = [.LINK, .WETH, .BAND, .UNI, .MATIC, .USDT, .DAI]
     
     @Published var canSwap = false
@@ -47,7 +49,7 @@ final class SwapperViewModel: ObservableObject {
     @Published var slippage = String("0")
     
     private var subscriptions = Set<AnyCancellable>()
-    
+    /*
     //function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts);
     private struct GetAmountsOutParams: ABIFunction {
         public static let name = "getAmountsOut"
@@ -136,11 +138,11 @@ final class SwapperViewModel: ObservableObject {
             try encoder.encode(to)
             try encoder.encode(value)
         }
-    }
+    }*/
     
     init(infuraId: String, manager: EthereumKitManager) {
         print("SwapperViewModel init")
-        
+        /*
         self.manager = manager
         walletEthereumAddress = EthereumAddress(manager.ethereumKit?.receiveAddress.hex ?? "0x00")
         
@@ -174,8 +176,9 @@ final class SwapperViewModel: ObservableObject {
                 self?.quote.value = "0"
             }
             .store(in: &subscriptions)
+         */
     }
-    
+    /*
     private func initWeb3Account() {
         guard let privKey = manager.privateKey(), let pubKey = manager.publicKey() else { return }
         
@@ -251,8 +254,9 @@ final class SwapperViewModel: ObservableObject {
             })
         }
     }
-    
+    */
     func approveToken() {
+        /*
         let target = EthereumAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
         
         print("APPROVING", base.token.contractAddress, "TO", target)
@@ -276,9 +280,11 @@ final class SwapperViewModel: ObservableObject {
                 print("TX Hash: \(hash)")
             }
         }
+         */
     }
     
     func doSwap(){
+        /*
         print("DOING SWAP")
         
         let amtIn = BigUInt(base.value)
@@ -316,6 +322,7 @@ final class SwapperViewModel: ObservableObject {
                 print("TX Hash: \(hash)")
             }
         }
+         */
     }
     
     func reset() {
