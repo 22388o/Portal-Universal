@@ -33,8 +33,18 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "755782DD26087904000E1686"
-               BuildableName = "Tests iOS.xctest"
-               BlueprintName = "Tests iOS"
+               BuildableName = "UITests iOS.xctest"
+               BlueprintName = "UITests iOS"
+               ReferencedContainer = "container:Portal.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7524450F278C9FAC00B38F8D"
+               BuildableName = "UnitTestsIOS.xctest"
+               BlueprintName = "UnitTestsIOS"
                ReferencedContainer = "container:Portal.xcodeproj">
             </BuildableReference>
          </TestableReference>
