@@ -61478,3 +61478,111 @@ let erc20JSON = """
     }
 }
 """
+
+let CoinpaprikaBtcTickerJSON = """
+{
+    "id": "btc-bitcoin",
+    "name": "Bitcoin",
+    "symbol": "BTC",
+    "rank": 1,
+    "circulating_supply": 18925344,
+    "total_supply": 18925344,
+    "max_supply": 21000000,
+    "beta_value": 0.925906,
+    "first_data_at": "2010-07-17T00:00:00Z",
+    "last_updated": "2022-01-10T19:56:17Z",
+    "quotes": {
+        "USD": {
+            "price": 41177.91590754,
+            "volume_24h": 33373797643.744,
+            "volume_24h_change_24h": 37.62,
+            "market_cap": 779305976685,
+            "market_cap_change_24h": -3.58,
+            "percent_change_15m": -1.05,
+            "percent_change_30m": -0.93,
+            "percent_change_1h": -1.16,
+            "percent_change_6h": 0.72,
+            "percent_change_12h": -2.13,
+            "percent_change_24h": -3.59,
+            "percent_change_7d": -11.5,
+            "percent_change_30d": -14.67,
+            "percent_change_1y": 9.01,
+            "ath_price": 68692.137036932,
+            "ath_date": "2021-11-10T16:51:15Z",
+            "percent_from_price_ath": -40.05
+        }
+    }
+}
+"""
+
+let CoinpaprikaEthTickerJSON = """
+{
+    "id": "eth-ethereum",
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "rank": 2,
+    "circulating_supply": 119105686,
+    "total_supply": 119105738,
+    "max_supply": 0,
+    "beta_value": 1.08449,
+    "first_data_at": "2015-08-07T00:00:00Z",
+    "last_updated": "2022-01-10T19:26:07Z",
+    "quotes": {
+        "USD": {
+            "price": 3046.189205883,
+            "volume_24h": 21625278384.752,
+            "volume_24h_change_24h": 38.67,
+            "market_cap": 362818455052,
+            "market_cap_change_24h": -4.84,
+            "percent_change_15m": -0.22,
+            "percent_change_30m": -0.1,
+            "percent_change_1h": 0.44,
+            "percent_change_6h": 0.48,
+            "percent_change_12h": -3.89,
+            "percent_change_24h": -4.85,
+            "percent_change_7d": -19.09,
+            "percent_change_30d": -25.03,
+            "percent_change_1y": 134.58,
+            "ath_price": 4864.1131966142,
+            "ath_date": "2021-11-10T16:06:16Z",
+            "percent_from_price_ath": -37.37
+        }
+    }
+}
+"""
+
+let MockCoinTickerJSON = """
+{
+    "id": "mock-coin",
+    "name": "Mock coin",
+    "symbol": "MOC",
+    "rank": -1,
+    "circulating_supply": 18925344,
+    "total_supply": 18925344,
+    "max_supply": 0,
+    "beta_value": 0.925906,
+    "first_data_at": "2010-07-17T00:00:00Z",
+    "last_updated": "2022-01-10T19:56:17Z",
+    "quotes": {
+        "USD": {
+            "price": 41177.91590754,
+            "volume_24h": 33373797643.744,
+            "volume_24h_change_24h": 37.62,
+            "market_cap": 779305976685,
+            "market_cap_change_24h": -3.58,
+            "percent_change_15m": -1.05,
+            "percent_change_30m": -0.93,
+            "percent_change_1h": -1.16,
+            "percent_change_6h": 0.72,
+            "percent_change_12h": -2.13,
+            "percent_change_24h": -3.59,
+            "percent_change_7d": -11.5,
+            "percent_change_30d": -14.67,
+            "percent_change_1y": 9.01,
+            "ath_price": 68692.137036932,
+            "ath_date": "2021-11-10T16:51:15Z",
+            "percent_from_price_ath": -40.05
+        }
+    }
+}
+"""
