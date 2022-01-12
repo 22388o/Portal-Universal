@@ -48,3 +48,47 @@ class WalletMock: IWallet {
     func addTx(coin: Coin, amount: Decimal, receiverAddress: String, memo: String?) {}
     func updateFiatCurrency(_ fiatCurrency: FiatCurrency) {}
 }
+
+import Coinpaprika
+import Combine
+
+class MockedMarketDataProvider: IMarketDataProvider {
+    var onMarketDataUpdate = PassthroughSubject<Void, Never>()
+    
+    var fiatCurrencies: [FiatCurrency] = []
+    
+    var tickers: [Ticker]?
+    
+    func ticker(coin: Coin) -> Ticker? {
+        tickers?.first(where: { $0.symbol == coin.code })
+    }
+    
+    func marketData(coin: Coin) -> CoinMarketData {
+        var md = CoinMarketData()
+        
+        md.dayPoints = [42258, 43127]
+        md.weekPoints = [42290, 40600]
+        md.monthPoints = [51200, 42000]
+        
+        return md
+    }
+    
+    func requestHistoricalData(coin: Coin, timeframe: Timeframe) {
+        
+    }
+    
+    init() {
+        let btcTickerData = CoinpaprikaBtcTickerJSON.data(using: .utf8)!
+        
+        let btcTicker = try! Ticker.decoder.decode(Ticker.self, from: btcTickerData)
+
+        let ethTickerData = CoinpaprikaEthTickerJSON.data(using: .utf8)!
+        let ethTicker = try! Ticker.decoder.decode(Ticker.self, from: ethTickerData)
+        
+        let mockCoinTickerData = MockCoinTickerJSON.data(using: .utf8)!
+        let mockCoinTicker = try! Ticker.decoder.decode(Ticker.self, from: mockCoinTickerData)
+        
+        tickers = [btcTicker, ethTicker, mockCoinTicker]
+    }
+}
+
