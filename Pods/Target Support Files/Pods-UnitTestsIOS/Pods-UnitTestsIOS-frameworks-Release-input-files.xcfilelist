@@ -1,4 +1,4 @@
-${PODS_ROOT}/Target Support Files/Pods-Tests iOS/Pods-Tests iOS-frameworks.sh
+${PODS_ROOT}/Target Support Files/Pods-UnitTestsIOS/Pods-UnitTestsIOS-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire-iOS/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/BigInt-iOS/BigInt.framework
 ${BUILT_PRODUCTS_DIR}/BitcoinCore-Universal.swift-iOS/BitcoinCore.framework
