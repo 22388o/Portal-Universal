@@ -318,4 +318,9 @@ class AssetViewModelUnitTests: XCTestCase {
         wait(for: [promisse], timeout: 0.2)
         XCTAssertEqual(sut.canSend, true)
     }
+    
+    func testConfig() throws {
+        sut = AssetViewModel.config()
+        XCTAssertNotNil(sut)
+    }
 }
