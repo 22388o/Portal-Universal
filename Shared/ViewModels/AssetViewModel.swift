@@ -28,6 +28,7 @@ final class AssetViewModel: ObservableObject {
     private let marketDataProvider: IMarketDataProvider
     private let walletManager: IWalletManager
     private let adapterManager: IAdapterManager
+    private var adapter: IBalanceAdapter?
     private var subscriptions = Set<AnyCancellable>()
         
     private var marketData: CoinMarketData {
@@ -47,7 +48,6 @@ final class AssetViewModel: ObservableObject {
     }
     
     var coin: Coin
-    var adapter: IBalanceAdapter?
         
     var totalSupply: String {
         if let ticker = self.ticker {
