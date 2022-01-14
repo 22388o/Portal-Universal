@@ -92,17 +92,3 @@ struct AssetItemView_Previews: PreviewProvider {
         )
     }
 }
-
-import Combine
-
-struct MockedBalanceAdapter: IBalanceAdapter {
-    var balanceStateUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
-    
-    var balanceUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
-    
-    var balanceState: AdapterState = .synced
-        
-    var balance: Decimal = 2.25
-        
-    init() {}
-}

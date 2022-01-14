@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 let btcMockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
 
@@ -19,6 +20,31 @@ final class MockCoinKit: AbstractKit {
     func send(amount: Double) {
         print("Send coins...")
     }
+}
+
+struct MockedBalanceAdapter: IBalanceAdapter {
+    var balanceStateUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
+    var balanceUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
+    var balanceState: AdapterState = .synced
+        
+    var balance: Decimal = 2.25
+        
+    init() {}
+}
+
+class MockedBalanceAdapterWithUnspendable: IBalanceAdapter {
+    var balanceStateUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
+    var balanceUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
+    var balanceState: AdapterState = .synced
+        
+    var balance: Decimal = 1.25
+    var balanceLocked: Decimal? = 0.3123
+        
+    init() {}
 }
 
 class WalletMock: IWallet {
