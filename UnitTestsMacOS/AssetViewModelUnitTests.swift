@@ -73,7 +73,7 @@ class AssetViewModelUnitTests: XCTestCase {
     func testTotalSupplyStringIsSet() throws {
         let totalSupplyString = sut.totalSupply
         XCTAssertNotEqual(totalSupplyString, "-")
-        XCTAssertEqual(totalSupplyString, "18,925,344 BTC")
+        XCTAssertEqual(totalSupplyString, "18,928,038 BTC")
     }
     
     func testMaxSupplyStringStates() throws {
@@ -93,7 +93,7 @@ class AssetViewModelUnitTests: XCTestCase {
     func testMarketCupStringIsSet() throws {
         let marketCupString = sut.marketCap
         XCTAssertNotEqual(marketCupString, "-")
-        XCTAssertEqual(marketCupString, "$779,305,976,685")
+        XCTAssertEqual(marketCupString, "$835,846,930,071")
     }
     
     func testAthPriceStringIsSet() throws {
@@ -111,13 +111,13 @@ class AssetViewModelUnitTests: XCTestCase {
     func testVolume24hStringIsSet() throws {
         let volume24hString = sut.volume24h
         XCTAssertNotEqual(volume24hString, "-")
-        XCTAssertEqual(volume24hString, "$33,373,797,643.74")
+        XCTAssertEqual(volume24hString, "$87,854,170,605.59")
     }
     
     func testPercentFromPriceAthStringIsSet() throws {
         let percentFromPriceAthString = sut.percentFromPriceAth
         XCTAssertNotEqual(percentFromPriceAthString, "-")
-        XCTAssertEqual(percentFromPriceAthString, "-40.05%")
+        XCTAssertEqual(percentFromPriceAthString, "-35.71%")
     }
     
     func testHighValueStringStates() throws {
@@ -137,7 +137,7 @@ class AssetViewModelUnitTests: XCTestCase {
         
         sut = AssetViewModel(state: state, walletManager: walletManager, adapterManager: adapterManager, marketDataProvider: marketDataProvider)
         
-        XCTAssertEqual(sut.highValue, "14.1577 ETH")
+        XCTAssertEqual(sut.highValue, "12.7887 ETH")
         
         state.wallet.coin = .ethereum()
         
@@ -166,7 +166,7 @@ class AssetViewModelUnitTests: XCTestCase {
         
         sut = AssetViewModel(state: state, walletManager: walletManager, adapterManager: adapterManager, marketDataProvider: marketDataProvider)
         
-        XCTAssertEqual(sut.lowValue, "13.8724 ETH")
+        XCTAssertEqual(sut.lowValue, "12.531 ETH")
         
         state.wallet.coin = .ethereum()
         
@@ -179,11 +179,11 @@ class AssetViewModelUnitTests: XCTestCase {
     }
     
     func testChangeLabelColorIsCorrect() throws {
-        XCTAssertEqual(sut.changeLabelColor, Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1))
-
-        sut.timeframe = .year
-        
         XCTAssertEqual(sut.changeLabelColor, Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1))
+
+        sut.timeframe = .month
+        
+        XCTAssertEqual(sut.changeLabelColor, Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1))
     }
     
     func testChangeStringStates() throws {
@@ -200,7 +200,7 @@ class AssetViewModelUnitTests: XCTestCase {
 
         
         wait(for: [promisse], timeout: 0.2)
-        XCTAssertEqual(sut.change, "-$147.74 (-4.85%)")
+        XCTAssertEqual(sut.change, "+$0.34 (0.01%)")
     }
     
     func testChangeStringForDayTimeframe() throws {
@@ -216,7 +216,7 @@ class AssetViewModelUnitTests: XCTestCase {
             .store(in: &subscriptions)
                     
         wait(for: [promisse], timeout: 0.2)
-        XCTAssertEqual(sut.change, "-$1,478.29 (-3.59%)")
+        XCTAssertEqual(sut.change, "+$362.11 (0.82%)")
     }
     
     func testChangeStringForWeekTimeframe() throws {
@@ -233,7 +233,7 @@ class AssetViewModelUnitTests: XCTestCase {
         sut.timeframe = .week
                     
         wait(for: [promisse], timeout: 0.2)
-        XCTAssertEqual(sut.change, "-$4,735.46 (-11.5%)")
+        XCTAssertEqual(sut.change, "+$1,355.69 (3.07%)")
     }
     
     func testChangeStringForMonthTimeframe() throws {
@@ -250,7 +250,7 @@ class AssetViewModelUnitTests: XCTestCase {
         sut.timeframe = .month
                     
         wait(for: [promisse], timeout: 0.2)
-        XCTAssertEqual(sut.change, "-$6,040.8 (-14.67%)")
+        XCTAssertEqual(sut.change, "-$2,684.88 (-6.08%)")
     }
     
     func testChangeStringForYearTimeframe() throws {
@@ -267,7 +267,7 @@ class AssetViewModelUnitTests: XCTestCase {
         sut.timeframe = .year
                     
         wait(for: [promisse], timeout: 0.2)
-        XCTAssertEqual(sut.change, "+$3,710.13 (9.01%)")
+        XCTAssertEqual(sut.change, "+$12,165.86 (27.55%)")
     }
     
     func testTotalValueString() throws {
@@ -279,7 +279,7 @@ class AssetViewModelUnitTests: XCTestCase {
         }
         
         wait(for: [promisse], timeout: 0.2)
-        XCTAssertEqual(sut.totalValue, "$41,177.92")
+        XCTAssertEqual(sut.totalValue, "$44,159.2")
         
         state.wallet.currency = .fiat(FiatCurrency(code: "RUB", name: "Russian Ruble"))
         
@@ -290,7 +290,7 @@ class AssetViewModelUnitTests: XCTestCase {
         }
                 
         wait(for: [promisse1], timeout: 0.2)
-        XCTAssertEqual(sut.totalValue, "₽41,177.92")
+        XCTAssertEqual(sut.totalValue, "₽44,159.2")
     }
     
     func testBalanceString() throws {
