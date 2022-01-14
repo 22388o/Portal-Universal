@@ -21,14 +21,11 @@ class HeaderViewModel: ObservableObject {
     private var reachabillityService: ReachabilityService
     private var cancellables = Set<AnyCancellable>()
     
-    init(accountManager: IAccountManager, notificationService: NotificationService, reachabilityService: ReachabilityService) {
+    init(accountManager: IAccountManager, notificationService: NotificationService, reachabilityService: ReachabilityService, currencies: [Currency]) {
         self.accountName = accountManager.activeAccount?.name ?? "-"
         self.notificationService = notificationService
         self.reachabillityService = reachabilityService
-        
-        currencies.append(Currency.btc)
-        currencies.append(Currency.eth)
-        currencies.append(contentsOf: Portal.shared.marketDataProvider.fiatCurrencies.map{ Currency.fiat($0) })
+        self.currencies = currencies
         
         accountManager.onActiveAccountUpdate
             .receive(on: RunLoop.main)
@@ -64,11 +61,14 @@ extension HeaderViewModel {
         let accountManager = Portal.shared.accountManager
         let notificationService = Portal.shared.notificationService
         let reachabilityService = Portal.shared.reachabilityService
+        let fiatCurrencies = Portal.shared.marketDataProvider.fiatCurrencies.map{ Currency.fiat($0) }
+        let currencies = [Currency.btc, Currency.eth] + fiatCurrencies
         
         return HeaderViewModel(
             accountManager: accountManager,
             notificationService: notificationService,
-            reachabilityService: reachabilityService
+            reachabilityService: reachabilityService,
+            currencies: currencies
         )
     }
 }
