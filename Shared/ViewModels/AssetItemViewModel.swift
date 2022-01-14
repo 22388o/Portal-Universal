@@ -26,8 +26,6 @@ final class AssetItemViewModel: ObservableObject {
     private let marketDataProvider: IMarketDataProvider
 
     private var subscriptions = Set<AnyCancellable>()
-    
-    private let selectedTimeframe: Timeframe
     private var currency: Currency
     
     private var ticker: Ticker? {
@@ -35,22 +33,7 @@ final class AssetItemViewModel: ObservableObject {
     }
     
     var changeLabelColor: Color {
-        let priceChange: Decimal?
-        let ticker = ticker?[.usd]
-        
-        switch selectedTimeframe {
-        case .day:
-            priceChange = ticker?.percentChange24h
-        case .week:
-            priceChange = ticker?.percentChange7d
-        case .month:
-            priceChange = ticker?.percentChange30d
-        case .year:
-            priceChange = ticker?.percentChange1y
-        }
-        
-        guard let pChange = priceChange else { return .white }
-        
+        guard let pChange = ticker?[.usd].percentChange24h else { return .white }
         return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
     }
     
@@ -66,7 +49,6 @@ final class AssetItemViewModel: ObservableObject {
         self.notificationService = notificationService
         self.marketDataProvider = marketDataProvider
         
-        self.selectedTimeframe = .day
         self.currency = state.wallet.currency
         
         self.adapterState = adapter.balanceState
