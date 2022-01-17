@@ -62,7 +62,7 @@ final class SendAssetViewModel: ObservableObject {
         self.ticker = ticker
         self.lastBlockInfo = txsAdapter.lastBlockInfo
         
-        self.exchangerViewModel = .init(coin: coin, currency: currency)
+        self.exchangerViewModel = .init(coin: coin, currency: currency, ticker: ticker)
         self.currency = currency
         
         updateBalance()

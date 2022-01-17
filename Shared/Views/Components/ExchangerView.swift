@@ -114,8 +114,15 @@ struct ExchangerView: View {
 
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangerView(viewModel: .init(coin: Coin.bitcoin(), currency: .fiat(USD)), isValid: .constant(true))
-            .frame(width: 550, height: 200)
-            .previewLayout(PreviewLayout.sizeThatFits)
+        let coin = Coin.bitcoin()
+        let ticker = Portal.shared.marketDataProvider.ticker(coin: coin)
+        let fiatCurrency: Currency = .fiat(USD)
+        
+        ExchangerView(
+            viewModel: .init(coin: coin, currency: fiatCurrency, ticker: ticker),
+            isValid: .constant(true)
+        )
+        .frame(width: 550, height: 200)
+        .previewLayout(PreviewLayout.sizeThatFits)
     }
 }
