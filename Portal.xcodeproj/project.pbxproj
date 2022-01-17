@@ -255,6 +255,7 @@
 		753BA6FF278F0D7C009FEC20 /* AccountSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA6FE278F0D7C009FEC20 /* AccountSettingsViewModelTests.swift */; };
 		753BA701278F263D009FEC20 /* AssetItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA700278F263D009FEC20 /* AssetItemViewModelTests.swift */; };
 		753BA7032791CE73009FEC20 /* HeaderViewModelUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA7022791CE73009FEC20 /* HeaderViewModelUnitTests.swift */; };
+		753BA7052791E15D009FEC20 /* PortfolioViewModelUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA7042791E15D009FEC20 /* PortfolioViewModelUnitTests.swift */; };
 		753E7E2C2756630400C96F33 /* PortfolioItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E7E2B2756630400C96F33 /* PortfolioItem.swift */; };
 		753E7E2D2756630400C96F33 /* PortfolioItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E7E2B2756630400C96F33 /* PortfolioItem.swift */; };
 		753E7E2F2756636500C96F33 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E7E2E2756636500C96F33 /* String+Extension.swift */; };
@@ -727,6 +728,7 @@
 		753BA6FE278F0D7C009FEC20 /* AccountSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTests.swift; sourceTree = "<group>"; };
 		753BA700278F263D009FEC20 /* AssetItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetItemViewModelTests.swift; sourceTree = "<group>"; };
 		753BA7022791CE73009FEC20 /* HeaderViewModelUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewModelUnitTests.swift; sourceTree = "<group>"; };
+		753BA7042791E15D009FEC20 /* PortfolioViewModelUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewModelUnitTests.swift; sourceTree = "<group>"; };
 		753E7E2B2756630400C96F33 /* PortfolioItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioItem.swift; sourceTree = "<group>"; };
 		753E7E2E2756636500C96F33 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		753E7E312756693300C96F33 /* BarChart+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BarChart+Extension.swift"; sourceTree = "<group>"; };
@@ -1109,6 +1111,7 @@
 				753BA700278F263D009FEC20 /* AssetItemViewModelTests.swift */,
 				753BA6FE278F0D7C009FEC20 /* AccountSettingsViewModelTests.swift */,
 				753BA7022791CE73009FEC20 /* HeaderViewModelUnitTests.swift */,
+				753BA7042791E15D009FEC20 /* PortfolioViewModelUnitTests.swift */,
 				75244503278C85F000B38F8D /* UnitTestsMacOS.swift */,
 				75119D0D278DFD430073B03C /* Helpers */,
 			);
@@ -2011,6 +2014,7 @@
 				753BA7032791CE73009FEC20 /* HeaderViewModelUnitTests.swift in Sources */,
 				753BA701278F263D009FEC20 /* AssetItemViewModelTests.swift in Sources */,
 				75244504278C85F000B38F8D /* UnitTestsMacOS.swift in Sources */,
+				753BA7052791E15D009FEC20 /* PortfolioViewModelUnitTests.swift in Sources */,
 				7524451A278CAB0300B38F8D /* MockedAdapterManager.swift in Sources */,
 				7524450B278C883700B38F8D /* AssetViewModelUnitTests.swift in Sources */,
 				75119D0C278DFC1A0073B03C /* MockedWalletManager.swift in Sources */,
