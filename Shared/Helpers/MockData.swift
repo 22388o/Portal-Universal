@@ -34,6 +34,37 @@ struct MockedBalanceAdapter: IBalanceAdapter {
     init() {}
 }
 
+struct MockedTransactionAdapter: ITransactionsAdapter {
+    var coin: Coin = .bitcoin()
+    
+    var transactionState: AdapterState = .synced
+    
+    var lastBlockInfo: LastBlockInfo? = nil
+    
+    var transactionStateUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
+    var lastBlockUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    
+    var transactionRecords: AnyPublisher<[TransactionRecord], Never> {
+        Future { promisse in
+            promisse(.success([]))
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
+        Future { promisse in
+            promisse(.success([]))
+        }
+    }
+    
+    func rawTransaction(hash: String) -> String? {
+        nil
+    }
+    
+    
+}
+
 class MockedBalanceAdapterWithUnspendable: IBalanceAdapter {
     var balanceStateUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
     
@@ -95,6 +126,7 @@ class MockedMarketDataProvider: IMarketDataProvider {
         md.dayPoints = [42258, 43127]
         md.weekPoints = [42290, 40600]
         md.monthPoints = [51200, 42000]
+        md.yearPoints = [30000, 69000]
         
         return md
     }

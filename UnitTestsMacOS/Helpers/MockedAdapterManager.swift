@@ -24,7 +24,7 @@ class MockedAdapterManager: IAdapterManager {
     }
     
     func transactionsAdapter(for wallet: Wallet) -> ITransactionsAdapter? {
-        nil
+        MockedTransactionAdapter()
     }
     
     func depositAdapter(for wallet: Wallet) -> IDepositAdapter? {
