@@ -146,7 +146,7 @@ class AssetViewModelUnitTests: XCTestCase {
         XCTAssertEqual(sut.highValue, "1 ETH")
         
         sut.timeframe = .year
-        XCTAssertEqual(sut.highValue, "-")
+        XCTAssertEqual(sut.highValue, "1 ETH")
     }
     
     func testLowValueStringStates() throws {
@@ -175,7 +175,7 @@ class AssetViewModelUnitTests: XCTestCase {
         XCTAssertEqual(sut.lowValue, "1 ETH")
         
         sut.timeframe = .year
-        XCTAssertEqual(sut.lowValue, "-")
+        XCTAssertEqual(sut.lowValue, "1 ETH")
     }
     
     func testChangeLabelColorIsCorrect() throws {
