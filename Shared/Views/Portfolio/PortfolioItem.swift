@@ -234,3 +234,9 @@ class PortfolioItem: ObservableObject {
         }
     }
 }
+
+extension PortfolioItem: Equatable {
+    static func == (lhs: PortfolioItem, rhs: PortfolioItem) -> Bool {
+        lhs.coin == rhs.coin
+    }
+}
