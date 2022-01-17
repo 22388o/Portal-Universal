@@ -18,6 +18,20 @@ struct MockedAccountManager: IAccountManager {
         type: .mnemonic(words: [], salt: String())
     )
     
+    private let accountToSave = Account(
+        id: "accountToSave",
+        name: "Account to save",
+        bip: .bip44,
+        type: .mnemonic(words: [], salt: String())
+    )
+    
+    private let accountToDelete = Account(
+        id: "accountToDelete",
+        name: "Account to delete",
+        bip: .bip49,
+        type: .mnemonic(words: [], salt: String())
+    )
+    
     var onActiveAccountUpdate: PassthroughSubject<Account?, Never> = PassthroughSubject<Account?, Never>()
     
     var accounts: [Account] {
@@ -37,11 +51,11 @@ struct MockedAccountManager: IAccountManager {
     }
     
     func setActiveAccount(id: String) {
-        onActiveAccountUpdate.send(mockedAccount)
+        onActiveAccountUpdate.send(accountToSave)
     }
     
     func save(account: Account) {
-        onActiveAccountUpdate.send(mockedAccount)
+        onActiveAccountUpdate.send(accountToDelete)
     }
     
     func update(account: Account) {
@@ -49,7 +63,7 @@ struct MockedAccountManager: IAccountManager {
     }
     
     func delete(account: Account) {
-        
+        onActiveAccountUpdate.send(accountToDelete)
     }
     
     func delete(accountId: String) {
