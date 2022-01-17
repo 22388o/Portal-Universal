@@ -1,5 +1,5 @@
 //
-//  WalletNameInputView.swift
+//  AccountNameInputView.swift
 //  Portal
 //
 //  Created by Farid on 05.04.2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WalletNameInputView: View {
+struct AccountNameInputView: View {
     @Binding var name: String
     
     var body: some View {
@@ -42,8 +42,8 @@ struct WalletNameInputView: View {
 struct WalletNameInputView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            WalletNameInputView(name: .constant(String()))
-            WalletNameInputView(name: .constant("Personal"))
+            AccountNameInputView(name: .constant(String()))
+            AccountNameInputView(name: .constant("Personal"))
         }
         .frame(width: 267, height: 48)
         .previewLayout(PreviewLayout.sizeThatFits)
