@@ -540,8 +540,6 @@
 		75F5CD9B2684C904005ECA5B /* SeedTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CD992684C904005ECA5B /* SeedTestViewModel.swift */; };
 		75F5CDA42684CA76005ECA5B /* RestoreAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDA32684CA76005ECA5B /* RestoreAccountViewModel.swift */; };
 		75F5CDA52684CA76005ECA5B /* RestoreAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDA32684CA76005ECA5B /* RestoreAccountViewModel.swift */; };
-		75F5CDA92684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDA82684CACA005ECA5B /* WalletSceneViewModel.swift */; };
-		75F5CDAA2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDA82684CACA005ECA5B /* WalletSceneViewModel.swift */; };
 		75F5CDAE2684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDAD2684CBF7005ECA5B /* SendAssetViewModel.swift */; };
 		75F5CDAF2684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDAD2684CBF7005ECA5B /* SendAssetViewModel.swift */; };
 		75F5CDB32684CD49005ECA5B /* AssetAllocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB22684CD49005ECA5B /* AssetAllocationView.swift */; };
@@ -893,7 +891,6 @@
 		75F5CD942684C8D6005ECA5B /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewModel.swift; sourceTree = "<group>"; };
 		75F5CD992684C904005ECA5B /* SeedTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedTestViewModel.swift; sourceTree = "<group>"; };
 		75F5CDA32684CA76005ECA5B /* RestoreAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreAccountViewModel.swift; sourceTree = "<group>"; };
-		75F5CDA82684CACA005ECA5B /* WalletSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSceneViewModel.swift; sourceTree = "<group>"; };
 		75F5CDAD2684CBF7005ECA5B /* SendAssetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetViewModel.swift; sourceTree = "<group>"; };
 		75F5CDB22684CD49005ECA5B /* AssetAllocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAllocationView.swift; sourceTree = "<group>"; };
 		75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAllocationViewModel.swift; sourceTree = "<group>"; };
@@ -1660,7 +1657,6 @@
 				75F5CD942684C8D6005ECA5B /* CreateAccountViewModel.swift */,
 				75F5CD992684C904005ECA5B /* SeedTestViewModel.swift */,
 				75F5CDA32684CA76005ECA5B /* RestoreAccountViewModel.swift */,
-				75F5CDA82684CACA005ECA5B /* WalletSceneViewModel.swift */,
 				75F5CDAD2684CBF7005ECA5B /* SendAssetViewModel.swift */,
 				75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */,
 				7556940326A6B15C00EE5CC4 /* WalletViewModel.swift */,
@@ -2127,7 +2123,6 @@
 				7555643426D8FB1A001B1C1A /* MyOrdersView.swift in Sources */,
 				75C95C162614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
 				7581900F26E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */,
-				75F5CDA92684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
 				755EBC2E272194D400B56B89 /* ReachabilityService.swift in Sources */,
 				75D476DA262DB81C0006FD91 /* AssetTxView.swift in Sources */,
 				75C95C5A2614CC0400B0EE10 /* Font+Extension.swift in Sources */,
@@ -2347,7 +2342,6 @@
 				75F5CD962684C8D6005ECA5B /* CreateAccountViewModel.swift in Sources */,
 				75A00BD826D3FC7000ABCA7E /* LazyVStack_.swift in Sources */,
 				751B6547269CA219001B759C /* BitcoinAdapter.swift in Sources */,
-				75F5CDAA2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
 				755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */,
 				FA3FD81B26FCC98500953727 /* Erc20Token.swift in Sources */,
 				FA70527226CEB4BD000EE935 /* SwapperView.swift in Sources */,
