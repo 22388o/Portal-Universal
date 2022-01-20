@@ -10,20 +10,8 @@ import Foundation
 import Combine
 import SwiftUI
 
-typealias Rates = [String : Double]
-
-struct FiatRatesResponse: Codable {
-    let success: Bool
-    let rates: Rates?
-}
-
-struct FiatSymbols: Codable {
-    let success: Bool
-    let symbols: [String: String]?
-}
-
-final class FiatCurrenciesUpdater { 
-    let onFiatCurrenciesUpdate = PassthroughSubject<[FiatCurrency], Never>()
+final class FiatCurrenciesUpdater: IFiatCurrenciesUpdater {
+    private(set) var onFiatCurrenciesUpdate = PassthroughSubject<[FiatCurrency], Never>()
         
     private let jsonDecoder: JSONDecoder
     private let timer: RepeatingTimer

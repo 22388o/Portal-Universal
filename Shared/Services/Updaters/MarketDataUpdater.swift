@@ -11,14 +11,14 @@ import Combine
 import Coinpaprika
 
 final class MarketDataUpdater {
-    let onUpdateHistoricalPrice = PassthroughSubject<(MarketDataRange, HistoricalTickerPrice), Never>()
-    let onUpdateHistoricalData = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
-    let onTickersUpdate = PassthroughSubject<([Ticker]), Never>()
+    private(set) var onUpdateHistoricalPrice = PassthroughSubject<(MarketDataRange, HistoricalTickerPrice), Never>()
+    private(set) var onUpdateHistoricalData = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
+    private(set) var onTickersUpdate = PassthroughSubject<([Ticker]), Never>()
     
     private(set) var tickers: [Ticker]
-    private var reachability: ReachabilityService
+    private var reachability: IReachabilityService
 
-    init(cachedTickers: [Ticker], reachability: ReachabilityService) {
+    init(cachedTickers: [Ticker], reachability: IReachabilityService) {
         self.tickers = cachedTickers
         self.reachability = reachability
         
@@ -27,7 +27,7 @@ final class MarketDataUpdater {
     }
         
     private func updateTickers() {
-        guard reachability.isReachable else { return }
+        guard reachability.isReachable.value else { return }
         
         Coinpaprika.API.tickers(quotes: [.usd, .btc, .eth])
             .perform { [unowned self] (response) in
@@ -42,7 +42,7 @@ final class MarketDataUpdater {
     }
     
     private func updateTickerHistory() {
-        guard reachability.isReachable else { return }
+        guard reachability.isReachable.value else { return }
 
         let coins =  [Coin.bitcoin(), Coin.ethereum()]
         let coinPaprikaCoinIds = coins.compactMap { (coin) -> String? in
@@ -69,9 +69,11 @@ final class MarketDataUpdater {
             requestHistoricalMarketData(coin: coins[index], timeframe: .year)
         }
     }
-    
+}
+
+extension MarketDataUpdater: IMarketDataUpdater {
     func requestHistoricalMarketData(coin: Coin, timeframe: Timeframe) {
-        guard reachability.isReachable else { return }
+        guard reachability.isReachable.value else { return }
 
         guard let coinPaprikaId = tickers.first(where: { (ticker) -> Bool in
             coin.code.lowercased() == ticker.symbol.lowercased()

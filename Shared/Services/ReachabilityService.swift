@@ -8,7 +8,7 @@
 import Network
 import Combine
 
-class ReachabilityService: ObservableObject {
+class ReachabilityService: IReachabilityService {
     private let monitorForWifi = NWPathMonitor(requiredInterfaceType: .wifi)
     private let monitorForCellular = NWPathMonitor(requiredInterfaceType: .cellular)
     private let monitorForOtherConnections = NWPathMonitor(requiredInterfaceType: .other)
@@ -17,25 +17,24 @@ class ReachabilityService: ObservableObject {
 
     private var wifiStatus: NWPath.Status = .requiresConnection {
         didSet {
-            isReachableOnWifi = wifiStatus == .satisfied
+            isReachableOnWifi.value = wifiStatus == .satisfied
         }
     }
     private var cellularStatus: NWPath.Status = .requiresConnection {
         didSet {
-            isReachableOnCellular =  cellularStatus == .satisfied
+            isReachableOnCellular.value = cellularStatus == .satisfied
         }
     }
     private var otherConnectionsStatus: NWPath.Status = .requiresConnection {
         didSet {
-            isReachableOnOtherConnection =  otherConnectionsStatus == .satisfied
+            isReachableOnOtherConnection.value = otherConnectionsStatus == .satisfied
         }
     }
     
-    @Published private var isReachableOnWifi: Bool = false
-    @Published private var isReachableOnCellular: Bool = false
-    @Published private var isReachableOnOtherConnection: Bool = false
-    
-    @Published private(set) var isReachable: Bool = false
+    private var isReachableOnWifi = CurrentValueSubject<Bool, Never>(false)
+    private var isReachableOnCellular = CurrentValueSubject<Bool, Never>(false)
+    private var isReachableOnOtherConnection = CurrentValueSubject<Bool, Never>(false)
+    private(set) var isReachable = CurrentValueSubject<Bool, Never>(false)
     
     func startMonitoring() {
         monitorForWifi.pathUpdateHandler = { [unowned self] path in
@@ -49,9 +48,9 @@ class ReachabilityService: ObservableObject {
             self.otherConnectionsStatus = path.status
         }
         
-        Publishers.Merge3($isReachableOnWifi, $isReachableOnCellular, $isReachableOnOtherConnection)
+        Publishers.Merge3(isReachableOnWifi, isReachableOnCellular, isReachableOnOtherConnection)
             .sink { [unowned self] output in
-                self.isReachable = output
+                self.isReachable.value = output
             }
             .store(in: &subscriptions)
         

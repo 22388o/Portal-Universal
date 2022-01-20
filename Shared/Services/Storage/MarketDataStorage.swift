@@ -11,15 +11,15 @@ import SwiftUI
 import Combine
 import Coinpaprika
 
-final class MarketDataStorage: ObservableObject {
+final class MarketDataStorage {
     typealias CoinCode = String
     typealias CurrencyCode = String
     typealias Rate = Double
     
     private let supportedFiatCurrenciesSymbols = "JPY USD KRW EUR INR CAD RUB GBP CNY NZD SGD"
     
-    private var mdUpdater: MarketDataUpdater
-    private var fcUpdater: FiatCurrenciesUpdater
+    private var mdUpdater: IMarketDataUpdater
+    private var fcUpdater: IFiatCurrenciesUpdater
     private var cacheStorage: IDBCacheStorage
     
     private var cancellables: Set<AnyCancellable> = []
@@ -35,7 +35,7 @@ final class MarketDataStorage: ObservableObject {
         cacheStorage.fiatCurrencies
     }
             
-    init(mdUpdater: MarketDataUpdater, fcUpdater: FiatCurrenciesUpdater, cacheStorage: IDBCacheStorage) {
+    init(mdUpdater: IMarketDataUpdater, fcUpdater: IFiatCurrenciesUpdater, cacheStorage: IDBCacheStorage) {
         self.mdUpdater = mdUpdater
         self.fcUpdater = fcUpdater
         self.cacheStorage = cacheStorage
@@ -134,5 +134,4 @@ extension MarketDataStorage: IMarketDataProvider {
     func marketData(coin: Coin) -> CoinMarketData {
         repository.value[coin.code] ?? CoinMarketData()
     }
-    
 }
