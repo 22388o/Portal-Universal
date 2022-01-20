@@ -87,15 +87,14 @@ final class Portal {
             interval: TimeInterval(appConfigProvider.fiatCurrenciesUpdateInterval),
             fixerApiKey: appConfigProvider.fixerApiKey
         )
-                
-        let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: dbStorage)
-        marketDataProvider = MarketDataProvider(repository: marketDataStorage)
+                  
+        marketDataProvider = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: dbStorage)
                         
         let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, accountStorage: dbStorage)
         accountManager = AccountManager(accountStorage: accountStorage)
         
         let erc20Updater: IERC20Updater = ERC20Updater()
-        let coinStorage: ICoinStorage = CoinStorage(updater: erc20Updater, marketData: marketDataStorage)
+        let coinStorage: ICoinStorage = CoinStorage(updater: erc20Updater, marketDataProvider: marketDataProvider)
         let coinManager: ICoinManager = CoinManager(storage: coinStorage)
         
         let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)

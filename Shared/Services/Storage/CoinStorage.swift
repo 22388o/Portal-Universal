@@ -16,11 +16,11 @@ final class CoinStorage: ICoinStorage {
     
     private var subscriptions = Set<AnyCancellable>()
     private var updater: IERC20Updater
-    private var marketData: MarketDataStorage
+    private var marketData: IMarketDataProvider
     
-    init(updater: IERC20Updater, marketData: MarketDataStorage) {
+    init(updater: IERC20Updater, marketDataProvider: IMarketDataProvider) {
         self.updater = updater
-        self.marketData = marketData
+        self.marketData = marketDataProvider
         
         subscribe()
     }
