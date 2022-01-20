@@ -11,10 +11,10 @@ import XCTest
 class PortfolioViewModelUnitTests: XCTestCase {
     
     private var sut: PortfolioViewModel!
-    private let walletMannager: IWalletManager = MockedWalletManager()
-    private let adapterMannager: IAdapterManager = MockedAdapterManager()
-    private let marketDataProvider: IMarketDataProvider = MockedMarketDataProvider()
-    private let reachabilityService = ReachabilityService()
+    private let walletMannager = MockedWalletManager()
+    private let adapterMannager = MockedAdapterManager()
+    private let marketDataProvider = MockedMarketDataProvider()
+    private let reachabilityService = MockedReachabilityService()
     private let state = PortalState()
 
     override func setUpWithError() throws {

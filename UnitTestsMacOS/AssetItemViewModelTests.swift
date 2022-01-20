@@ -16,7 +16,7 @@ class AssetItemViewModelTests: XCTestCase {
     
     private let coin: Coin = .bitcoin()
     private let balanceAdapter: IBalanceAdapter = MockedBalanceAdapter()
-    private let notificationService = NotificationService(accountManager: MockedAccountManager())
+    private let notificationService: INotificationService = MockedNotificationService()
     private let marketDataProvider: IMarketDataProvider = MockedMarketDataProvider()
     
     private var sut: AssetItemViewModel!

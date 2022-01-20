@@ -12,8 +12,8 @@ class HeaderViewModelUnitTests: XCTestCase {
 
     private var sut: HeaderViewModel!
     private let accountMannager = MockedAccountManager()
-    private let reachabilityService = ReachabilityService()
-    private let notificationService = NotificationService(accountManager: MockedAccountManager())
+    private let reachabilityService = MockedReachabilityService()
+    private let notificationService = MockedNotificationService()
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
