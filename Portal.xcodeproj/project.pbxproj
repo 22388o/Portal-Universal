@@ -474,14 +474,6 @@
 		75BBC73A261C41A200032A90 /* PTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BBC738261C41A200032A90 /* PTextField.swift */; };
 		75BEB20B26B96AE200C99F50 /* ERC20Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BEB20A26B96AE200C99F50 /* ERC20Updater.swift */; };
 		75BEB20C26B96AE200C99F50 /* ERC20Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BEB20A26B96AE200C99F50 /* ERC20Updater.swift */; };
-		75C95C162614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C122614CBB500B0EE10 /* MarketChangeProvider.swift */; };
-		75C95C172614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C122614CBB500B0EE10 /* MarketChangeProvider.swift */; };
-		75C95C1A2614CBB500B0EE10 /* QRCodeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C132614CBB500B0EE10 /* QRCodeProvider.swift */; };
-		75C95C1B2614CBB500B0EE10 /* QRCodeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C132614CBB500B0EE10 /* QRCodeProvider.swift */; };
-		75C95C1E2614CBB500B0EE10 /* ChartDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C142614CBB500B0EE10 /* ChartDataProvider.swift */; };
-		75C95C1F2614CBB500B0EE10 /* ChartDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C142614CBB500B0EE10 /* ChartDataProvider.swift */; };
-		75C95C222614CBB500B0EE10 /* BalanceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C152614CBB500B0EE10 /* BalanceProvider.swift */; };
-		75C95C232614CBB500B0EE10 /* BalanceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C152614CBB500B0EE10 /* BalanceProvider.swift */; };
 		75C95C422614CC0400B0EE10 /* Publisher+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C382614CC0400B0EE10 /* Publisher+Extension.swift */; };
 		75C95C432614CC0400B0EE10 /* Publisher+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C382614CC0400B0EE10 /* Publisher+Extension.swift */; };
 		75C95C462614CC0400B0EE10 /* PieChart+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C95C392614CC0400B0EE10 /* PieChart+Extension.swift */; };
@@ -862,10 +854,6 @@
 		75BBC731261C3E2D00032A90 /* SeedTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedTestView.swift; sourceTree = "<group>"; };
 		75BBC738261C41A200032A90 /* PTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTextField.swift; sourceTree = "<group>"; };
 		75BEB20A26B96AE200C99F50 /* ERC20Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ERC20Updater.swift; sourceTree = "<group>"; };
-		75C95C122614CBB500B0EE10 /* MarketChangeProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketChangeProvider.swift; sourceTree = "<group>"; };
-		75C95C132614CBB500B0EE10 /* QRCodeProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeProvider.swift; sourceTree = "<group>"; };
-		75C95C142614CBB500B0EE10 /* ChartDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartDataProvider.swift; sourceTree = "<group>"; };
-		75C95C152614CBB500B0EE10 /* BalanceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceProvider.swift; sourceTree = "<group>"; };
 		75C95C382614CC0400B0EE10 /* Publisher+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Extension.swift"; sourceTree = "<group>"; };
 		75C95C392614CC0400B0EE10 /* PieChart+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PieChart+Extension.swift"; sourceTree = "<group>"; };
 		75C95C3A2614CC0400B0EE10 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -1619,10 +1607,6 @@
 		75C95C2E2614CBC000B0EE10 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				75C95C152614CBB500B0EE10 /* BalanceProvider.swift */,
-				75C95C142614CBB500B0EE10 /* ChartDataProvider.swift */,
-				75C95C122614CBB500B0EE10 /* MarketChangeProvider.swift */,
-				75C95C132614CBB500B0EE10 /* QRCodeProvider.swift */,
 				75503C5E264FFA250043FDEC /* MarketDataProvider.swift */,
 				75308ACB26A027B40024AACD /* AppConfigProvider.swift */,
 				75308AD526A0280E0024AACD /* FeeRateProvider.swift */,
@@ -2075,7 +2059,6 @@
 				75C95C4E2614CC0400B0EE10 /* LineChart+Extension.swift in Sources */,
 				AFA3D7052721B7440000F3BD /* PortalAppDelegate.swift in Sources */,
 				AF1AF4492702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
-				75C95C1A2614CBB500B0EE10 /* QRCodeProvider.swift in Sources */,
 				755782F026087905000E1686 /* Portal.xcdatamodeld in Sources */,
 				75C95C462614CC0400B0EE10 /* PieChart+Extension.swift in Sources */,
 				75A3F54526A57EBB006B1823 /* Wallet.swift in Sources */,
@@ -2137,7 +2120,6 @@
 				750D63C0268B2AAC00643FD3 /* TxSortSwitch.swift in Sources */,
 				755D9FDA275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */,
 				7555643426D8FB1A001B1C1A /* MyOrdersView.swift in Sources */,
-				75C95C162614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
 				7581900F26E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */,
 				755EBC2E272194D400B56B89 /* ReachabilityService.swift in Sources */,
 				75D476DA262DB81C0006FD91 /* AssetTxView.swift in Sources */,
@@ -2217,7 +2199,6 @@
 				752229FD27145B1400003D3F /* ExchangeBalancePicker.swift in Sources */,
 				751B6552269D9902001B759C /* IBalanceAdapter.swift in Sources */,
 				7555642326D8F0DD001B1C1A /* ExchangeScene.swift in Sources */,
-				75C95C1E2614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
 				75503C5F264FFA250043FDEC /* MarketDataProvider.swift in Sources */,
 				75A3F53F26A57E02006B1823 /* EthereumKitManager.swift in Sources */,
 				756C66B42640363500CD22B2 /* AlertsView.swift in Sources */,
@@ -2265,7 +2246,6 @@
 				751A1CE027306E460024586B /* AccountSettingsViewModel.swift in Sources */,
 				7555643726D8FB51001B1C1A /* BuySellView.swift in Sources */,
 				750AE91126149A8C00C45971 /* MarketSnapshot.swift in Sources */,
-				75C95C222614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
 				750AE91D26149A8C00C45971 /* Asset.swift in Sources */,
 				756A66C12624850A00353635 /* SendAssetView.swift in Sources */,
 				7537DF0A27035FA100B862AB /* WebViewRepresentable.swift in Sources */,
@@ -2345,7 +2325,6 @@
 				75C95C4B2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
 				75C95C4F2614CC0400B0EE10 /* LineChart+Extension.swift in Sources */,
 				753E7E302756636500C96F33 /* String+Extension.swift in Sources */,
-				75C95C1B2614CBB500B0EE10 /* QRCodeProvider.swift in Sources */,
 				75984F47264833E5002CD1EA /* RestoreSeedField.swift in Sources */,
 				75308AE126A028940024AACD /* EthereumFeeRateProvider.swift in Sources */,
 				752E531E26FDDE6400FCDB0C /* URLParameterEncoding.swift in Sources */,
@@ -2409,7 +2388,6 @@
 				752E532C26FDDE6400FCDB0C /* KrakenRequestConfig.swift in Sources */,
 				751B6550269D98E8001B759C /* IAdapter.swift in Sources */,
 				756C3C8026EA9C83009530A9 /* BuySellButton.swift in Sources */,
-				75C95C172614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
 				758F3AE126A9A9EF00F345E1 /* IAccountStorage.swift in Sources */,
 				75568BF1262D9F810010C7E6 /* ReceiveAssetsView.swift in Sources */,
 				75308AC326A0222A0024AACD /* DBLocalStorage.swift in Sources */,
@@ -2496,7 +2474,6 @@
 				7517F8A426B802DD0020AECB /* CoinImageView.swift in Sources */,
 				AF1AF44A2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
 				75A3F52E26A57C3B006B1823 /* IAdapterManager.swift in Sources */,
-				75C95C1F2614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
 				750D63C4268B2B0800643FD3 /* ValueCurrencySwitchView.swift in Sources */,
 				75308ACD26A027B40024AACD /* AppConfigProvider.swift in Sources */,
 				75308AD726A0280E0024AACD /* FeeRateProvider.swift in Sources */,
@@ -2545,7 +2522,6 @@
 				750C36A1261F298B0088CCED /* AccountView.swift in Sources */,
 				750AE9D626149DD900C45971 /* IPieChartModel.swift in Sources */,
 				750AE91226149A8C00C45971 /* MarketSnapshot.swift in Sources */,
-				75C95C232614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
 				7537DED5270F3A0100B0EBFF /* ExchangeMarketDataView.swift in Sources */,
 				75503C60264FFA250043FDEC /* MarketDataProvider.swift in Sources */,
 				750AE91E26149A8C00C45971 /* Asset.swift in Sources */,
