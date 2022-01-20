@@ -29,7 +29,7 @@ final class PortfolioViewModel: ObservableObject {
     private var walletManager: IWalletManager
     private var adapterManager: IAdapterManager
     private var marketDataProvider: IMarketDataProvider
-    private var reachabilityService: ReachabilityService
+    private var reachabilityService: IReachabilityService
     private var exchangeBalances = [String: Double]()
     
     private var btcUSDPrice: Decimal {
@@ -44,7 +44,7 @@ final class PortfolioViewModel: ObservableObject {
         walletManager: IWalletManager,
         adapterManager: IAdapterManager,
         marketDataProvider: IMarketDataProvider,
-        reachabilityService: ReachabilityService,
+        reachabilityService: IReachabilityService,
         state: PortalState
     ) {
         self.walletManager = walletManager
@@ -94,7 +94,7 @@ final class PortfolioViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        reachabilityService.$isReachable
+        reachabilityService.isReachable
             .dropFirst()
             .debounce(for: 1, scheduler: RunLoop.main)
             .sink { [weak self] reachable in

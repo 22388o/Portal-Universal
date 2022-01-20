@@ -17,11 +17,11 @@ class HeaderViewModel: ObservableObject {
     
     var currencies: [Currency] = []
     
-    private var notificationService: NotificationService
-    private var reachabillityService: ReachabilityService
+    private var notificationService: INotificationService
+    private var reachabillityService: IReachabilityService
     private var cancellables = Set<AnyCancellable>()
     
-    init(accountManager: IAccountManager, notificationService: NotificationService, reachabilityService: ReachabilityService, currencies: [Currency]) {
+    init(accountManager: IAccountManager, notificationService: INotificationService, reachabilityService: IReachabilityService, currencies: [Currency]) {
         self.accountName = accountManager.activeAccount?.name ?? "-"
         self.notificationService = notificationService
         self.reachabillityService = reachabilityService
@@ -34,7 +34,7 @@ class HeaderViewModel: ObservableObject {
             }
             .store(in: &cancellables)
             
-        notificationService.$newAlerts.combineLatest(notificationService.$alertsBeenSeen)
+        notificationService.newAlerts.combineLatest(notificationService.alertsBeenSeen)
             .receive(on: RunLoop.main)
             .sink { [weak self] newAlerts, alertsBeenSeen in
                 self?.newAlerts = newAlerts
@@ -43,7 +43,7 @@ class HeaderViewModel: ObservableObject {
             .store(in: &cancellables)
         
         reachabilityService
-            .$isReachable
+            .isReachable
             .receive(on: RunLoop.main)
             .sink { [weak self] online in
                 self?.isOffline = !online

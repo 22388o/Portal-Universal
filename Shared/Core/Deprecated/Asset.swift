@@ -16,6 +16,9 @@ import BigInt
 
 import SwiftUI
 
+final class QRCodeProvider: IQRCodeProvider {}
+
+
 final class Asset: IAsset {
     private(set) var id: UUID
     private(set) var coin: Coin

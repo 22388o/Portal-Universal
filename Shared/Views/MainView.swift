@@ -60,7 +60,7 @@ struct MainView: View {
                 }
                 #endif
             case .exchange:
-                if Portal.shared.reachabilityService.isReachable {
+                if Portal.shared.reachabilityService.isReachable.value {
                     ExchangeScene(state: state, viewModel: exchangeViewModel)
                         .transition(.identity)
                 } else {

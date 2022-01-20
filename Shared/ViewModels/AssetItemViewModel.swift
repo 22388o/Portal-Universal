@@ -22,7 +22,7 @@ final class AssetItemViewModel: ObservableObject {
 
     @Published var syncProgress: Float = 0.01
     
-    private let notificationService: NotificationService
+    private let notificationService: INotificationService
     private let marketDataProvider: IMarketDataProvider
 
     private var subscriptions = Set<AnyCancellable>()
@@ -41,7 +41,7 @@ final class AssetItemViewModel: ObservableObject {
         coin: Coin,
         adapter: IBalanceAdapter,
         state: PortalState,
-        notificationService: NotificationService,
+        notificationService: INotificationService,
         marketDataProvider: IMarketDataProvider
     ) {
         self.coin = coin

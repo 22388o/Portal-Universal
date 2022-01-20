@@ -9,13 +9,14 @@ import Foundation
 import AVFoundation
 import Combine
 
-final class NotificationService: ObservableObject {
+final class NotificationService: INotificationService {
 
     private let player: AVPlayer?
     
-    @Published private(set) var notifications: [PNotification] = []
-    @Published private(set) var newAlerts: Int = 0
-    @Published private(set) var alertsBeenSeen: Bool = false
+    private(set) var notifications = CurrentValueSubject<[PNotification], Never>([])
+    private(set) var newAlerts = CurrentValueSubject<Int, Never>(0)
+    private(set) var alertsBeenSeen = CurrentValueSubject<Bool, Never>(false)
+    
     private var accountId: String?
     private var subscriptions = Set<AnyCancellable>()
         
@@ -41,19 +42,19 @@ final class NotificationService: ObservableObject {
         player?.play()
         
         DispatchQueue.main.async {
-            self.newAlerts += 1
-            self.alertsBeenSeen = false
-            self.notifications.append(notification)
+            self.newAlerts.value += 1
+            self.alertsBeenSeen.value = false
+            self.notifications.value.append(notification)
         }
     }
     
     func markAllAlertsViewed() {
-        alertsBeenSeen.toggle()
-        newAlerts = 0
+        alertsBeenSeen.value.toggle()
+        newAlerts.value = 0
     }
     
     func clear() {
-        notifications = []
+        notifications.value.removeAll()
     }
 }
 

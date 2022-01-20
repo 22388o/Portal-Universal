@@ -356,7 +356,7 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func assetChartDataEntries() -> [ChartDataEntry] {
-        guard Portal.shared.reachabilityService.isReachable else { return [] }
+        guard Portal.shared.reachabilityService.isReachable.value else { return [] }
         
         var chartDataEntries = [ChartDataEntry]()
         var points = [Decimal]()
