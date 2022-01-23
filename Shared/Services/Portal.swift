@@ -50,7 +50,9 @@ final class Portal {
         
         state = PortalState(userId: userId)
         
-        localStorage = LocalStorage()
+        let userDefaults = UserDefaults.standard
+        
+        localStorage = LocalStorage(storage: userDefaults)
         
         let keychain = Keychain(service: appConfigProvider.keychainStorageID)
         secureStorage = KeychainStorage(keychain: keychain)
