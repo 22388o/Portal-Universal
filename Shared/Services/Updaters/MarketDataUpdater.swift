@@ -30,7 +30,8 @@ final class MarketDataUpdater {
         guard reachability.isReachable.value else { return }
         
         Coinpaprika.API.tickers(quotes: [.usd, .btc, .eth])
-            .perform { [unowned self] (response) in
+            .perform { [weak self] (response) in
+                guard let self = self else { return }
                 switch response {
                 case .success(let tickers):
                     self.tickers = tickers
@@ -54,7 +55,8 @@ final class MarketDataUpdater {
         for (index, id) in coinPaprikaCoinIds.enumerated() {
             print("Fetching ticker history \(id)")
             Coinpaprika.API.coinLatestOhlcv(id: id, quote: .usd)
-                .perform { [unowned self] response in
+                .perform { [weak self] response in
+                    guard let self = self else { return }
                     switch response {
                     case .success(let response):
                         self.onUpdateHistoricalData.send((.day, [coins[index].code : response.map{ MarketSnapshot.init($0) }]))
@@ -85,7 +87,9 @@ extension MarketDataUpdater: IMarketDataUpdater {
         case .day:
             if let yesteday = Calendar.current.date(byAdding: .day, value: -1, to: today) {
                 Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: yesteday, end: today, limit: 60, quote: .usd, interval: .minutes15)
-                    .perform { [unowned self] (response) in
+                    .perform { [weak self] (response) in
+                        guard let self = self else { return }
+
                         switch response {
                         case .success(let response):
                             self.onUpdateHistoricalPrice.send((.day, [coin.code : response.map{ $0.price }]))
@@ -97,7 +101,9 @@ extension MarketDataUpdater: IMarketDataUpdater {
         case .week:
             if let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: today) {
                 Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours3)
-                    .perform { [unowned self] (response) in
+                    .perform { [weak self] (response) in
+                        guard let self = self else { return }
+
                         switch response {
                         case .success(let response):
                             self.onUpdateHistoricalPrice.send((.week, [coin.code : response.map{ $0.price }]))
@@ -109,7 +115,9 @@ extension MarketDataUpdater: IMarketDataUpdater {
         case .month:
             if let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: today) {
                 Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: monthAgo, end: today, limit: 60, quote: .usd, interval: .hours12)
-                    .perform { [unowned self] (response) in
+                    .perform { [weak self] (response) in
+                        guard let self = self else { return }
+
                         switch response {
                         case .success(let response):
                             self.onUpdateHistoricalPrice.send((.month, [coin.code : response.map{ $0.price }]))
@@ -121,7 +129,9 @@ extension MarketDataUpdater: IMarketDataUpdater {
         case .year:
             if let aYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: today) {
                 Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: aYearAgo, end: today, limit: 60, quote: .usd, interval: .days7)
-                    .perform { [unowned self] (response) in
+                    .perform { [weak self] (response) in
+                        guard let self = self else { return }
+
                         switch response {
                         case .success(let response):
                             self.onUpdateHistoricalPrice.send((.year, [coin.code : response.map{ $0.price }]))
