@@ -8,6 +8,375 @@
 
 import Foundation
 
+//MARK: - CoinPaprika
+
+// https://api.coinpaprika.com/v1/tickers/btc-bitcoin/historical?limit=60&start=2021-02-14&end=2021-02-15&quote=USD&interval=15m
+
+let btcTickerHistoryResponse = """
+[
+    {
+        "timestamp": "2021-02-14T00:00:00Z",
+        "price": 46990.07,
+        "volume_24h": 50562298784,
+        "market_cap": 875333866937
+    },
+    {
+        "timestamp": "2021-02-14T00:15:00Z",
+        "price": 47282.41,
+        "volume_24h": 50721804116,
+        "market_cap": 880780249373
+    },
+    {
+        "timestamp": "2021-02-14T00:30:00Z",
+        "price": 47329.78,
+        "volume_24h": 50852688433,
+        "market_cap": 881663244845
+    },
+    {
+        "timestamp": "2021-02-14T00:45:00Z",
+        "price": 47435.6,
+        "volume_24h": 51127372684,
+        "market_cap": 883634594832
+    },
+    {
+        "timestamp": "2021-02-14T01:00:00Z",
+        "price": 47419.1,
+        "volume_24h": 51071632851,
+        "market_cap": 883327490119
+    },
+    {
+        "timestamp": "2021-02-14T01:15:00Z",
+        "price": 47389.24,
+        "volume_24h": 51026533115,
+        "market_cap": 882772112746
+    },
+    {
+        "timestamp": "2021-02-14T01:30:00Z",
+        "price": 47419.29,
+        "volume_24h": 51099373805,
+        "market_cap": 883331986690
+    },
+    {
+        "timestamp": "2021-02-14T01:45:00Z",
+        "price": 47288.52,
+        "volume_24h": 51057826145,
+        "market_cap": 880897277331
+    },
+    {
+        "timestamp": "2021-02-14T02:00:00Z",
+        "price": 47338.01,
+        "volume_24h": 50912458208,
+        "market_cap": 881819514409
+    },
+    {
+        "timestamp": "2021-02-14T02:15:00Z",
+        "price": 47386.82,
+        "volume_24h": 50934584547,
+        "market_cap": 882729906397
+    },
+    {
+        "timestamp": "2021-02-14T02:30:00Z",
+        "price": 47279.45,
+        "volume_24h": 50891102426,
+        "market_cap": 880729839379
+    },
+    {
+        "timestamp": "2021-02-14T02:45:00Z",
+        "price": 47356.26,
+        "volume_24h": 50823137258,
+        "market_cap": 882160964228
+    },
+    {
+        "timestamp": "2021-02-14T03:00:00Z",
+        "price": 47286,
+        "volume_24h": 50403114712,
+        "market_cap": 880852746616
+    },
+    {
+        "timestamp": "2021-02-14T03:15:00Z",
+        "price": 47250.42,
+        "volume_24h": 50140879418,
+        "market_cap": 880190331242
+    },
+    {
+        "timestamp": "2021-02-14T03:30:00Z",
+        "price": 47305.61,
+        "volume_24h": 50107772172,
+        "market_cap": 881218990936
+    },
+    {
+        "timestamp": "2021-02-14T03:45:00Z",
+        "price": 47257.15,
+        "volume_24h": 50034712489,
+        "market_cap": 880316226277
+    },
+    {
+        "timestamp": "2021-02-14T04:00:00Z",
+        "price": 47225.81,
+        "volume_24h": 49854689903,
+        "market_cap": 879733549998
+    },
+    {
+        "timestamp": "2021-02-14T04:15:00Z",
+        "price": 47248.15,
+        "volume_24h": 49819465143,
+        "market_cap": 880150454502
+    },
+    {
+        "timestamp": "2021-02-14T04:30:00Z",
+        "price": 47237.21,
+        "volume_24h": 49771107760,
+        "market_cap": 879947320175
+    },
+    {
+        "timestamp": "2021-02-14T04:45:00Z",
+        "price": 47388.01,
+        "volume_24h": 50038973642,
+        "market_cap": 882757009045
+    },
+    {
+        "timestamp": "2021-02-14T05:00:00Z",
+        "price": 47363.86,
+        "volume_24h": 49808042484,
+        "market_cap": 882307860981
+    },
+    {
+        "timestamp": "2021-02-14T05:15:00Z",
+        "price": 47449.72,
+        "volume_24h": 49872729714,
+        "market_cap": 883907720821
+    },
+    {
+        "timestamp": "2021-02-14T05:30:00Z",
+        "price": 47762.84,
+        "volume_24h": 50382003913,
+        "market_cap": 889741339105
+    },
+    {
+        "timestamp": "2021-02-14T05:45:00Z",
+        "price": 48096.27,
+        "volume_24h": 51140878722,
+        "market_cap": 895952606214
+    },
+    {
+        "timestamp": "2021-02-14T06:00:00Z",
+        "price": 48813.59,
+        "volume_24h": 52966778622,
+        "market_cap": 909316262989
+    },
+    {
+        "timestamp": "2021-02-14T06:15:00Z",
+        "price": 48779.38,
+        "volume_24h": 54059243133,
+        "market_cap": 908679139444
+    },
+    {
+        "timestamp": "2021-02-14T06:30:00Z",
+        "price": 48630.16,
+        "volume_24h": 54545834542,
+        "market_cap": 905900021808
+    },
+    {
+        "timestamp": "2021-02-14T06:45:00Z",
+        "price": 48553.16,
+        "volume_24h": 54853370666,
+        "market_cap": 904466024725
+    },
+    {
+        "timestamp": "2021-02-14T07:00:00Z",
+        "price": 48540.16,
+        "volume_24h": 54908293936,
+        "market_cap": 904224647680
+    },
+    {
+        "timestamp": "2021-02-14T07:15:00Z",
+        "price": 48504.97,
+        "volume_24h": 54883840932,
+        "market_cap": 903569549759
+    },
+    {
+        "timestamp": "2021-02-14T07:30:00Z",
+        "price": 48646.62,
+        "volume_24h": 55153947816,
+        "market_cap": 906208537114
+    },
+    {
+        "timestamp": "2021-02-14T07:45:00Z",
+        "price": 48601.11,
+        "volume_24h": 55096051389,
+        "market_cap": 905361203953
+    },
+    {
+        "timestamp": "2021-02-14T08:00:00Z",
+        "price": 48591.35,
+        "volume_24h": 54591782239,
+        "market_cap": 905180380087
+    },
+    {
+        "timestamp": "2021-02-14T08:15:00Z",
+        "price": 48666.28,
+        "volume_24h": 54350718582,
+        "market_cap": 906576276698
+    },
+    {
+        "timestamp": "2021-02-14T08:30:00Z",
+        "price": 48598.09,
+        "volume_24h": 54352960418,
+        "market_cap": 905306668796
+    },
+    {
+        "timestamp": "2021-02-14T08:45:00Z",
+        "price": 48469.22,
+        "volume_24h": 54279121090,
+        "market_cap": 902906387358
+    },
+    {
+        "timestamp": "2021-02-14T09:00:00Z",
+        "price": 48504.45,
+        "volume_24h": 54239103407,
+        "market_cap": 903563048654
+    },
+    {
+        "timestamp": "2021-02-14T09:15:00Z",
+        "price": 48658.58,
+        "volume_24h": 54333609764,
+        "market_cap": 906434884191
+    },
+    {
+        "timestamp": "2021-02-14T09:30:00Z",
+        "price": 48758.64,
+        "volume_24h": 54556654618,
+        "market_cap": 908298900620
+    },
+    {
+        "timestamp": "2021-02-14T09:45:00Z",
+        "price": 48842.61,
+        "volume_24h": 54784771769,
+        "market_cap": 909863283684
+    },
+    {
+        "timestamp": "2021-02-14T10:00:00Z",
+        "price": 48948.94,
+        "volume_24h": 54811183096,
+        "market_cap": 911844186563
+    },
+    {
+        "timestamp": "2021-02-14T10:15:00Z",
+        "price": 48966.63,
+        "volume_24h": 54857756395,
+        "market_cap": 912174606531
+    },
+    {
+        "timestamp": "2021-02-14T10:30:00Z",
+        "price": 49069.58,
+        "volume_24h": 55006148752,
+        "market_cap": 914092667623
+    },
+    {
+        "timestamp": "2021-02-14T10:45:00Z",
+        "price": 48984.02,
+        "volume_24h": 54875388606,
+        "market_cap": 912498923234
+    },
+    {
+        "timestamp": "2021-02-14T11:00:00Z",
+        "price": 48854.35,
+        "volume_24h": 53992067781,
+        "market_cap": 910083818530
+    },
+    {
+        "timestamp": "2021-02-14T11:15:00Z",
+        "price": 48761.38,
+        "volume_24h": 53109747739,
+        "market_cap": 908352640675
+    },
+    {
+        "timestamp": "2021-02-14T11:30:00Z",
+        "price": 48768.8,
+        "volume_24h": 52899470724,
+        "market_cap": 908490744690
+    },
+    {
+        "timestamp": "2021-02-14T11:45:00Z",
+        "price": 48846.81,
+        "volume_24h": 52856830502,
+        "market_cap": 909943936559
+    },
+    {
+        "timestamp": "2021-02-14T12:00:00Z",
+        "price": 48916.32,
+        "volume_24h": 52486891129,
+        "market_cap": 911239653068
+    },
+    {
+        "timestamp": "2021-02-14T12:15:00Z",
+        "price": 49263.83,
+        "volume_24h": 53014019340,
+        "market_cap": 917714421225
+    },
+    {
+        "timestamp": "2021-02-14T12:30:00Z",
+        "price": 49170.85,
+        "volume_24h": 53205832238,
+        "market_cap": 915983213945
+    },
+    {
+        "timestamp": "2021-02-14T12:45:00Z",
+        "price": 49205.46,
+        "volume_24h": 53461574931,
+        "market_cap": 916628558720
+    },
+    {
+        "timestamp": "2021-02-14T13:00:00Z",
+        "price": 49286.05,
+        "volume_24h": 53471402841,
+        "market_cap": 918130380002
+    },
+    {
+        "timestamp": "2021-02-14T13:15:00Z",
+        "price": 49158.55,
+        "volume_24h": 53374889851,
+        "market_cap": 915755789366
+    },
+    {
+        "timestamp": "2021-02-14T13:30:00Z",
+        "price": 49071.49,
+        "volume_24h": 53392481444,
+        "market_cap": 914134499627
+    },
+    {
+        "timestamp": "2021-02-14T13:45:00Z",
+        "price": 48751.29,
+        "volume_24h": 53396009532,
+        "market_cap": 908169981345
+    },
+    {
+        "timestamp": "2021-02-14T14:00:00Z",
+        "price": 48680.15,
+        "volume_24h": 53594906102,
+        "market_cap": 906845030944
+    },
+    {
+        "timestamp": "2021-02-14T14:15:00Z",
+        "price": 48762.33,
+        "volume_24h": 53851487502,
+        "market_cap": 908376328022
+    },
+    {
+        "timestamp": "2021-02-14T14:30:00Z",
+        "price": 48777.29,
+        "volume_24h": 53912128731,
+        "market_cap": 908655501180
+    },
+    {
+        "timestamp": "2021-02-14T14:45:00Z",
+        "price": 48635.36,
+        "volume_24h": 53924458688,
+        "market_cap": 906011609030
+    }
+]
+"""
+
 //MARK: - Fiat currencies rates
 
 // http://data.fixer.io/api/latest?access_key=949a480e46068aa8d69b0dec66c675ad&base=USD

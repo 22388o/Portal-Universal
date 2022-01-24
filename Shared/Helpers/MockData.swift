@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
 let btcMockAddress = "1HqwV7F9hpUpJXubLFomcrNMUqPLzeTVNd"
 
@@ -19,6 +18,93 @@ import BitcoinCore
 final class MockCoinKit: AbstractKit {
     func send(amount: Double) {
         print("Send coins...")
+    }
+}
+
+import Coinpaprika
+import Combine
+
+struct TickerH: Decodable {
+    let timestamp: String
+    let price: Decimal
+    let volume_24h: Decimal
+    let market_cap: Decimal
+}
+
+struct MockedMarketDataUpdater: IMarketDataUpdater {
+    
+    func btcTickerHistoricalPriceData(timeFrame: MarketDataRange) -> (MarketDataRange, HistoricalTickerPrice) {
+        let responseData = btcTickerHistoryResponse.data(using: .utf8)!
+        do {
+            let data = try JSONDecoder().decode([TickerH].self, from: responseData)
+            return (timeFrame, ["BTC": data.map{ $0.price }])
+        } catch {
+            print("\(#function) error: \(error)")
+            return (timeFrame, ["BTC": []])
+        }
+    }
+    
+    var onUpdateHistoricalPrice = PassthroughSubject<(MarketDataRange, HistoricalTickerPrice), Never>()
+    
+    var onUpdateHistoricalData = PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never>()
+    
+    var onTickersUpdate = PassthroughSubject<([Ticker]), Never>()
+    
+    func requestHistoricalMarketData(coin: Coin, timeframe: Timeframe) {
+        switch timeframe {
+        case .day:
+            onUpdateHistoricalPrice.send(btcTickerHistoricalPriceData(timeFrame: .day))
+        case .week:
+            onUpdateHistoricalPrice.send(btcTickerHistoricalPriceData(timeFrame: .week))
+        case .month:
+            onUpdateHistoricalPrice.send(btcTickerHistoricalPriceData(timeFrame: .month))
+        case .year:
+            onUpdateHistoricalPrice.send(btcTickerHistoricalPriceData(timeFrame: .year))
+        }
+    }
+}
+
+import CoreData
+
+class MockedCacheStorage: IDBCacheStorage {
+    var context: NSManagedObjectContext {
+        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
+        
+        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+        
+        do {
+            try persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
+        } catch {
+            print("Adding in-memory persistent store failed")
+        }
+        
+        let managedObjectContext = NSManagedObjectContext.init(concurrencyType: .mainQueueConcurrencyType)
+        managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
+        
+        return managedObjectContext
+    }
+    
+    var tickers: [Ticker] = []
+    
+    var fiatCurrencies: [FiatCurrency] = []
+    
+    func store(fiatCurrencies: [FiatCurrency]) {
+        self.fiatCurrencies = fiatCurrencies
+    }
+    
+    func store(tickers: [Ticker]?) {
+        self.tickers = tickers ?? []
+    }
+    
+    init() {
+        let btcTickerData = CoinpaprikaBtcTickerJSON.data(using: .utf8)!
+        let btcTicker = try! Ticker.decoder.decode(Ticker.self, from: btcTickerData)
+        tickers = [btcTicker]
+        
+        let dollar: FiatCurrency = USD
+        let ruble: FiatCurrency = .init(code: "RUB", name: "Russian ruble")
+        
+        fiatCurrencies = [dollar, ruble]
     }
 }
 
