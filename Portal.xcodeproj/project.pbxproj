@@ -411,6 +411,7 @@
 		7581901226EA753E00E0691B /* ExchangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901126EA753D00E0691B /* ExchangeManager.swift */; };
 		7581901326EA753E00E0691B /* ExchangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901126EA753D00E0691B /* ExchangeManager.swift */; };
 		75821D66277343AD004A65A2 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75821D65277343AD004A65A2 /* TokenSelector.swift */; };
+		7584559727A025C700342330 /* NotificationServiceUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7584559627A025C700342330 /* NotificationServiceUnitTests.swift */; };
 		758F3ADD26A81A4700F345E1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */; };
 		758F3AE026A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
 		758F3AE126A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
@@ -848,6 +849,7 @@
 		7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersRouteSwitch.swift; sourceTree = "<group>"; };
 		7581901126EA753D00E0691B /* ExchangeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeManager.swift; sourceTree = "<group>"; };
 		75821D65277343AD004A65A2 /* TokenSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelector.swift; sourceTree = "<group>"; };
+		7584559627A025C700342330 /* NotificationServiceUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceUnitTests.swift; sourceTree = "<group>"; };
 		758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAccountStorage.swift; sourceTree = "<group>"; };
 		758F3AE226A9AA2100F345E1 /* AccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStorage.swift; sourceTree = "<group>"; };
@@ -1159,6 +1161,7 @@
 			children = (
 				753BA743279F23E7009FEC20 /* Updaters */,
 				753BA738279DA8D7009FEC20 /* Storages */,
+				7584559827A025CB00342330 /* Services */,
 				753BA72E279AE28A009FEC20 /* ViewModelTests */,
 				75244503278C85F000B38F8D /* UnitTestsMacOS.swift */,
 				75119D0D278DFD430073B03C /* Helpers */,
@@ -1629,6 +1632,14 @@
 				750C3695261F28FA0088CCED /* Subviews */,
 			);
 			path = Create;
+			sourceTree = "<group>";
+		};
+		7584559827A025CB00342330 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7584559627A025C700342330 /* NotificationServiceUnitTests.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		75984F34264821A1002CD1EA /* Restore */ = {
@@ -2114,6 +2125,7 @@
 				753BA73E279EC2BD009FEC20 /* MarketDataStorageUnitTests.swift in Sources */,
 				75244504278C85F000B38F8D /* UnitTestsMacOS.swift in Sources */,
 				753BA74527A019D3009FEC20 /* ERC20UpdaterUnitTests.swift in Sources */,
+				7584559727A025C700342330 /* NotificationServiceUnitTests.swift in Sources */,
 				753BA7052791E15D009FEC20 /* PortfolioViewModelUnitTests.swift in Sources */,
 				753BA73A279DC74C009FEC20 /* CoinStorageUnitTests.swift in Sources */,
 				753BA734279B18E4009FEC20 /* KeychainStorageUnitTests.swift in Sources */,
