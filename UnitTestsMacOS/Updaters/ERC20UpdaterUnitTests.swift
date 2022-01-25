@@ -42,7 +42,7 @@ class ERC20UpdaterUnitTests: XCTestCase {
     func testOnTokensUpdateLoadsLocallyStoredTokensIfFetchingFails() throws {
         sut = ERC20Updater(jsonDecoder: JSONDecoder(), url: URL(string: "https://www.google.com"))
         
-        let promisse = expectation(description: "Tokens fetched")
+        let promisse = expectation(description: "Locally stored tokens fetched")
         
         sut.onTokensUpdate.sink { tokens in
             XCTAssertNotNil(tokens, "Tokens are nil")

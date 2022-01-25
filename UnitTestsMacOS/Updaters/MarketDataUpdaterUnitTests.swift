@@ -56,7 +56,7 @@ class MarketDataUpdaterUnitTests: XCTestCase {
             }
             .store(in: &subscriptions)
 
-        wait(for: [promisse], timeout: 10)
+        wait(for: [promisse], timeout: 20)
         
         XCTAssertEqual(sut.tickers, updatedTickers)
     }
