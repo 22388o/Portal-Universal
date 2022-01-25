@@ -10,8 +10,6 @@
 		38ADC71E533EB3177E55D088 /* Pods_Portal__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AED4B8C0DE2F9C46E93C9D /* Pods_Portal__macOS_.framework */; };
 		4FDE0BFA2DDEAA194BF9B37A /* Pods_UnitTestsMacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3605D5B5420D4371EE75EE /* Pods_UnitTestsMacOS.framework */; };
 		5943885CDFB1C0DCB277A5D6 /* Pods_Portal__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC9A9F3CB0318CDC9451AD23 /* Pods_Portal__iOS_.framework */; };
-		750AE8E32614992400C45971 /* PricesDataUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AE8DD2614992400C45971 /* PricesDataUpdater.swift */; };
-		750AE8E42614992400C45971 /* PricesDataUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AE8DD2614992400C45971 /* PricesDataUpdater.swift */; };
 		750AE8E72614992400C45971 /* MarketDataUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AE8DE2614992400C45971 /* MarketDataUpdater.swift */; };
 		750AE8E82614992400C45971 /* MarketDataUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AE8DE2614992400C45971 /* MarketDataUpdater.swift */; };
 		750AE8EB2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AE8DF2614992400C45971 /* FiatCurrenciesUpdater.swift */; };
@@ -611,7 +609,6 @@
 		4BE92BDA4ABA15E6E8D942B7 /* Pods-Tests macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests macOS.release.xcconfig"; path = "Target Support Files/Pods-Tests macOS/Pods-Tests macOS.release.xcconfig"; sourceTree = "<group>"; };
 		61117608A698BF7CE0A5EDD7 /* Pods-Tests macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests macOS.debug.xcconfig"; path = "Target Support Files/Pods-Tests macOS/Pods-Tests macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		6BE4BC6DBECEE51F6477650A /* Pods-Portal (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portal (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Portal (iOS)/Pods-Portal (iOS).debug.xcconfig"; sourceTree = "<group>"; };
-		750AE8DD2614992400C45971 /* PricesDataUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PricesDataUpdater.swift; sourceTree = "<group>"; };
 		750AE8DE2614992400C45971 /* MarketDataUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketDataUpdater.swift; sourceTree = "<group>"; };
 		750AE8DF2614992400C45971 /* FiatCurrenciesUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = FiatCurrenciesUpdater.swift; sourceTree = "<group>"; };
 		750AE8E12614992400C45971 /* KeychainStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
@@ -1668,7 +1665,6 @@
 			children = (
 				750AE8DE2614992400C45971 /* MarketDataUpdater.swift */,
 				75BEB20A26B96AE200C99F50 /* ERC20Updater.swift */,
-				750AE8DD2614992400C45971 /* PricesDataUpdater.swift */,
 				750AE8DF2614992400C45971 /* FiatCurrenciesUpdater.swift */,
 				756C3C6926EA8F84009530A9 /* ExchangeDataUpdater.swift */,
 				755D9FCF275E6DA200EE363D /* PushTokenUpdater.swift */,
@@ -2320,7 +2316,6 @@
 				753BA7222799B184009FEC20 /* FiatSymbols.swift in Sources */,
 				756C3C7626EA9B84009530A9 /* ExchangeBalanceModel.swift in Sources */,
 				753BA71C2799B101009FEC20 /* IFiatCurrenciesUpdater.swift in Sources */,
-				750AE8E32614992400C45971 /* PricesDataUpdater.swift in Sources */,
 				7537DEF92701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
 				752E531326FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */,
 				752E532B26FDDE6400FCDB0C /* KrakenRequestConfig.swift in Sources */,
@@ -2603,7 +2598,6 @@
 				75F5CD8E2684C5FA005ECA5B /* CircularProgressBar.swift in Sources */,
 				758F3AE726A9B84F00F345E1 /* NotificationView.swift in Sources */,
 				750AE9C626149DD900C45971 /* IBalanceProvider.swift in Sources */,
-				750AE8E42614992400C45971 /* PricesDataUpdater.swift in Sources */,
 				75308AB426A0215C0024AACD /* Portal.swift in Sources */,
 				750AE9B626149DD900C45971 /* IHistoricalData.swift in Sources */,
 				7517F89E26B40DD50020AECB /* ICoinManager.swift in Sources */,
