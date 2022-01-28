@@ -22,7 +22,6 @@ struct ExchangerView: View {
             Text("Amount to send")
                 .font(.mainFont(size: 12))
                 .foregroundColor(Color.coinViewRouteButtonInactive)
-
             
             HStack(spacing: 4) {
                 HStack(spacing: 8) {
@@ -57,7 +56,6 @@ struct ExchangerView: View {
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
                 .modifier(TextFieldModifier(cornerRadius: 26))
-                .frame(width: 224)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(isValid ? Color.clear : Color.red, lineWidth: 1)
@@ -101,7 +99,6 @@ struct ExchangerView: View {
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
                 .modifier(TextFieldModifier(cornerRadius: 26))
-                .frame(width: 224)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(isValid ? Color.clear : Color.red, lineWidth: 1)

@@ -13,24 +13,29 @@ import EthereumKit
 import BigInt
 
 final class SendAssetViewModel: ObservableObject {
-    @Published private var amount: Decimal = 0
+    enum SendAssetStep {
+        case recipient, amount, summary
+    }
     
+    @Published var step: SendAssetStep = .recipient
     @Published var receiverAddress = String()
     @Published var memo = String()
     @Published var amountIsValid: Bool = true
     @Published var txFeePriority: FeeRatePriority = .medium
+    @Published var showConfirmationAlert: Bool = false
     
+    @Published private(set) var amount: Decimal = 0
     @Published private(set) var txFee = String()
     @Published private(set) var addressIsValid: Bool = true
-    @Published private(set) var canSend: Bool = false
     @Published private(set) var balanceString: String = String()
     @Published private(set) var transactions: [TransactionRecord] = []
     @Published private(set) var lastBlockInfo: LastBlockInfo?
+    @Published private(set) var actionButtonEnabled: Bool  = false
     
     @Published private var feeRate: Int = 1 //medium
     
     @ObservedObject private(set) var exchangerViewModel: ExchangerViewModel
-    
+                           
     let coin: Coin
     private let balanceAdapter: IBalanceAdapter
     private let txsAdapter: ITransactionsAdapter
@@ -106,6 +111,21 @@ final class SendAssetViewModel: ObservableObject {
                 self?.transactions = records.filter{ $0.type != .incoming }
             }
             .store(in: &subscriptions)
+        
+        $step.receive(on: RunLoop.main)
+            .sink { [weak self] newStep in
+            guard let self = self else { return }
+            switch newStep {
+            case .recipient:
+                self.actionButtonEnabled = !self.receiverAddress.isEmpty && self.addressIsValid
+            case .amount:
+                self.validate(address: self.receiverAddress, amount: self.amount)
+            case .summary:
+                self.actionButtonEnabled = true
+            }
+            
+        }
+        .store(in: &subscriptions)
     }
     
     deinit {
@@ -113,58 +133,63 @@ final class SendAssetViewModel: ObservableObject {
     }
     
     private func validate(address: String, amount: Decimal) {
-        let fee = self.fee(amount: amount, address: address)
-        
-        if fee > 0 {
-            let price = ticker?[.usd].price ?? 1
-
-            switch coin.type {
-            case .bitcoin:
-                switch currency {
-                case .fiat(let fiatCurrency):
-                    txFee = "\(fee) \(coin.code) (\((fee * price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
-                case .btc, .eth:
-                    let usd: FiatCurrency = USD
-                    txFee = "\(fee) \(coin.code) (\((fee * price * Decimal(usd.rate)).rounded(toPlaces: 2)) \(usd.code))"
-                }
-            default:
-                let gasPrice = feeRate
-                let gasLimit = 21000
-                let etherTxFee = gasPrice * gasLimit / 1_000_000_000
+        switch step {
+        case .recipient:
+            do {
+                try validate(address: self.receiverAddress)
                 
-                switch currency {
-                case .fiat(let fiatCurrency):
-                    txFee = "\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
-                case .btc, .eth:
-                    let usd: FiatCurrency = USD
-                    txFee = "\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * price * Decimal(usd.rate)).rounded(toPlaces: 2)) \(usd.code))"
+                addressIsValid = true
+            } catch {
+                addressIsValid = false
+            }
+            
+            actionButtonEnabled = addressIsValid && !receiverAddress.isEmpty
+        case .amount:
+            let fee = self.fee(amount: amount > 0 ? amount : 0.00001, address: address)
+
+            if fee > 0 {
+                let price = ticker?[.usd].price ?? 1
+
+                switch coin.type {
+                case .bitcoin:
+                    switch currency {
+                    case .fiat(let fiatCurrency):
+                        txFee = "\(fee) \(coin.code) (\((fee * price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+                    case .btc, .eth:
+                        let usd: FiatCurrency = USD
+                        txFee = "\(fee) \(coin.code) (\((fee * price * Decimal(usd.rate)).rounded(toPlaces: 2)) \(usd.code))"
+                    }
+                default:
+                    let gasPrice = feeRate
+                    let gasLimit = 21000
+                    let etherTxFee = gasPrice * gasLimit / 1_000_000_000
+                    
+                    switch currency {
+                    case .fiat(let fiatCurrency):
+                        txFee = "\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+                    case .btc, .eth:
+                        let usd: FiatCurrency = USD
+                        txFee = "\(etherTxFee) \(coin.code) (\((Decimal(etherTxFee) * price * Decimal(usd.rate)).rounded(toPlaces: 2)) \(usd.code))"
+                    }
                 }
             }
-        } else {
-            txFee = String()
-        }
-        
-        do {
-            try validate(address: self.receiverAddress)
-            
-            addressIsValid = true
-        } catch {
-            addressIsValid = false
-        }
-                        
-        if addressIsValid {
-            amountIsValid = amount <= availableBalance(address: address)
-        } else {
-            let avaliableBalance = balanceAdapter.balance
-            amountIsValid = amount <= avaliableBalance
-        }
+                            
+            if addressIsValid {
+                amountIsValid = amount <= availableBalance(address: address)
+            } else {
+                let avaliableBalance = balanceAdapter.balance
+                amountIsValid = amount <= avaliableBalance
+            }
 
-        if receiverAddress.isEmpty {
-            addressIsValid = true
-            canSend = false
-        } else {
-            let avaliableBalance = availableBalance(address: address)
-            canSend = addressIsValid && (amount > 0 && amount <= avaliableBalance)
+            if receiverAddress.isEmpty {
+                addressIsValid = true
+                actionButtonEnabled = false
+            } else {
+                let avaliableBalance = availableBalance(address: address)
+                actionButtonEnabled = addressIsValid && (amount > 0 && amount <= avaliableBalance)
+            }
+        case .summary:
+            break
         }
     }
     
@@ -201,31 +226,36 @@ final class SendAssetViewModel: ObservableObject {
     
     private func updateBalance() {
         let balance = balanceAdapter.balance
+        let coinBalance = "\(balance) \(coin.code)"
         
         if let ticker = ticker {
             switch currency {
             case .btc:
-                balanceString = "\(balance) \(coin.code) (\(currency.symbol)" + "\((balance * ticker[.btc].price).rounded(toPlaces: 2)) \(currency.code))"
+                balanceString = "\(coinBalance) (\(currency.symbol)" + "\((balance * ticker[.btc].price).rounded(toPlaces: 2)) \(currency.code))"
             case .eth:
-                balanceString = "\(balance) \(coin.code) (\(currency.symbol)" + "\((balance * ticker[.eth].price).rounded(toPlaces: 2)) \(currency.code))"
+                balanceString = "\(coinBalance) (\(currency.symbol)" + "\((balance * ticker[.eth].price).rounded(toPlaces: 2)) \(currency.code))"
             case .fiat(let fiatCurrency):
-                balanceString = "\(balance) \(coin.code) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+                balanceString = "\(coinBalance) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
             }
         } else {
-            balanceString = "\(balance) \(coin.code)"
+            balanceString = coinBalance
         }
     }
     
     func send() {
+        actionButtonEnabled = false
+        
         switch coin.type {
         case .bitcoin:
             sendBtcAdapter?.send(amount: amount, address: receiverAddress, feeRate: feeRate, pluginData: [:], sortMode: .shuffle)
                 .receive(on: RunLoop.main)
                 .sink(receiveCompletion: { completion in
-                    
+                    if case let .failure(error) = completion {
+                        print("Sending btc error: \(error.localizedDescription)")
+                    }
                 }, receiveValue: { [weak self] _ in
                     print("Btc tx sent")
-                    self?.reset()
+                    self?.showConfirmationAlert.toggle()
                 })
                 .store(in: &subscriptions)
         case .ethereum:
@@ -246,7 +276,7 @@ final class SendAssetViewModel: ObservableObject {
                         }
                     } receiveValue: { [weak self] transaction in
                         print(transaction.transaction.hash.hex)
-                        self?.reset()
+                        self?.showConfirmationAlert.toggle()
                     }
                     .store(in: &self.subscriptions)
             }
@@ -266,17 +296,31 @@ final class SendAssetViewModel: ObservableObject {
         }
     }
     
-    private func reset() {
-        DispatchQueue.main.async {
-            self.amount = 0
-            self.receiverAddress = String()
-            self.memo = String()
-            
-            self.updateBalance()
-            
-            self.exchangerViewModel.reset()
+    func goBack() {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            switch step {
+            case .recipient:
+                break
+            case .amount:
+                step = .recipient
+            case .summary:
+                step = .amount
+            }
         }
     }
+    
+//    func reset() {
+//        self.step = .recipient
+//        self.amount = 0
+//        self.receiverAddress = String()
+//        self.memo = String()
+//
+//        self.updateBalance()
+//
+//        self.exchangerViewModel.reset()
+//
+//        self.addressIsValid = true
+//    }
 }
 
 extension SendAssetViewModel {
