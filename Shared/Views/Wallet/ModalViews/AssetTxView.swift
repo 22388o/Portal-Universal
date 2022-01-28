@@ -40,7 +40,7 @@ struct AssetTxView: View {
             
             HStack {
                 if selectedTx != nil {
-                    PButton(bgColor: Color.doneButtonBg, label: "All Transaction", width: 132, height: 32, fontSize: 12, enabled: true) {
+                    PButton(bgColor: Color.doneButtonBg, label: "All Transactions", width: 132, height: 32, fontSize: 12, enabled: true) {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             selectedTx = nil
                         }

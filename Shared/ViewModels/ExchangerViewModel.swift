@@ -56,7 +56,7 @@ final class ExchangerViewModel: ObservableObject {
             .removeDuplicates()
             .map { Double($0) ?? 0 }
             .map { [weak self] in
-                "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6))"
+                "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6).toString())"
             }
             .sink { [weak self] value in
                 if value == "0.0" {

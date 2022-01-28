@@ -312,7 +312,7 @@ final class AssetViewModel: ObservableObject {
         if isInteger {
             balance = "\(adapter?.balance ?? 0)"
         } else {
-            balance = "\(adapter?.balance.rounded(toPlaces: 6) ?? 0)"
+            balance = (adapter?.balance.rounded(toPlaces: 6) ?? 0).toString()
         }
         
         let percentChange: Decimal
