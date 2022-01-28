@@ -28,7 +28,7 @@ struct WalletCurrencyButton: View {
                         .offset(y: 1)
                 }
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Wallet currency")
+                    Text("Base asset")
                         .font(.mainFont(size: 10))
                         .foregroundColor(Color.white.opacity(0.5))
                     Text(selectedCurrrency.code)
