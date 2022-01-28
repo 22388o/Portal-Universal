@@ -32,7 +32,7 @@ class ExchangerViewModelUnitTests: XCTestCase {
     func testDefaultValues() throws {
         XCTAssertEqual(sut.coin, coin)
         XCTAssertEqual(sut.currency, currency)
-        XCTAssertEqual(sut.assetValue, "0")
+        XCTAssertEqual(sut.assetValue, "0.00")
         XCTAssertEqual(sut.fiatValue, "0")
     }
     
