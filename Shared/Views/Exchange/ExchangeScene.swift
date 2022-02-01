@@ -82,6 +82,7 @@ struct ExchangeScene: View {
                         ExchangeSelectorView(
                             state: $viewModel.state.exchange.mode,
                             selectorState: $viewModel.exchangeSelectorState,
+                            isLoggedIn: $viewModel.isLoggedIn,
                             exchanges: viewModel.syncedExchanges,
                             panelWidth: leftPanelWidth
                         )
