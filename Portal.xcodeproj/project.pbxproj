@@ -561,8 +561,6 @@
 		75F5CDA52684CA76005ECA5B /* RestoreAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDA32684CA76005ECA5B /* RestoreAccountViewModel.swift */; };
 		75F5CDAE2684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDAD2684CBF7005ECA5B /* SendAssetViewModel.swift */; };
 		75F5CDAF2684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDAD2684CBF7005ECA5B /* SendAssetViewModel.swift */; };
-		75F5CDB32684CD49005ECA5B /* AssetAllocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB22684CD49005ECA5B /* AssetAllocationView.swift */; };
-		75F5CDB42684CD49005ECA5B /* AssetAllocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB22684CD49005ECA5B /* AssetAllocationView.swift */; };
 		75F5CDB62684CD7F005ECA5B /* AssetAllocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */; };
 		75F5CDB72684CD7F005ECA5B /* AssetAllocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */; };
 		75F5CDB92684CE91005ECA5B /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5CDB82684CE91005ECA5B /* PieChartRepresentableView.swift */; };
@@ -930,7 +928,6 @@
 		75F5CD992684C904005ECA5B /* SeedTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedTestViewModel.swift; sourceTree = "<group>"; };
 		75F5CDA32684CA76005ECA5B /* RestoreAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreAccountViewModel.swift; sourceTree = "<group>"; };
 		75F5CDAD2684CBF7005ECA5B /* SendAssetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetViewModel.swift; sourceTree = "<group>"; };
-		75F5CDB22684CD49005ECA5B /* AssetAllocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAllocationView.swift; sourceTree = "<group>"; };
 		75F5CDB52684CD7F005ECA5B /* AssetAllocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAllocationViewModel.swift; sourceTree = "<group>"; };
 		75F5CDB82684CE91005ECA5B /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		75F5CDBB2684CEB3005ECA5B /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1093,7 +1090,6 @@
 				753471F5262C2E97005CD93C /* ExchangerView.swift */,
 				75984F45264833E5002CD1EA /* RestoreSeedField.swift */,
 				75F5CD8C2684C5FA005ECA5B /* CircularProgressBar.swift */,
-				75F5CDB22684CD49005ECA5B /* AssetAllocationView.swift */,
 				750D63BF268B2AAC00643FD3 /* TxSortSwitch.swift */,
 				750D63C2268B2B0800643FD3 /* ValueCurrencySwitchView.swift */,
 				7599A7902694566800562009 /* PortalLoader.swift */,
@@ -2211,7 +2207,6 @@
 				75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */,
 				75C95C5E2614CC0400B0EE10 /* Int+Extension.swift in Sources */,
 				756C66BB264038E900CD22B2 /* ManageAlertView.swift in Sources */,
-				75F5CDB32684CD49005ECA5B /* AssetAllocationView.swift in Sources */,
 				758F3AE026A9A9EF00F345E1 /* IAccountStorage.swift in Sources */,
 				750AE9C926149DD900C45971 /* IAsset.swift in Sources */,
 				7537DEF42701C51D00B862AB /* CoinbaseBalanceResponse.swift in Sources */,
@@ -2626,7 +2621,6 @@
 				75327D52270C92CB00F4484B /* BinanceBalance.swift in Sources */,
 				7555643B26D8FB7A001B1C1A /* ExchangeMarketView.swift in Sources */,
 				750AE9DA26149DD900C45971 /* IQRCodeProvider.swift in Sources */,
-				75F5CDB42684CD49005ECA5B /* AssetAllocationView.swift in Sources */,
 				753364A926F3399A0073B0A4 /* ExchangeSetupViewModel.swift in Sources */,
 				756C3C7426EA9B52009530A9 /* TraidingPairItem.swift in Sources */,
 				75D476DB262DB81C0006FD91 /* AssetTxView.swift in Sources */,
