@@ -10,18 +10,26 @@ import Combine
 
 struct ExchangerView: View {
     @ObservedObject var viewModel: ExchangerViewModel
-    @Binding var isValid: Bool
     
-    init(viewModel: ExchangerViewModel, isValid: Binding<Bool>) {
-        self.viewModel = viewModel
-        self._isValid = isValid
-    }
-
+    @Binding var isValid: Bool
+    @Binding var isSendingMax: Bool
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Amount to send")
-                .font(.mainFont(size: 12))
-                .foregroundColor(Color.coinViewRouteButtonInactive)
+            HStack {
+                Text("Amount to send")
+                    .font(.mainFont(size: 12))
+                    .foregroundColor(Color.coinViewRouteButtonInactive)
+                Spacer()
+                
+                HStack {
+                    Toggle("Send Max", isOn: $isSendingMax)
+                        .font(.mainFont(size: 10))
+                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                        .toggleStyle(.switch)
+                }
+            }
+            .padding(.horizontal, 4)
             
             HStack(spacing: 4) {
                 HStack(spacing: 8) {
@@ -50,6 +58,7 @@ struct ExchangerView: View {
                         )
                         .frame(height: 20)
                         .textFieldStyle(PlainTextFieldStyle())
+                        .disabled(isSendingMax)
                     #endif
                     
                     Text(viewModel.coin.code)
@@ -93,6 +102,7 @@ struct ExchangerView: View {
                         )
                         .frame(height: 20)
                         .textFieldStyle(PlainTextFieldStyle())
+                        .disabled(isSendingMax)
                     #endif
                     
                     Text(viewModel.currency.code)
@@ -105,6 +115,7 @@ struct ExchangerView: View {
                 )
             }
             .font(Font.mainFont(size: 16))
+            .allowsHitTesting(!isSendingMax)
         }
     }
 }
@@ -117,9 +128,10 @@ struct ExchangerView_Previews: PreviewProvider {
         
         ExchangerView(
             viewModel: .init(coin: coin, currency: fiatCurrency, ticker: ticker),
-            isValid: .constant(true)
+            isValid: .constant(true),
+            isSendingMax: .constant(true)
         )
-        .frame(width: 550, height: 200)
         .previewLayout(PreviewLayout.sizeThatFits)
+        .padding()
     }
 }

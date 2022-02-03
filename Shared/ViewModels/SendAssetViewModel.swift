@@ -21,6 +21,7 @@ final class SendAssetViewModel: ObservableObject {
     @Published var receiverAddress = String()
     @Published var memo = String()
     @Published var amountIsValid: Bool = true
+    @Published var isSendingMax: Bool = false
     @Published var txFeePriority: FeeRatePriority = .medium
     @Published var showConfirmationAlert: Bool = false
     
@@ -84,7 +85,19 @@ final class SendAssetViewModel: ObservableObject {
             }
             .receive(on: RunLoop.main)
             .sink { [weak self] feeRate in
-                self?.feeRate = feeRate
+                guard let self = self else { return }
+                
+                self.feeRate = feeRate
+                
+                if self.isSendingMax {
+                    switch coin.type {
+                    case .bitcoin:
+                        let avaliableBalance = self.sendBtcAdapter?.availableBalance(feeRate: self.feeRate, address: self.receiverAddress, pluginData: [:]) ?? 0
+                        self.exchangerViewModel.assetValue = avaliableBalance.string
+                    case .ethereum, .erc20( _):
+                        break
+                    }
+                }
             }
             .store(in: &subscriptions)
         
@@ -126,6 +139,24 @@ final class SendAssetViewModel: ObservableObject {
             
         }
         .store(in: &subscriptions)
+        
+        $isSendingMax
+            .dropFirst()
+            .sink { [weak self] sendMax in
+                guard let self = self else { return }
+                
+                if sendMax {
+                    switch coin.type {
+                    case .bitcoin:
+                        let avaliableBalance = self.sendBtcAdapter?.availableBalance(feeRate: self.feeRate, address: self.receiverAddress, pluginData: [:]) ?? 0
+                        self.exchangerViewModel.assetValue = avaliableBalance.string
+                    case .ethereum, .erc20( _):
+                        let avaliableBalance = balanceAdapter.balance
+                        self.exchangerViewModel.assetValue = avaliableBalance.string
+                    }
+                }
+            }
+            .store(in: &subscriptions)
     }
     
     deinit {

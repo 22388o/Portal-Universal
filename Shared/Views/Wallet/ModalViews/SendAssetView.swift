@@ -64,10 +64,11 @@ struct SendAssetView: View {
                 
                 switch viewModel.step {
                 case .recipient:
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 11) {
                         Text("Send to...")
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.coinViewRouteButtonInactive)
+                            .padding(.horizontal, 4)
 
                         PTextField(text: $viewModel.receiverAddress, placeholder: "Enter \(viewModel.coin.code) address", upperCase: false, width: 480, height: 48)
                             .overlay(
@@ -75,11 +76,15 @@ struct SendAssetView: View {
                                     .stroke(viewModel.addressIsValid ? Color.clear : Color.red, lineWidth: 1)
                             )
                     }
-                    .padding(.top, 14)
+                    .padding(.top, 17)
                     .padding(.bottom, 44)
                 case .amount:
                     VStack(spacing: 12) {
-                        ExchangerView(viewModel: viewModel.exchangerViewModel, isValid: $viewModel.amountIsValid)
+                        ExchangerView(
+                            viewModel: viewModel.exchangerViewModel,
+                            isValid: $viewModel.amountIsValid,
+                            isSendingMax: $viewModel.isSendingMax
+                        )
                         TxFeesPicker(txFee: viewModel.txFee, txFeePriority: $viewModel.txFeePriority)
                     }
                     .frame(width: 480)
