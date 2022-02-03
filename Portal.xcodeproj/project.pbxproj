@@ -568,6 +568,7 @@
 		8EC30ACE5DE8B55CB29E72BE /* Pods_UnitTestsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 986185EB0E224972B4164365 /* Pods_UnitTestsIOS.framework */; };
 		AF1AF4492702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
 		AF1AF44A2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */; };
+		AF73F2BD278E030800F39872 /* PortalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF73F2BC278E030800F39872 /* PortalUITests.swift */; };
 		AFA3D7052721B7440000F3BD /* PortalAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA3D7042721B7440000F3BD /* PortalAppDelegate.swift */; };
 		BF730E6C550AC2E80F0D1F2F /* Pods_Portal__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75EF8D642785CEA800F69A6E /* Pods_Portal__iOS_.framework */; };
 		FA3FD81326FCC8A200953727 /* TokenSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD81226FCC8A200953727 /* TokenSelector.swift */; };
@@ -597,6 +598,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 755782CD26087904000E1686;
 			remoteInfo = "Portal (iOS)";
+		};
+		AF73F2BF278E030800F39872 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 755782BF26087903000E1686 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 755782D526087904000E1686;
+			remoteInfo = "Portal (macOS)";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -934,7 +942,9 @@
 		96F631608C6DE0BFEA521700 /* Pods_Tests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		986185EB0E224972B4164365 /* Pods_UnitTestsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTestsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF1AF4482702755B00D7CDC9 /* FloatingPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extension.swift"; sourceTree = "<group>"; };
-		AF22D6B3270392E2000AAEB2 /* Build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Build.sh; sourceTree = "<group>"; };
+		AF73F2BA278E030800F39872 /* PortalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PortalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF73F2BC278E030800F39872 /* PortalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalUITests.swift; sourceTree = "<group>"; };
+		AF73F2BE278E030800F39872 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AFA3D7042721B7440000F3BD /* PortalAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalAppDelegate.swift; sourceTree = "<group>"; };
 		BC9A9F3CB0318CDC9451AD23 /* Pods_Portal__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Portal__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB3605D5B5420D4371EE75EE /* Pods_UnitTestsMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTestsMacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -982,6 +992,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				38ADC71E533EB3177E55D088 /* Pods_Portal__macOS_.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF73F2B7278E030800F39872 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1447,13 +1464,13 @@
 		755782BE26087903000E1686 = {
 			isa = PBXGroup;
 			children = (
-				AF22D6B3270392E2000AAEB2 /* Build.sh */,
 				750D63BC2689D9F200643FD3 /* alert.mp3 */,
 				755782C326087903000E1686 /* Shared */,
 				755782D026087904000E1686 /* iOS */,
 				755782D726087904000E1686 /* macOS */,
 				75244502278C85F000B38F8D /* UnitTestsMacOS */,
 				75244511278C9FAC00B38F8D /* UnitTestsIOS */,
+				AF73F2BB278E030800F39872 /* PortalUITests */,
 				755782CF26087904000E1686 /* Products */,
 				756A66A5262437C100353635 /* Frameworks */,
 				DF3B61ACB6ADC3A98577955E /* Pods */,
@@ -1487,6 +1504,7 @@
 				755782D626087904000E1686 /* Portal.app */,
 				75244501278C85F000B38F8D /* UnitTestsMacOS.xctest */,
 				75244510278C9FAC00B38F8D /* UnitTestsIOS.xctest */,
+				AF73F2BA278E030800F39872 /* PortalUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1757,6 +1775,15 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		AF73F2BB278E030800F39872 /* PortalUITests */ = {
+			isa = PBXGroup;
+			children = (
+				AF73F2BC278E030800F39872 /* PortalUITests.swift */,
+				AF73F2BE278E030800F39872 /* Info.plist */,
+			);
+			path = PortalUITests;
+			sourceTree = "<group>";
+		};
 		DF3B61ACB6ADC3A98577955E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1857,6 +1884,60 @@
 			productReference = 755782D626087904000E1686 /* Portal.app */;
 			productType = "com.apple.product-type.application";
 		};
+		755782DD26087904000E1686 /* Tests iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7557830226087905000E1686 /* Build configuration list for PBXNativeTarget "Tests iOS" */;
+			buildPhases = (
+				755782DA26087904000E1686 /* Sources */,
+				755782DB26087904000E1686 /* Frameworks */,
+				755782DC26087904000E1686 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				755782E026087904000E1686 /* PBXTargetDependency */,
+			);
+			name = "Tests iOS";
+			productName = "Tests iOS";
+			productReference = 755782DE26087904000E1686 /* Tests iOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		755782E826087905000E1686 /* Tests macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7557830526087905000E1686 /* Build configuration list for PBXNativeTarget "Tests macOS" */;
+			buildPhases = (
+				755782E526087905000E1686 /* Sources */,
+				755782E626087905000E1686 /* Frameworks */,
+				755782E726087905000E1686 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				755782EB26087905000E1686 /* PBXTargetDependency */,
+			);
+			name = "Tests macOS";
+			productName = "Tests macOS";
+			productReference = 755782E926087905000E1686 /* Tests macOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		AF73F2B9278E030800F39872 /* PortalUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AF73F2C3278E030800F39872 /* Build configuration list for PBXNativeTarget "PortalUITests" */;
+			buildPhases = (
+				AF73F2B6278E030800F39872 /* Sources */,
+				AF73F2B7278E030800F39872 /* Frameworks */,
+				AF73F2B8278E030800F39872 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AF73F2C0278E030800F39872 /* PBXTargetDependency */,
+			);
+			name = PortalUITests;
+			productName = PortalUITests;
+			productReference = AF73F2BA278E030800F39872 /* PortalUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1880,6 +1961,10 @@
 					755782D526087904000E1686 = {
 						CreatedOnToolsVersion = 12.4;
 					};
+					AF73F2B9278E030800F39872 = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = 755782D526087904000E1686;
+					};
 				};
 			};
 			buildConfigurationList = 755782C226087903000E1686 /* Build configuration list for PBXProject "Portal" */;
@@ -1899,6 +1984,7 @@
 				755782D526087904000E1686 /* Portal (macOS) */,
 				75244500278C85F000B38F8D /* UnitTestsMacOS */,
 				7524450F278C9FAC00B38F8D /* UnitTestsIOS */,
+				AF73F2B9278E030800F39872 /* PortalUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1935,6 +2021,13 @@
 				75A00BCF26D3F27500ABCA7E /* Main.storyboard in Resources */,
 				755782F926087905000E1686 /* Assets.xcassets in Resources */,
 				750D63BE2689D9F200643FD3 /* alert.mp3 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF73F2B8278E030800F39872 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2692,6 +2785,209 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		755782DA26087904000E1686 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				755782E326087904000E1686 /* Tests_iOS.swift in Sources */,
+				7537DF002701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */,
+				75308AD826A0280E0024AACD /* FeeRateProvider.swift in Sources */,
+				75C95C242614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
+				75308AD326A027E60024AACD /* IAppConfigProvider.swift in Sources */,
+				75C95C502614CC0400B0EE10 /* LineChart+Extension.swift in Sources */,
+				75219180275D6473003FA89D /* PriceAlertModel.swift in Sources */,
+				75C95C822614CC3700B0EE10 /* StringFormatter.swift in Sources */,
+				7537DEE22701A22000B862AB /* StringProtocol+Extension.swift in Sources */,
+				75C95C7A2614CC3700B0EE10 /* ViewModifiers.swift in Sources */,
+				75308AB526A0215C0024AACD /* Portal.swift in Sources */,
+				75308ADD26A0284A0024AACD /* BitcoinFeeRateProvider.swift in Sources */,
+				753364AF26F339C00073B0A4 /* ExchangeViewModel.swift in Sources */,
+				75C95C9C2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
+				75F5CD972684C8D6005ECA5B /* CreateAccountViewModel.swift in Sources */,
+				7555641A26D8EA22001B1C1A /* TxDetailsViewModel.swift in Sources */,
+				75C95C8E2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
+				750AE9AF26149DD900C45971 /* IWalletsService.swift in Sources */,
+				7537DEF12701A70D00B862AB /* KrakenBalance.swift in Sources */,
+				75308AC426A0222A0024AACD /* DBLocalStorage.swift in Sources */,
+				75308ABA26A021900024AACD /* LocalStorage.swift in Sources */,
+				7537DEEC2701A29A00B862AB /* BinanceAssetInfo.swift in Sources */,
+				7517F89426B1743F0020AECB /* CoinStorage.swift in Sources */,
+				750AE9B326149DD900C45971 /* ICoinKit.swift in Sources */,
+				7521917B275D6444003FA89D /* IPriceAlertStorage.swift in Sources */,
+				755D9FDC275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */,
+				751A1CE227306E460024586B /* AccountSettingsViewModel.swift in Sources */,
+				75C95C182614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
+				755EBC352721959200B56B89 /* IDBCacheStorage.swift in Sources */,
+				75C95C202614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
+				7537DEDD2700B17200B862AB /* CoinbaseProApi.swift in Sources */,
+				750AE9CF26149DD900C45971 /* IWallet.swift in Sources */,
+				75F5CD802684C418005ECA5B /* Data+Extension.swift in Sources */,
+				75308AC926A022570024AACD /* IBDStorage.swift in Sources */,
+				75F5CDA62684CA76005ECA5B /* RestoreAccountViewModel.swift in Sources */,
+				750D63B82689C32B00643FD3 /* NotificationService.swift in Sources */,
+				75308ACE26A027B40024AACD /* AppConfigProvider.swift in Sources */,
+				7537DEFB2701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
+				75F5CD9C2684C904005ECA5B /* SeedTestViewModel.swift in Sources */,
+				750AE8E52614992400C45971 /* PricesDataUpdater.swift in Sources */,
+				750AE9B726149DD900C45971 /* IHistoricalData.swift in Sources */,
+				750AE9DB26149DD900C45971 /* IQRCodeProvider.swift in Sources */,
+				AF1AF44B2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
+				75C95C542614CC0400B0EE10 /* View+Extension.swift in Sources */,
+				75C95C8A2614CC3700B0EE10 /* Syncronized.swift in Sources */,
+				7537DF05270309CF00B862AB /* SocketTicker.swift in Sources */,
+				750AE9AB26149DD900C45971 /* IMarketDataMockable.swift in Sources */,
+				7537DECE27009F9900B862AB /* Dictionary+Extension.swift in Sources */,
+				75308AE726A028F30024AACD /* IFeeRateProvider.swift in Sources */,
+				750AE9C326149DD900C45971 /* IPricesData.swift in Sources */,
+				750AE9BB26149DD900C45971 /* IKeyChainStorage.swift in Sources */,
+				75F5CD8A2684C541005ECA5B /* TxsViewModel.swift in Sources */,
+				75C95C642614CC0400B0EE10 /* Color+Extension.swift in Sources */,
+				750AE8E92614992400C45971 /* MarketDataUpdater.swift in Sources */,
+				750AE8F92614992400C45971 /* MarketDataStorage.swift in Sources */,
+				755EBC30272194D400B56B89 /* ReachabilityService.swift in Sources */,
+				75C95C862614CC3700B0EE10 /* MockData.swift in Sources */,
+				755D9FD7275E6DD000EE363D /* PushNotificationService.swift in Sources */,
+				750AE9DF26149DD900C45971 /* IChartDataProvider.swift in Sources */,
+				755D9FE1275FB64800EE363D /* AlertsViewModel.swift in Sources */,
+				75C95C5C2614CC0400B0EE10 /* Font+Extension.swift in Sources */,
+				75C95C602614CC0400B0EE10 /* Int+Extension.swift in Sources */,
+				750AE9CB26149DD900C45971 /* IAsset.swift in Sources */,
+				75219176275D621C003FA89D /* ManageAlertViewModel.swift in Sources */,
+				7537DEF62701C51D00B862AB /* CoinbaseBalanceResponse.swift in Sources */,
+				7537DED52700B17200B862AB /* BinanceApi.swift in Sources */,
+				75C95C482614CC0400B0EE10 /* PieChart+Extension.swift in Sources */,
+				750AE8ED2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */,
+				7537DED92700B17200B862AB /* KrakenApi.swift in Sources */,
+				75C95C7E2614CC3700B0EE10 /* RepeatingTimer.swift in Sources */,
+				75C95C4C2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
+				75C95C1C2614CBB500B0EE10 /* QRCodeProvider.swift in Sources */,
+				75C95C442614CC0400B0EE10 /* Publisher+Extension.swift in Sources */,
+				75C95C582614CC0400B0EE10 /* Double+Extension.swift in Sources */,
+				75308AE226A028940024AACD /* EthereumFeeRateProvider.swift in Sources */,
+				750AE9D726149DD900C45971 /* IPieChartModel.swift in Sources */,
+				75F5CD852684C4D1005ECA5B /* PortalTx.swift in Sources */,
+				75F5CDB02684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */,
+				75BEB20D26B96AE200C99F50 /* ERC20Updater.swift in Sources */,
+				750AE9C726149DD900C45971 /* IBalanceProvider.swift in Sources */,
+				75F5CD922684C6AD005ECA5B /* AssetItemViewModel.swift in Sources */,
+				75C95C682614CC0400B0EE10 /* Array+Extension.swift in Sources */,
+				75F5CDAB2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
+				750AE9BF26149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
+				755D9FD2275E6DA200EE363D /* PushTokenUpdater.swift in Sources */,
+				750AE8F52614992400C45971 /* KeychainStorage.swift in Sources */,
+				7555641226D8E8AB001B1C1A /* AccountsViewModel.swift in Sources */,
+				7537DEE72701A25100B862AB /* ExchangeBalanceInfo.swift in Sources */,
+				753364AA26F3399A0073B0A4 /* ExchangeSetupViewModel.swift in Sources */,
+				75308ABF26A021C10024AACD /* ILocalStorage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		755782E526087905000E1686 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				755782EE26087905000E1686 /* Tests_macOS.swift in Sources */,
+				75308AD926A0280E0024AACD /* FeeRateProvider.swift in Sources */,
+				75C95C252614CBB500B0EE10 /* BalanceProvider.swift in Sources */,
+				75308AD426A027E60024AACD /* IAppConfigProvider.swift in Sources */,
+				75C95C512614CC0400B0EE10 /* LineChart+Extension.swift in Sources */,
+				75C95C832614CC3700B0EE10 /* StringFormatter.swift in Sources */,
+				75C95C7B2614CC3700B0EE10 /* ViewModifiers.swift in Sources */,
+				755D9FD3275E6DA200EE363D /* PushTokenUpdater.swift in Sources */,
+				7537DEDE2700B17200B862AB /* CoinbaseProApi.swift in Sources */,
+				7555641B26D8EA22001B1C1A /* TxDetailsViewModel.swift in Sources */,
+				755D9FE2275FB64800EE363D /* AlertsViewModel.swift in Sources */,
+				75308AB626A0215C0024AACD /* Portal.swift in Sources */,
+				75308ADE26A0284A0024AACD /* BitcoinFeeRateProvider.swift in Sources */,
+				753364B026F339C00073B0A4 /* ExchangeViewModel.swift in Sources */,
+				7537DEF22701A70D00B862AB /* KrakenBalance.swift in Sources */,
+				75C95C9D2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
+				7537DED62700B17200B862AB /* BinanceApi.swift in Sources */,
+				AF1AF44C2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
+				75F5CD982684C8D6005ECA5B /* CreateAccountViewModel.swift in Sources */,
+				75C95C8F2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
+				750AE9B026149DD900C45971 /* IWalletsService.swift in Sources */,
+				753364AB26F3399A0073B0A4 /* ExchangeSetupViewModel.swift in Sources */,
+				75308AC526A0222A0024AACD /* DBLocalStorage.swift in Sources */,
+				7537DEE82701A25100B862AB /* ExchangeBalanceInfo.swift in Sources */,
+				75308ABB26A021900024AACD /* LocalStorage.swift in Sources */,
+				751A1CE327306E460024586B /* AccountSettingsViewModel.swift in Sources */,
+				7517F89526B1743F0020AECB /* CoinStorage.swift in Sources */,
+				750AE9B426149DD900C45971 /* ICoinKit.swift in Sources */,
+				75C95C192614CBB500B0EE10 /* MarketChangeProvider.swift in Sources */,
+				755EBC362721959200B56B89 /* IDBCacheStorage.swift in Sources */,
+				75C95C212614CBB500B0EE10 /* ChartDataProvider.swift in Sources */,
+				750AE9D026149DD900C45971 /* IWallet.swift in Sources */,
+				75F5CD812684C418005ECA5B /* Data+Extension.swift in Sources */,
+				75219177275D621C003FA89D /* ManageAlertViewModel.swift in Sources */,
+				755D9FD8275E6DD000EE363D /* PushNotificationService.swift in Sources */,
+				75308ACA26A022570024AACD /* IBDStorage.swift in Sources */,
+				75F5CDA72684CA76005ECA5B /* RestoreAccountViewModel.swift in Sources */,
+				750D63B92689C32B00643FD3 /* NotificationService.swift in Sources */,
+				75308ACF26A027B40024AACD /* AppConfigProvider.swift in Sources */,
+				7537DECF27009F9900B862AB /* Dictionary+Extension.swift in Sources */,
+				75F5CD9D2684C904005ECA5B /* SeedTestViewModel.swift in Sources */,
+				7521917C275D6444003FA89D /* IPriceAlertStorage.swift in Sources */,
+				750AE8E62614992400C45971 /* PricesDataUpdater.swift in Sources */,
+				750AE9B826149DD900C45971 /* IHistoricalData.swift in Sources */,
+				750AE9DC26149DD900C45971 /* IQRCodeProvider.swift in Sources */,
+				75C95C552614CC0400B0EE10 /* View+Extension.swift in Sources */,
+				75C95C8B2614CC3700B0EE10 /* Syncronized.swift in Sources */,
+				750AE9AC26149DD900C45971 /* IMarketDataMockable.swift in Sources */,
+				75308AE826A028F30024AACD /* IFeeRateProvider.swift in Sources */,
+				750AE9C426149DD900C45971 /* IPricesData.swift in Sources */,
+				750AE9BC26149DD900C45971 /* IKeyChainStorage.swift in Sources */,
+				7537DEE32701A22000B862AB /* StringProtocol+Extension.swift in Sources */,
+				75F5CD8B2684C541005ECA5B /* TxsViewModel.swift in Sources */,
+				75C95C652614CC0400B0EE10 /* Color+Extension.swift in Sources */,
+				7537DF06270309CF00B862AB /* SocketTicker.swift in Sources */,
+				7537DEF72701C51D00B862AB /* CoinbaseBalanceResponse.swift in Sources */,
+				750AE8EA2614992400C45971 /* MarketDataUpdater.swift in Sources */,
+				755EBC31272194D400B56B89 /* ReachabilityService.swift in Sources */,
+				750AE8FA2614992400C45971 /* MarketDataStorage.swift in Sources */,
+				75C95C872614CC3700B0EE10 /* MockData.swift in Sources */,
+				750AE9E026149DD900C45971 /* IChartDataProvider.swift in Sources */,
+				7537DEDA2700B17200B862AB /* KrakenApi.swift in Sources */,
+				75C95C5D2614CC0400B0EE10 /* Font+Extension.swift in Sources */,
+				7537DEFC2701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
+				75C95C612614CC0400B0EE10 /* Int+Extension.swift in Sources */,
+				750AE9CC26149DD900C45971 /* IAsset.swift in Sources */,
+				75C95C492614CC0400B0EE10 /* PieChart+Extension.swift in Sources */,
+				750AE8EE2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */,
+				75C95C7F2614CC3700B0EE10 /* RepeatingTimer.swift in Sources */,
+				75C95C4D2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
+				75C95C1D2614CBB500B0EE10 /* QRCodeProvider.swift in Sources */,
+				75C95C452614CC0400B0EE10 /* Publisher+Extension.swift in Sources */,
+				75C95C592614CC0400B0EE10 /* Double+Extension.swift in Sources */,
+				75308AE326A028940024AACD /* EthereumFeeRateProvider.swift in Sources */,
+				75219181275D6473003FA89D /* PriceAlertModel.swift in Sources */,
+				7555641626D8E915001B1C1A /* NSTextField+Extension.swift in Sources */,
+				750AE9D826149DD900C45971 /* IPieChartModel.swift in Sources */,
+				75F5CD862684C4D1005ECA5B /* PortalTx.swift in Sources */,
+				7537DEED2701A29A00B862AB /* BinanceAssetInfo.swift in Sources */,
+				75F5CDB12684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */,
+				75BEB20E26B96AE200C99F50 /* ERC20Updater.swift in Sources */,
+				750AE9C826149DD900C45971 /* IBalanceProvider.swift in Sources */,
+				75F5CD932684C6AD005ECA5B /* AssetItemViewModel.swift in Sources */,
+				75C95C692614CC0400B0EE10 /* Array+Extension.swift in Sources */,
+				75F5CDAC2684CACA005ECA5B /* WalletSceneViewModel.swift in Sources */,
+				755D9FDD275F7E1200EE363D /* PriceAlertUpdater.swift in Sources */,
+				750AE9C026149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
+				750AE8F62614992400C45971 /* KeychainStorage.swift in Sources */,
+				7555641326D8E8AB001B1C1A /* AccountsViewModel.swift in Sources */,
+				7537DF012701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */,
+				75308AC026A021C10024AACD /* ILocalStorage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF73F2B6278E030800F39872 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF73F2BD278E030800F39872 /* PortalUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2704,6 +3000,11 @@
 			isa = PBXTargetDependency;
 			target = 755782CD26087904000E1686 /* Portal (iOS) */;
 			targetProxy = 75244514278C9FAC00B38F8D /* PBXContainerItemProxy */;
+		};
+		AF73F2C0278E030800F39872 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 755782D526087904000E1686 /* Portal (macOS) */;
+			targetProxy = AF73F2BF278E030800F39872 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2946,7 +3247,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "iOS/Portal (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -2981,7 +3282,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "iOS/Portal (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
@@ -3018,7 +3319,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3053,7 +3354,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HBPT8C8527;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3076,6 +3377,137 @@
 				infura_project_id = 7bffa4b191da4e9682d4351178c4736e;
 				infura_project_secret = 5dedf9a8a4c4477687cfac3debbc23c6;
 				mixpanel_token = d0b3200d7b77474e2b54bccb56441c74;
+			};
+			name = Release;
+		};
+		7557830326087905000E1686 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HBPT8C8527;
+				INFOPLIST_FILE = "Tests iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "tides.universal.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Portal (iOS)";
+			};
+			name = Debug;
+		};
+		7557830426087905000E1686 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HBPT8C8527;
+				INFOPLIST_FILE = "Tests iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "tides.universal.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Portal (iOS)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7557830626087905000E1686 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = HBPT8C8527;
+				INFOPLIST_FILE = "Tests macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tides.universal.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Portal (macOS)";
+			};
+			name = Debug;
+		};
+		7557830726087905000E1686 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = HBPT8C8527;
+				INFOPLIST_FILE = "Tests macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tides.universal.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Portal (macOS)";
+			};
+			name = Release;
+		};
+		AF73F2C1278E030800F39872 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = HBPT8C8527;
+				INFOPLIST_FILE = PortalUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.PortalUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Portal (macOS)";
+			};
+			name = Debug;
+		};
+		AF73F2C2278E030800F39872 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = HBPT8C8527;
+				INFOPLIST_FILE = PortalUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tides.PortalUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Portal (macOS)";
 			};
 			name = Release;
 		};
@@ -3123,6 +3555,15 @@
 			buildConfigurations = (
 				7557830026087905000E1686 /* Debug */,
 				7557830126087905000E1686 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AF73F2C3278E030800F39872 /* Build configuration list for PBXNativeTarget "PortalUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF73F2C1278E030800F39872 /* Debug */,
+				AF73F2C2278E030800F39872 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
