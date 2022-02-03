@@ -9,10 +9,12 @@ import Charts
 import SwiftUI
 
 struct PieChartRepresentableView: UIViewRepresentable {
-    let viewModel: IPieChartModel
+    @Binding var assets: [PortfolioItem]
+    private let viewModel: IPieChartModel
 
-    init(viewModel: AssetAllocationViewModel) {
-        self.viewModel = viewModel
+    init(assets: Binding<[PortfolioItem]>) {
+        self._assets = assets
+        self.viewModel = AssetAllocationViewModel(assets: assets.wrappedValue)
     }
     
     func makeUIView(context: Context) -> PieChartView {

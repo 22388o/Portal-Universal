@@ -12,7 +12,6 @@ import SwiftUI
 import Combine
 
 final class PortfolioViewModel: ObservableObject {
-    @Published private(set) var assets: [PortfolioItem] = []
     @Published private(set) var totalValue = String()
     @Published private(set) var change = String()
     @Published private(set) var lowest = String()
@@ -24,6 +23,7 @@ final class PortfolioViewModel: ObservableObject {
     @Published var selectedTimeframe: Timeframe = .day
     @Published var state: PortalState
     @Published var empty: Bool = true
+    @Published var assets: [PortfolioItem] = []
     
     private var subscriptions = Set<AnyCancellable>()
     private var walletManager: IWalletManager
