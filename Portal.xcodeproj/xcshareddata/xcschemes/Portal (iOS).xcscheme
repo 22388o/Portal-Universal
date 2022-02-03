@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "755782DD26087904000E1686"
-               BuildableName = "UITests iOS.xctest"
-               BlueprintName = "UITests iOS"
+               BlueprintIdentifier = "7524450F278C9FAC00B38F8D"
+               BuildableName = "UnitTestsIOS.xctest"
+               BlueprintName = "UnitTestsIOS"
                ReferencedContainer = "container:Portal.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,9 +42,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7524450F278C9FAC00B38F8D"
-               BuildableName = "UnitTestsIOS.xctest"
-               BlueprintName = "UnitTestsIOS"
+               BlueprintIdentifier = "AF73F2B9278E030800F39872"
+               BuildableName = "PortalUITests.xctest"
+               BlueprintName = "PortalUITests"
                ReferencedContainer = "container:Portal.xcodeproj">
             </BuildableReference>
          </TestableReference>
