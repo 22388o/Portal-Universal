@@ -35,6 +35,7 @@ struct HeaderView: View {
                         .foregroundColor(Color.white.opacity(0.82))
                     })
                     .buttonStyle(PlainButtonStyle())
+                    .identifier("Account Button")
                     
                     Text("|")
                         .font(.mainFont(size: 12))
