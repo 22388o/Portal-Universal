@@ -45,6 +45,24 @@ struct LoadingViewModifier: ViewModifier {
     }
 }
 
+struct ModalViewFrameViewModifier: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        ZStack(alignment: .top) {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
+                        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
+                )
+            
+            content
+        }
+    }
+    
+}
+
 public struct PlaceholderStyle: ViewModifier {
     var showPlaceHolder: Bool
     var placeholder: String

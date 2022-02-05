@@ -20,24 +20,7 @@ struct AssetTxView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
-                )
-                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
-            
-            CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
-                .background(Color.white)
-                .cornerRadius(32)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 32)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
-                )
-                .offset(y: -32)
-            
+        ModalViewContainer(imageUrl: viewModel.coin.icon, size: CGSize(width: 776, height: 594)) {
             HStack {
                 if selectedTx != nil {
                     PButton(bgColor: Color.doneButtonBg, label: "All Transactions", width: 132, height: 32, fontSize: 12, enabled: true) {

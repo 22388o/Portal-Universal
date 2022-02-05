@@ -15,24 +15,7 @@ struct ManageAlertView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
-                        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
-                )
-            
-            CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
-                .background(Color.white)
-                .cornerRadius(32)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 32)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
-                )
-                .offset(y: -32)
-            
+        ModalViewContainer(imageUrl: viewModel.coin.icon, size: CGSize(width: 656, height: 528)) {
             VStack(spacing: 0) {
                 VStack(spacing: 16) {
                     VStack {
@@ -188,7 +171,6 @@ struct ManageAlertView: View {
                 .padding([.horizontal, .bottom], 4)
             }
         }
-        .frame(width: 656, height: 528)
     }
 }
 
