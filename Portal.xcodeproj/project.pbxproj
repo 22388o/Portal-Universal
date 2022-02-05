@@ -414,6 +414,8 @@
 		7584559727A025C700342330 /* NotificationServiceUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7584559627A025C700342330 /* NotificationServiceUnitTests.swift */; };
 		7585AF3C27AEA2E700A373F7 /* ModalViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7585AF3B27AEA2E700A373F7 /* ModalViewContainer.swift */; };
 		7585AF3D27AEA2E700A373F7 /* ModalViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7585AF3B27AEA2E700A373F7 /* ModalViewContainer.swift */; };
+		7585AF3F27AEA56700A373F7 /* SendAssetProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7585AF3E27AEA56700A373F7 /* SendAssetProgressView.swift */; };
+		7585AF4027AEA56700A373F7 /* SendAssetProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7585AF3E27AEA56700A373F7 /* SendAssetProgressView.swift */; };
 		758F3ADD26A81A4700F345E1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */; };
 		758F3AE026A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
 		758F3AE126A9A9EF00F345E1 /* IAccountStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */; };
@@ -859,6 +861,7 @@
 		75821D65277343AD004A65A2 /* TokenSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelector.swift; sourceTree = "<group>"; };
 		7584559627A025C700342330 /* NotificationServiceUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceUnitTests.swift; sourceTree = "<group>"; };
 		7585AF3B27AEA2E700A373F7 /* ModalViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewContainer.swift; sourceTree = "<group>"; };
+		7585AF3E27AEA56700A373F7 /* SendAssetProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetProgressView.swift; sourceTree = "<group>"; };
 		758F3ADC26A81A4700F345E1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		758F3ADF26A9A9EF00F345E1 /* IAccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAccountStorage.swift; sourceTree = "<group>"; };
 		758F3AE226A9AA2100F345E1 /* AccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStorage.swift; sourceTree = "<group>"; };
@@ -1119,6 +1122,7 @@
 				FA70527026CEB4BD000EE935 /* SwapperView.swift */,
 				FA70528926D54D06000EE935 /* TokenCurrencyView.swift */,
 				7585AF3B27AEA2E700A373F7 /* ModalViewContainer.swift */,
+				7585AF3E27AEA56700A373F7 /* SendAssetProgressView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2336,6 +2340,7 @@
 				753E7E322756693300C96F33 /* BarChart+Extension.swift in Sources */,
 				75254EAC273C63F5005DB4EF /* LineChartMarkerView.swift in Sources */,
 				753471FD262C2ECA005CD93C /* ExchangerViewModel.swift in Sources */,
+				7585AF3F27AEA56700A373F7 /* SendAssetProgressView.swift in Sources */,
 				75F5CDAE2684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */,
 				753BA7192799B058009FEC20 /* IMarketDataUpdater.swift in Sources */,
 				756C3C7326EA9B52009530A9 /* TraidingPairItem.swift in Sources */,
@@ -2657,6 +2662,7 @@
 				75A3F52526A57B69006B1823 /* CoinManager.swift in Sources */,
 				75C95C532614CC0400B0EE10 /* View+Extension.swift in Sources */,
 				7592DD472618D18700918ED2 /* TopCoinView.swift in Sources */,
+				7585AF4027AEA56700A373F7 /* SendAssetProgressView.swift in Sources */,
 				7546CFCD2636980A00E8A8B7 /* AccountItemView.swift in Sources */,
 				7537DECD27009F9900B862AB /* Dictionary+Extension.swift in Sources */,
 				75DBD2BE26359D080050AE08 /* AccountsView.swift in Sources */,
