@@ -32,7 +32,7 @@ class SendETHService: ISendAssetService {
     }
     
     var spendable: Decimal {
-        guard let transaction = transaction, let significand = Decimal(string: String(transaction.gasData.estimatedFee)) else {
+        guard let transaction = transaction, let significand = Decimal(string: String(transaction.totalAmount)) else {
             return balance
         }
 
@@ -40,7 +40,7 @@ class SendETHService: ISendAssetService {
     }
     
     var fee: Decimal {
-        guard let gasData = transaction?.gasData, let significand = Decimal(string: String(gasData.estimatedFee)) else {
+        guard let gasData = transaction?.gasData, let significand = Decimal(string: String(gasData.fee)) else {
             return 0
         }
         
