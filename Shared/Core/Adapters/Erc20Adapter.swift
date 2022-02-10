@@ -167,7 +167,7 @@ extension Erc20Adapter: ITransactionsAdapter {
     }
     
     func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
-        Future { [weak self] promisse in
+        Future { [weak self] promise in
             let disposeBag = DisposeBag()
             
             try? self?.erc20Kit.transactionsSingle(from: nil, limit: nil)
@@ -175,7 +175,7 @@ extension Erc20Adapter: ITransactionsAdapter {
                     transactions.compactMap { self?.transactionRecord(fromTransaction: $0.fullTransaction) }
                 }
                 .subscribe(onSuccess: { records in
-                    promisse(.success(records))
+                    promise(.success(records))
                 })
                 .disposed(by: disposeBag)
         }

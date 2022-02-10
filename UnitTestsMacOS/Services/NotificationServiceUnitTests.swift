@@ -34,13 +34,13 @@ class NotificationServiceUnitTests: XCTestCase {
     func testNotify() throws {
         sut.notify(testNotification)
         
-        let promisse = expectation(description: "Properties are updated")
+        let promise = expectation(description: "Properties are updated")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.newAlerts.value, 1)
         XCTAssertEqual(sut.alertsBeenSeen.value, false)
@@ -52,13 +52,13 @@ class NotificationServiceUnitTests: XCTestCase {
     func testMarkAllAlertsViewed() throws {
         sut.notify(testNotification)
         
-        let promisse = expectation(description: "Properties are updated")
+        let promise = expectation(description: "Properties are updated")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.newAlerts.value, 1)
         XCTAssertEqual(sut.alertsBeenSeen.value, false)
@@ -75,13 +75,13 @@ class NotificationServiceUnitTests: XCTestCase {
     func testClearNotification() throws {
         sut.notify(testNotification)
         
-        let promisse = expectation(description: "Properties are updated")
+        let promise = expectation(description: "Properties are updated")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.newAlerts.value, 1)
         XCTAssertEqual(sut.alertsBeenSeen.value, false)

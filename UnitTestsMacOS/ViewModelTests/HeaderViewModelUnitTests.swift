@@ -54,24 +54,24 @@ class HeaderViewModelUnitTests: XCTestCase {
         
         accountMannager.onActiveAccountUpdate.send(account)
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.accountName, account.name)
         
         accountMannager.onActiveAccountUpdate.send(nil)
         
-        let promisse1 = expectation(description: "wait for publisher to trigger update")
+        let promise1 = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse1.fulfill()
+            promise1.fulfill()
         }
         
-        wait(for: [promisse1], timeout: 0.2)
+        wait(for: [promise1], timeout: 0.2)
         XCTAssertEqual(sut.accountName, "-")
     }
     
@@ -81,13 +81,13 @@ class HeaderViewModelUnitTests: XCTestCase {
         let notification = PNotification(message: "Test")
         notificationService.notify(notification)
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.hasBadge, true)
     }
     
@@ -97,13 +97,13 @@ class HeaderViewModelUnitTests: XCTestCase {
         let notification = PNotification(message: "Test")
         notificationService.notify(notification)
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.newAlerts, 1)
     }
     
@@ -111,26 +111,26 @@ class HeaderViewModelUnitTests: XCTestCase {
         let notification = PNotification(message: "Test")
         notificationService.notify(notification)
                 
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.newAlerts, 1)
         XCTAssertEqual(sut.hasBadge, true)
         
         sut.markAllNotificationsViewed()
 
-        let promisse1 = expectation(description: "wait for publisher to trigger update")
+        let promise1 = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse1.fulfill()
+            promise1.fulfill()
         }
         
-        wait(for: [promisse1], timeout: 0.2)
+        wait(for: [promise1], timeout: 0.2)
         
         XCTAssertEqual(sut.newAlerts, 0)
         XCTAssertEqual(sut.hasBadge, false)

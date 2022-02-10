@@ -39,13 +39,13 @@ class WalletViewModelUnitTests: XCTestCase {
         
         adapterManager.adapterdReady.send(true)
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.items.isEmpty, false)
         XCTAssertEqual(sut.items.count, 1)

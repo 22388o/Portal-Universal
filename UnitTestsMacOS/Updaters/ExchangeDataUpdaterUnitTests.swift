@@ -26,27 +26,27 @@ class ExchangeDataUpdaterUnitTests: XCTestCase {
     }
     
     func testOnExchangesUpdate() throws {
-        let promisse = expectation(description: "Exchanges are updated")
+        let promise = expectation(description: "Exchanges are updated")
         
         sut.onExchangesUpdate.sink { exchanges in
             XCTAssertNotNil(exchanges)
             XCTAssertEqual(exchanges.count, 3)
-            promisse.fulfill()
+            promise.fulfill()
         }
         .store(in: &subscriptions)
         
-        wait(for: [promisse], timeout: 5)
+        wait(for: [promise], timeout: 5)
     }
     
     func testOnTraidingPairsUpdate() throws {
-        let promisse = expectation(description: "Trading pairs are updated")
+        let promise = expectation(description: "Trading pairs are updated")
         
         sut.onTraidingPairsUpdate.sink { tradingPairs in
             XCTAssertNotNil(tradingPairs)
-            promisse.fulfill()
+            promise.fulfill()
         }
         .store(in: &subscriptions)
         
-        wait(for: [promisse], timeout: 5)
+        wait(for: [promise], timeout: 5)
     }
 }

@@ -46,17 +46,17 @@ class MarketDataUpdaterUnitTests: XCTestCase {
     func testOnTickersUpdateSubscription() throws {
         XCTAssertEqual(sut.tickers.count, cachedTickers.count)
 
-        let promisse = expectation(description: "Tickers updated")
+        let promise = expectation(description: "Tickers updated")
         var updatedTickers: [Ticker] = []
 
         sut.onTickersUpdate
             .sink { tickers in
                 updatedTickers = tickers
-                promisse.fulfill()
+                promise.fulfill()
             }
             .store(in: &subscriptions)
 
-        wait(for: [promisse], timeout: 20)
+        wait(for: [promise], timeout: 20)
         
         XCTAssertEqual(sut.tickers, updatedTickers)
     }

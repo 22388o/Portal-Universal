@@ -42,52 +42,52 @@ class AccountSettingsViewModelTests: XCTestCase {
     func testEthNetworkStringMainNet() throws {
         sut.ethNetwork = .ethMainNet
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.ethNetworkString, "mainNet")
     }
     
     func testEthNetworkStringKovan() throws {
         sut.ethNetwork = .kovan
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.ethNetworkString, "kovan")
     }
     
     func testEthNetworkStringRopsten() throws {
         sut.ethNetwork = .ropsten
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.ethNetworkString, "ropsten")
     }
     
     func testEthNetworkStringBscMainNet() throws {
         sut.ethNetwork = .bscMainNet
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.ethNetworkString, "bscMainNet")
     }
     
@@ -96,13 +96,13 @@ class AccountSettingsViewModelTests: XCTestCase {
         
         sut.btcNetwork = .mainNet
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.canApplyChanges, true)
     }
     
@@ -111,13 +111,13 @@ class AccountSettingsViewModelTests: XCTestCase {
         
         sut.ethNetwork = .bscMainNet
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.canApplyChanges, true)
     }
     
@@ -126,13 +126,13 @@ class AccountSettingsViewModelTests: XCTestCase {
         
         sut.confirmationThreshold = 5
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.canApplyChanges, true)
     }
     
@@ -141,13 +141,13 @@ class AccountSettingsViewModelTests: XCTestCase {
         
         sut.infuraKeyString = String()
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.canApplyChanges, true)
     }
     

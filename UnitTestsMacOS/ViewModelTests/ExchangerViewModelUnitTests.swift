@@ -39,26 +39,26 @@ class ExchangerViewModelUnitTests: XCTestCase {
     func testAssetValueChangesFiatValue() throws {
         sut.assetValue = "0.3"
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.fiatValue, "13247.76")
     }
     
     func testFiatValueChangesAssetValue() throws {
         sut.fiatValue = "13247.76"
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.assetValue, "0.3")
     }
     
@@ -78,13 +78,13 @@ class ExchangerViewModelUnitTests: XCTestCase {
         
         sut.reset()
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.assetValue, String())
     }

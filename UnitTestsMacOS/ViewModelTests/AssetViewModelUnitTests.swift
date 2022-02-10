@@ -187,135 +187,135 @@ class AssetViewModelUnitTests: XCTestCase {
     }
     
     func testChangeStringStates() throws {
-        let promisse = expectation(description: "update coin")
+        let promise = expectation(description: "update coin")
 
         state.wallet.$coin
             .delay(for: .seconds(0.1), scheduler: RunLoop.main)
             .sink { _ in
-                promisse.fulfill()
+                promise.fulfill()
             }
             .store(in: &subscriptions)
         
         state.wallet.coin = .ethereum()
 
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.change, "+$0.34 (0.01%)")
     }
     
     func testChangeStringForDayTimeframe() throws {
         sut.timeframe = .day
         
-        let promisse = expectation(description: "update timeframe: day")
+        let promise = expectation(description: "update timeframe: day")
         
         sut.$timeframe
             .delay(for: .seconds(0.1), scheduler: RunLoop.main)
             .sink { _ in
-                promisse.fulfill()
+                promise.fulfill()
             }
             .store(in: &subscriptions)
                     
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.change, "+$362.11 (0.82%)")
     }
     
     func testChangeStringForWeekTimeframe() throws {
-        let promisse = expectation(description: "update timeframe: week")
+        let promise = expectation(description: "update timeframe: week")
         
         sut.$timeframe
             .dropFirst()
             .delay(for: .seconds(0.1), scheduler: RunLoop.main)
             .sink { _ in
-                promisse.fulfill()
+                promise.fulfill()
             }
             .store(in: &subscriptions)
         
         sut.timeframe = .week
                     
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.change, "+$1,355.69 (3.07%)")
     }
     
     func testChangeStringForMonthTimeframe() throws {
-        let promisse = expectation(description: "update timeframe: month")
+        let promise = expectation(description: "update timeframe: month")
         
         sut.$timeframe
             .dropFirst()
             .delay(for: .seconds(0.1), scheduler: RunLoop.main)
             .sink { _ in
-                promisse.fulfill()
+                promise.fulfill()
             }
             .store(in: &subscriptions)
         
         sut.timeframe = .month
                     
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.change, "-$2,684.88 (-6.08%)")
     }
     
     func testChangeStringForYearTimeframe() throws {
-        let promisse = expectation(description: "update timeframe: year")
+        let promise = expectation(description: "update timeframe: year")
         
         sut.$timeframe
             .dropFirst()
             .delay(for: .seconds(0.1), scheduler: RunLoop.main)
             .sink { _ in
-                promisse.fulfill()
+                promise.fulfill()
             }
             .store(in: &subscriptions)
         
         sut.timeframe = .year
                     
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.change, "+$12,165.86 (27.55%)")
     }
     
     func testTotalValueString() throws {
         XCTAssertEqual(sut.totalValue, String())
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.totalValue, "$44,159.2")
         
         state.wallet.currency = .fiat(FiatCurrency(code: "RUB", name: "Russian Ruble"))
         
-        let promisse1 = expectation(description: "wait for publisher to trigger update")
+        let promise1 = expectation(description: "wait for publisher to trigger update")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse1.fulfill()
+            promise1.fulfill()
         }
                 
-        wait(for: [promisse1], timeout: 0.2)
+        wait(for: [promise1], timeout: 0.2)
         XCTAssertEqual(sut.totalValue, "₽44,159.2")
     }
     
     func testBalanceString() throws {
         XCTAssertEqual(sut.balance, String())
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.balance, "2.25")
     }
     
     func testCanSendSetCorrectly() throws {
         XCTAssertEqual(sut.canSend, false)
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.canSend, true)
     }
     

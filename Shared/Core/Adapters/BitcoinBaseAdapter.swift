@@ -304,7 +304,7 @@ extension BitcoinBaseAdapter {
         let satoshiAmount = convertToSatoshi(value: amount)
         let sortType = convertToKitSortMode(sort: sortMode)
 
-        return Future { [weak self] promisse in
+        return Future { [weak self] promise in
             do {
                 if let adapter = self {
                     let fullTransaction = try adapter.abstractKit.send(
@@ -317,9 +317,9 @@ extension BitcoinBaseAdapter {
                     print("Btc tx sent:")
                     print(fullTransaction)
                 }
-                promisse(.success(()))
+                promise(.success(()))
             } catch {
-                promisse(.failure(error))
+                promise(.failure(error))
             }
         }
     }
@@ -352,7 +352,7 @@ extension BitcoinBaseAdapter: ITransactionsAdapter {
     }
     
     func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
-        Future { [weak self] promisse in
+        Future { [weak self] promise in
             let disposeBag = DisposeBag()
             
             self?.abstractKit.transactions(fromUid: from?.uid, limit: limit)
@@ -362,7 +362,7 @@ extension BitcoinBaseAdapter: ITransactionsAdapter {
                         }
                     }
                     .subscribe(onSuccess: { records in
-                        promisse(.success(records))
+                        promise(.success(records))
                     })
                     .disposed(by: disposeBag)
         }

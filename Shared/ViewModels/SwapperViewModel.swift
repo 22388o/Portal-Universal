@@ -197,7 +197,7 @@ final class SwapperViewModel: ObservableObject {
     }
     
     private func getAmountsOut(value: BigUInt) -> Future<BigUInt, Never> {
-        Future { [weak self] promisse in
+        Future { [weak self] promise in
             
             //            self?.slippage = (BigUInt(10000000000000000)/value).description + "%"
             
@@ -206,7 +206,7 @@ final class SwapperViewModel: ObservableObject {
                 let baseContractAddress = self?.base.token.contractAddress,
                 let quoteContractAddress = self?.quote.token.contractAddress
             else {
-                promisse(.success(0))
+                promise(.success(0))
                 return
             }
             
@@ -219,13 +219,13 @@ final class SwapperViewModel: ObservableObject {
             )
             
             guard let transaction = try? getAmountsOutCalldata.transaction() else {
-                promisse(.success(0))
+                promise(.success(0))
                 return
             }
             
             self?.client?.eth_call(transaction, block: .Latest, completion: { (error, data) in
                 guard let data = data, data != "0x" else {
-                    promisse(.success(0))
+                    promise(.success(0))
                     return
                 }
                 
@@ -246,10 +246,10 @@ final class SwapperViewModel: ObservableObject {
                     print("AMOUNTS OUT")
                     print(decoderArray)
                     
-                    promisse(.success(amount))
+                    promise(.success(amount))
                 } catch let error {
                     print("FAILED TO DECODE AMOUNTS: \(error.localizedDescription)")
-                    promisse(.success(0))
+                    promise(.success(0))
                 }
             })
         }

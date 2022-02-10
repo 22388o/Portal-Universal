@@ -30,17 +30,17 @@ class MarketDataStorageUnitTests: XCTestCase {
     }
     
     func testRequestHistoricalDataUppdatesMarketDataSubscription() throws {
-        let promisse = expectation(description: "Request historical data trigger onMarketUpdate")
+        let promise = expectation(description: "Request historical data trigger onMarketUpdate")
                 
         sut.onMarketDataUpdate
             .sink { _ in
-                promisse.fulfill()
+                promise.fulfill()
             }
             .store(in: &subscriptions)
         
         sut.requestHistoricalData(coin: .bitcoin(), timeframe: .day)
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
     }
     
     func testRequestHistoricalData() throws {
@@ -75,13 +75,13 @@ class MarketDataStorageUnitTests: XCTestCase {
                         
         marketDataUpdater.onTickersUpdate.send([])
         
-        let promisse = expectation(description: "wait sut tickers refresh")
+        let promise = expectation(description: "wait sut tickers refresh")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.tickers?.isEmpty, true)
     }
@@ -99,13 +99,13 @@ class MarketDataStorageUnitTests: XCTestCase {
         
         fiatCurrenciesUpdater.onFiatCurrenciesUpdate.send(testArray)
         
-        let promisse = expectation(description: "wait sut fiat currencies refresh")
+        let promise = expectation(description: "wait sut fiat currencies refresh")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertNotEqual(sut.fiatCurrencies.count, testArray.count)
         XCTAssertEqual(sut.fiatCurrencies.count, testArray.count - 1)

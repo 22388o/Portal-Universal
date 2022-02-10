@@ -55,52 +55,52 @@ class PortfolioViewModelUnitTests: XCTestCase {
     func testTimeframeSubscription() throws {
         sut.selectedTimeframe = .day
         
-        let dayTimeframePromisse = expectation(description: "wait for publisher to trigger update")
+        let dayTimeframePromise = expectation(description: "wait for publisher to trigger update")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            dayTimeframePromisse.fulfill()
+            dayTimeframePromise.fulfill()
         }
 
-        wait(for: [dayTimeframePromisse], timeout: 0.2)
+        wait(for: [dayTimeframePromise], timeout: 0.2)
         
         XCTAssertEqual(sut.lowest, "$95,080.5")
         XCTAssertEqual(sut.highest, "$97,035.75")
         
         sut.selectedTimeframe = .week
         
-        let weekTimeframePromisse = expectation(description: "wait for publisher to trigger update")
+        let weekTimeframePromise = expectation(description: "wait for publisher to trigger update")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            weekTimeframePromisse.fulfill()
+            weekTimeframePromise.fulfill()
         }
 
-        wait(for: [weekTimeframePromisse], timeout: 0.2)
+        wait(for: [weekTimeframePromise], timeout: 0.2)
         
         XCTAssertEqual(sut.lowest, "$91,350")
         XCTAssertEqual(sut.highest, "$95,152.5")
         
         sut.selectedTimeframe = .month
         
-        let monthTimeframePromisse = expectation(description: "wait for publisher to trigger update")
+        let monthTimeframePromise = expectation(description: "wait for publisher to trigger update")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            monthTimeframePromisse.fulfill()
+            monthTimeframePromise.fulfill()
         }
 
-        wait(for: [monthTimeframePromisse], timeout: 0.2)
+        wait(for: [monthTimeframePromise], timeout: 0.2)
         
         XCTAssertEqual(sut.lowest, "$94,500")
         XCTAssertEqual(sut.highest, "$115,200")
         
         sut.selectedTimeframe = .year
                 
-        let yearTimeframePromisse = expectation(description: "wait for publisher to trigger update")
+        let yearTimeframePromise = expectation(description: "wait for publisher to trigger update")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            yearTimeframePromisse.fulfill()
+            yearTimeframePromise.fulfill()
         }
 
-        wait(for: [yearTimeframePromisse], timeout: 0.2)
+        wait(for: [yearTimeframePromise], timeout: 0.2)
         
         XCTAssertEqual(sut.lowest, "$67,500")
         XCTAssertEqual(sut.highest, "$155,250")
@@ -111,48 +111,48 @@ class PortfolioViewModelUnitTests: XCTestCase {
 
         adapterMannager.adapterdReady.send(true)
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.4)
+        wait(for: [promise], timeout: 0.4)
         XCTAssertEqual(sut.change, "+$99,358.19 (100.0%)")
     }
     
     func testCurrencySubscription() throws {
         state.wallet.currency = .eth
         
-        let ethCurrencyPromisse = expectation(description: "wait for publisher to trigger update")
+        let ethCurrencyPromise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            ethCurrencyPromisse.fulfill()
+            ethCurrencyPromise.fulfill()
         }
         
-        wait(for: [ethCurrencyPromisse], timeout: 0.2)
+        wait(for: [ethCurrencyPromise], timeout: 0.2)
         XCTAssertEqual(sut.change, "+29.38004 ETH (100.0%)")
         
         state.wallet.currency = .btc
         
-        let btcCurrencyPromisse = expectation(description: "wait for publisher to trigger update")
+        let btcCurrencyPromise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            btcCurrencyPromisse.fulfill()
+            btcCurrencyPromise.fulfill()
         }
         
-        wait(for: [btcCurrencyPromisse], timeout: 0.2)
+        wait(for: [btcCurrencyPromise], timeout: 0.2)
         XCTAssertEqual(sut.change, "+2.25 BTC (100.0%)")
         
         state.wallet.currency = .fiat(FiatCurrency(code: "RUB", name: "Russin rubble"))
         
-        let rubleCurrencyPromisse = expectation(description: "wait for publisher to trigger update")
+        let rubleCurrencyPromise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            rubleCurrencyPromisse.fulfill()
+            rubleCurrencyPromise.fulfill()
         }
         
-        wait(for: [rubleCurrencyPromisse], timeout: 0.2)
+        wait(for: [rubleCurrencyPromise], timeout: 0.2)
         XCTAssertEqual(sut.change, "+₽99,358.19 (100.0%)")
     }
     
@@ -161,13 +161,13 @@ class PortfolioViewModelUnitTests: XCTestCase {
 
         marketDataProvider.onMarketDataUpdate.send()
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.3)
+        wait(for: [promise], timeout: 0.3)
         XCTAssertEqual(sut.change, "+$99,358.19 (100.0%)")
     }
     

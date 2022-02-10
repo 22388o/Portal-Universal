@@ -177,7 +177,7 @@ extension EthereumAdapter: ITransactionsAdapter {
     }
     
     func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
-        Future { [weak self] promisse in
+        Future { [weak self] promise in
             let disposeBag = DisposeBag()
             
             self?.ethereumKit.etherTransactionsSingle(fromHash: from.flatMap { Data(hex: $0.transactionHash) }, limit: limit)
@@ -187,7 +187,7 @@ extension EthereumAdapter: ITransactionsAdapter {
                         }
                     }
                     .subscribe(onSuccess: { records in
-                        promisse(.success(records))
+                        promise(.success(records))
                     })
                     .disposed(by: disposeBag)
         }

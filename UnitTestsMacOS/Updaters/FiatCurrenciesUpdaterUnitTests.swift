@@ -31,14 +31,14 @@ class FiatCurrenciesUpdaterUnitTests: XCTestCase {
     }
     
     func testOnFiatCurrenciesUpdate() throws {
-        let promisse = expectation(description: "Fiat currencies are fetched")
+        let promise = expectation(description: "Fiat currencies are fetched")
         
         sut.onFiatCurrenciesUpdate.sink { currencies in
             XCTAssertNotNil(currencies, "Currencies are not fetched")
-            promisse.fulfill()
+            promise.fulfill()
         }
         .store(in: &subscriptions)
         
-        wait(for: [promisse], timeout: 3)
+        wait(for: [promise], timeout: 3)
     }
 }

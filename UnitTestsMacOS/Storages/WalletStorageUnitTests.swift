@@ -41,17 +41,17 @@ class WalletStorageUnitTests: XCTestCase {
         
         coinMannager.addCoins()
         
-        let promisse = expectation(description: "wallets updated")
+        let promise = expectation(description: "wallets updated")
         
         sut.onWalletsUpdate.sink(receiveValue: { wallets in
             XCTAssertNotNil(wallets, "wallets are nil")
-            promisse.fulfill()
+            promise.fulfill()
         })
         .store(in: &subscriptions)
         
         accountMannager.onActiveAccountUpdate.send(nil)
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.wallets.count, 2)
     }
@@ -61,17 +61,17 @@ class WalletStorageUnitTests: XCTestCase {
 
         coinMannager.addCoins()
         
-        let promisse = expectation(description: "wallets updated")
+        let promise = expectation(description: "wallets updated")
         
         sut.onWalletsUpdate.sink(receiveValue: { wallets in
             XCTAssertNotNil(wallets, "wallets are nil")
-            promisse.fulfill()
+            promise.fulfill()
         })
         .store(in: &subscriptions)
         
         coinMannager.onCoinsUpdate.send([])
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         
         XCTAssertEqual(sut.wallets.count, 2)
     }

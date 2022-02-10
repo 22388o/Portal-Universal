@@ -27,31 +27,31 @@ class ERC20UpdaterUnitTests: XCTestCase {
     func testOnTokensUpdate() throws {
         sut = ERC20Updater()
         
-        let promisse = expectation(description: "Tokens fetched")
+        let promise = expectation(description: "Tokens fetched")
         
         sut.onTokensUpdate.sink { tokens in
             XCTAssertNotNil(tokens, "Tokens are nil")
             XCTAssertEqual(tokens.filter{ $0.iconURL.isEmpty }.count, 0)
-            promisse.fulfill()
+            promise.fulfill()
         }
         .store(in: &subsriptions)
         
-        wait(for: [promisse], timeout: 5)
+        wait(for: [promise], timeout: 5)
     }
     
     func testOnTokensUpdateLoadsLocallyStoredTokensIfFetchingFails() throws {
         sut = ERC20Updater(jsonDecoder: JSONDecoder(), url: URL(string: "https://www.google.com"))
         
-        let promisse = expectation(description: "Locally stored tokens fetched")
+        let promise = expectation(description: "Locally stored tokens fetched")
         
         sut.onTokensUpdate.sink { tokens in
             XCTAssertNotNil(tokens, "Tokens are nil")
             XCTAssertEqual(tokens.filter{ $0.iconURL.isEmpty }.count, 0)
             XCTAssertEqual(tokens.count, 709)
-            promisse.fulfill()
+            promise.fulfill()
         }
         .store(in: &subsriptions)
         
-        wait(for: [promisse], timeout: 5)
+        wait(for: [promise], timeout: 5)
     }
 }

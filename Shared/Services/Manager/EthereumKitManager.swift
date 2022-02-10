@@ -83,15 +83,15 @@ final class EthereumKitManager {
     }
     
     func gasLimit(gasPrice: Int, transactionData: TransactionData) -> Future<Int, Never> {
-        Future { [weak self] promisse in
-            guard let self = self else { promisse(.success(Kit.defaultGasLimit));  return }
+        Future { [weak self] promise in
+            guard let self = self else { promise(.success(Kit.defaultGasLimit));  return }
             
             self.ethereumKit?
                 .estimateGas(transactionData: transactionData, gasPrice: gasPrice)
                 .subscribe(onSuccess: { estimatedGasLimit in
-                    promisse(.success(estimatedGasLimit))
+                    promise(.success(estimatedGasLimit))
                 }, onError: { error in
-                    promisse(.success(Kit.defaultGasLimit))
+                    promise(.success(Kit.defaultGasLimit))
                 })
                 .disposed(by: self.disposeBag)
         }

@@ -132,15 +132,15 @@ struct MockedTransactionAdapter: ITransactionsAdapter {
     var lastBlockUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
     
     var transactionRecords: AnyPublisher<[TransactionRecord], Never> {
-        Future { promisse in
-            promisse(.success([]))
+        Future { promise in
+            promise(.success([]))
         }
         .eraseToAnyPublisher()
     }
     
     func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never> {
-        Future { promisse in
-            promisse(.success([]))
+        Future { promise in
+            promise(.success([]))
         }
     }
     

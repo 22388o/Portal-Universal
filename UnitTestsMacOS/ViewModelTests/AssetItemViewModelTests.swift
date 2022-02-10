@@ -43,13 +43,13 @@ class AssetItemViewModelTests: XCTestCase {
 
         state.wallet.coin = .ethereum()
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.selected, false)
     }
     
@@ -58,13 +58,13 @@ class AssetItemViewModelTests: XCTestCase {
 
         state.wallet.currency = .btc
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.totalValueString, "2.25 BTC")
     }
     
@@ -73,24 +73,24 @@ class AssetItemViewModelTests: XCTestCase {
         
         state.wallet.currency = .eth
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.totalValueString, "29.380043 ETH")
         
         state.wallet.currency = .fiat(FiatCurrency.init(code: "RUB", name: "Russian ruble"))
         
-        let promisse1 = expectation(description: "wait for publisher to trigger update")
+        let promise1 = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse1.fulfill()
+            promise1.fulfill()
         }
         
-        wait(for: [promisse1], timeout: 0.2)
+        wait(for: [promise1], timeout: 0.2)
         XCTAssertEqual(sut.totalValueString, "₽99,358.19")
     }
     
@@ -129,13 +129,13 @@ class AssetItemViewModelTests: XCTestCase {
         adapter.balanceStateUpdated = Just(()).eraseToAnyPublisher()
         adapter.balanceState = .syncing(progress: 90, lastBlockDate: nil)
         
-        let promisse = expectation(description: "wait for publisher to trigger update")
+        let promise = expectation(description: "wait for publisher to trigger update")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            promisse.fulfill()
+            promise.fulfill()
         }
         
-        wait(for: [promisse], timeout: 0.2)
+        wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.syncProgress, 0.9)
     }
     
