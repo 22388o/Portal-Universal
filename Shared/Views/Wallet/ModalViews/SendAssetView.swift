@@ -217,7 +217,7 @@ struct SendAssetView: View {
         .alert(isPresented: $viewModel.showConfirmationAlert) {
             if let error = viewModel.sendError {
                 return Alert(
-                    title: Text("Sending \(viewModel.exchangerViewModel.assetValue) \(viewModel.coin.code) error"),
+                    title: Text("Sending \(viewModel.coin.code) error"),
                     message: Text(error.localizedDescription), dismissButton: .default(Text("Dismiss"), action: {
                         viewModel.resetErrorState()
                 }))
