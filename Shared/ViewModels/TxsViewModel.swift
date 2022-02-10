@@ -30,7 +30,7 @@ final class TxsViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     var balanceString: String {
-        let coinBalance = "\(balance) \(coin.code)"
+        let coinBalance = "\(balance.rounded(toPlaces: 6).toString()) \(coin.code)"
         let balanceString: String
         
         if let ticker = ticker {

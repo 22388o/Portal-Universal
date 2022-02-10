@@ -17,7 +17,11 @@ struct TxDetailsViewModel {
     }
     
     var date: String {
-        "\(transaction.date)"
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_us")
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: transaction.date)
     }
     
     var from: String {
