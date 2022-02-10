@@ -307,7 +307,15 @@ extension BitcoinBaseAdapter {
         return Future { [weak self] promisse in
             do {
                 if let adapter = self {
-                    _ = try adapter.abstractKit.send(to: address, value: satoshiAmount, feeRate: feeRate, sortType: sortType, pluginData: pluginData)
+                    let fullTransaction = try adapter.abstractKit.send(
+                        to: address,
+                        value: satoshiAmount,
+                        feeRate: feeRate,
+                        sortType: sortType,
+                        pluginData: pluginData
+                    )
+                    print("Btc tx sent:")
+                    print(fullTransaction)
                 }
                 promisse(.success(()))
             } catch {
