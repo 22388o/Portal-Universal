@@ -83,15 +83,15 @@ final class TxsViewModel: ObservableObject {
     func title(tx: TransactionRecord) -> String {
         switch tx.type {
         case .incoming:
-            return "Received \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
+            return "Received \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
         case .outgoing:
-            return "Sent \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
+            return "Sent \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
         case .sentToSelf:
-            return "Send to self \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
+            return "Send to self \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
         case .approve:
-            return "Approving... \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
+            return "Approving... \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
         case .transfer:
-            return "Trasfer... \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
+            return "Trasfer... \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
         }
     }
     

@@ -126,9 +126,9 @@ final class AssetItemViewModel: ObservableObject {
         let updatedBalanceString: String
 
         if let unspendable = unspendable, unspendable > 0 {
-            updatedBalanceString = isInteger ? "\(spendable) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)" : "\(spendable.rounded(toPlaces: 6)) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)"
+            updatedBalanceString = isInteger ? "\(spendable) (\(unspendable.rounded(toPlaces: 6).toString())) \(coin.code)" : "\(spendable.rounded(toPlaces: 6).toString()) (\(unspendable.rounded(toPlaces: 6).toString())) \(coin.code)"
         } else {
-            updatedBalanceString = isInteger ? "\(spendable) \(coin.code)" : "\(spendable.rounded(toPlaces: 6)) \(coin.code)"
+            updatedBalanceString = isInteger ? "\(spendable) \(coin.code)" : "\(spendable.rounded(toPlaces: 6).toString()) \(coin.code)"
         }
 
         if balanceString != updatedBalanceString && !balanceString.isEmpty {

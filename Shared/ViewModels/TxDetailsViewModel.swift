@@ -13,7 +13,7 @@ struct TxDetailsViewModel {
     let lastBlockInfo: LastBlockInfo?
     
     var title: String {
-        "\(transaction.type == .incoming ? "Received" : "Sent") \(transaction.amount.double) \(coin.code)"
+        "\(transaction.type == .incoming ? "Received" : "Sent") \(transaction.amount.rounded(toPlaces: 6).toString()) \(coin.code)"
     }
     
     var date: String {
