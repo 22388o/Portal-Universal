@@ -113,6 +113,13 @@ final class PortfolioViewModel: ObservableObject {
                 self.updatePortfolioData(timeframe: self.selectedTimeframe)
             }
             .store(in: &subscriptions)
+        
+        state.onAssetBalancesUpdate.sink { [weak self] _ in
+            guard let portfolio = self else { return }
+            
+            portfolio.assets = portfolio.configuredItems()
+        }
+        .store(in: &subscriptions)
     }
     
     private func configuredItems() -> [PortfolioItem] {

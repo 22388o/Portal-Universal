@@ -57,6 +57,7 @@ final class AssetItemViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateBalance()
+                state.onAssetBalancesUpdate.send(())
             }
             .store(in: &subscriptions)
         
