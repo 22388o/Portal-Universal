@@ -33,6 +33,7 @@ final class NotificationService: INotificationService {
             .onActiveAccountUpdate
             .sink { [weak self] account in
                 self?.accountId = account?.id
+                self?.clear()
             }
             .store(in: &subscriptions)
     }
