@@ -186,6 +186,10 @@ struct TxDetailsView: View {
                         Text("Hash")
                         Text(viewModel.txHash)
                     }
+                    VStack(alignment: .leading) {
+                        Text("Network fees")
+                        Text(viewModel.networkFees)
+                    }
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Status")
                         HStack {

@@ -40,6 +40,14 @@ struct TxDetailsViewModel {
         "\(transaction.blockHeight ?? 0) (\(transaction.confirmations(lastBlockHeight: lastBlockInfo?.height)) block confirmations)"
     }
     
+    var networkFees: String {
+        if let fee = transaction.fee {
+            return "\(fee) \(coin.code)"
+        } else {
+            return " - "
+        }
+    }
+    
     var completed: Bool {
         transaction.status(lastBlockHeight: lastBlockInfo?.height) == .completed
     }
