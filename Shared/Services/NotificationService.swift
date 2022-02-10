@@ -55,6 +55,7 @@ final class NotificationService: INotificationService {
     }
     
     func clear() {
+        newAlerts.value = 0
         notifications.value.removeAll()
     }
 }
