@@ -15,6 +15,7 @@ import Combine
 final class EthereumAdapter: BaseEthereumAdapter {
     static let decimal = 18
     private var confirmationsThreshold: Int
+    private let disposeBag = DisposeBag()
 
     init(ethKit: EthereumKit.Kit, confirmationsThreshold: Int) {
         self.confirmationsThreshold = confirmationsThreshold
@@ -128,23 +129,26 @@ extension EthereumAdapter: IBalanceAdapter {
 }
 
 extension EthereumAdapter: ISendEthereumAdapter {
-    func send(address: Address, value: BigUInt, transactionInput: Data, gasPrice: Int, gasLimit: Int, nonce: Int?) -> Future<FullTransaction, Error> {
-        Future { [weak self] promisse in
-            let disposeBag = DisposeBag()
-            self?.ethereumKit.sendSingle(address: address, value: value, gasPrice: gasPrice, gasLimit: 21000)
-                .subscribe(onSuccess: { transaction in
-                    promisse(.success(transaction))
-                }, onError: { error in
-                    promisse(.failure(error))
-                })
-                .disposed(by: disposeBag)
+    func send(tx: SendETHService.Transaction) -> Future<Void, Error> {
+        Future { promise in
+            self
+                .ethereumKit
+                .sendSingle(transactionData: tx.data, gasPrice: tx.gasData.gasPrice, gasLimit: tx.gasData.gasLimit, nonce: nil)
+                .subscribe { fullTransaction in
+                    print("Eth tx sent:")
+                    print(fullTransaction)
+                    
+                    promise(.success(()))
+                } onError: { error in
+                    promise(.failure(error))
+                }
+                .disposed(by: self.disposeBag)
         }
     }
     
     func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData {
         ethereumKit.transferTransactionData(to: address, value: amount)
     }
-
 }
 
 extension EthereumAdapter: ITransactionsAdapter {
