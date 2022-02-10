@@ -174,39 +174,59 @@ struct TxDetailsView: View {
                     .fill(Color.exchangerFieldBorder)
                 
                 VStack(alignment: .leading, spacing: 15) {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("From")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         Text(viewModel.from)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+
                     }
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("To")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         Text(viewModel.to)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+
                     }
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Hash")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         Text(viewModel.txHash)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+
                     }
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Network fees")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         Text(viewModel.networkFees)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+
                     }
-                    VStack(alignment: .leading, spacing: 6) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Block height")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
+                        Text(viewModel.blockHeight)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+                    }
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Status")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         HStack {
                             RoundedRectangle(cornerRadius: 8)
                                 .fill(viewModel.completed ? Color.orange : Color.gray)
                                 .frame(width: 6, height: 6)
                             Text(viewModel.completed ? "Complete" : "Pending")
+                                .foregroundColor(Color.coinViewRouteButtonActive)
                         }
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        Text("Block height")
-                        Text(viewModel.blockHeight)
                     }
                 }
                 .font(.mainFont(size: 12))
-                .foregroundColor(Color.coinViewRouteButtonActive)
                 .padding(.horizontal, 24)
                 .padding(.vertical)
             }
