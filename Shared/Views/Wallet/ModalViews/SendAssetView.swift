@@ -68,7 +68,7 @@ struct SendAssetView: View {
                             isValid: $viewModel.amountIsValid,
                             isSendingMax: $viewModel.isSendingMax
                         )
-                        TxFeesPicker(txFee: viewModel.txFee, txFeePriority: $viewModel.txFeePriority)
+                        TxFeesPicker(txFee: viewModel.txFee, showOptions: viewModel.coin == .bitcoin(), txFeePriority: $viewModel.txFeePriority)
                     }
                     .frame(width: 480)
                     .padding(.top, 14)
@@ -167,53 +167,67 @@ struct SendAssetView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(Color.exchangerFieldBackground)
 
-                    ScrollView {
-                        LazyVStack_(alignment: .leading, spacing: 0) {
-                            ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.transactionHash) { tx in
-                                VStack(spacing: 0) {
-                                    HStack(spacing: 0) {
-                                        HStack {
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .fill(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
-                                                .frame(width: 6, height: 6)
-                                            Text(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
-                                                .foregroundColor(.orange)
+                    if !viewModel.transactions.isEmpty {
+                        ScrollView {
+                            LazyVStack_(alignment: .leading, spacing: 0) {
+                                ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.transactionHash) { tx in
+                                    VStack(spacing: 0) {
+                                        HStack(spacing: 0) {
+                                            HStack {
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .fill(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
+                                                    .frame(width: 6, height: 6)
+                                                Text(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
+                                                    .foregroundColor(.orange)
+                                            }
+                                            .padding(.leading, 4)
+
+                                            Text("\(tx.amount.double) \(viewModel.coin.code)")
+                                                .frame(width: 85)
+                                                .padding(.leading, 30)
+                                            Text("\(tx.to ?? "unknown address")")
+                                                .lineLimit(1)
+                                                .frame(width: 201)
+                                                .padding(.leading, 15)
+                                            Text(tx.date.timeAgoSinceDate(shortFormat: true))
+                                                .frame(width: 80)
+                                                .lineLimit(1)
+                                                .padding(.leading, 28)
                                         }
-                                        .padding(.leading, 4)
-
-                                        Text("\(tx.amount.double) \(viewModel.coin.code)")
-                                            .frame(width: 85)
-                                            .padding(.leading, 30)
-                                        Text("\(tx.to ?? "unknown address")")
-                                            .lineLimit(1)
-                                            .frame(width: 201)
-                                            .padding(.leading, 15)
-                                        Text(tx.date.timeAgoSinceDate(shortFormat: true))
-                                            .frame(width: 80)
-                                            .lineLimit(1)
-                                            .padding(.leading, 28)
+                                        .font(.mainFont(size: 12))
                                     }
-                                    .font(.mainFont(size: 12))
-                                }
-                                .id(tx.transactionHash)
-                                .foregroundColor(.coinViewRouteButtonInactive)
-                                .frame(height: 30)
-                                .frame(maxWidth: .infinity)
+                                    .id(tx.transactionHash)
+                                    .foregroundColor(.coinViewRouteButtonInactive)
+                                    .frame(height: 30)
+                                    .frame(maxWidth: .infinity)
 
-                                Divider()
+                                    Divider()
+                                }
                             }
                         }
+                    } else {
+                        Text("There is no transactions yet")
+                            .font(.mainFont(size: 12))
+                            .foregroundColor(Color.coinViewRouteButtonActive)
                     }
                 }
                 .padding([.horizontal, .bottom], 4)
             }
         })
         .alert(isPresented: $viewModel.showConfirmationAlert) {
-            Alert(
-                title: Text("Sent \(viewModel.exchangerViewModel.assetValue) \(viewModel.coin.code)"),
-                message: Text("Reciever address: \(viewModel.receiverAddress)"), dismissButton: .default(Text("Dismiss"), action: {
-                    Portal.shared.state.modalView = .none
-            }))
+            if let error = viewModel.sendError {
+                return Alert(
+                    title: Text("Sending \(viewModel.exchangerViewModel.assetValue) \(viewModel.coin.code) error"),
+                    message: Text(error.localizedDescription), dismissButton: .default(Text("Dismiss"), action: {
+                        viewModel.resetErrorState()
+                }))
+            } else {
+                return Alert(
+                    title: Text("Sent \(viewModel.exchangerViewModel.assetValue) \(viewModel.coin.code)"),
+                    message: Text("Reciever address: \(viewModel.receiverAddress)"), dismissButton: .default(Text("Dismiss"), action: {
+                        Portal.shared.state.modalView = .none
+                }))
+            }
         }
     }
 }
