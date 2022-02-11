@@ -67,7 +67,7 @@ final class PortfolioViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        adapterManager.adapterdReady
+        adapterManager.adapterReady
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
@@ -154,7 +154,7 @@ final class PortfolioViewModel: ObservableObject {
         totalValue = "\(portfolioBalanceValue.formattedString(state.wallet.currency))"
         empty = portfolioBalanceValue == 0
         
-        change = calculateChange(value: portfolioBalanceValue)
+        change = changeString(value: portfolioBalanceValue)
         
         lowest = lowString()
         highest = highString()
@@ -164,7 +164,7 @@ final class PortfolioViewModel: ObservableObject {
         exchangeBalances.removeAll()
     }
     
-    private func calculateChange(value: Decimal) -> String {
+    private func changeString(value: Decimal) -> String {
         let balanceAtTimestamp = assets.map{ $0.balanceValue(for: state.wallet.currency, at: selectedTimeframe) }.reduce(0){ $0 + $1 }
         let change = value - balanceAtTimestamp
         let changeInPercents = balanceAtTimestamp > 0 ? (change/balanceAtTimestamp) * 100 : 100
@@ -188,6 +188,11 @@ final class PortfolioViewModel: ObservableObject {
             self.chartDataEntries = [ChartDataEntry]()
             return
         }
+                    
+//        let resultArray: [Double] = Array(0..<count).map { index in
+//            return pricePoints.map{ $0[index] }.reduce(0, +)
+//        }
+
 
         var resultArray: [Double] = Array(0..<count).map { x in 0 }
 
