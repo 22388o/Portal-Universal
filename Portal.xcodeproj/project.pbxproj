@@ -216,6 +216,8 @@
 		753364AE26F339C00073B0A4 /* ExchangeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753364AC26F339C00073B0A4 /* ExchangeViewModel.swift */; };
 		753364B226F33A0B0073B0A4 /* ExchangeCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753364B126F33A0B0073B0A4 /* ExchangeCredentialsView.swift */; };
 		753364B326F33A0B0073B0A4 /* ExchangeCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753364B126F33A0B0073B0A4 /* ExchangeCredentialsView.swift */; };
+		7533658D27B691E900A2D3CE /* FindingColorOfImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7533658C27B691E900A2D3CE /* FindingColorOfImage.swift */; };
+		7533658E27B691E900A2D3CE /* FindingColorOfImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7533658C27B691E900A2D3CE /* FindingColorOfImage.swift */; };
 		753471F6262C2E97005CD93C /* ExchangerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753471F5262C2E97005CD93C /* ExchangerView.swift */; };
 		753471F7262C2E97005CD93C /* ExchangerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753471F5262C2E97005CD93C /* ExchangerView.swift */; };
 		753471FD262C2ECA005CD93C /* ExchangerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753471FC262C2ECA005CD93C /* ExchangerViewModel.swift */; };
@@ -743,6 +745,7 @@
 		753364A726F339990073B0A4 /* ExchangeSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeSetupViewModel.swift; sourceTree = "<group>"; };
 		753364AC26F339C00073B0A4 /* ExchangeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeViewModel.swift; sourceTree = "<group>"; };
 		753364B126F33A0B0073B0A4 /* ExchangeCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeCredentialsView.swift; sourceTree = "<group>"; };
+		7533658C27B691E900A2D3CE /* FindingColorOfImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingColorOfImage.swift; sourceTree = "<group>"; };
 		753471F5262C2E97005CD93C /* ExchangerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangerView.swift; sourceTree = "<group>"; };
 		753471FC262C2ECA005CD93C /* ExchangerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangerViewModel.swift; sourceTree = "<group>"; };
 		7537DECB27009F9900B862AB /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
@@ -1030,6 +1033,7 @@
 				75C95C762614CC3700B0EE10 /* Syncronized.swift */,
 				75C95C722614CC3700B0EE10 /* ViewModifiers.swift */,
 				753E7E3427566B3B00C96F33 /* BarChartXAxixValueFormatter.swift */,
+				7533658C27B691E900A2D3CE /* FindingColorOfImage.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2238,6 +2242,7 @@
 				7537DED72700B17200B862AB /* KrakenApi.swift in Sources */,
 				7537DEE02701A22000B862AB /* StringProtocol+Extension.swift in Sources */,
 				75C95C4E2614CC0400B0EE10 /* LineChart+Extension.swift in Sources */,
+				7533658D27B691E900A2D3CE /* FindingColorOfImage.swift in Sources */,
 				AFA3D7052721B7440000F3BD /* PortalAppDelegate.swift in Sources */,
 				AF1AF4492702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
 				755782F026087905000E1686 /* Portal.xcdatamodeld in Sources */,
@@ -2550,6 +2555,7 @@
 				75A3F52B26A57BEA006B1823 /* AdapterFactory.swift in Sources */,
 				752E532E26FDDE6400FCDB0C /* BinanceRequestConfig.swift in Sources */,
 				FA70528426CEB582000EE935 /* SwapperViewModel.swift in Sources */,
+				7533658E27B691E900A2D3CE /* FindingColorOfImage.swift in Sources */,
 				75B1514A2622F96800542415 /* MarketValueView.swift in Sources */,
 				75C95C852614CC3700B0EE10 /* MockData.swift in Sources */,
 				7537DED82700B17200B862AB /* KrakenApi.swift in Sources */,
