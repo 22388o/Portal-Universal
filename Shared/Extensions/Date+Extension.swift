@@ -98,4 +98,13 @@ extension Date {
     public func isSameDay(as date: Date) -> Bool {
         Calendar.current.compare(self, to: date, toGranularity: .day) == .orderedSame
     }
+    
+    public func currentDateInUserTimeZone() -> Date {
+        let currentDate = Date()
+        let timezoneOffset =  TimeZone.current.secondsFromGMT()
+        let epochDate = currentDate.timeIntervalSince1970
+        let timezoneEpochOffset = (epochDate + Double(timezoneOffset))
+        let timeZoneOffsetDate = Date(timeIntervalSince1970: timezoneEpochOffset)
+        return timeZoneOffsetDate
+    }
 }
