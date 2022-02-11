@@ -8,14 +8,21 @@
 
 import Foundation
 
+struct PricePoint {
+    let timestamp: Date
+    let price: Decimal
+}
+
+
 struct CoinMarketData {
+    
     var priceData: MarketPrice?
     
-    var hourPoints = [Decimal]()
-    var dayPoints = [Decimal]()
-    var weekPoints = [Decimal]()
-    var monthPoints = [Decimal]()
-    var yearPoints = [Decimal]()
+    var hourPoints = [PricePoint]()
+    var dayPoints = [PricePoint]()
+    var weekPoints = [PricePoint]()
+    var monthPoints = [PricePoint]()
+    var yearPoints = [PricePoint]()
     
     var dayOhlc = [MarketSnapshot]()
     
@@ -63,7 +70,7 @@ struct CoinMarketData {
             let close = dayPoints.last
             else { return 0.0 }
 
-        return percentageChange(open: open, close: close)
+        return percentageChange(open: open.price, close: close.price)
     }
 
     var weekChange: Decimal {
@@ -72,7 +79,7 @@ struct CoinMarketData {
             let close = weekPoints.last
             else { return 0.0 }
 
-        return percentageChange(open: open, close: close)
+        return percentageChange(open: open.price, close: close.price)
     }
 
     var monthChange: Decimal {
@@ -81,7 +88,7 @@ struct CoinMarketData {
             let close = monthPoints.last
             else { return 0.0 }
 
-        return percentageChange(open: open, close: close)
+        return percentageChange(open: open.price, close: close.price)
     }
 
     var yearChange: Decimal {
@@ -90,39 +97,39 @@ struct CoinMarketData {
             let close = yearPoints.last
             else { return 0.0 }
 
-        return percentageChange(open: open, close: close)
+        return percentageChange(open: open.price, close: close.price)
     }
     
     var dayHigh: Decimal {
-        dayPoints.sorted(by: { $0 > $1 }).first ?? 0.0
+        dayPoints.sorted(by: { $0.price > $1.price }).first?.price ?? 0.0
     }
 
     var dayLow: Decimal {
-        dayPoints.sorted(by: { $0 < $1 }).first ?? 0.0
+        dayPoints.sorted(by: { $0.price < $1.price }).first?.price ?? 0.0
     }
 
     var weekHigh: Decimal {
-        weekPoints.sorted(by: { $0 > $1 }).first ?? 0.0
+        weekPoints.sorted(by: { $0.price > $1.price }).first?.price ?? 0.0
     }
 
     var weekLow: Decimal {
-        weekPoints.sorted(by: { $0 < $1 }).first ?? 0.0
+        weekPoints.sorted(by: { $0.price < $1.price }).first?.price ?? 0.0
     }
 
     var monthHigh: Decimal {
-        monthPoints.sorted(by: { $0 > $1 }).first ?? 0.0
+        monthPoints.sorted(by: { $0.price > $1.price }).first?.price ?? 0.0
     }
 
     var monthLow: Decimal {
-        monthPoints.sorted(by: { $0 < $1 }).first ?? 0.0
+        monthPoints.sorted(by: { $0.price < $1.price }).first?.price ?? 0.0
     }
 
     var yearHigh: Decimal {
-        yearPoints.sorted(by: { $0 > $1 }).first ?? 0.0
+        yearPoints.sorted(by: { $0.price > $1.price }).first?.price ?? 0.0
     }
 
     var yearLow: Decimal {
-        yearPoints.sorted(by: { $0 < $1 }).first ?? 0.0
+        yearPoints.sorted(by: { $0.price < $1.price }).first?.price ?? 0.0
     }
     
     private func percentageChange(open: Decimal, close: Decimal) -> Decimal {

@@ -9,7 +9,7 @@ import Combine
 @testable import Portal
 
 class MockedAdapterManager: IAdapterManager {
-    var adapterdReady = CurrentValueSubject<Bool, Never>(false)
+    var adapterReady = CurrentValueSubject<Bool, Never>(false)
     
     func adapter(for wallet: Wallet) -> IAdapter? {
         nil

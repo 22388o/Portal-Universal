@@ -86,13 +86,13 @@ extension MarketDataUpdater: IMarketDataUpdater {
         switch timeframe {
         case .day:
             if let yesteday = Calendar.current.date(byAdding: .day, value: -1, to: today) {
-                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: yesteday, end: today, limit: 60, quote: .usd, interval: .minutes15)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: yesteday, end: today, limit: 95, quote: .usd, interval: .minutes15)
                     .perform { [weak self] (response) in
                         guard let self = self else { return }
 
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPrice.send((.day, [coin.code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPrice.send((.day, [coin.code : response.map{ PricePoint(timestamp: $0.timestamp, price: $0.price) }]))
                         case .failure(let error):
                             print(error)
                         }
@@ -100,13 +100,13 @@ extension MarketDataUpdater: IMarketDataUpdater {
             }
         case .week:
             if let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: today) {
-                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: weekAgo, end: today, limit: 60, quote: .usd, interval: .hours3)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: weekAgo, end: today, limit: 56, quote: .usd, interval: .hours3)
                     .perform { [weak self] (response) in
                         guard let self = self else { return }
 
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPrice.send((.week, [coin.code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPrice.send((.week, [coin.code : response.map{ PricePoint(timestamp: $0.timestamp, price: $0.price) }]))
                         case .failure(let error):
                             print(error)
                         }
@@ -114,13 +114,13 @@ extension MarketDataUpdater: IMarketDataUpdater {
             }
         case .month:
             if let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: today) {
-                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: monthAgo, end: today, limit: 60, quote: .usd, interval: .hours12)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: monthAgo, end: today, limit: 56, quote: .usd, interval: .hours12)
                     .perform { [weak self] (response) in
                         guard let self = self else { return }
 
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPrice.send((.month, [coin.code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPrice.send((.month, [coin.code : response.map{ PricePoint(timestamp: $0.timestamp, price: $0.price) }]))
                         case .failure(let error):
                             print(error)
                         }
@@ -128,13 +128,13 @@ extension MarketDataUpdater: IMarketDataUpdater {
             }
         case .year:
             if let aYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: today) {
-                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: aYearAgo, end: today, limit: 60, quote: .usd, interval: .days7)
+                Coinpaprika.API.tickerHistory(id: coinPaprikaId, start: aYearAgo, end: today, limit: 52, quote: .usd, interval: .days7)
                     .perform { [weak self] (response) in
                         guard let self = self else { return }
 
                         switch response {
                         case .success(let response):
-                            self.onUpdateHistoricalPrice.send((.year, [coin.code : response.map{ $0.price }]))
+                            self.onUpdateHistoricalPrice.send((.year, [coin.code : response.map{ PricePoint(timestamp: $0.timestamp, price: $0.price) }]))
                         case .failure(let error):
                             print(error)
                         }

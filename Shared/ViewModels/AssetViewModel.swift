@@ -380,7 +380,7 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func chartDataPonts(timeframe: Timeframe) -> [Decimal] {
-        let points: [Decimal]
+        let points: [PricePoint]
         
         switch timeframe {
         case .day:
@@ -395,11 +395,11 @@ final class AssetViewModel: ObservableObject {
         
         switch state.wallet.currency {
         case .btc:
-            return points.map{ $0/btcUSDPrice }
+            return points.map{ $0.price/btcUSDPrice }
         case .eth:
-            return points.map{ $0/ethUSDPrice }
+            return points.map{ $0.price/ethUSDPrice }
         case .fiat(let fiatCurrency):
-            return points.map{ $0 * Decimal(fiatCurrency.rate) }
+            return points.map{ $0.price * Decimal(fiatCurrency.rate) }
         }
     }
 }
