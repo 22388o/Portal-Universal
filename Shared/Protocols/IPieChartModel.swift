@@ -28,7 +28,7 @@ extension IBarChartViewModel {
         
         var assetAllocationValues = [Double]()
         var others = [Double]()
-        var colors = [Color(red: 242/255, green: 169/255, blue: 0/255), .blue]
+        var colors = [Color]()
         var labels = [String]()
         
         for asset in assets.filter({ $0.balance > 0 }) {
@@ -37,6 +37,7 @@ extension IBarChartViewModel {
             if size >= minimumValue {
                 assetAllocationValues.append(size)
                 labels.append(asset.coin.code)
+                colors.append(asset.coin.color)
             } else {
                 others.append(size)
             }
@@ -136,7 +137,7 @@ extension IPieChartModel {
         
         var assetAllocationValues = [Double]()
         var others = [Double]()
-        var colors = [Color(red: 242/255, green: 169/255, blue: 0/255), .blue]
+        var colors = [Color]()
         var labels = [String]()
         
         for asset in assets.filter({ $0.balance > 0 }) {
@@ -145,6 +146,7 @@ extension IPieChartModel {
             if size >= minimumValue {
                 assetAllocationValues.append(size)
                 labels.append(asset.coin.code + " \(size.toString())%")
+                colors.append(asset.coin.color)
             } else {
                 others.append(size)
             }
