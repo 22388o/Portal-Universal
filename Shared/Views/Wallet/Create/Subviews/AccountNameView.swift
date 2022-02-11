@@ -29,7 +29,7 @@ struct AccountNameView: View {
             Spacer().frame(height: 27)
             
             HStack(spacing: 8) {
-                WalletNameInputView(name: $viewModel.walletName)
+                AccountNameInputView(name: $viewModel.accountName)
                 PButton(label: "Continue", width: 124, height: 48, fontSize: 15, enabled: viewModel.nameIsValid) {
                     withAnimation {
                         viewModel.step = .seed

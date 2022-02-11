@@ -14,6 +14,7 @@ extension View {
 //        modifier(NavigationBarHider())
 //    }
     
+    
     func iPadLandscapePreviews() -> some View {
         Group {
             self
@@ -37,5 +38,13 @@ extension View {
                 .previewLayout(.fixed(width: 1366, height: 1024))
                 .previewDisplayName("12.9 iPad Pro")
         }
+    }
+    
+    func identifier(_ identifier: String) -> ModifiedContent<Self, AccessibilityIdentifiebleModifier> {
+        modifier(AccessibilityIdentifiebleModifier(identifier: identifier))
+    }
+    
+    func isLocked(locked: Binding<Bool>) -> ModifiedContent<Self, LoadingViewModifier> {
+        modifier(LoadingViewModifier(locked: locked))
     }
 }

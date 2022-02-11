@@ -52,6 +52,8 @@ class PortalState: ObservableObject {
     @ObservedObject var wallet: WalletState = WalletState()
     @ObservedObject var exchange: ExchangeState = ExchangeState()
     
+    var onAssetBalancesUpdate = PassthroughSubject<Void, Never>()
+    
     private(set) var userId: String
     private var anyCancellable = Set<AnyCancellable>()
     

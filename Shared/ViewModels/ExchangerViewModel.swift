@@ -18,7 +18,7 @@ final class ExchangerViewModel: ObservableObject {
     @Published var fiatValue = String()
     
     private var price: Double {
-        let priceValue = (ticker?[.usd].price ?? 0)
+        let priceValue = ticker?[.usd].price ?? 0
         switch currency {
         case .btc, .eth:
             return priceValue.double
@@ -28,16 +28,14 @@ final class ExchangerViewModel: ObservableObject {
     }
     
     private var subscriptions = Set<AnyCancellable>()
+    private let ticker: Ticker?
     
-    var ticker: Ticker? {
-        Portal.shared.marketDataProvider.ticker(coin: coin)
-    }
-    
-    init(coin: Coin, currency: Currency) {
+    init(coin: Coin, currency: Currency, ticker: Ticker?) {
         print("ExchangerViewModel init")
 
         self.coin = coin
         self.currency = currency
+        self.ticker = ticker
         
         $assetValue
             .removeDuplicates()
@@ -58,7 +56,7 @@ final class ExchangerViewModel: ObservableObject {
             .removeDuplicates()
             .map { Double($0) ?? 0 }
             .map { [weak self] in
-                "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6))"
+                "\(($0/(self?.price ?? 1.0)).rounded(toPlaces: 6).toString())"
             }
             .sink { [weak self] value in
                 if value == "0.0" {

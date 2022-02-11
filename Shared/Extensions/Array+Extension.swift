@@ -11,7 +11,7 @@ import Charts
 import SwiftUI
 
 extension Array where Element: ChartDataEntry {
-    func dataSet() -> LineChartDataSet {
+    func dataSet(portfolio: Bool = true) -> LineChartDataSet {
         let ds = LineChartDataSet(values: self, label: String())
         #if os(iOS)
         ds.colors = [
@@ -19,10 +19,17 @@ extension Array where Element: ChartDataEntry {
             UIColor(red: 17.0/255.0, green: 255.0/255.0, blue: 142.0/255.0, alpha: 1)
         ]
         #elseif os(macOS)
-        ds.colors = [
-            NSColor(red: 19.0/255.0, green: 143.0/255.0, blue: 199.0/255.0, alpha: 1),
-            NSColor(red: 17.0/255.0, green: 255.0/255.0, blue: 142.0/255.0, alpha: 1)
-        ]
+        if portfolio {
+            ds.colors = [
+                NSColor(red: 19.0/255.0, green: 143.0/255.0, blue: 199.0/255.0, alpha: 1),
+                NSColor(red: 17.0/255.0, green: 255.0/255.0, blue: 142.0/255.0, alpha: 1)
+            ]
+        } else {
+            ds.colors = [
+                NSColor(red: 255.0/255.0, green: 72.0/255.0, blue: 95.0/255.0, alpha: 1),
+                NSColor(red: 255.0/255.0, green: 151.0/255.0, blue: 38.0/255.0, alpha: 1)
+            ]
+        }
         #endif
         
         ds.highlightEnabled = true
@@ -39,10 +46,19 @@ extension Array where Element: ChartDataEntry {
             UIColor(red: 17.0/255.0, green: 83.0/255.0, blue: 79.0/255.0, alpha: 0.0).cgColor
             ] as CFArray
         #elseif os(macOS)
-        let gradientColors = [
-            NSColor(red: 0.0/255.0, green: 248.0/255.0, blue: 150.0/255.0, alpha: 0.6).cgColor,
-            NSColor(red: 17.0/255.0, green: 83.0/255.0, blue: 79.0/255.0, alpha: 0.0).cgColor
+        let gradientColors: CFArray
+        
+        if portfolio {
+            gradientColors = [
+                NSColor(red: 0.0/255.0, green: 248.0/255.0, blue: 150.0/255.0, alpha: 0.6).cgColor,
+                NSColor(red: 17.0/255.0, green: 83.0/255.0, blue: 79.0/255.0, alpha: 0.0).cgColor
             ] as CFArray
+        } else {
+            gradientColors = [
+                NSColor(red: 243.0/255.0, green: 136.0/255.0, blue: 102.0/255.0, alpha: 0.67).cgColor,
+                NSColor(white: 1, alpha: 0).cgColor
+            ] as CFArray
+        }
         #endif
         let colorLocations: [CGFloat] = [1.0, 0.0]
         
@@ -54,6 +70,7 @@ extension Array where Element: ChartDataEntry {
                 
         ds.fill = Fill.fillWithLinearGradient(gradiendFillColor, angle: 90.0)
         ds.drawFilledEnabled = true
+        ds.isDrawLineWithGradientEnabled = true
                         
         return ds
     }

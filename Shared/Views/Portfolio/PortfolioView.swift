@@ -79,10 +79,11 @@ struct PortfolioView: View {
                                 .padding(2)
                             
                             if geometry.size.height < 220 {
-                                AssetAllocationView(assets: viewModel.assets, isBarChart: false)
+                                PieChartRepresentableView(assets: $viewModel.assets)
                                     .frame(height: 150)
+                                    .padding(.bottom, 10)
                             } else {
-                                AssetAllocationView(assets: viewModel.assets, isBarChart: true)
+                                BarChartRepresentableView(assets: $viewModel.assets)
                             }
                             
                         }

@@ -22,12 +22,10 @@ final class AssetItemViewModel: ObservableObject {
 
     @Published var syncProgress: Float = 0.01
     
-    private let notificationService: NotificationService
+    private let notificationService: INotificationService
     private let marketDataProvider: IMarketDataProvider
 
     private var subscriptions = Set<AnyCancellable>()
-    
-    private let selectedTimeframe: Timeframe
     private var currency: Currency
     
     private var ticker: Ticker? {
@@ -35,22 +33,7 @@ final class AssetItemViewModel: ObservableObject {
     }
     
     var changeLabelColor: Color {
-        let priceChange: Decimal?
-        let ticker = ticker?[.usd]
-        
-        switch selectedTimeframe {
-        case .day:
-            priceChange = ticker?.percentChange24h
-        case .week:
-            priceChange = ticker?.percentChange7d
-        case .month:
-            priceChange = ticker?.percentChange30d
-        case .year:
-            priceChange = ticker?.percentChange1y
-        }
-        
-        guard let pChange = priceChange else { return .white }
-        
+        guard let pChange = ticker?[.usd].percentChange24h else { return .white }
         return pChange > 0 ? Color(red: 15/255, green: 235/255, blue: 131/255, opacity: 1) : Color(red: 255/255, green: 156/255, blue: 49/255, opacity: 1)
     }
     
@@ -58,7 +41,7 @@ final class AssetItemViewModel: ObservableObject {
         coin: Coin,
         adapter: IBalanceAdapter,
         state: PortalState,
-        notificationService: NotificationService,
+        notificationService: INotificationService,
         marketDataProvider: IMarketDataProvider
     ) {
         self.coin = coin
@@ -66,7 +49,6 @@ final class AssetItemViewModel: ObservableObject {
         self.notificationService = notificationService
         self.marketDataProvider = marketDataProvider
         
-        self.selectedTimeframe = .day
         self.currency = state.wallet.currency
         
         self.adapterState = adapter.balanceState
@@ -75,6 +57,7 @@ final class AssetItemViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateBalance()
+                state.onAssetBalancesUpdate.send(())
             }
             .store(in: &subscriptions)
         
@@ -144,9 +127,9 @@ final class AssetItemViewModel: ObservableObject {
         let updatedBalanceString: String
 
         if let unspendable = unspendable, unspendable > 0 {
-            updatedBalanceString = isInteger ? "\(spendable) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)" : "\(spendable.rounded(toPlaces: 6)) (\(unspendable.rounded(toPlaces: 6))) \(coin.code)"
+            updatedBalanceString = isInteger ? "\(spendable) (\(unspendable.rounded(toPlaces: 6).toString())) \(coin.code)" : "\(spendable.rounded(toPlaces: 6).toString()) (\(unspendable.rounded(toPlaces: 6).toString())) \(coin.code)"
         } else {
-            updatedBalanceString = isInteger ? "\(spendable) \(coin.code)" : "\(spendable.rounded(toPlaces: 6)) \(coin.code)"
+            updatedBalanceString = isInteger ? "\(spendable) \(coin.code)" : "\(spendable.rounded(toPlaces: 6).toString()) \(coin.code)"
         }
 
         if balanceString != updatedBalanceString && !balanceString.isEmpty {

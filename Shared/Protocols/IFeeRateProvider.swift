@@ -27,8 +27,8 @@ extension IFeeRateProvider {
 
     func feeRate(priority: FeeRatePriority) -> Future<Int, Never> {
         if case let .custom(value, _) = priority {
-            return Future { promisse in
-                promisse(.success(value))
+            return Future { promise in
+                promise(.success(value))
             }
         } else {
             return recommendedFeeRate

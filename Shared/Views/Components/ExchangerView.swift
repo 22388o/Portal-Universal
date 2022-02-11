@@ -10,19 +10,26 @@ import Combine
 
 struct ExchangerView: View {
     @ObservedObject var viewModel: ExchangerViewModel
-    @Binding var isValid: Bool
     
-    init(viewModel: ExchangerViewModel, isValid: Binding<Bool>) {
-        self.viewModel = viewModel
-        self._isValid = isValid
-    }
-
+    @Binding var isValid: Bool
+    @Binding var isSendingMax: Bool
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Amount to send")
-                .font(.mainFont(size: 12))
-                .foregroundColor(Color.coinViewRouteButtonInactive)
-
+            HStack {
+                Text("Amount to send")
+                    .font(.mainFont(size: 12))
+                    .foregroundColor(Color.coinViewRouteButtonInactive)
+                Spacer()
+                
+                HStack {
+                    Toggle("Send Max", isOn: $isSendingMax)
+                        .font(.mainFont(size: 10))
+                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                        .toggleStyle(.switch)
+                }
+            }
+            .padding(.horizontal, 4)
             
             HStack(spacing: 4) {
                 HStack(spacing: 8) {
@@ -51,13 +58,13 @@ struct ExchangerView: View {
                         )
                         .frame(height: 20)
                         .textFieldStyle(PlainTextFieldStyle())
+                        .disabled(isSendingMax)
                     #endif
                     
                     Text(viewModel.coin.code)
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
                 .modifier(TextFieldModifier(cornerRadius: 26))
-                .frame(width: 224)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(isValid ? Color.clear : Color.red, lineWidth: 1)
@@ -95,27 +102,36 @@ struct ExchangerView: View {
                         )
                         .frame(height: 20)
                         .textFieldStyle(PlainTextFieldStyle())
+                        .disabled(isSendingMax)
                     #endif
                     
                     Text(viewModel.currency.code)
                         .foregroundColor(Color.lightActiveLabelNew)
                 }
                 .modifier(TextFieldModifier(cornerRadius: 26))
-                .frame(width: 224)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(isValid ? Color.clear : Color.red, lineWidth: 1)
                 )
             }
             .font(Font.mainFont(size: 16))
+            .allowsHitTesting(!isSendingMax)
         }
     }
 }
 
 struct ExchangerView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangerView(viewModel: .init(coin: Coin.bitcoin(), currency: .fiat(USD)), isValid: .constant(true))
-            .frame(width: 550, height: 200)
-            .previewLayout(PreviewLayout.sizeThatFits)
+        let coin = Coin.bitcoin()
+        let ticker = Portal.shared.marketDataProvider.ticker(coin: coin)
+        let fiatCurrency: Currency = .fiat(USD)
+        
+        ExchangerView(
+            viewModel: .init(coin: coin, currency: fiatCurrency, ticker: ticker),
+            isValid: .constant(true),
+            isSendingMax: .constant(true)
+        )
+        .previewLayout(PreviewLayout.sizeThatFits)
+        .padding()
     }
 }

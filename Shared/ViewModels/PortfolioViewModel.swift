@@ -12,7 +12,6 @@ import SwiftUI
 import Combine
 
 final class PortfolioViewModel: ObservableObject {
-    @Published private(set) var assets: [PortfolioItem] = []
     @Published private(set) var totalValue = String()
     @Published private(set) var change = String()
     @Published private(set) var lowest = String()
@@ -23,14 +22,14 @@ final class PortfolioViewModel: ObservableObject {
     
     @Published var selectedTimeframe: Timeframe = .day
     @Published var state: PortalState
-    @Published private var walletCurrency: Currency
     @Published var empty: Bool = true
+    @Published var assets: [PortfolioItem] = []
     
     private var subscriptions = Set<AnyCancellable>()
     private var walletManager: IWalletManager
     private var adapterManager: IAdapterManager
     private var marketDataProvider: IMarketDataProvider
-    private var reachabilityService: ReachabilityService
+    private var reachabilityService: IReachabilityService
     private var exchangeBalances = [String: Double]()
     
     private var btcUSDPrice: Decimal {
@@ -45,7 +44,7 @@ final class PortfolioViewModel: ObservableObject {
         walletManager: IWalletManager,
         adapterManager: IAdapterManager,
         marketDataProvider: IMarketDataProvider,
-        reachabilityService: ReachabilityService,
+        reachabilityService: IReachabilityService,
         state: PortalState
     ) {
         self.walletManager = walletManager
@@ -53,7 +52,6 @@ final class PortfolioViewModel: ObservableObject {
         self.marketDataProvider = marketDataProvider
         self.reachabilityService = reachabilityService
         self.state = state
-        self.walletCurrency = state.wallet.currency
                                                         
         subscribe()
     }
@@ -64,14 +62,16 @@ final class PortfolioViewModel: ObservableObject {
             .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] timeframe in
-                self?.updatePortfolioData(timeframe: timeframe)
+                guard let self = self else { return }
+                self.updatePortfolioData(timeframe: timeframe)
             }
             .store(in: &subscriptions)
         
-        adapterManager.adapterdReady
+        adapterManager.adapterReady
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.assets = self?.configuredItems() ?? []
+                guard let self = self else { return }
+                self.assets = self.configuredItems()
             }
             .store(in: &subscriptions)
         
@@ -79,21 +79,22 @@ final class PortfolioViewModel: ObservableObject {
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] currency in
-                self?.walletCurrency = currency
-                self?.updateLabels()
-                self?.updateCharts()
+                guard let self = self else { return }
+                self.updateLabels()
+                self.updateCharts()
             }
             .store(in: &subscriptions)
         
         marketDataProvider.onMarketDataUpdate
             .debounce(for: 0.25, scheduler: RunLoop.main)
             .sink { [weak self] _ in
-                self?.updateLabels()
-                self?.updateCharts()
+                guard let self = self else { return }
+                self.updateLabels()
+                self.updateCharts()
             }
             .store(in: &subscriptions)
         
-        reachabilityService.$isReachable
+        reachabilityService.isReachable
             .dropFirst()
             .debounce(for: 1, scheduler: RunLoop.main)
             .sink { [weak self] reachable in
@@ -112,6 +113,13 @@ final class PortfolioViewModel: ObservableObject {
                 self.updatePortfolioData(timeframe: self.selectedTimeframe)
             }
             .store(in: &subscriptions)
+        
+        state.onAssetBalancesUpdate.sink { [weak self] _ in
+            guard let portfolio = self else { return }
+            
+            portfolio.assets = portfolio.configuredItems()
+        }
+        .store(in: &subscriptions)
     }
     
     private func configuredItems() -> [PortfolioItem] {
@@ -131,7 +139,7 @@ final class PortfolioViewModel: ObservableObject {
         })
     }
     
-    func updatePortfolioData(timeframe: Timeframe) {
+    private func updatePortfolioData(timeframe: Timeframe) {
         for asset in assets {
             if !asset.hasChartData(timeframe: timeframe) {
                 marketDataProvider.requestHistoricalData(coin: asset.coin, timeframe: timeframe)
@@ -142,11 +150,11 @@ final class PortfolioViewModel: ObservableObject {
     }
         
     private func updateLabels() {
-        let portfolioBalanceValue = assets.map{ $0.balanceValue(for: walletCurrency) }.reduce(0){ $0 + $1 }
-        totalValue = "\(portfolioBalanceValue.formattedString(walletCurrency))"
+        let portfolioBalanceValue = assets.map{ $0.balanceValue(for: state.wallet.currency) }.reduce(0){ $0 + $1 }
+        totalValue = "\(portfolioBalanceValue.formattedString(state.wallet.currency))"
         empty = portfolioBalanceValue == 0
         
-        change = calculateChange(value: portfolioBalanceValue)
+        change = changeString(value: portfolioBalanceValue)
         
         lowest = lowString()
         highest = highString()
@@ -156,14 +164,14 @@ final class PortfolioViewModel: ObservableObject {
         exchangeBalances.removeAll()
     }
     
-    private func calculateChange(value: Decimal) -> String {
-        let balanceAtTimestamp = assets.map{ $0.balanceValue(for: walletCurrency, at: selectedTimeframe) }.reduce(0){ $0 + $1 }
+    private func changeString(value: Decimal) -> String {
+        let balanceAtTimestamp = assets.map{ $0.balanceValue(for: state.wallet.currency, at: selectedTimeframe) }.reduce(0){ $0 + $1 }
         let change = value - balanceAtTimestamp
         let changeInPercents = balanceAtTimestamp > 0 ? (change/balanceAtTimestamp) * 100 : 100
         
         let prefix = "\(changeInPercents > 0 ? "+" : "-")"
         let percentChangeString = "(\(changeInPercents.double.rounded(toPlaces: 2))%)"
-        let priceChange = abs(value * (changeInPercents/100)).formattedString(walletCurrency, decimals: 5)
+        let priceChange = abs(value * (changeInPercents/100)).formattedString(state.wallet.currency, decimals: 5)
 
         return "\(prefix)\(priceChange) \(percentChangeString)"
     }
@@ -180,6 +188,11 @@ final class PortfolioViewModel: ObservableObject {
             self.chartDataEntries = [ChartDataEntry]()
             return
         }
+                    
+//        let resultArray: [Double] = Array(0..<count).map { index in
+//            return pricePoints.map{ $0[index] }.reduce(0, +)
+//        }
+
 
         var resultArray: [Double] = Array(0..<count).map { x in 0 }
 
@@ -215,7 +228,7 @@ final class PortfolioViewModel: ObservableObject {
         
         guard low > 0 else { return "-"}
         
-        return ("\(low.formattedString(walletCurrency, decimals: 4))")
+        return ("\(low.formattedString(state.wallet.currency, decimals: 4))")
     }
     
     private func highString() -> String {
@@ -234,10 +247,10 @@ final class PortfolioViewModel: ObservableObject {
         
         guard high > 0 else { return "-"}
         
-        return ("\(high.formattedString(walletCurrency, decimals: 4))")
+        return ("\(high.formattedString(state.wallet.currency, decimals: 4))")
     }
     
-    func updateBestWorstPerformingCoin() {
+    private func updateBestWorstPerformingCoin() {
         let sortedByPerforming: [PortfolioItem]
         
         switch selectedTimeframe {

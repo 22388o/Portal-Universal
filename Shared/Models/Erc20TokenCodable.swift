@@ -19,6 +19,16 @@ struct Erc20TokenCodable {
     }
 }
 
+extension Erc20TokenCodable {
+    static var mockedBTCToken: Erc20TokenCodable {
+        Erc20TokenCodable(name: "Bitcoin", symbol: "BTC", decimal: 18, contractAddress: String())
+    }
+    
+    static var mockedETHToken: Erc20TokenCodable {
+        Erc20TokenCodable(name: "Ethereum", symbol: "ETH", decimal: 18, contractAddress: String())
+    }
+}
+
 extension Erc20TokenCodable: Codable {
     enum Keys: String, CodingKey {
         case name

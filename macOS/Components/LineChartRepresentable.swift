@@ -10,13 +10,16 @@ import Charts
 
 struct LineChartRepresentable: NSViewRepresentable {
     let chartDataEntries: [ChartDataEntry]
+    let isPortfolioChart: Bool
 
     class Coordinator: NSObject, ChartViewDelegate {
         var lineChartRepresentable: LineChartRepresentable
         var lineChartView: LineChartView
         var chartDataEntries: [ChartDataEntry]?
+        var isPortfolio: Bool
 
-        init(_ lineChartRepresentable: LineChartRepresentable) {
+        init(_ lineChartRepresentable: LineChartRepresentable, isPortfolio: Bool) {
+            self.isPortfolio = isPortfolio
             self.lineChartRepresentable = lineChartRepresentable
             self.lineChartView = LineChartView()
             self.lineChartView.applyStandardSettings()
@@ -35,7 +38,7 @@ struct LineChartRepresentable: NSViewRepresentable {
             let data = LineChartData()
             
             if let chartDataEntries = self.chartDataEntries {
-                let dataSet = chartDataEntries.dataSet()
+                let dataSet = chartDataEntries.dataSet(portfolio: isPortfolio)
 
                 data.dataSets = [dataSet]
 
@@ -51,7 +54,7 @@ struct LineChartRepresentable: NSViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, isPortfolio: isPortfolioChart)
     }
 
     func makeNSView(context: Context) -> LineChartView {

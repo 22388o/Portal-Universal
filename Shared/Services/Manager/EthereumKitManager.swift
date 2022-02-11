@@ -10,11 +10,13 @@ import EthereumKit
 import Erc20Kit
 import HdWalletKit
 import Combine
+import RxSwift
 
 final class EthereumKitManager {
     let currentAccountSubject = CurrentValueSubject<Account?, Never>(nil)
     private let appConfigProvider: IAppConfigProvider
     weak var ethereumKit: EthereumKit.Kit?
+    private let disposeBag = DisposeBag()
 
     private var currentAccount: Account? {
         didSet {
@@ -80,4 +82,18 @@ final class EthereumKitManager {
         return ethereumKit?.address.hex
     }
     
+    func gasLimit(gasPrice: Int, transactionData: TransactionData) -> Future<Int, Never> {
+        Future { [weak self] promise in
+            guard let self = self else { promise(.success(Kit.defaultGasLimit));  return }
+            
+            self.ethereumKit?
+                .estimateGas(transactionData: transactionData, gasPrice: gasPrice)
+                .subscribe(onSuccess: { estimatedGasLimit in
+                    promise(.success(estimatedGasLimit))
+                }, onError: { error in
+                    promise(.success(Kit.defaultGasLimit))
+                })
+                .disposed(by: self.disposeBag)
+        }
+    }
 }

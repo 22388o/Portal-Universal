@@ -26,18 +26,18 @@ class AccountsViewModel: ObservableObject {
         activeAcount = manager.activeAccount
     }
     
-    func switchAccount(account: Account) {
-        state.loading = true
-        setActiveAccount(id: account.id)
-        state.modalView = .none
-    }
-    
-    func setActiveAccount(id: String) {
+    private func setActiveAccount(id: String) {
         DispatchQueue.main.async {
             self.manager.setActiveAccount(id: id)
             self.activeAcount = self.manager.activeAccount
             self.state.wallet.coin = Coin.bitcoin()
         }
+    }
+    
+    func switchAccount(account: Account) {
+        state.loading = true
+        setActiveAccount(id: account.id)
+        state.modalView = .none
     }
     
     func delete(account: Account) {

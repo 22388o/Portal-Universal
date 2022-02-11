@@ -7,6 +7,7 @@
 
 import Coinpaprika
 import Combine
+import Foundation
 
 class PortfolioItem: ObservableObject {
     let coin: Coin
@@ -82,52 +83,33 @@ class PortfolioItem: ObservableObject {
             .store(in: &subscriptions)
     }
     
-    private func values(timeframe: Timeframe, points: [Decimal]) -> [Double] {
-        let maxIndex = points.count
-        let calendar = Calendar.current
-        let currentDate = currentDateInUserTimeZone()
-        
-        switch timeframe {
-        case .day, .week:
-            return points.enumerated().map{ (index, point) in
-                let timestamp = calendar.date(byAdding: .hour, value: index - maxIndex, to: currentDate)?.timeIntervalSince1970
-                let balanceAtTimestamp = balance(at: timestamp)
-                let value = point * balanceAtTimestamp
-                
-                switch Portal.shared.state.wallet.currency {
-                case .btc:
-                    return (value/btcUSDPrice).double
-                case .eth:
-                    return (value/ethUSDPrice).double
-                case .fiat(let fiatCurrency):
-                    return value.double * fiatCurrency.rate
-                }
+    private func values(timeframe: Timeframe, points: [PricePoint]) -> [Double] {
+        return points.enumerated().map{ (index, point) in
+            let adjustedDate: Date
+
+            switch timeframe {
+            case .day:
+                adjustedDate = Calendar.current.date(byAdding: .hour, value: 10, to: point.timestamp) ?? point.timestamp
+            case .week:
+                adjustedDate = Calendar.current.date(byAdding: .hour, value: 28, to: point.timestamp) ?? point.timestamp
+            case .month:
+                adjustedDate = Calendar.current.date(byAdding: .day, value: 4, to: point.timestamp) ?? point.timestamp
+            case .year:
+                adjustedDate = Calendar.current.date(byAdding: .month, value: 1, to: point.timestamp) ?? point.timestamp
             }
-        case .month, .year:
-            return points.enumerated().map{ (index, point) in
-                let timestamp = calendar.date(byAdding: .day, value: index - maxIndex, to: currentDate)?.timeIntervalSince1970
-                let balanceAtTimestamp = balance(at: timestamp)
-                let value = point * balanceAtTimestamp
-                
-                switch Portal.shared.state.wallet.currency {
-                case .btc:
-                    return (value/btcUSDPrice).double
-                case .eth:
-                    return (value/ethUSDPrice).double
-                case .fiat(let fiatCurrency):
-                    return value.double * fiatCurrency.rate
-                }
+
+            let balanceAtTimestamp = balance(at: adjustedDate.timeIntervalSince1970)
+            let value = point.price * balanceAtTimestamp
+
+            switch Portal.shared.state.wallet.currency {
+            case .btc:
+                return (value/btcUSDPrice).double
+            case .eth:
+                return (value/ethUSDPrice).double
+            case .fiat(let fiatCurrency):
+                return value.double * fiatCurrency.rate
             }
         }
-    }
-    
-    private func currentDateInUserTimeZone() -> Date {
-        let currentDate = Date()
-        let timezoneOffset =  TimeZone.current.secondsFromGMT()
-        let epochDate = currentDate.timeIntervalSince1970
-        let timezoneEpochOffset = (epochDate + Double(timezoneOffset))
-        let timeZoneOffsetDate = Date(timeIntervalSince1970: timezoneEpochOffset)
-        return timeZoneOffsetDate
     }
     
     private func balance(at time: TimeInterval?) -> Decimal {
@@ -138,10 +120,10 @@ class PortfolioItem: ObservableObject {
         let totalSent = txsBefoGivenDate.filter{$0.type == .outgoing}.compactMap{$0.amount + ($0.fee ?? 0)}.reduce(0){ $0 + $1 }
         let balanceByGivenDate = totalReceived - totalSent
         
-        return balanceByGivenDate >= 0 ? balanceByGivenDate : abs(balanceByGivenDate)
+        return balanceByGivenDate //>= 0 ? balanceByGivenDate : abs(balanceByGivenDate)
     }
     
-    private func chartDataPonts(timeframe: Timeframe) -> [Decimal] {
+    private func chartDataPonts(timeframe: Timeframe) -> [PricePoint] {
         switch timeframe {
         case .day:
             return marketData.dayPoints
@@ -172,19 +154,19 @@ class PortfolioItem: ObservableObject {
     }
     
     func pricePoints(timeframe: Timeframe) -> [Double] {
-        let points: [Decimal]
+        let points: [PricePoint]
         
         switch timeframe {
         case .day:
-            points = marketData.dayPoints
+            points = marketData.dayPoints.enumerated().filter { $0.offset.isMultiple(of: 4) }.map { $0.element }
         case .week:
-            points = marketData.weekPoints
+            points = marketData.weekPoints.enumerated().filter { $0.offset.isMultiple(of: 5) }.map { $0.element }
         case .month:
-            points = marketData.monthPoints
+            points = marketData.monthPoints.enumerated().filter { $0.offset.isMultiple(of: 3) }.map { $0.element }
         case .year:
-            points = marketData.yearPoints
+            points = marketData.yearPoints.enumerated().filter { $0.offset.isMultiple(of: 4) }.map { $0.element }
         }
-        
+                
         return values(timeframe: timeframe, points: points)
     }
     
@@ -200,27 +182,25 @@ class PortfolioItem: ObservableObject {
     }
     
     func balanceValue(for currency: Currency, at timeframe: Timeframe) -> Decimal {
-        let calendar = Calendar.current
-        let currentDate = currentDateInUserTimeZone()
-        let timestamp: TimeInterval?
-        let pricePont: Decimal?
+        let pricePont: PricePoint?
         
         switch timeframe {
         case .day:
-            pricePont = marketData.dayPoints.first
-            timestamp = calendar.date(byAdding: .day, value: -1, to: currentDate)?.timeIntervalSince1970
+            pricePont = marketData.dayPoints.last
         case .week:
-            pricePont = marketData.weekPoints.first
-            timestamp = calendar.date(byAdding: .day, value: -7, to: currentDate)?.timeIntervalSince1970
+            pricePont = marketData.weekPoints.last
         case .month:
-            pricePont = marketData.monthPoints.first
-            timestamp = calendar.date(byAdding: .month, value: -1, to: currentDate)?.timeIntervalSince1970
+            pricePont = marketData.monthPoints.last
         case .year:
-            pricePont = marketData.yearPoints.first
-            timestamp = calendar.date(byAdding: .year, value: -1, to: currentDate)?.timeIntervalSince1970
+            pricePont = marketData.yearPoints.last
         }
-        
-        guard let price = pricePont, let timeInterval = timestamp else { return 0 }
+                
+        guard
+            let price = pricePont?.price,
+            let timeInterval = pricePont?.timestamp.timeIntervalSince1970
+        else {
+            return 0
+        }
         
         let balanceAtTimestamp = balance(at: timeInterval)
         
@@ -230,7 +210,13 @@ class PortfolioItem: ObservableObject {
         case .eth:
             return balanceAtTimestamp > 0 ? (balanceAtTimestamp * price)/ethUSDPrice : 0
         case .fiat(let fiatCurrency):
-            return balanceAtTimestamp > 0 ? balanceAtTimestamp * price * Decimal(fiatCurrency.rate) : 0
+            return balanceAtTimestamp > 0 ? (balanceAtTimestamp * price) * Decimal(fiatCurrency.rate) : 0
         }
+    }
+}
+
+extension PortfolioItem: Equatable {
+    static func == (lhs: PortfolioItem, rhs: PortfolioItem) -> Bool {
+        lhs.coin == rhs.coin
     }
 }

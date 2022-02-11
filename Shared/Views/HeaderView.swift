@@ -35,6 +35,7 @@ struct HeaderView: View {
                         .foregroundColor(Color.white.opacity(0.82))
                     })
                     .buttonStyle(PlainButtonStyle())
+                    .identifier("Account Button")
                     
                     Text("|")
                         .font(.mainFont(size: 12))
@@ -67,17 +68,17 @@ struct HeaderView: View {
                     if viewModel.state.wallet.switchState == .wallet {
                         WalletCurrencyButton(currencies: viewModel.currencies, selectedCurrrency: $viewModel.state.wallet.currency)
                         
-                        Button(action: {
-                            withAnimation(.easeIn(duration: 3.0)) {
-                                viewModel.state.modalView = .accountSettings
-                            }
-                        }, label: {
-                            Image("iconSettings")
-                                .resizable()
-                                .frame(width: 22, height: 22)
-                                .foregroundColor(Color.white.opacity(0.82))
-                        })
-                        .buttonStyle(PlainButtonStyle())
+//                        Button(action: {
+//                            withAnimation(.easeIn(duration: 3.0)) {
+//                                viewModel.state.modalView = .accountSettings
+//                            }
+//                        }, label: {
+//                            Image("iconSettings")
+//                                .resizable()
+//                                .frame(width: 22, height: 22)
+//                                .foregroundColor(Color.white.opacity(0.82))
+//                        })
+//                        .buttonStyle(PlainButtonStyle())
                     }
                     
                     Button(action: {
@@ -110,7 +111,7 @@ struct HeaderView: View {
                 }
             }
             
-            AppSceneSwitch(state: $viewModel.state.wallet.switchState)
+//            AppSceneSwitch(state: $viewModel.state.wallet.switchState)
         }
     }
 }

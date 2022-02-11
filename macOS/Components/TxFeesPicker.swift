@@ -9,24 +9,25 @@ import SwiftUI
 
 struct TxFeesPicker: View {
     let txFee: String
+    let showOptions: Bool
     @Binding var txFeePriority: FeeRatePriority
     
     var body: some View {
         ZStack {
-            if !txFee.isEmpty {
-                HStack {
-                    Text("Tx fee: \(txFee)")
-                        .font(.mainFont(size: 12))
-                        .foregroundColor(Color.coinViewRouteButtonInactive)
-                    
-                    
-                    
+            HStack {
+                Text("Tx fee: \(txFee)")
+                    .font(.mainFont(size: 12))
+                    .foregroundColor(Color.coinViewRouteButtonInactive)
+                
+                if showOptions {
                     Text("\(txFeePriority.title)")
                         .underline()
                         .foregroundColor(Color.txListTxType)
                         .contentShape(Rectangle())
                 }
-                
+            }
+            
+            if showOptions {
                 MenuButton(
                     label: EmptyView(),
                     content: {
@@ -44,10 +45,6 @@ struct TxFeesPicker: View {
                 .menuButtonStyle(BorderlessButtonMenuButtonStyle())
                 .frame(width: 120)
                 .offset(x: 90)
-            } else {
-                Text(" ")
-                    .font(.mainFont(size: 12))
-                    .foregroundColor(Color.coinViewRouteButtonInactive)
             }
         }
     }
@@ -56,7 +53,7 @@ struct TxFeesPicker: View {
 
 struct TxFeesPicker_Previews: PreviewProvider {
     static var previews: some View {
-        TxFeesPicker(txFee: String(), txFeePriority: .constant(.recommended))
+        TxFeesPicker(txFee: String(), showOptions: true, txFeePriority: .constant(.recommended))
             .frame(width: 120, height: 48)
             .previewLayout(PreviewLayout.sizeThatFits)
             .padding()

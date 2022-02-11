@@ -6,13 +6,30 @@
 	<dict>
 		<key>Portal (iOS).xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</dict>
 		<key>Portal (macOS).xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>100</integer>
+			<integer>102</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>75244500278C85F000B38F8D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>755782D526087904000E1686</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

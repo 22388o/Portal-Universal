@@ -9,43 +9,45 @@ import Foundation
 
 final class LocalStorage: ILocalStorage {
     private let storage: UserDefaults
-    private let appLaunchesCountKey = "APP_LAUNCHES_COUNTER"
-    private let currentAccountIDKey = "CURRENT_WALLET_ID"
-    private let syncedExchangesIDsKey = "SYNCED_EXCHANGES_IDS"
+    
+    static let appLaunchesCountKey = "APP_LAUNCHES_COUNTER"
+    static let currentAccountIDKey = "CURRENT_WALLET_ID"
+    static let syncedExchangesIDsKey = "SYNCED_EXCHANGES_IDS"
+    
     private var appLaunchesCounter: Int {
-        storage.integer(forKey: appLaunchesCountKey)
+        storage.integer(forKey: LocalStorage.appLaunchesCountKey)
     }
 
     var currentAccountID: String?
     var isFirstLaunch: Bool {
-        storage.integer(forKey: appLaunchesCountKey) == 0
+        storage.integer(forKey: LocalStorage.appLaunchesCountKey) == 0
     }
     var syncedExchangesIds: [String] {
-        storage.object(forKey: syncedExchangesIDsKey) as? [String] ?? []
+        storage.object(forKey: LocalStorage.syncedExchangesIDsKey) as? [String] ?? []
     }
         
-    init() {
-        storage = UserDefaults.standard
+    init(storage: UserDefaults) {
+        self.storage = storage
     }
     
     func incrementAppLaunchesCouner() {
         let counter = appLaunchesCounter
-        storage.setValue(counter + 1, forKey: appLaunchesCountKey)
+        storage.setValue(counter + 1, forKey: LocalStorage.appLaunchesCountKey)
     }
     
     func getCurrentAccountID() -> String? {
-        guard let uuidString = storage.string(forKey: currentAccountIDKey) else {
+        guard let uuidString = storage.string(forKey: LocalStorage.currentAccountIDKey) else {
             return nil
         }
         return uuidString
     }
     
     func setCurrentAccountID(_ id: String) {
-        storage.setValue(id, forKey: currentAccountIDKey)
+        storage.setValue(id, forKey: LocalStorage.currentAccountIDKey)
     }
     
     func removeCurrentAccountID() {
-        storage.removeObject(forKey: currentAccountIDKey)
+        storage.removeObject(forKey: LocalStorage.currentAccountIDKey)
     }
     
     func addSyncedExchange(id: String) {
@@ -53,7 +55,7 @@ final class LocalStorage: ILocalStorage {
         
         if !exchangesIds.contains(id) {
             exchangesIds.append(id)
-            storage.set(exchangesIds, forKey: syncedExchangesIDsKey)
+            storage.set(exchangesIds, forKey: LocalStorage.syncedExchangesIDsKey)
         }
     }
     
@@ -62,7 +64,7 @@ final class LocalStorage: ILocalStorage {
         
         if let index = exchangesIds.firstIndex(of: id) {
             exchangesIds.remove(at: index)
-            storage.set(exchangesIds, forKey: syncedExchangesIDsKey)
+            storage.set(exchangesIds, forKey: LocalStorage.syncedExchangesIDsKey)
         }
     }
 }

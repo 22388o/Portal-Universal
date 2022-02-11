@@ -20,7 +20,7 @@ extension IBarChartViewModel {
     }
     
     var totalPortfolioValue: Double {
-        assets.map{ $0.balanceValue.double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
+        assets.filter{ $0.balanceValue > 0 }.map{ $0.balanceValue.double }.reduce(0){ $0 + $1 }
     }
     
     func barChartData() -> (entries: [BarChartDataEntry], colors: [Color], labels: [String]) {
@@ -28,14 +28,16 @@ extension IBarChartViewModel {
         
         var assetAllocationValues = [Double]()
         var others = [Double]()
-        var colors = [Color(red: 242/255, green: 169/255, blue: 0/255), .blue]
+        var colors = [Color]()
         var labels = [String]()
         
-        for asset in assets {
+        for asset in assets.filter({ $0.balance > 0 }) {
             let size = allocationSizeInPercents(for: asset)
+            
             if size >= minimumValue {
                 assetAllocationValues.append(size)
                 labels.append(asset.coin.code)
+                colors.append(asset.coin.color)
             } else {
                 others.append(size)
             }
@@ -52,6 +54,7 @@ extension IBarChartViewModel {
         //Add others
 
         let othersSize = others.reduce(0, {$0 + $1}).rounded(toPlaces: 4)
+        
         if othersSize > 0 {
             let entry = BarChartDataEntry(x: Double(entries.count), y: othersSize)
             entries.append(entry)
@@ -63,8 +66,12 @@ extension IBarChartViewModel {
     }
     
     func allocationSizeInPercents(for asset: PortfolioItem) -> Double {
-        let value = (asset.balance * asset.price).double
-        return ((value/totalPortfolioValue) * 100)//.rounded(toPlaces: 2)
+        let value = asset.balanceValue.double
+        
+        guard value > 0 else { return 0 }
+        
+        let allocationSize = (value/totalPortfolioValue) * 100
+        return allocationSize.rounded(toPlaces: 2)
     }
     
     func assetAllocationBarChartData() -> BarChartData {
@@ -122,7 +129,7 @@ extension IPieChartModel {
     }
     
     var totalPortfolioValue: Double {
-        assets.map{ $0.balanceValue.double }.reduce(0){ $0 + $1 }.rounded(toPlaces: 2)
+        assets.filter{ $0.balanceValue > 0 }.map{ $0.balanceValue.double }.reduce(0){ $0 + $1 }
     }
     
     func pieChartData() -> (entries: [PieChartDataEntry], colors: [Color]) {
@@ -130,15 +137,16 @@ extension IPieChartModel {
         
         var assetAllocationValues = [Double]()
         var others = [Double]()
-        var colors = [Color(red: 242/255, green: 169/255, blue: 0/255), .blue]
+        var colors = [Color]()
         var labels = [String]()
         
-        for asset in assets {
+        for asset in assets.filter({ $0.balance > 0 }) {
             let size = allocationSizeInPercents(for: asset)
+            
             if size >= minimumValue {
                 assetAllocationValues.append(size)
-                labels.append(asset.coin.code + " \(size)%")
-//                colors.append(asset.coin.color)
+                labels.append(asset.coin.code + " \(size.toString())%")
+                colors.append(asset.coin.color)
             } else {
                 others.append(size)
             }
@@ -160,7 +168,7 @@ extension IPieChartModel {
             let entry = PieChartDataEntry(value: othersSize, label: othersLabel)
             entries.append(entry)
             
-            colors.append(.gray)
+            colors.append(.white)
         }
         
         return (entries, colors)
@@ -168,7 +176,11 @@ extension IPieChartModel {
     
     func allocationSizeInPercents(for asset: PortfolioItem) -> Double {
         let value = asset.balanceValue.double
-        return ((value/totalPortfolioValue) * 100).rounded(toPlaces: 2)
+        
+        guard value > 0 else { return 0 }
+        
+        let allocationSize = (value/totalPortfolioValue) * 100
+        return allocationSize.rounded(toPlaces: 2)
     }
     
     func assetAllocationChartData() -> PieChartData {

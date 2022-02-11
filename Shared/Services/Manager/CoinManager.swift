@@ -19,7 +19,7 @@ final class CoinManager: ICoinManager {
     init(storage: ICoinStorage) {
         self.storage = storage
         
-        self.coins = [Coin.bitcoin(), Coin.ethereum(), Coin.portal()]
+        self.coins = [Coin.bitcoin(), Coin.ethereum()/*, Coin.portal()*/]
         self.onCoinsUpdate.send(self.coins)
             
 //        subscribe()

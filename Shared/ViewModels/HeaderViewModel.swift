@@ -17,18 +17,15 @@ class HeaderViewModel: ObservableObject {
     
     var currencies: [Currency] = []
     
-    private var notificationService: NotificationService
-    private var reachabillityService: ReachabilityService
+    private var notificationService: INotificationService
+    private var reachabillityService: IReachabilityService
     private var cancellables = Set<AnyCancellable>()
     
-    init(accountManager: IAccountManager, notificationService: NotificationService, reachabilityService: ReachabilityService) {
+    init(accountManager: IAccountManager, notificationService: INotificationService, reachabilityService: IReachabilityService, currencies: [Currency]) {
         self.accountName = accountManager.activeAccount?.name ?? "-"
         self.notificationService = notificationService
         self.reachabillityService = reachabilityService
-        
-        currencies.append(Currency.btc)
-        currencies.append(Currency.eth)
-        currencies.append(contentsOf: Portal.shared.marketDataProvider.fiatCurrencies.map{ Currency.fiat($0) })
+        self.currencies = currencies
         
         accountManager.onActiveAccountUpdate
             .receive(on: RunLoop.main)
@@ -37,7 +34,7 @@ class HeaderViewModel: ObservableObject {
             }
             .store(in: &cancellables)
             
-        notificationService.$newAlerts.combineLatest(notificationService.$alertsBeenSeen)
+        notificationService.newAlerts.combineLatest(notificationService.alertsBeenSeen)
             .receive(on: RunLoop.main)
             .sink { [weak self] newAlerts, alertsBeenSeen in
                 self?.newAlerts = newAlerts
@@ -46,7 +43,7 @@ class HeaderViewModel: ObservableObject {
             .store(in: &cancellables)
         
         reachabilityService
-            .$isReachable
+            .isReachable
             .receive(on: RunLoop.main)
             .sink { [weak self] online in
                 self?.isOffline = !online
@@ -64,11 +61,14 @@ extension HeaderViewModel {
         let accountManager = Portal.shared.accountManager
         let notificationService = Portal.shared.notificationService
         let reachabilityService = Portal.shared.reachabilityService
+        let fiatCurrencies = Portal.shared.marketDataProvider.fiatCurrencies.map{ Currency.fiat($0) }
+        let currencies = [Currency.btc, Currency.eth] + fiatCurrencies
         
         return HeaderViewModel(
             accountManager: accountManager,
             notificationService: notificationService,
-            reachabilityService: reachabilityService
+            reachabilityService: reachabilityService,
+            currencies: currencies
         )
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 import BitcoinCore
 import Combine
+import Coinpaprika
 
 final class TxsViewModel: ObservableObject {
     let coin: Coin
@@ -24,39 +25,36 @@ final class TxsViewModel: ObservableObject {
     
     private var transactionAdapter: ITransactionsAdapter
     private var balance: Decimal
+    private let currency: Currency
+    private var ticker: Ticker?
     private var subscriptions = Set<AnyCancellable>()
     
     var balanceString: String {
-        return "\(balance) \(coin.code)"
-    }
-    
-    func title(tx: TransactionRecord) -> String {
-        switch tx.type {
-        case .incoming:
-            return "Received \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
-        case .outgoing:
-            return "Sent \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
-        case .sentToSelf:
-            return "Send to self \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
-        case .approve:
-            return "Approving... \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
-        case .transfer:
-            return "Trasfer... \(tx.amount.double.rounded(toPlaces: 6)) \(coin.code)"
+        let coinBalance = "\(balance.rounded(toPlaces: 6).toString()) \(coin.code)"
+        let balanceString: String
+        
+        if let ticker = ticker {
+            switch currency {
+            case .btc:
+                balanceString = "\(coinBalance) (\(currency.symbol)" + "\((balance * ticker[.btc].price).rounded(toPlaces: 2)) \(currency.code))"
+            case .eth:
+                balanceString = "\(coinBalance) (\(currency.symbol)" + "\((balance * ticker[.eth].price).rounded(toPlaces: 2)) \(currency.code))"
+            case .fiat(let fiatCurrency):
+                balanceString = "\(coinBalance) (\(fiatCurrency.symbol)" + "\((balance * ticker[.usd].price * Decimal(fiatCurrency.rate)).rounded(toPlaces: 2)) \(fiatCurrency.code))"
+            }
+        } else {
+            balanceString = coinBalance
         }
+        
+        return balanceString
     }
     
-    func date(tx: TransactionRecord) -> String {
-        tx.date.timeAgoSinceDate(shortFormat: true)
-    }
-    
-    func confimations(tx: TransactionRecord) -> String {
-        "\(tx.confirmations(lastBlockHeight: transactionAdapter.lastBlockInfo?.height)) confirmations"
-    }
-    
-    init(coin: Coin, balance: Decimal, transactionAdapter: ITransactionsAdapter) {
+    init(coin: Coin, balance: Decimal, transactionAdapter: ITransactionsAdapter, currency: Currency, ticker: Ticker?) {
         self.coin = coin
         self.balance = balance
         self.transactionAdapter = transactionAdapter
+        self.currency = currency
+        self.ticker = ticker
         self.lastBlockInfo = transactionAdapter.lastBlockInfo
         
         $txSortState
@@ -82,6 +80,29 @@ final class TxsViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
     
+    func title(tx: TransactionRecord) -> String {
+        switch tx.type {
+        case .incoming:
+            return "Received \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
+        case .outgoing:
+            return "Sent \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
+        case .sentToSelf:
+            return "Send to self \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
+        case .approve:
+            return "Approving... \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
+        case .transfer:
+            return "Trasfer... \(tx.amount.double.rounded(toPlaces: 6).toString()) \(coin.code)"
+        }
+    }
+    
+    func date(tx: TransactionRecord) -> String {
+        tx.date.timeAgoSinceDate(shortFormat: true)
+    }
+    
+    func confimations(tx: TransactionRecord) -> String {
+        "\(tx.confirmations(lastBlockHeight: transactionAdapter.lastBlockInfo?.height)) confirmations"
+    }
+    
     func updateTxList() {
         switch txSortState {
         case .all:
@@ -104,6 +125,8 @@ extension TxsViewModel {
     static func config(coin: Coin) -> TxsViewModel? {
         let walletManager: IWalletManager = Portal.shared.walletManager
         let adapterManager: IAdapterManager = Portal.shared.adapterManager
+        let currency = Portal.shared.state.wallet.currency
+        let ticker = Portal.shared.marketDataProvider.ticker(coin: coin)
         
         guard
             let wallet = walletManager.activeWallets.first(where: { $0.coin == coin }),
@@ -113,6 +136,12 @@ extension TxsViewModel {
             return nil
         }
         
-        return TxsViewModel(coin: coin, balance: balanceAdapter.balance, transactionAdapter: transactionAdapter)
+        return TxsViewModel(
+            coin: coin,
+            balance: balanceAdapter.balance,
+            transactionAdapter: transactionAdapter,
+            currency: currency,
+            ticker: ticker
+        )
     }
 }

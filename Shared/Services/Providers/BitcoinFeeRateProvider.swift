@@ -47,7 +47,7 @@ class BitcoinFeeRateProvider: IFeeRateProvider {
         case .recommended:
             return feeRateProvider.bitcoinFeeRate(blockCount: mediumPriorityBlockCount)
         case let .custom(value, _):
-            return Future { promisse in promisse(.success(value))}
+            return Future { promise in promise(.success(value))}
         }
     }
 

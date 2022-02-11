@@ -20,27 +20,10 @@ struct AssetTxView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
-                )
-                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
-            
-            CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
-                .background(Color.white)
-                .cornerRadius(32)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 32)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
-                )
-                .offset(y: -32)
-            
+        ModalViewContainer(imageUrl: viewModel.coin.icon, size: CGSize(width: 776, height: 594)) {
             HStack {
                 if selectedTx != nil {
-                    PButton(bgColor: Color.doneButtonBg, label: "All Transaction", width: 132, height: 32, fontSize: 12, enabled: true) {
+                    PButton(bgColor: Color.doneButtonBg, label: "All Transactions", width: 132, height: 32, fontSize: 12, enabled: true) {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             selectedTx = nil
                         }
@@ -191,35 +174,59 @@ struct TxDetailsView: View {
                     .fill(Color.exchangerFieldBorder)
                 
                 VStack(alignment: .leading, spacing: 15) {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("From")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         Text(viewModel.from)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+
                     }
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("To")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         Text(viewModel.to)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+
                     }
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Hash")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         Text(viewModel.txHash)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+
                     }
-                    VStack(alignment: .leading, spacing: 6) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Network fees")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
+                        Text(viewModel.networkFees)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+
+                    }
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Block height")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
+                        Text(viewModel.blockHeight)
+                            .foregroundColor(Color.coinViewRouteButtonActive)
+                    }
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Status")
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+
                         HStack {
                             RoundedRectangle(cornerRadius: 8)
                                 .fill(viewModel.completed ? Color.orange : Color.gray)
                                 .frame(width: 6, height: 6)
                             Text(viewModel.completed ? "Complete" : "Pending")
+                                .foregroundColor(Color.coinViewRouteButtonActive)
                         }
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        Text("Block height")
-                        Text(viewModel.blockHeight)
                     }
                 }
                 .font(.mainFont(size: 12))
-                .foregroundColor(Color.coinViewRouteButtonActive)
                 .padding(.horizontal, 24)
                 .padding(.vertical)
             }
@@ -288,6 +295,7 @@ struct TxPreviewView: View {
         }
         .padding(.horizontal, 30)
         .frame(height: 32)
+        .contentShape(Rectangle())
         .onTapGesture {
             onSelect(transaction)
         }

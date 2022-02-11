@@ -39,7 +39,7 @@ class WalletStorage: IWalletStorage {
             .store(in: &subscriptions)
     }
     
-    func syncWallets() {
+    private func syncWallets() {
         wallets.removeAll()
         
         for account in accountManager.accounts {

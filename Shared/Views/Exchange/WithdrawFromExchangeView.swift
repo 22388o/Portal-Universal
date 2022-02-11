@@ -33,20 +33,7 @@ struct WithdrawFromExchangeView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .top) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black.opacity(0.7), lineWidth: 8)
-                )
-                .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 2)
-
-            CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
-                .background(Color.white)
-                .cornerRadius(32)
-                .offset(y: -32)
-
+        ModalViewContainer(imageUrl: viewModel.coin.icon, size: CGSize(width: 576, height: 645)) {
             VStack(spacing: 0) {
                 Text(viewModel.title)
                     .font(.mainFont(size: 23))
@@ -64,7 +51,6 @@ struct WithdrawFromExchangeView: View {
             .transition(.identity)
         }
         .allowsHitTesting(true)
-        .frame(width: 576, height: 645)
     }
 }
 

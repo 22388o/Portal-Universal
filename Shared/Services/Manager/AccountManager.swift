@@ -17,9 +17,9 @@ final class AccountManager {
         self.accountStorage = accountStorage
     }
         
-    private func nextActiveAccount() {
-        if let newWalletId = accounts.first?.id {
-            setActiveAccount(id: newWalletId)
+    private func nextActiveAccount(previousAccountId: String? = nil) {
+        if let newAccountId = accounts.filter({ $0.id != previousAccountId }).first?.id {
+            setActiveAccount(id: newAccountId)
         } else {
             DispatchQueue.main.async {
                 Portal.shared.state.loading = false
@@ -63,8 +63,11 @@ extension AccountManager: IAccountManager {
     }
     
     func update(account: Account) {
+        let currentAccountId = activeAccount?.id
         accountStorage.update(account: account)
-        nextActiveAccount()
+        // Fast switching accounts to update settings of current account
+        nextActiveAccount(previousAccountId: currentAccountId)
+        // Updating current account
         setActiveAccount(id: account.id)
     }
     

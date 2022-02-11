@@ -10,6 +10,8 @@ import SwiftUI
 struct ExchangeSelectorView: View {
     @Binding var state: ExchangeViewMode
     @Binding var selectorState: ExchangeSelectorState
+    @Binding var isLoggedIn: Bool
+    
     let exchanges: [ExchangeModel]
     let panelWidth: CGFloat
     
@@ -32,6 +34,15 @@ struct ExchangeSelectorView: View {
                             }
                         }
                 }
+                Text("Setup")
+                    .font(.mainFont(size: 12, bold: false))
+                    .foregroundColor(Color.white.opacity(0.65))
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation {
+                            isLoggedIn.toggle()
+                        }
+                    }
             }
             .padding(.top, 25)
             .padding(.bottom, 12)
@@ -51,9 +62,27 @@ struct ExchangeSelectorView: View {
 struct ExchangeSelectorView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ExchangeSelectorView(state: .constant(.full), selectorState: .constant(.merged), exchanges: [ExchangeModel.binanceMock(), ExchangeModel.coinbaseMock()], panelWidth: 320)
-            ExchangeSelectorView(state: .constant(.compactRight), selectorState: .constant(.selected(exchange: ExchangeModel.binanceMock())), exchanges: [ExchangeModel.binanceMock(), ExchangeModel.coinbaseMock()], panelWidth: 320)
-            ExchangeSelectorView(state: .constant(.compactLeft), selectorState: .constant(.selected(exchange: ExchangeModel.binanceMock())), exchanges: [ExchangeModel.binanceMock()], panelWidth: 320)
+            ExchangeSelectorView(
+                state: .constant(.full),
+                selectorState: .constant(.merged),
+                isLoggedIn: .constant(true),
+                exchanges: [ExchangeModel.binanceMock(), ExchangeModel.coinbaseMock()],
+                panelWidth: 320
+            )
+            ExchangeSelectorView(
+                state: .constant(.compactRight),
+                selectorState: .constant(.selected(exchange: ExchangeModel.binanceMock())),
+                isLoggedIn: .constant(true),
+                exchanges: [ExchangeModel.binanceMock(), ExchangeModel.coinbaseMock()],
+                panelWidth: 320
+            )
+            ExchangeSelectorView(
+                state: .constant(.compactLeft),
+                selectorState: .constant(.selected(exchange: ExchangeModel.binanceMock())),
+                isLoggedIn: .constant(true),
+                exchanges: [ExchangeModel.binanceMock()],
+                panelWidth: 320
+            )
         }
     }
 }

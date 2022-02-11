@@ -53,3 +53,27 @@ target 'Portal (macOS)' do
   # Pods for Portal (macOS)
   portal_shared_pods
 end
+
+target 'UnitTestsIOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  platform :ios, '13.0'
+  use_frameworks!
+  inhibit_all_warnings!
+
+  # Pods for Tests iOS
+  portal_shared_pods
+  
+
+end
+
+target 'UnitTestsMacOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  platform :osx, '10.15'
+  use_frameworks!
+  inhibit_all_warnings!
+
+  # Pods for Tests macOS
+  portal_shared_pods
+  
+
+end

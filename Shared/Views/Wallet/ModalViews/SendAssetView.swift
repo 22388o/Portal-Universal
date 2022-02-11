@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SendAssetView: View {
     @ObservedObject private var viewModel: SendAssetViewModel
-    @State private var showConfirmationAlert: Bool = false
         
     init(coin: Coin, currency: Currency) {
         guard let viewModel = SendAssetViewModel.config(coin: coin, currency: currency) else {
@@ -19,24 +18,7 @@ struct SendAssetView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
-                        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
-                )
-            
-            CoinImageView(size: 64, url: viewModel.coin.icon, placeholderForegroundColor: .black)
-                .background(Color.white)
-                .cornerRadius(32)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 32)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
-                )
-                .offset(y: -32)
-                        
+        ModalViewContainer(imageUrl: viewModel.coin.icon, size: CGSize(width: 567, height: 662), {
             VStack(spacing: 0) {
                 VStack(spacing: 8) {
                     VStack {
@@ -58,42 +40,112 @@ struct SendAssetView: View {
                 }
                 .padding(.top, 57)
                 .padding(.bottom, 16)
-                                
-                VStack(spacing: 18) {
-                    VStack(spacing: 12) {
-                        VStack(spacing: 10) {
-                            ExchangerView(viewModel: viewModel.exchangerViewModel, isValid: $viewModel.amountIsValid)
-                            TxFeesPicker(txFee: viewModel.txFee, txFeePriority: $viewModel.txFeePriority)
-                        }
                 
+                SendAssetProgressView(step: $viewModel.step)
+                    .frame(width: 400)
+                    .padding(8)
+                
+                switch viewModel.step {
+                case .recipient:
+                    VStack(alignment: .leading, spacing: 11) {
+                        Text("Send to...")
+                            .font(.mainFont(size: 12))
+                            .foregroundColor(Color.coinViewRouteButtonInactive)
+                            .padding(.horizontal, 4)
+
+                        PTextField(text: $viewModel.receiverAddress, placeholder: "Enter \(viewModel.coin.code) address", upperCase: false, width: 480, height: 48)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 24)
+                                    .stroke(viewModel.addressIsValid ? Color.clear : Color.red, lineWidth: 1)
+                            )
+                    }
+                    .padding(.top, 17)
+                    .padding(.bottom, 44)
+                case .amount:
+                    VStack(spacing: 12) {
+                        ExchangerView(
+                            viewModel: viewModel.exchangerViewModel,
+                            isValid: $viewModel.amountIsValid,
+                            isSendingMax: $viewModel.isSendingMax
+                        )
+                        TxFeesPicker(txFee: viewModel.txFee, showOptions: viewModel.coin == .bitcoin(), txFeePriority: $viewModel.txFeePriority)
+                    }
+                    .frame(width: 480)
+                    .padding(.top, 14)
+                    .padding(.bottom)
+                case .summary:
+                    Divider()
+                        .padding(.vertical)
+
+                    VStack(alignment: .leading, spacing: 12) {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Send to...")
+                            Text("Amount:")
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                            
+                            Text("\(viewModel.amount.string) \(viewModel.coin.code) (\(viewModel.exchangerViewModel.fiatValue) \(viewModel.exchangerViewModel.currency.code))")
+                                .foregroundColor(Color.coinViewRouteButtonActive)
+
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Recipient address:")
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+
+                            Text("\(viewModel.receiverAddress)")
+                                .foregroundColor(Color.coinViewRouteButtonActive)
+
+                        }
+
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Network fees:")
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+
+                            Text(viewModel.txFee)
+                                .foregroundColor(Color.coinViewRouteButtonActive)
+
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Private description / memo (optional)")
                                 .font(.mainFont(size: 12))
                                 .foregroundColor(Color.coinViewRouteButtonInactive)
 
-                            PTextField(text: $viewModel.receiverAddress, placeholder: "Reciever address", upperCase: false, width: 480, height: 48)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 24)
-                                        .stroke(viewModel.addressIsValid ? Color.clear : Color.red, lineWidth: 1)
-                                )
+                            PTextField(text: $viewModel.memo, placeholder: "Enter private description or memo", upperCase: false, width: 480, height: 48)
+                        }
+
+                    }
+                    .font(.mainFont(size: 12))
+                    
+                    Divider()
+                        .padding(.vertical)
+                }
+                
+                HStack {
+                    if viewModel.step != .recipient {
+                        PButton(label: "Back", width: 100, height: 44, fontSize: 12, enabled: true) {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                viewModel.goBack()
+                            }
+                        }
+                        .transition(.opacity.combined(with: .scale))
+                        .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                    }
+                    PButton(label: viewModel.step != .summary ? "Continue" : "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.actionButtonEnabled) {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            switch viewModel.step {
+                            case .recipient:
+                                viewModel.step = .amount
+                            case .amount:
+                                viewModel.step = .summary
+                            case .summary:
+                                viewModel.send()
+                            }
                         }
                     }
-                    
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Private description / memo (optional)")
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.coinViewRouteButtonInactive)
-
-                        PTextField(text: $viewModel.memo, placeholder: "Enter private description or memo", upperCase: false, width: 480, height: 48)
-                    }
+                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 }
-                                
-                PButton(label: "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.canSend) {
-                    viewModel.send()
-                }
-                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
-                .padding(.top, 16)
-                .padding(.bottom, 27)
+                .padding(.bottom, 40)
                 
                 HStack(spacing: 0) {
                     Text("Status")
@@ -106,63 +158,76 @@ struct SendAssetView: View {
                 .font(.mainFont(size: 12))
                 .foregroundColor(Color.coinViewRouteButtonInactive)
                 .frame(width: 480)
-                
+
                 Spacer().frame(height: 8)
-                
+
                 Divider()
-                
+
                 ZStack {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(Color.exchangerFieldBackground)
-                    
-                    ScrollView {
-                        LazyVStack_(alignment: .leading, spacing: 0) {
-                            ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.transactionHash) { tx in
-                                VStack(spacing: 0) {
-                                    HStack(spacing: 0) {
-                                        HStack {
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .fill(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
-                                                .frame(width: 6, height: 6)
-                                            Text(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
-                                                .foregroundColor(.orange)
+
+                    if !viewModel.transactions.isEmpty {
+                        ScrollView {
+                            LazyVStack_(alignment: .leading, spacing: 0) {
+                                ForEach(viewModel.transactions.sorted{ $0.date > $1.date }, id:\.transactionHash) { tx in
+                                    VStack(spacing: 0) {
+                                        HStack(spacing: 0) {
+                                            HStack {
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .fill(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? Color.orange : Color.gray)
+                                                    .frame(width: 6, height: 6)
+                                                Text(tx.status(lastBlockHeight: viewModel.lastBlockInfo?.height) == .completed ? "Complete" : "Pending")
+                                                    .foregroundColor(.orange)
+                                            }
+                                            .padding(.leading, 4)
+
+                                            Text("\(tx.amount.double) \(viewModel.coin.code)")
+                                                .frame(width: 85)
+                                                .padding(.leading, 30)
+                                            Text("\(tx.to ?? "unknown address")")
+                                                .lineLimit(1)
+                                                .frame(width: 201)
+                                                .padding(.leading, 15)
+                                            Text(tx.date.timeAgoSinceDate(shortFormat: true))
+                                                .frame(width: 80)
+                                                .lineLimit(1)
+                                                .padding(.leading, 28)
                                         }
-                                        .padding(.leading, 4)
-                                        
-                                        Text("\(tx.amount.double) \(viewModel.coin.code)")
-                                            .frame(width: 85)
-                                            .padding(.leading, 30)
-                                        Text("\(tx.to ?? "unknown address")")
-                                            .lineLimit(1)
-                                            .frame(width: 201)
-                                            .padding(.leading, 15)
-                                        Text(tx.date.timeAgoSinceDate(shortFormat: true))
-                                            .frame(width: 80)
-                                            .lineLimit(1)
-                                            .padding(.leading, 28)
+                                        .font(.mainFont(size: 12))
                                     }
-                                    .font(.mainFont(size: 12))
+                                    .id(tx.transactionHash)
+                                    .foregroundColor(.coinViewRouteButtonInactive)
+                                    .frame(height: 30)
+                                    .frame(maxWidth: .infinity)
+
+                                    Divider()
                                 }
-                                .id(tx.transactionHash)
-                                .foregroundColor(.coinViewRouteButtonInactive)
-                                .frame(height: 30)
-                                .frame(maxWidth: .infinity)
-                                
-                                Divider()
                             }
                         }
+                    } else {
+                        Text("There is no transactions yet")
+                            .font(.mainFont(size: 12))
+                            .foregroundColor(Color.coinViewRouteButtonActive)
                     }
                 }
                 .padding([.horizontal, .bottom], 4)
             }
-        }
-        .frame(width: 576, height: 662)
-        .alert(isPresented: $showConfirmationAlert) {
-            Alert(title: Text("Success"), message: Text("Transaction was sent!"), dismissButton: .default(Text("Awesome"), action: {
-                withAnimation {
-                    Portal.shared.state.modalView = .none
-                }
-            }))
+        })
+        .alert(isPresented: $viewModel.showConfirmationAlert) {
+            if let error = viewModel.sendError {
+                return Alert(
+                    title: Text("Sending \(viewModel.coin.code) error"),
+                    message: Text(error.localizedDescription), dismissButton: .default(Text("Dismiss"), action: {
+                        viewModel.resetErrorState()
+                }))
+            } else {
+                return Alert(
+                    title: Text("Sent \(viewModel.exchangerViewModel.assetValue) \(viewModel.coin.code)"),
+                    message: Text("Reciever address: \(viewModel.receiverAddress)"), dismissButton: .default(Text("Dismiss"), action: {
+                        Portal.shared.state.modalView = .none
+                }))
+            }
         }
     }
 }

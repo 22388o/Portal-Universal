@@ -13,7 +13,7 @@ import Mixpanel
 import Bugsnag
 import SwiftUI
 
-final class Portal: ObservableObject {
+final class Portal {
     static let shared = Portal()
         
     private var anyCancellables: Set<AnyCancellable> = []
@@ -26,12 +26,12 @@ final class Portal: ObservableObject {
     let accountManager: IAccountManager
     let walletManager: IWalletManager
     let marketDataProvider: IMarketDataProvider
-    let notificationService: NotificationService
+    let notificationService: INotificationService
     let feeRateProvider: FeeRateProvider
     let ethereumKitManager: EthereumKitManager
     let adapterManager: IAdapterManager
     let exchangeManager: ExchangeManager
-    let reachabilityService: ReachabilityService
+    let reachabilityService: IReachabilityService
     let pushNotificationService: PushNotificationService
     
     @ObservedObject var state: PortalState
@@ -50,7 +50,9 @@ final class Portal: ObservableObject {
         
         state = PortalState(userId: userId)
         
-        localStorage = LocalStorage()
+        let userDefaults = UserDefaults.standard
+        
+        localStorage = LocalStorage(storage: userDefaults)
         
         let keychain = Keychain(service: appConfigProvider.keychainStorageID)
         secureStorage = KeychainStorage(keychain: keychain)
@@ -81,21 +83,20 @@ final class Portal: ObservableObject {
             exchangeDataUpdater: exchangeDataUpdater
         )
         
-        let marketDataUpdater = MarketDataUpdater(cachedTickers: dbStorage.tickers, reachability: reachabilityService)
+        let marketDataUpdater: IMarketDataUpdater = MarketDataUpdater(cachedTickers: dbStorage.tickers, reachability: reachabilityService)
         
-        let fiatCurrenciesUpdater = FiatCurrenciesUpdater(
+        let fiatCurrenciesUpdater: IFiatCurrenciesUpdater = FiatCurrenciesUpdater(
             interval: TimeInterval(appConfigProvider.fiatCurrenciesUpdateInterval),
             fixerApiKey: appConfigProvider.fixerApiKey
         )
-                
-        let marketDataStorage = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: dbStorage)
-        marketDataProvider = MarketDataProvider(repository: marketDataStorage)
+                  
+        marketDataProvider = MarketDataStorage(mdUpdater: marketDataUpdater, fcUpdater: fiatCurrenciesUpdater, cacheStorage: dbStorage)
                         
         let accountStorage = AccountStorage(localStorage: localStorage, secureStorage: secureStorage, accountStorage: dbStorage)
         accountManager = AccountManager(accountStorage: accountStorage)
         
         let erc20Updater: IERC20Updater = ERC20Updater()
-        let coinStorage: ICoinStorage = CoinStorage(updater: erc20Updater, marketData: marketDataStorage)
+        let coinStorage: ICoinStorage = CoinStorage(updater: erc20Updater, marketDataProvider: marketDataProvider)
         let coinManager: ICoinManager = CoinManager(storage: coinStorage)
         
         let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)
@@ -115,7 +116,7 @@ final class Portal: ObservableObject {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
         }
                 
-        adapterManager.adapterdReady
+        adapterManager.adapterReady
             .receive(on: RunLoop.main)
             .sink { [unowned self] ready in
                 let hasAccount = self.accountManager.activeAccount != nil
@@ -148,7 +149,7 @@ final class Portal: ObservableObject {
             .store(in: &anyCancellables)
     }
     
-    func updateWalletCurrency(code: String) {
+    private func updateWalletCurrency(code: String) {
         switch code {
         case "BTC":
             state.wallet.currency = .btc

@@ -14,7 +14,7 @@ final class CreateAccountViewModel: ObservableObject {
     }
     
     @Published var step: Step = .name
-    @Published var walletName = String()
+    @Published var accountName = String()
     @Published var btcAddressFormat = BtcAddressFormat.segwit.rawValue
     @Published var test: SeedTestViewModel
     
@@ -32,7 +32,7 @@ final class CreateAccountViewModel: ObservableObject {
             self.test = SeedTestViewModel(seed: words)
         }
         
-        cancalable = $walletName.sink { [weak self] name in
+        cancalable = $accountName.sink { [weak self] name in
             self?.nameIsValid = !name.isEmpty
         }
     }
@@ -42,7 +42,7 @@ final class CreateAccountViewModel: ObservableObject {
     }
     
     var account: Account {
-        Account(id: UUID().uuidString, name: walletName, bip: mnemonicDereviation, type: type)
+        Account(id: UUID().uuidString, name: accountName, bip: mnemonicDereviation, type: type)
     }
     
     func formattedIndexString(_ index: Int) -> String {

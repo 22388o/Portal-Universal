@@ -28,6 +28,7 @@ final class AssetViewModel: ObservableObject {
     private let marketDataProvider: IMarketDataProvider
     private let walletManager: IWalletManager
     private let adapterManager: IAdapterManager
+    private var adapter: IBalanceAdapter?
     private var subscriptions = Set<AnyCancellable>()
         
     private var marketData: CoinMarketData {
@@ -47,7 +48,6 @@ final class AssetViewModel: ObservableObject {
     }
     
     var coin: Coin
-    var adapter: IBalanceAdapter?
         
     var totalSupply: String {
         if let ticker = self.ticker {
@@ -312,7 +312,7 @@ final class AssetViewModel: ObservableObject {
         if isInteger {
             balance = "\(adapter?.balance ?? 0)"
         } else {
-            balance = "\(adapter?.balance.rounded(toPlaces: 6) ?? 0)"
+            balance = (adapter?.balance.rounded(toPlaces: 6) ?? 0).toString()
         }
         
         let percentChange: Decimal
@@ -356,7 +356,7 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func assetChartDataEntries() -> [ChartDataEntry] {
-        guard Portal.shared.reachabilityService.isReachable else { return [] }
+        guard Portal.shared.reachabilityService.isReachable.value else { return [] }
         
         var chartDataEntries = [ChartDataEntry]()
         var points = [Decimal]()
@@ -380,7 +380,7 @@ final class AssetViewModel: ObservableObject {
     }
     
     private func chartDataPonts(timeframe: Timeframe) -> [Decimal] {
-        let points: [Decimal]
+        let points: [PricePoint]
         
         switch timeframe {
         case .day:
@@ -395,11 +395,11 @@ final class AssetViewModel: ObservableObject {
         
         switch state.wallet.currency {
         case .btc:
-            return points.map{ $0/btcUSDPrice }
+            return points.map{ $0.price/btcUSDPrice }
         case .eth:
-            return points.map{ $0/ethUSDPrice }
+            return points.map{ $0.price/ethUSDPrice }
         case .fiat(let fiatCurrency):
-            return points.map{ $0 * Decimal(fiatCurrency.rate) }
+            return points.map{ $0.price * Decimal(fiatCurrency.rate) }
         }
     }
 }

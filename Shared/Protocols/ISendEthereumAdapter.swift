@@ -13,5 +13,5 @@ import Combine
 protocol ISendEthereumAdapter {
     var balance: Decimal { get }
     func transactionData(amount: BigUInt, address: EthereumKit.Address) -> TransactionData
-    func send(address: Address, value: BigUInt, transactionInput: Data, gasPrice: Int, gasLimit: Int, nonce: Int?) -> Future<FullTransaction, Error>
+    func send(tx: SendETHService.Transaction) -> Future<Void, Error>
 }

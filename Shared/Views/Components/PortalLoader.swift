@@ -25,35 +25,6 @@ private class Counter: ObservableObject {
     }
 }
 
-extension View {
-    func isLocked(locked: Binding<Bool>) -> ModifiedContent<Self, LoadingViewModifier> {
-        modifier(LoadingViewModifier(locked: locked))
-    }
-}
-
-struct LoadingViewModifier: ViewModifier {
-    @Binding var locked: Bool
-            
-    func body(content: Content) -> some View {
-        ZStack {
-            content
-            
-            if locked {
-                LoadingAnimationView()
-                    .zIndex(1)
-                    .transition(
-                        AnyTransition.asymmetric(
-                            insertion: AnyTransition.identity,
-                            removal: AnyTransition.scale(scale: 15)
-                                .combined(with: AnyTransition.opacity)
-                        )
-                        .animation(.easeInOut(duration: 0.5))
-                    )
-            }
-        }
-    }
-}
-
 struct LoadingAnimationView: View {
     private let frames = (0...59).compactMap { Image("loading-frame_\($0)") }
     

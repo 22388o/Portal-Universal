@@ -22,12 +22,12 @@ final class ERC20Updater: IERC20Updater {
     
     private var urlSession: URLSession
         
-    private var url: URL? {
-        URL(string: "https://cryptomarket-api.herokuapp.com/erc20_token_list")
-    }
+    private var url: URL?
     
-    init(jsonDecoder: JSONDecoder = JSONDecoder()) {
+    init(jsonDecoder: JSONDecoder = JSONDecoder(), url: URL? = URL(string: "https://cryptomarket-api.herokuapp.com/erc20_token_list")) {
+        
         self.jsonDecoder = jsonDecoder
+        self.url = url
         
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = true

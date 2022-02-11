@@ -36,7 +36,7 @@ struct WalletCurrencyButton: View {
                             .offset(y: 1)
                     }
                     VStack(alignment: .leading, spacing: 0) {
-                        Text("Fiat currency")
+                        Text("Base asset")
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.white.opacity(0.5))
                         Text(selectedCurrrency.code)

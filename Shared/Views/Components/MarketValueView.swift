@@ -53,7 +53,7 @@ struct MarketValueView: View {
                 }
             }
             
-            LineChartRepresentable(chartDataEntries: chartDataEntries)
+            LineChartRepresentable(chartDataEntries: chartDataEntries, isPortfolioChart: type == .portfolio)
                 .frame(height: landscape ? 106 : 160)
                 .padding(.top, 20)
             

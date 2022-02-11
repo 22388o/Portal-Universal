@@ -18,7 +18,7 @@ final class AdapterManager {
     private let queue = DispatchQueue(label: "tides.universal.portal.adapter_manager", qos: .userInitiated)
     private var adapters = [Wallet: IAdapter]()
     
-    var adapterdReady = CurrentValueSubject<Bool, Never>(false)
+    var adapterReady = CurrentValueSubject<Bool, Never>(false)
 
     init(adapterFactory: IAdapterFactory, ethereumKitManager: EthereumKitManager, walletManager: IWalletManager) {
         self.adapterFactory = adapterFactory
@@ -60,7 +60,7 @@ final class AdapterManager {
 
         queue.async {
             self.adapters = newAdapters
-            self.adapterdReady.send(true)
+            self.adapterReady.send(true)
         }
 
         removedAdapters.forEach { adapter in

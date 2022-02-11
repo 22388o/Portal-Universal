@@ -24,7 +24,7 @@ class PortalUITests: XCTestCase {
         app.launch()
         
         let portalWindow = XCUIApplication().windows["Portal"]
-        portalWindow.buttons["Personal"].click()
+        portalWindow.buttons["Account Button"].click()
         portalWindow.buttons["Create new account"].click()
         portalWindow.click()
         

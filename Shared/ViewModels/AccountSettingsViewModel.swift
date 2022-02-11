@@ -18,7 +18,7 @@ final class AccountSettingsViewModel: ObservableObject {
     @Published var btcNetwork: BitcoinKit.Kit.NetworkType = .testNet
     @Published var ethNetwork: EthereumKit.NetworkType = .ropsten
     @Published var ethNetworkString: String = "ropsten"
-    @Published var confirmationThreshold: Int = 1
+    @Published var confirmationThreshold: Int = 0
     @Published var canApplyChanges: Bool = false
     @Published var infuraKeyString: String = String()
     

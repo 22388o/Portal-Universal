@@ -11,7 +11,7 @@ import Combine
 
 typealias HistoricalDataResponse = Dictionary<String, [MarketSnapshot]>
 
-typealias HistoricalTickerPrice = Dictionary<String, [Decimal]>
+typealias HistoricalTickerPrice = Dictionary<String, [PricePoint]>
 
 protocol IHistoricalData {
     var onUpdatePublisher: PassthroughSubject<(MarketDataRange, HistoricalDataResponse), Never> { get }

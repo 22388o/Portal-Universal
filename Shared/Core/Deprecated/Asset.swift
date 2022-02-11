@@ -16,6 +16,9 @@ import BigInt
 
 import SwiftUI
 
+final class QRCodeProvider: IQRCodeProvider {}
+
+
 final class Asset: IAsset {
     private(set) var id: UUID
     private(set) var coin: Coin
@@ -102,7 +105,7 @@ final class Asset: IAsset {
     }
 
     func send(amount: Decimal, address: String, feeRate: Int, sortMode: TransactionDataSortMode) -> Future<Void, Error> {
-        return Future { [weak self] promisse in
+        return Future { [weak self] promise in
             print("Sending to \(address)")
             
             guard let weakSelf = self else { return }
@@ -114,18 +117,18 @@ final class Asset: IAsset {
                     .sink(receiveCompletion: { completion in
                         
                     }, receiveValue: { _ in
-                        promisse(.success(()))
+                        promise(.success(()))
                     })
                     .store(in: &weakSelf.subscriptions)
             case .ethereum:
                 
-                promisse(.success(()))
+                promise(.success(()))
                 
 //                guard
 //                    let amountToSend = BigUInt(amount.roundedString(decimal: 18)),
 //                    let recepientAddress = try? Address(hex: address)
 //                else {
-//                    return promisse(.failure(AppError.unknownError))
+//                    return promise(.failure(AppError.unknownError))
 //                }
 //                
 //                Portal.shared.etherFeesProvider.feeRate(priority: .high)
@@ -139,16 +142,16 @@ final class Asset: IAsset {
 //                    })
 //                    .subscribe(onSuccess: { transaction in
 //                        print(transaction.transaction.hash.hex)
-//                        promisse(.success(()))
+//                        promise(.success(()))
 //                    }, onError: { error in
-//                        promisse(.failure(error))
+//                        promise(.failure(error))
 //                    })
 //                    .disposed(by: weakSelf.disposeBag)
                 
             case .erc20( _):
-                promisse(.failure(AppError.unknownError))
+                promise(.failure(AppError.unknownError))
             case .none:
-                promisse(.failure(AppError.unknownError))
+                promise(.failure(AppError.unknownError))
             }
         }
     }

@@ -9,6 +9,8 @@
 import Foundation
 import Combine
 
+typealias PriceResponse = Dictionary<String, Dictionary<String, MarketPrice>>
+
 protocol IPricesData {
     var onPricesUpdate: PassthroughSubject<PriceResponse, Never> { get }
     func updatePrices(for assets: String, _ competionHandler: @escaping ((Result<PriceResponse, NetworkError>) -> Void))

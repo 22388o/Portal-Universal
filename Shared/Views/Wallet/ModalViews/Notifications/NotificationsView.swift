@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NotificationsView: View {
-    @ObservedObject private var service = Portal.shared.notificationService
+    private var service: INotificationService = Portal.shared.notificationService
         
     var body: some View {
         ZStack {
@@ -30,14 +30,14 @@ struct NotificationsView: View {
                 
                 Spacer()
                 
-                if service.notifications.isEmpty {
+                if service.notifications.value.isEmpty {
                     Text("There is no notifications yet.")
                         .font(.mainFont(size: 10, bold: true))
                         .foregroundColor(Color.lightActiveLabel)
                 } else {
                     ScrollView {
                         LazyVStack_(spacing: 0) {
-                            ForEach(service.notifications, id: \.id) { notification in
+                            ForEach(service.notifications.value, id: \.id) { notification in
                                 NotificationView(notification: notification)
                                 Divider()
                             }

@@ -22,7 +22,6 @@ final class ExchangeViewModel: ObservableObject {
     private var socketClient: SocketIOClient?
     private var subscriptions = Set<AnyCancellable>()
     
-    @Published private(set) var isLoggedIn: Bool = false
     @Published private(set) var tradingPairsForSelectedExchange: [TradingPairModel] = []
     @Published private(set) var tradingData: TradingData?
     @Published private(set) var tradingPairBaseIndex: Int = 0
@@ -31,6 +30,7 @@ final class ExchangeViewModel: ObservableObject {
         
     @ObservedObject var setup: ExchangeSetupViewModel
     
+    @Published var isLoggedIn: Bool = false
     @Published var exchangeSelectorState: ExchangeSelectorState = .merged
     @Published var exchangeBalancesSelectorState: BalaceSelectorState = .merged
     @Published var currentPair: TradingPairModel?

@@ -9,6 +9,60 @@
 import SwiftUI
 import Combine
 
+public struct AccessibilityIdentifiebleModifier: ViewModifier {
+    let identifier: String
+    
+    public func body(content: Content) -> some View {
+        if #available(macOS 11.0, *) {
+            content
+                .accessibilityIdentifier(identifier)
+        } else {
+            content
+        }
+    }
+}
+
+struct LoadingViewModifier: ViewModifier {
+    @Binding var locked: Bool
+            
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            
+            if locked {
+                LoadingAnimationView()
+                    .zIndex(1)
+                    .transition(
+                        AnyTransition.asymmetric(
+                            insertion: AnyTransition.identity,
+                            removal: AnyTransition.scale(scale: 15)
+                                .combined(with: AnyTransition.opacity)
+                        )
+                        .animation(.easeInOut(duration: 0.5))
+                    )
+            }
+        }
+    }
+}
+
+struct ModalViewFrameViewModifier: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        ZStack(alignment: .top) {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.modalViewStrokeColor, lineWidth: 8)
+                        .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
+                )
+            
+            content
+        }
+    }
+    
+}
+
 public struct PlaceholderStyle: ViewModifier {
     var showPlaceHolder: Bool
     var placeholder: String
