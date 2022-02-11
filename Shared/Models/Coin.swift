@@ -22,6 +22,17 @@ struct Coin {
     let decimal: Int
     let icon: String
     
+    var color: Color {
+        switch type {
+        case .bitcoin:
+            return Color(red: 242/255, green: 169/255, blue: 0/255)
+        case .ethereum:
+            return .blue
+        default:
+            return .white
+        }
+    }
+    
     init(type: CoinType, code: String, name: String, decimal: Int, iconUrl: String) {
         self.type = type
         self.code = code
