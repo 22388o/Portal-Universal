@@ -37,7 +37,7 @@ struct MockedMarketDataUpdater: IMarketDataUpdater {
         let responseData = btcTickerHistoryResponse.data(using: .utf8)!
         do {
             let data = try JSONDecoder().decode([TickerH].self, from: responseData)
-            return (timeFrame, ["BTC": data.map{ $0.price }])
+            return (timeFrame, ["BTC": data.map{ PricePoint(timestamp: Date(), price: $0.price) }])
         } catch {
             print("\(#function) error: \(error)")
             return (timeFrame, ["BTC": []])
@@ -209,10 +209,10 @@ class MockedMarketDataProvider: IMarketDataProvider {
     func marketData(coin: Coin) -> CoinMarketData {
         var md = CoinMarketData()
         
-        md.dayPoints = [42258, 43127]
-        md.weekPoints = [42290, 40600]
-        md.monthPoints = [51200, 42000]
-        md.yearPoints = [30000, 69000]
+        md.dayPoints = [PricePoint(timestamp: Date(), price: 42258), PricePoint(timestamp: Date(), price: 43127)]
+        md.weekPoints = [PricePoint(timestamp: Date(), price: 42290), PricePoint(timestamp: Date(), price: 40600)]
+        md.monthPoints = [PricePoint(timestamp: Date(), price: 51200), PricePoint(timestamp: Date(), price: 42000)]
+        md.yearPoints = [PricePoint(timestamp: Date(), price: 30000), PricePoint(timestamp: Date(), price: 69000)]
         
         return md
     }
