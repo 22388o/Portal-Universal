@@ -295,6 +295,7 @@ struct TxPreviewView: View {
         }
         .padding(.horizontal, 30)
         .frame(height: 32)
+        .contentShape(Rectangle())
         .onTapGesture {
             onSelect(transaction)
         }
