@@ -116,7 +116,7 @@ final class Portal {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
         }
                 
-        adapterManager.adapterdReady
+        adapterManager.adapterReady
             .receive(on: RunLoop.main)
             .sink { [unowned self] ready in
                 let hasAccount = self.accountManager.activeAccount != nil

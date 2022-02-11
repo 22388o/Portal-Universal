@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol IAdapterManager: AnyObject {
-    var adapterdReady: CurrentValueSubject<Bool, Never> { get }
+    var adapterReady: CurrentValueSubject<Bool, Never> { get }
     func adapter(for wallet: Wallet) -> IAdapter?
     func adapter(for coin: Coin) -> IAdapter?
     func balanceAdapter(for wallet: Wallet) -> IBalanceAdapter?

@@ -37,7 +37,7 @@ class WalletViewModelUnitTests: XCTestCase {
     func testAdapterReadySubscription() throws {
         XCTAssertEqual(sut.items.isEmpty, true)
         
-        adapterManager.adapterdReady.send(true)
+        adapterManager.adapterReady.send(true)
         
         let promise = expectation(description: "wait for publisher to trigger update")
         

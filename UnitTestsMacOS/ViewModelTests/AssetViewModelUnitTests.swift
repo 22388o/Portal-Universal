@@ -105,7 +105,7 @@ class AssetViewModelUnitTests: XCTestCase {
     func testAthDateStringIsSet() throws {
         let athDateString = sut.athDate
         XCTAssertNotEqual(athDateString, "-")
-        XCTAssertEqual(athDateString, "2 months ago")
+        XCTAssertEqual(athDateString, "3 months ago")
     }
     
     func testVolume24hStringIsSet() throws {

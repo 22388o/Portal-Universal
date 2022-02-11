@@ -109,7 +109,7 @@ class PortfolioViewModelUnitTests: XCTestCase {
     func testAdapterReadySubscription() throws {
         XCTAssertEqual(sut.change, String())
 
-        adapterMannager.adapterdReady.send(true)
+        adapterMannager.adapterReady.send(true)
         
         let promise = expectation(description: "wait for publisher to trigger update")
         
