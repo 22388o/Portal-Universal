@@ -12,7 +12,7 @@ struct SendAssetView: View {
         
     init(coin: Coin, currency: Currency) {
         guard let viewModel = SendAssetViewModel.config(coin: coin, currency: currency) else {
-            fatalError("Cannot config SendAssetViewModel")
+            fatalError("\(#function) Cannot config SendAssetViewModel")
         }
         self.viewModel = viewModel
     }

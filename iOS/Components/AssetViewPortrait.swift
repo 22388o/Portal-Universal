@@ -18,7 +18,7 @@ struct AssetViewPortrait: View {
         self.viewModel = viewModel
         
         guard let vm = TxsViewModel.config(coin: viewModel.coin) else {
-            fatalError("Cannot config TxsViewModel")
+            fatalError("\(#function) Cannot config TxsViewModel")
         }
         
         self._txsViewModel = StateObject(wrappedValue: vm)

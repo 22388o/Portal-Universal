@@ -222,7 +222,7 @@ final class AssetViewModel: ObservableObject {
         self.coin = state.wallet.coin
         
         guard let viewModel = TxsViewModel.config(coin: coin) else {
-            fatalError("Cannot config TxsViewModel")
+            fatalError("\(#function) Cannot config TxsViewModel")
         }
         
         self.txsViewModel = viewModel
@@ -255,7 +255,7 @@ final class AssetViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] coin in
                 guard let viewModel = TxsViewModel.config(coin: coin) else {
-                    fatalError("Cannot config TxsViewModel")
+                    fatalError("\(#function) Cannot config TxsViewModel")
                 }
                 self?.txsViewModel = viewModel
                 self?.coin = coin

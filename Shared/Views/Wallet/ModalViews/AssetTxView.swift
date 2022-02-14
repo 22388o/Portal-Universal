@@ -14,7 +14,7 @@ struct AssetTxView: View {
     
     init(coin: Coin) {
         guard let viewModel = TxsViewModel.config(coin: coin) else {
-            fatalError("Cannot config TxsViewModel")
+            fatalError("\(#function) Cannot config TxsViewModel")
         }
         self.viewModel = viewModel
     }
