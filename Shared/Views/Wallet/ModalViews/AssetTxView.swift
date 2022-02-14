@@ -174,22 +174,28 @@ struct TxDetailsView: View {
                     .fill(Color.exchangerFieldBorder)
                 
                 VStack(alignment: .leading, spacing: 15) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("From")
-                            .foregroundColor(Color.coinViewRouteButtonInactive)
+                    if viewModel.transaction.type == .incoming {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("From")
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
 
-                        Text(viewModel.from)
-                            .foregroundColor(Color.coinViewRouteButtonActive)
+                            Text(viewModel.from)
+                                .foregroundColor(Color.coinViewRouteButtonActive)
 
+                        }
                     }
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("To")
-                            .foregroundColor(Color.coinViewRouteButtonInactive)
+                    
+                    if viewModel.transaction.type == .outgoing || viewModel.transaction.type == .sentToSelf {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("To")
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
 
-                        Text(viewModel.to)
-                            .foregroundColor(Color.coinViewRouteButtonActive)
+                            Text(viewModel.to)
+                                .foregroundColor(Color.coinViewRouteButtonActive)
 
+                        }
                     }
+                    
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Hash")
                             .foregroundColor(Color.coinViewRouteButtonInactive)
@@ -245,16 +251,22 @@ struct TxPreviewView: View {
         HStack(spacing: 0) {
             Group {
                 HStack(spacing: 0) {
-                    Text("\(transaction.type == .incoming ? "Received from..." : "Sent to...")")
+                    if transaction.type == .incoming {
+                        Text("Received from...")
+                    } else if transaction.type == .outgoing {
+                        Text("Sent to...")
+                    } else {
+                        Text("Sent to self...")
+                    }
                     Spacer()
                 }
                 .frame(width: 100)
                 
                 Group {
                     switch transaction.type {
-                    case .incoming, .sentToSelf:
+                    case .incoming:
                         Text("\(transaction.from ?? "unknown address")")
-                    case .outgoing:
+                    case .outgoing, .sentToSelf:
                         Text("\(transaction.to ?? "unknown address")")
                     case .approve:
                         Text("Approve")
