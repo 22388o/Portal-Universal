@@ -1048,11 +1048,6 @@
 				755D9FD4275E6DD000EE363D /* PushNotificationService.swift */,
 				7585AF4127B4407400A373F7 /* SendETHService.swift */,
 				7585AF4427B4410700A373F7 /* SendBTCService.swift */,
-				75A3F53B26A57D5C006B1823 /* Storage */,
-				75A3F53C26A57D70006B1823 /* Manager */,
-				75A3F53D26A57D83006B1823 /* Updaters */,
-				75C95C2E2614CBC000B0EE10 /* Providers */,
-				7555642626D8F6C9001B1C1A /* Factories */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1189,6 +1184,11 @@
 			children = (
 				75A3F55026A5A1D5006B1823 /* Deprecated */,
 				751B6560269DF35B001B759C /* Adapters */,
+				75A3F53B26A57D5C006B1823 /* Storage */,
+				75A3F53C26A57D70006B1823 /* Manager */,
+				75A3F53D26A57D83006B1823 /* Updaters */,
+				75C95C2E2614CBC000B0EE10 /* Providers */,
+				7555642626D8F6C9001B1C1A /* Factories */,
 			);
 			path = Core;
 			sourceTree = "<group>";

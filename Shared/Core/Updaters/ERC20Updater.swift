@@ -24,7 +24,7 @@ final class ERC20Updater: IERC20Updater {
         
     private var url: URL?
     
-    init(jsonDecoder: JSONDecoder = JSONDecoder(), url: URL? = URL(string: "https://cryptomarket-api.herokuapp.com/erc20_token_list")) {
+    init(jsonDecoder: JSONDecoder = JSONDecoder(), url: URL? = URL(string: "https://tokenlists.herokuapp.com/lists?chainId=3")) {
         
         self.jsonDecoder = jsonDecoder
         self.url = url
@@ -50,14 +50,16 @@ final class ERC20Updater: IERC20Updater {
         
         urlSession.dataTaskPublisher(for: url)
             .tryMap { $0.data }
-            .decode(type: [String : Erc20TokenCodable].self, decoder: jsonDecoder)
+            .decode(type: ERC20ListResponse.self, decoder: jsonDecoder)
             .sink { [weak self] completion in
                 if case let .failure(error) = completion {
                     print(error.localizedDescription)
                     self?.loadLocallyStoredTokens()
                 }
-            } receiveValue: { [weak self] erc20Tokens in
-                let valildTokens = erc20Tokens.map{ $0.value }.filter { !$0.iconURL.isEmpty }
+            } receiveValue: { [weak self] response in
+                let valildTokens = response.tokens.filter { !($0.logoURI?.isEmpty ?? true) }.map{ Erc20TokenCodable(name: $0.name, symbol: $0.symbol, decimal: $0.decimals, contractAddress: $0.address, iconURL: $0.logoURI!) }
+                print(valildTokens)
+                
                 self?.tokens = valildTokens
                 self?.onTokensUpdate.send(valildTokens)
             }
