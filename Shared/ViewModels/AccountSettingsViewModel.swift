@@ -34,7 +34,7 @@ final class AccountSettingsViewModel: ObservableObject {
         self.adapterManager = adapterManager
         
         guard let account = accountManager.activeAccount else {
-            fatalError("Account manager active account is nil")
+            fatalError("\(#function) Account manager active account is nil")
         }
         
         self.account = account

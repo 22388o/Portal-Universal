@@ -110,7 +110,7 @@ extension ManageAlertViewModel {
         let accountId = Portal.shared.accountManager.activeAccount?.id
         
         guard let id = accountId else {
-            fatalError("Account id is nil")
+            fatalError("\(#function) Account id is nil")
         }
         
         return ManageAlertViewModel(accountId: id, userId: userId, coin: coin, price: price, alertsStorage: storage)

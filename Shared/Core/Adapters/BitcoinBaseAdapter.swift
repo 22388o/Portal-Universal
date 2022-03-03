@@ -105,6 +105,7 @@ class BitcoinBaseAdapter {
             type = .outgoing
         } else {
             amount = myOutputsTotalValue - myChangeOutputsTotalValue
+            anyNotMineToAddress = transaction.outputs[0].address
             type = .sentToSelf
         }
 
@@ -121,7 +122,7 @@ class BitcoinBaseAdapter {
                 date: Date(timeIntervalSince1970: Double(transaction.timestamp)),
                 failed: transaction.status == .invalid,
                 from: type == .incoming ? anyNotMineFromAddress : nil,
-                to: type == .outgoing ? anyNotMineToAddress : nil,
+                to: type == .outgoing || type == .sentToSelf ? anyNotMineToAddress : nil,
                 lockInfo: lockInfo,
                 conflictingHash: transaction.conflictingHash,
                 showRawTransaction: transaction.status == .new || transaction.status == .invalid,

@@ -23,7 +23,7 @@ extension AlertsViewModel {
         let accountId = Portal.shared.accountManager.activeAccount?.id
         
         guard let id = accountId else {
-            fatalError("Account id is missing")
+            fatalError("\(#function) Account id is missing")
         }
         
         let alerts = storage.alerts(accountId: id, coin: coin.code)

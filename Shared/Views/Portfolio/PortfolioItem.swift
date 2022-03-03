@@ -89,11 +89,11 @@ class PortfolioItem: ObservableObject {
 
             switch timeframe {
             case .day:
-                adjustedDate = Calendar.current.date(byAdding: .hour, value: 10, to: point.timestamp) ?? point.timestamp
+                adjustedDate = Calendar.current.date(byAdding: .hour, value: 5, to: point.timestamp) ?? point.timestamp
             case .week:
                 adjustedDate = Calendar.current.date(byAdding: .hour, value: 28, to: point.timestamp) ?? point.timestamp
             case .month:
-                adjustedDate = Calendar.current.date(byAdding: .day, value: 4, to: point.timestamp) ?? point.timestamp
+                adjustedDate = Calendar.current.date(byAdding: .day, value: 6, to: point.timestamp) ?? point.timestamp
             case .year:
                 adjustedDate = Calendar.current.date(byAdding: .month, value: 1, to: point.timestamp) ?? point.timestamp
             }
@@ -158,11 +158,11 @@ class PortfolioItem: ObservableObject {
         
         switch timeframe {
         case .day:
-            points = marketData.dayPoints.enumerated().filter { $0.offset.isMultiple(of: 4) }.map { $0.element }
+            points = marketData.dayPoints.enumerated().filter { $0.offset.isMultiple(of: 6) }.map { $0.element }
         case .week:
-            points = marketData.weekPoints.enumerated().filter { $0.offset.isMultiple(of: 5) }.map { $0.element }
+            points = marketData.weekPoints.enumerated().filter { $0.offset.isMultiple(of: 4) }.map { $0.element }
         case .month:
-            points = marketData.monthPoints.enumerated().filter { $0.offset.isMultiple(of: 3) }.map { $0.element }
+            points = marketData.monthPoints.enumerated().filter { $0.offset.isMultiple(of: 4) }.map { $0.element }
         case .year:
             points = marketData.yearPoints.enumerated().filter { $0.offset.isMultiple(of: 4) }.map { $0.element }
         }
