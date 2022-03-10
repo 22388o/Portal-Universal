@@ -124,9 +124,9 @@ public class BitcoinCoreBuilder {
         guard let storage = self.storage else {
             throw BuildError.noStorage
         }
-//        guard let initialSyncApi = initialSyncApi else {
-//            throw BuildError.noInitialSyncApi
-//        }
+        guard let initialSyncApi = initialSyncApi else {
+            throw BuildError.noInitialSyncApi
+        }
 
         let scriptConverter = ScriptConverter()
         let restoreKeyConverterChain = RestoreKeyConverterChain()
