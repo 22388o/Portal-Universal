@@ -3,6 +3,7 @@
     <entity name="AccountRecord" representedClassName="AccountRecord" syncable="YES">
         <attribute name="btcBipFormat" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="btcNetwork" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="coins" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="confirmationThreshold" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="ethNetwork" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="fiatCurrency" optional="YES" attributeType="String" defaultValueString="USD"/>
@@ -27,7 +28,7 @@
         <attribute name="value" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="AccountRecord" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="134"/>
+        <element name="AccountRecord" positionX="-687.37890625" positionY="205.7265625" width="176.78125" height="149"/>
         <element name="DBCache" positionX="-657.4296875" positionY="99.34375" width="128" height="59"/>
         <element name="PortalNotification" positionX="-666" positionY="207" width="128" height="74"/>
         <element name="PriceAlert" positionX="-666" positionY="207" width="128" height="119"/>
