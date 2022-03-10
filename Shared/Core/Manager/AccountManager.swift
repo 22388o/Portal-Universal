@@ -81,4 +81,15 @@ extension AccountManager: IAccountManager {
     func clear() {
         accountStorage.clear()
     }
+    
+    func addCoin(coin: String) {
+        if let account = activeAccount {
+            if let index = account.coins.firstIndex(of: coin) {
+                account.coins.remove(at: index)
+            } else {
+                account.coins.append(coin)
+            }
+            update(account: account)
+        }
+    }
 }
