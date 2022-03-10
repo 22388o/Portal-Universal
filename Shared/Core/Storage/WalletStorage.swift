@@ -43,7 +43,7 @@ class WalletStorage: IWalletStorage {
         wallets.removeAll()
         
         for account in accountManager.accounts {
-            for coin in coinManager.coins {
+            for coin in coinManager.walletCoins {
                 wallets.append(Wallet(coin: coin, account: account))
             }
         }

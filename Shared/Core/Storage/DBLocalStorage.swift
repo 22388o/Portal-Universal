@@ -157,6 +157,8 @@ extension DBlocalStorage: IAccountStorage {
                 default:
                     record.ethNetwork = 1
                 }
+                
+                record.coins = account.coins
                             
                 record.confirmationThreshold = Int16(account.confirmationsThreshold)
                 record.fiatCurrency = account.fiatCurrencyCode
