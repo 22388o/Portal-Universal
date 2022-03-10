@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ModalViewContainer<Content: View>: View {
-    let imageUrl: String
+    let imageUrl: String?
     let size: CGSize
     let content: () -> Content
     
-    init(imageUrl: String, size: CGSize, @ViewBuilder _ content: @escaping () -> Content) {
+    init(imageUrl: String? = nil, size: CGSize, @ViewBuilder _ content: @escaping () -> Content) {
         self.imageUrl = imageUrl
         self.size = size
         self.content = content
@@ -28,14 +28,16 @@ struct ModalViewContainer<Content: View>: View {
                         .shadow(color: Color.black.opacity(0.09), radius: 8, x: 0, y: 0)
                 )
             
-            CoinImageView(size: 64, url: imageUrl, placeholderForegroundColor: .black)
-                .background(Color.white)
-                .cornerRadius(32)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 32)
-                        .stroke(Color.modalViewStrokeColor, lineWidth: 4)
-                )
-                .offset(y: -32)
+            if let url = imageUrl {
+                CoinImageView(size: 64, url: url, placeholderForegroundColor: .black)
+                    .background(Color.white)
+                    .cornerRadius(32)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 32)
+                            .stroke(Color.modalViewStrokeColor, lineWidth: 4)
+                    )
+                    .offset(y: -32)
+            }
             
             content()
         }
