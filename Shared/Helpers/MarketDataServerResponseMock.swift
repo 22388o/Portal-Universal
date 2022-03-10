@@ -62031,3 +62031,238 @@ let MockCoinTickerJSON = """
     }
 }
 """
+
+let RopstenERC20TokensResponse = """
+{
+    "count": 20,
+    "chainId": "3",
+    "tokens": [
+        {
+            "name": "Sai Stablecoin v1.0",
+            "symbol": "SAI",
+            "address": "0x63F7AB2f24322Ae2eaD6b971Cb9a71A1CC2eee03",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_SAI.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound Sai",
+            "symbol": "cSAI",
+            "address": "0x7Ac65E0f6dBA0EcB8845f17d07bF0776842690f8",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_sai.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Reputation",
+            "symbol": "REP",
+            "address": "0xb1cBa8b721C7a241b9AD08C17F328886B014ACfE",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_REP.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound Augur",
+            "symbol": "cREP",
+            "address": "0x2862065D57749f1576F48eF4393eb81c45fC2d88",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_rep.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "USD Coin USDC",
+            "symbol": "USDC",
+            "address": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
+            "decimals": 6,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_USDC.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound 0x",
+            "symbol": "cZRX",
+            "address": "0x6B8b0D7875B4182Fb126877023fB93b934dD302A",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_zrx.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound Wrapped BTC",
+            "symbol": "cWBTC",
+            "address": "0x541c9cB0E97b77F142684cc33E8AC9aC17B1990F",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_wbtc.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Wrapped BTC",
+            "symbol": "WBTC",
+            "address": "0x442Be68395613bDCD19778e761f03261ec46C06D",
+            "decimals": 8,
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound Ether",
+            "symbol": "cETH",
+            "address": "0x859e9d8a4edadfEDb5A2fF311243af80F85A91b8",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_eth.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Basic Attention Token",
+            "symbol": "BAT",
+            "address": "0x50390975D942E83D661D4Bde43BF73B0ef27b426",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_BAT.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound Basic Attention Token",
+            "symbol": "cBAT",
+            "address": "0xaF50a5A6Af87418DAC1F28F9797CeB3bfB62750A",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_bat.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound USDT",
+            "symbol": "cUSDT",
+            "address": "0xF6958Cf3127e62d3EB26c79F4f45d3F3b2CcdeD4",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_usdt.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound Collateral",
+            "symbol": "cCOMP",
+            "address": "0x70014768996439F71C041179Ffddce973a83EEf2",
+            "decimals": 8,
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound",
+            "symbol": "COMP",
+            "address": "0xf76D4a441E4ba86A923ce32B89AFF89dBccAA075",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_COMP.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Tether USD",
+            "symbol": "USDT",
+            "address": "0x110a13FC3efE6A245B50102D2d79B3E76125Ae83",
+            "decimals": 6,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_USDT.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Dai Stablecoin",
+            "symbol": "DAI",
+            "address": "0x31F42841c2db5173425b5223809CF3A38FEde360",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_DAI.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound Dai",
+            "symbol": "cDAI",
+            "address": "0xbc689667C13FB2a04f09272753760E38a95B998C",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_dai.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "Compound USD Coin",
+            "symbol": "cUSDC",
+            "address": "0x2973e69b20563bcc66dC63Bde153072c33eF37fe",
+            "decimals": 8,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/ctoken_usdc.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        },
+        {
+            "name": "0x Protocol Token",
+            "symbol": "ZRX",
+            "address": "0xc0e2D7d9279846B80EacdEa57220AB2333BC049d",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_ZRX.svg",
+            "chainId": 3,
+            "lists": [
+                "Compound"
+            ],
+            "lists_length": 1
+        }
+    ]
+}
+"""
