@@ -41,6 +41,8 @@ struct WalletModalViews: View {
                 WithdrawFromExchangeView(balance: balance)
             case .createAlert:
                 ManageAlertView(coin: state.wallet.coin)
+            case .manageAssets:
+                ManageAssetsView()
             default:
                 EmptyView()
             }
