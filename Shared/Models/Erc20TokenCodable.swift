@@ -19,6 +19,20 @@ struct Erc20TokenCodable {
     }
 }
 
+struct ERC20ListResponse: Codable {
+    let count: Int
+    let chainId: String
+    let tokens: [Erc20TokenData]
+}
+
+struct Erc20TokenData: Codable {
+    let name: String
+    let symbol: String
+    let address: String
+    let decimals: Int
+    let logoURI: String?
+}
+
 extension Erc20TokenCodable {
     static var mockedBTCToken: Erc20TokenCodable {
         Erc20TokenCodable(name: "Bitcoin", symbol: "BTC", decimal: 18, contractAddress: String())
