@@ -8,6 +8,5 @@
 import Combine
 
 protocol ICoinStorage {
-    var onCoinsUpdate: PassthroughSubject<[Coin], Never> { get }
-    var coins: [Coin] { get }
+    var coins: CurrentValueSubject<[Coin], Never> { get }
 }

@@ -13,4 +13,5 @@ protocol IAccount {
     var type: AccountType { get }
     var fiatCurrencyCode: String { get }
     var mnemonicDereviation: MnemonicDerivation { get }
+    var coins: [String] { get }
 }
