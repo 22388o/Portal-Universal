@@ -12,26 +12,60 @@ import Combine
 final class CoinManager: ICoinManager {
     var onCoinsUpdate = PassthroughSubject<[Coin], Never>()
     
-    private var storage: ICoinStorage
+    private let storage: ICoinStorage
+    private let accountManager: IAccountManager
     private var subscriptions = Set<AnyCancellable>()
-    var coins: [Coin] = []
     
-    init(storage: ICoinStorage) {
+    var walletCoins: [Coin] = []
+    
+    var avaliableCoins: [Coin] {
+        storage.coins.value
+    }
+    
+    init(storage: ICoinStorage, accountManager: IAccountManager) {
         self.storage = storage
-        
-        self.coins = [Coin.bitcoin(), Coin.ethereum()/*, Coin.portal()*/]
-        self.onCoinsUpdate.send(self.coins)
-            
-//        subscribe()
+        self.accountManager = accountManager
+        self.syncCoins(account: accountManager.activeAccount)
+        self.subscribe()
     }
     
     private func subscribe() {
-        storage.onCoinsUpdate
+        storage.coins
             .sink { [weak self] coins in
                 guard let self = self else { return }
-                self.coins = [Coin.bitcoin(), Coin.ethereum(), Coin.portal()]// + coins
-                self.onCoinsUpdate.send(self.coins)
+                self.syncCoins(account: self.accountManager.activeAccount)
             }
             .store(in: &subscriptions)
+        
+        accountManager.onActiveAccountUpdate
+            .sink { [weak self] account in
+                guard let account = account else { return }
+                self?.syncCoins(account: account)
+            }
+            .store(in: &subscriptions)
+    }
+    
+    private func syncCoins(account: IAccount?) {
+        guard let account = account else { return }
+        
+        walletCoins.removeAll()
+        
+        for code in account.coins.sorted(by: { $0 < $1 }) {
+            switch code {
+            case "BTC":
+                walletCoins.append(.bitcoin())
+            case "ETH":
+                walletCoins.append(.ethereum())
+            default:
+                guard let coin = avaliableCoins.first(where: { $0.code == code }) else { return }
+                walletCoins.append(coin)
+            }
+        }
+        
+        onCoinsUpdate.send(walletCoins)
+    }
+    
+    private func sadas() {
+        
     }
 }
