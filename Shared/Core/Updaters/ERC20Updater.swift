@@ -9,13 +9,14 @@ import Foundation
 import Combine
 
 protocol IERC20Updater {
+    var tokens: [Erc20TokenCodable] { get }
     var onTokensUpdate: PassthroughSubject<[Erc20TokenCodable], Never> { get }
 }
 
 final class ERC20Updater: IERC20Updater {
     var onTokensUpdate = PassthroughSubject<[Erc20TokenCodable], Never>()
     
-    private var tokens: [Erc20TokenCodable] = []
+    var tokens: [Erc20TokenCodable] = []
     
     private let jsonDecoder: JSONDecoder
     private var subscriptions = Set<AnyCancellable>()
@@ -25,7 +26,6 @@ final class ERC20Updater: IERC20Updater {
     private var url: URL?
     
     init(jsonDecoder: JSONDecoder = JSONDecoder(), url: URL? = URL(string: "https://tokenlists.herokuapp.com/lists?chainId=3")) {
-        
         self.jsonDecoder = jsonDecoder
         self.url = url
         
@@ -34,15 +34,22 @@ final class ERC20Updater: IERC20Updater {
         
         self.urlSession = URLSession(configuration: config)
         
-        fetchTokens()
+        loadLocallyStoredTokens()
     }
     
     private func loadLocallyStoredTokens() {
-        guard let data = erc20JSON.data(using: .utf8) else { return }
-        guard let allTokens = try? jsonDecoder.decode([String : Erc20TokenCodable].self, from: data) else { return }
+        guard let data = RopstenERC20TokensResponse.data(using: .utf8) else { return }
+        guard let response = try? jsonDecoder.decode(ERC20ListResponse.self, from: data) else { return }
         
-        tokens = allTokens.map{ $0.value }.filter { !$0.iconURL.isEmpty }
+        tokens = response.tokens.filter {
+            !($0.logoURI?.isEmpty ?? true)
+        }.map{
+            Erc20TokenCodable(name: $0.name, symbol: $0.symbol, decimal: $0.decimals, contractAddress: $0.address, iconURL: $0.logoURI!)
+        }
+        
         onTokensUpdate.send(tokens)
+        
+//        fetchTokens()
     }
     
     private func fetchTokens() {
@@ -51,10 +58,9 @@ final class ERC20Updater: IERC20Updater {
         urlSession.dataTaskPublisher(for: url)
             .tryMap { $0.data }
             .decode(type: ERC20ListResponse.self, decoder: jsonDecoder)
-            .sink { [weak self] completion in
+            .sink { completion in
                 if case let .failure(error) = completion {
                     print(error.localizedDescription)
-                    self?.loadLocallyStoredTokens()
                 }
             } receiveValue: { [weak self] response in
                 let valildTokens = response.tokens.filter { !($0.logoURI?.isEmpty ?? true) }.map{ Erc20TokenCodable(name: $0.name, symbol: $0.symbol, decimal: $0.decimals, contractAddress: $0.address, iconURL: $0.logoURI!) }
