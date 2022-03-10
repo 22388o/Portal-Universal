@@ -27,6 +27,7 @@ def portal_shared_pods
   pod 'Bugsnag'
   #Tools
   pod 'RxCombine'
+  pod 'SVGKit'
 end
 
 
