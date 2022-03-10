@@ -31,6 +31,20 @@ struct AssetSearchField: View {
             TextField(String(), text: $search)
                 .padding(.horizontal, 50)
                 .textFieldStyle(PlainTextFieldStyle())
+            
+            HStack {
+                Spacer()
+                
+                Text("Manage")
+                    .font(.mainFont(size: 14))
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation(.easeIn(duration: 3.0)) {
+                            Portal.shared.state.modalView = .manageAssets
+                        }
+                    }
+            }
+            .padding(.horizontal, 21)
         }
         .font(.mainFont(size: 15))
         .foregroundColor(Color.white.opacity(0.5))
