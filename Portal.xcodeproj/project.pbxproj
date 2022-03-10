@@ -300,6 +300,14 @@
 		753E7E3627566B3B00C96F33 /* BarChartXAxixValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E7E3427566B3B00C96F33 /* BarChartXAxixValueFormatter.swift */; };
 		7542B5802763BEB7006B9786 /* AlertTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7542B57F2763BEB7006B9786 /* AlertTypePicker.swift */; };
 		7542B5822763BF6B006B9786 /* AlertTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7542B5812763BF6B006B9786 /* AlertTypePicker.swift */; };
+		7544740F27DA3CE100AFD02F /* ManageAssetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544740E27DA3CE100AFD02F /* ManageAssetViews.swift */; };
+		7544741027DA3CE100AFD02F /* ManageAssetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544740E27DA3CE100AFD02F /* ManageAssetViews.swift */; };
+		7544741227DA3FBE00AFD02F /* ManageAssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544741127DA3FBE00AFD02F /* ManageAssetViewModel.swift */; };
+		7544741327DA3FBE00AFD02F /* ManageAssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544741127DA3FBE00AFD02F /* ManageAssetViewModel.swift */; };
+		7544741527DA40BF00AFD02F /* Erc20ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544741427DA40BF00AFD02F /* Erc20ItemView.swift */; };
+		7544741627DA40BF00AFD02F /* Erc20ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544741427DA40BF00AFD02F /* Erc20ItemView.swift */; };
+		7544741827DA41FC00AFD02F /* Erc20ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544741727DA41FC00AFD02F /* Erc20ItemModel.swift */; };
+		7544741927DA41FC00AFD02F /* Erc20ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544741727DA41FC00AFD02F /* Erc20ItemModel.swift */; };
 		7546CFCC2636980A00E8A8B7 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */; };
 		7546CFCD2636980A00E8A8B7 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
@@ -802,6 +810,10 @@
 		753E7E3427566B3B00C96F33 /* BarChartXAxixValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartXAxixValueFormatter.swift; sourceTree = "<group>"; };
 		7542B57F2763BEB7006B9786 /* AlertTypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypePicker.swift; sourceTree = "<group>"; };
 		7542B5812763BF6B006B9786 /* AlertTypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypePicker.swift; sourceTree = "<group>"; };
+		7544740E27DA3CE100AFD02F /* ManageAssetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAssetViews.swift; sourceTree = "<group>"; };
+		7544741127DA3FBE00AFD02F /* ManageAssetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAssetViewModel.swift; sourceTree = "<group>"; };
+		7544741427DA40BF00AFD02F /* Erc20ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc20ItemView.swift; sourceTree = "<group>"; };
+		7544741727DA41FC00AFD02F /* Erc20ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc20ItemModel.swift; sourceTree = "<group>"; };
 		7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItemView.swift; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1134,6 +1146,7 @@
 				FA70528926D54D06000EE935 /* TokenCurrencyView.swift */,
 				7585AF3B27AEA2E700A373F7 /* ModalViewContainer.swift */,
 				7585AF3E27AEA56700A373F7 /* SendAssetProgressView.swift */,
+				7544741427DA40BF00AFD02F /* Erc20ItemView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1391,6 +1404,7 @@
 				7537E6C4272C03AC007B4E78 /* AccountSettingsView.swift */,
 				7555641E26D8EFF9001B1C1A /* Accounts */,
 				7555641D26D8EFED001B1C1A /* Notifications */,
+				7544740E27DA3CE100AFD02F /* ManageAssetViews.swift */,
 			);
 			path = ModalViews;
 			sourceTree = "<group>";
@@ -1643,6 +1657,7 @@
 				FA3FD81926FCC98500953727 /* Erc20Token.swift */,
 				753BA71E2799B16B009FEC20 /* FiatRatesResponse.swift */,
 				753BA7212799B184009FEC20 /* FiatSymbols.swift */,
+				7544741727DA41FC00AFD02F /* Erc20ItemModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1795,6 +1810,7 @@
 				75219173275D621C003FA89D /* ManageAlertViewModel.swift */,
 				755D9FDE275FB64800EE363D /* AlertsViewModel.swift */,
 				FA70528226CEB582000EE935 /* SwapperViewModel.swift */,
+				7544741127DA3FBE00AFD02F /* ManageAssetViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2274,6 +2290,7 @@
 				75C95C662614CC0400B0EE10 /* Array+Extension.swift in Sources */,
 				7555644126DCF7F7001B1C1A /* OrderBookItemView.swift in Sources */,
 				750D63C9268B2B9500643FD3 /* FiatCurrencyView.swift in Sources */,
+				7544741227DA3FBE00AFD02F /* ManageAssetViewModel.swift in Sources */,
 				75984F46264833E5002CD1EA /* RestoreSeedField.swift in Sources */,
 				75308AE526A028F30024AACD /* IFeeRateProvider.swift in Sources */,
 				751B655B269D999F001B759C /* LastBlockInfo.swift in Sources */,
@@ -2428,6 +2445,7 @@
 				750AE91526149A8C00C45971 /* MarketPrice.swift in Sources */,
 				7537DEE52701A25100B862AB /* ExchangeBalanceInfo.swift in Sources */,
 				75B1512C26222B2700542415 /* AssetSearchField.swift in Sources */,
+				7544741827DA41FC00AFD02F /* Erc20ItemModel.swift in Sources */,
 				75F5CD952684C8D6005ECA5B /* CreateAccountViewModel.swift in Sources */,
 				750C36A0261F298B0088CCED /* AccountView.swift in Sources */,
 				751B6546269CA219001B759C /* BitcoinAdapter.swift in Sources */,
@@ -2468,6 +2486,8 @@
 				751B6558269D994D001B759C /* IDepositAdapter.swift in Sources */,
 				FA3FD81326FCC8A200953727 /* TokenSelector.swift in Sources */,
 				75C95C8C2614CC3700B0EE10 /* MarketDataServerResponseMock.swift in Sources */,
+				7544740F27DA3CE100AFD02F /* ManageAssetViews.swift in Sources */,
+				7544741527DA40BF00AFD02F /* Erc20ItemView.swift in Sources */,
 				75110D6626A1C11A00BDD6C0 /* Erc20Adapter.swift in Sources */,
 				756C3C7C26EA9C1D009530A9 /* MarketLimitSwitch.swift in Sources */,
 				753364A826F3399A0073B0A4 /* ExchangeSetupViewModel.swift in Sources */,
@@ -2645,6 +2665,7 @@
 				75A3F55C26A5A775006B1823 /* AccountRecord+CoreDataClass.swift in Sources */,
 				7537DEE62701A25100B862AB /* ExchangeBalanceInfo.swift in Sources */,
 				75C95C792614CC3700B0EE10 /* ViewModifiers.swift in Sources */,
+				7544741627DA40BF00AFD02F /* Erc20ItemView.swift in Sources */,
 				7517F89826B40D440020AECB /* Erc20TokenCodable.swift in Sources */,
 				75A3F54F26A59FFC006B1823 /* IWalletStorage.swift in Sources */,
 				758F3AE426A9AA2100F345E1 /* AccountStorage.swift in Sources */,
@@ -2675,6 +2696,7 @@
 				75D476D4262DAC2B0006FD91 /* RecentTxsView.swift in Sources */,
 				7517F8A426B802DD0020AECB /* CoinImageView.swift in Sources */,
 				AF1AF44A2702755B00D7CDC9 /* FloatingPoint+Extension.swift in Sources */,
+				7544741327DA3FBE00AFD02F /* ManageAssetViewModel.swift in Sources */,
 				75A3F52E26A57C3B006B1823 /* IAdapterManager.swift in Sources */,
 				750D63C4268B2B0800643FD3 /* ValueCurrencySwitchView.swift in Sources */,
 				75308ACD26A027B40024AACD /* AppConfigProvider.swift in Sources */,
@@ -2688,6 +2710,7 @@
 				7546CFCD2636980A00E8A8B7 /* AccountItemView.swift in Sources */,
 				7537DECD27009F9900B862AB /* Dictionary+Extension.swift in Sources */,
 				75DBD2BE26359D080050AE08 /* AccountsView.swift in Sources */,
+				7544741927DA41FC00AFD02F /* Erc20ItemModel.swift in Sources */,
 				755D9FD6275E6DD000EE363D /* PushNotificationService.swift in Sources */,
 				7517F89B26B40DBF0020AECB /* ICoinStorage.swift in Sources */,
 				755785B8260F73A2000E1686 /* FiatCurrency.swift in Sources */,
@@ -2777,6 +2800,7 @@
 				750AE9B226149DD900C45971 /* ICoinKit.swift in Sources */,
 				75EF8D5E2783463700F69A6E /* TxFeesPicker.swift in Sources */,
 				7555643226D8FB08001B1C1A /* OrderBookView.swift in Sources */,
+				7544741027DA3CE100AFD02F /* ManageAssetViews.swift in Sources */,
 				7599A7952695D5E400562009 /* HeaderView.swift in Sources */,
 				755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */,
 				75C95C572614CC0400B0EE10 /* Double+Extension.swift in Sources */,

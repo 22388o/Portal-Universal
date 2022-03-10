@@ -16,8 +16,6 @@ struct WalletView: View {
             VStack(spacing: 0) {
                 HStack(spacing: 14) {
                     AssetSearchField(search: $state.search)
-//                    Text("Manage")
-//                        .font(.mainFont(size: 14))
                 }
                 .padding([.top, .horizontal], 24)
                 .padding(.bottom, 19)
