@@ -37,6 +37,9 @@ PODS:
   - CNIOLinux (2.32.0)
   - CNIOSHA1 (2.32.0)
   - CNIOWindows (2.32.0)
+  - CocoaLumberjack (3.7.4):
+    - CocoaLumberjack/Core (= 3.7.4)
+  - CocoaLumberjack/Core (3.7.4)
   - CoinpaprikaAPI (2.2):
     - CoinpaprikaAPI/Client (= 2.2)
   - CoinpaprikaAPI/Client (2.2):
@@ -99,6 +102,8 @@ PODS:
     - Starscream (~> 3.1)
   - Sparkle (1.26.0)
   - Starscream (3.1.1)
+  - SVGKit (3.0.0):
+    - CocoaLumberjack (~> 3.0)
   - SwiftNIO (2.32.0):
     - SwiftNIOCore (= 2.32.0)
     - SwiftNIOEmbedded (= 2.32.0)
@@ -160,6 +165,7 @@ DEPENDENCIES:
   - RxCombine
   - Socket.IO-Client-Swift (~> 15.2.0)
   - Sparkle
+  - SVGKit
 
 SPEC REPOS:
   trunk:
@@ -178,6 +184,7 @@ SPEC REPOS:
     - CNIOLinux
     - CNIOSHA1
     - CNIOWindows
+    - CocoaLumberjack
     - CoinpaprikaAPI
     - CryptoSwift
     - Erc20Kit-Universal
@@ -199,6 +206,7 @@ SPEC REPOS:
     - Socket.IO-Client-Swift
     - Sparkle
     - Starscream
+    - SVGKit
     - SwiftNIO
     - SwiftNIOConcurrencyHelpers
     - SwiftNIOCore
@@ -238,6 +246,7 @@ SPEC CHECKSUMS:
   CNIOLinux: d33b1366a209d566a0a81eaecac6283a40ecc840
   CNIOSHA1: f744147a765b3efbffb45fbb837126267da7c929
   CNIOWindows: 310f73e804e6333a63e921b61892dbbaf61bd0cc
+  CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   CoinpaprikaAPI: 30093dd2ece7d8ecea8c0d8671f704e7a6095f0b
   CryptoSwift: 0bc800a7e6a24c4fc9ebeab97d44b0d5f73a78bd
   Erc20Kit-Universal: b8bc79e51c53ee6e99e50d4a8c21c4ac0bf6affc
@@ -259,6 +268,7 @@ SPEC CHECKSUMS:
   Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
   Sparkle: d56d028f4b0c123577825f5d1004f6140d77f90e
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
+  SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftNIO: 75035e9e47345716eb6f01effaa4e14b9564ae4a
   SwiftNIOConcurrencyHelpers: cdc0919908b59ae643e6924f57030dacdea0499d
   SwiftNIOCore: 33d188a3d66eb65010bba8c4e7ea3efeabf757f7
@@ -271,6 +281,6 @@ SPEC CHECKSUMS:
   SwiftNIOWebSocket: 9649cc901b956f0e992f69f7138866b349f7638a
   UIExtensions-Stripped.swift: 2ed2ea244fc7e3b16581a8c316f9363179ec1644
 
-PODFILE CHECKSUM: f23475479b09b93a47e6a27b0873090716b1396a
+PODFILE CHECKSUM: 2a5966ae1ae21c3abc5d4f7a6269a0d989834178
 
 COCOAPODS: 1.11.2

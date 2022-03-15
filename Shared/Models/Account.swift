@@ -23,6 +23,7 @@ class Account: IAccount {
     var btcNetworkType: BitcoinKit.Kit.NetworkType
     var ethNetworkType: EthereumKit.NetworkType
     var fiatCurrencyCode: String
+    var coins: [String]
 
     init(id: String, name: String, bip: MnemonicDerivation, type: AccountType) {
         self.id = id
@@ -33,6 +34,7 @@ class Account: IAccount {
         self.btcNetwork = 1 //testNet
         self.ethNetwork = 1 //ropsten
         self.confirmationsThreshold = 0
+        self.coins = ["BTC", "ETH"]
 
         switch btcNetwork {
         case 0:
@@ -62,6 +64,7 @@ class Account: IAccount {
         self.btcNetwork = Int(record.btcNetwork)
         self.ethNetwork = Int(record.ethNetwork)
         self.confirmationsThreshold = Int(record.confirmationThreshold)
+        self.coins = !record.coins.isEmpty ? record.coins : ["BTC", "ETH"]
         
         switch btcNetwork {
         case 0:
@@ -114,5 +117,9 @@ class MockedAccount: IAccount {
     
     var mnemonicDereviation: MnemonicDerivation {
         MnemonicDerivation(rawValue: "bip44")!
+    }
+    
+    var coins: [String] {
+        ["BTC", "ETH"]
     }
 }

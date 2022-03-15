@@ -9,5 +9,6 @@ import Combine
 
 protocol ICoinManager {
     var onCoinsUpdate: PassthroughSubject<[Coin], Never> { get }
-    var coins: [Coin] { get }
+    var walletCoins: [Coin] { get }
+    var avaliableCoins: [Coin] { get }
 }

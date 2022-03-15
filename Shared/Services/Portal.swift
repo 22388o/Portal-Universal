@@ -33,6 +33,7 @@ final class Portal {
     let exchangeManager: ExchangeManager
     let reachabilityService: IReachabilityService
     let pushNotificationService: PushNotificationService
+    let coinManager: ICoinManager
     
     @ObservedObject var state: PortalState
         
@@ -97,7 +98,7 @@ final class Portal {
         
         let erc20Updater: IERC20Updater = ERC20Updater()
         let coinStorage: ICoinStorage = CoinStorage(updater: erc20Updater, marketDataProvider: marketDataProvider)
-        let coinManager: ICoinManager = CoinManager(storage: coinStorage)
+        coinManager = CoinManager(storage: coinStorage, accountManager: accountManager)
         
         let walletStorage: IWalletStorage = WalletStorage(coinManager: coinManager, accountManager: accountManager)
         walletManager = WalletManager(accountManager: accountManager, storage: walletStorage)

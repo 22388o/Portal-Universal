@@ -23,4 +23,5 @@ extension AccountRecord {
     @NSManaged public var fiatCurrency: String
     @NSManaged public var id: String
     @NSManaged public var name: String
+    @NSManaged public var coins: [String]
 }

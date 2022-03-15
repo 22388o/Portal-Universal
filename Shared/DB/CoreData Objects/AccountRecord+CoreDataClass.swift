@@ -28,6 +28,8 @@ public class AccountRecord: NSManagedObject {
         
         self.ethNetwork = 1 //ropsten
         self.confirmationThreshold = 0
+        
+        self.coins = ["BTC", "ETH"]
     }
     
     func updateFiatCurrency(_ currency: FiatCurrency) {

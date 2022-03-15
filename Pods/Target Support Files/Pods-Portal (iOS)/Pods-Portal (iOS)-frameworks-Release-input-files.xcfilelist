@@ -14,6 +14,7 @@ ${BUILT_PRODUCTS_DIR}/CNIOLinux-iOS/CNIOLinux.framework
 ${BUILT_PRODUCTS_DIR}/CNIOSHA1-iOS/CNIOSHA1.framework
 ${BUILT_PRODUCTS_DIR}/CNIOWindows-iOS/CNIOWindows.framework
 ${BUILT_PRODUCTS_DIR}/Charts-iOS/Charts.framework
+${BUILT_PRODUCTS_DIR}/CocoaLumberjack-iOS/CocoaLumberjack.framework
 ${BUILT_PRODUCTS_DIR}/CoinpaprikaAPI-iOS/Coinpaprika.framework
 ${BUILT_PRODUCTS_DIR}/CryptoSwift-iOS/CryptoSwift.framework
 ${BUILT_PRODUCTS_DIR}/Erc20Kit-Universal-iOS/Erc20Kit.framework
@@ -31,6 +32,7 @@ ${BUILT_PRODUCTS_DIR}/OpenSslKit-Universal.swift-iOS/OpenSslKit.framework
 ${BUILT_PRODUCTS_DIR}/RxCombine-iOS/RxCombine.framework
 ${BUILT_PRODUCTS_DIR}/RxRelay-iOS/RxRelay.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework
+${BUILT_PRODUCTS_DIR}/SVGKit-iOS/SVGKit.framework
 ${BUILT_PRODUCTS_DIR}/Secp256k1Kit-Universal.swift-iOS/Secp256k1Kit.framework
 ${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift-iOS/SocketIO.framework
 ${BUILT_PRODUCTS_DIR}/Starscream-iOS/Starscream.framework

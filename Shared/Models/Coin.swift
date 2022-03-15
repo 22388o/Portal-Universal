@@ -9,7 +9,9 @@
 import Foundation
 import SwiftUI
 
-struct Coin {
+struct Coin: Identifiable {
+    var id: UUID = UUID()
+    
     enum CoinType {
         case bitcoin
         case ethereum
