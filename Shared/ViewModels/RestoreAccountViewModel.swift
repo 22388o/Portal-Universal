@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 final class RestoreAccountViewModel: ObservableObject {
-    private let seeedLength = 24
+    private let seedLength = 24
     private var anyCancellable = Set<AnyCancellable>()
 
     @Published var accountName = String()
@@ -26,7 +26,7 @@ final class RestoreAccountViewModel: ObservableObject {
             return "Account name must be at least 1 symbols long"
         } else {
             let filteredSeedArray = seed.filter { $0.count >= 3 }
-            return filteredSeedArray.count != seeedLength ? "Invalid seed! Please try again." : String()
+            return filteredSeedArray.count != seedLength ? "Invalid seed! Please try again." : String()
         }
     }
     
@@ -46,7 +46,7 @@ final class RestoreAccountViewModel: ObservableObject {
     }
     
     init() {
-        for _ in 1...seeedLength {
+        for _ in 1...seedLength {
             seed.append(String())
         }
         
@@ -54,7 +54,7 @@ final class RestoreAccountViewModel: ObservableObject {
             .sink(receiveValue: { [weak self] name in
                 guard let self = self else { return }
                 let filteredSeedArray = self.seed.filter { $0.count >= 3 }
-                self.restoreReady = !name.isEmpty && filteredSeedArray.count == self.seeedLength
+                self.restoreReady = !name.isEmpty && filteredSeedArray.count == self.seedLength
             })
             .store(in: &anyCancellable)
         
@@ -62,7 +62,7 @@ final class RestoreAccountViewModel: ObservableObject {
             .sink { [weak self] seedArray in
                 guard let self = self else { return }
                 let filteredSeedArray = seedArray.filter { $0.count >= 3 }
-                self.restoreReady = !self.accountName.isEmpty && filteredSeedArray.count == self.seeedLength
+                self.restoreReady = !self.accountName.isEmpty && filteredSeedArray.count == self.seedLength
             }
             .store(in: &anyCancellable)
     }
