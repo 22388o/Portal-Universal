@@ -13,14 +13,15 @@ final class CreateAccountViewModel: ObservableObject {
         case name, seed, test, confirmation
     }
     
-    @Published var step: Step = .name
+    @Published var step = Step.name
     @Published var accountName = String()
+    @Published var isUsingStrongSeed = false
     @Published var btcAddressFormat = BtcAddressFormat.segwit.rawValue
     @Published var test: SeedTestViewModel
-    
-    @Published private(set) var nameIsValid: Bool = false
+    @Published private(set) var nameIsValid = false
     
     private var cancalable: AnyCancellable?
+    private var subscriptions = Set<AnyCancellable>()
     
     private var type: AccountType
     
@@ -42,7 +43,20 @@ final class CreateAccountViewModel: ObservableObject {
     }
     
     var account: Account {
-        Account(id: UUID().uuidString, name: accountName, bip: mnemonicDereviation, type: type)
+        let accountId = UUID().uuidString
+        let accountType: AccountType
+        
+        if !isUsingStrongSeed {
+            switch type {
+            case .mnemonic(let words, _):
+                let firstTwelveWords = Array(words.prefix(12))
+                accountType = .mnemonic(words: firstTwelveWords, salt: "salty_password")
+            }
+        } else {
+            accountType = type
+        }
+        
+        return Account(id: accountId, name: accountName, bip: mnemonicDereviation, type: accountType)
     }
     
     func formattedIndexString(_ index: Int) -> String {
@@ -65,12 +79,19 @@ final class CreateAccountViewModel: ObservableObject {
     }
     
     func copyToClipboard() {
-        let seedString = test.seed.reduce(String(), { $0 + " " + $1 })
+        let seedString: String
+        
+        if isUsingStrongSeed {
+            seedString = test.seed.reduce(String(), { $0 + " " + $1 })
+        } else {
+            seedString = test.seed.prefix(12).reduce(String(), { $0 + " " + $1 })
+        }
+        
         #if os(iOS)
-        UIPasteboard.general.string = seedString
+        UIPasteboard.general.string = seedString.dropFirst()
         #else
         NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(seedString, forType: NSPasteboard.PasteboardType.string)
+        NSPasteboard.general.setString(String(seedString.dropFirst()), forType: NSPasteboard.PasteboardType.string)
         #endif
     }
     
