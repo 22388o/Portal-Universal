@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PTextField: View {
+    var secure: Bool = false
+    
     @Binding var text: String
     
     let placeholder: String
@@ -32,18 +34,35 @@ struct PTextField: View {
                         .foregroundColor(Color.lightActiveLabel.opacity(0.4))
                 }
                 #if os(iOS)
-                TextField(String(), text: $text)
-                    .font(.mainFont(size: 14))
-                    .foregroundColor(Color.lightActiveLabel)
-                    .autocapitalization(upperCase ? .sentences : .none)
-                    .disableAutocorrection(true)
+                if secure {
+                    SecureField(String(), text: $text)
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                        .autocapitalization(upperCase ? .sentences : .none)
+                        .disableAutocorrection(true)
+                } else {
+                    TextField(String(), text: $text)
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                        .autocapitalization(upperCase ? .sentences : .none)
+                        .disableAutocorrection(true)
+                }
                 #else
-                TextField(String(), text: $text)
-                    .font(.mainFont(size: 14))
-                    .foregroundColor(Color.lightActiveLabel)
-                    .colorMultiply(.lightInactiveLabel)
-                    .disableAutocorrection(true)
-                    .textFieldStyle(PlainTextFieldStyle())
+                if secure {
+                    SecureField(String(), text: $text)
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                        .colorMultiply(.lightInactiveLabel)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(PlainTextFieldStyle())
+                } else {
+                    TextField(String(), text: $text)
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                        .colorMultiply(.lightInactiveLabel)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(PlainTextFieldStyle())
+                }
                 #endif
             }
             .padding(.horizontal, 24)

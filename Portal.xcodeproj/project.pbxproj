@@ -136,6 +136,8 @@
 		7524451B278CAB0300B38F8D /* MockedAdapterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75244519278CAB0300B38F8D /* MockedAdapterManager.swift */; };
 		75254EAA273C63A1005DB4EF /* LineChartMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75254EA9273C63A1005DB4EF /* LineChartMarkerView.swift */; };
 		75254EAC273C63F5005DB4EF /* LineChartMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75254EAB273C63F5005DB4EF /* LineChartMarkerView.swift */; };
+		752651EB27E9CBA5001B811A /* SeedTestWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752651EA27E9CBA5001B811A /* SeedTestWordView.swift */; };
+		752651EC27E9CBA5001B811A /* SeedTestWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752651EA27E9CBA5001B811A /* SeedTestWordView.swift */; };
 		752712FC261B48A7008C962C /* AccountNameInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752712FB261B48A7008C962C /* AccountNameInputView.swift */; };
 		752712FD261B48A7008C962C /* AccountNameInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752712FB261B48A7008C962C /* AccountNameInputView.swift */; };
 		75271303261B5378008C962C /* PButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271302261B5378008C962C /* PButton.swift */; };
@@ -713,6 +715,7 @@
 		75244519278CAB0300B38F8D /* MockedAdapterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedAdapterManager.swift; sourceTree = "<group>"; };
 		75254EA9273C63A1005DB4EF /* LineChartMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartMarkerView.swift; sourceTree = "<group>"; };
 		75254EAB273C63F5005DB4EF /* LineChartMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartMarkerView.swift; sourceTree = "<group>"; };
+		752651EA27E9CBA5001B811A /* SeedTestWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedTestWordView.swift; sourceTree = "<group>"; };
 		752712FB261B48A7008C962C /* AccountNameInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameInputView.swift; sourceTree = "<group>"; };
 		75271302261B5378008C962C /* PButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PButton.swift; sourceTree = "<group>"; };
 		75271309261BAAE8008C962C /* StoreSeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSeedView.swift; sourceTree = "<group>"; };
@@ -1147,6 +1150,7 @@
 				7585AF3B27AEA2E700A373F7 /* ModalViewContainer.swift */,
 				7585AF3E27AEA56700A373F7 /* SendAssetProgressView.swift */,
 				7544741427DA40BF00AFD02F /* Erc20ItemView.swift */,
+				752651EA27E9CBA5001B811A /* SeedTestWordView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2252,6 +2256,7 @@
 				75A3F52D26A57C3B006B1823 /* IAdapterManager.swift in Sources */,
 				753364A526F339780073B0A4 /* TradingData.swift in Sources */,
 				756C3C6D26EA9AE1009530A9 /* ExchangeSetup.swift in Sources */,
+				752651EB27E9CBA5001B811A /* SeedTestWordView.swift in Sources */,
 				75C95C622614CC0400B0EE10 /* Color+Extension.swift in Sources */,
 				75C95C4A2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
 				750D63C6268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */,
@@ -2636,6 +2641,7 @@
 				752E531226FDDE6300FCDB0C /* KrakenPrivateApi.swift in Sources */,
 				751B654A269D9711001B759C /* TransactionRecord.swift in Sources */,
 				7555642F26D8FADF001B1C1A /* ExchangeBalancesView.swift in Sources */,
+				752651EC27E9CBA5001B811A /* SeedTestWordView.swift in Sources */,
 				7537DEEB2701A29A00B862AB /* BinanceAssetInfo.swift in Sources */,
 				7527130B261BAAE8008C962C /* StoreSeedView.swift in Sources */,
 				7537DEDC2700B17200B862AB /* CoinbaseProApi.swift in Sources */,

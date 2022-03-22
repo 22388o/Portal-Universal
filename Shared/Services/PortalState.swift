@@ -34,6 +34,7 @@ class PortalState: ObservableObject {
     
     enum ModalViewState: Equatable {
         case none,
+             manageAssets,
              receiveAsset,
              sendAsset,
              switchAccount,
