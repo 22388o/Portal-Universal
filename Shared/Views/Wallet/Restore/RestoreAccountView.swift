@@ -9,8 +9,9 @@ import SwiftUI
 
 struct RestoreAccountView: View {
     @ObservedObject var viewModel: RestoreAccountViewModel
-    private var accountManager = Portal.shared.accountManager
     @ObservedObject private var state = Portal.shared.state
+    
+    private var accountManager = Portal.shared.accountManager
     
     init() {
         viewModel = .init()
@@ -69,20 +70,37 @@ struct RestoreAccountView: View {
                     .foregroundColor(Color.lightActiveLabel)
                     .padding(.top, 20)
                     
-                    Text("Seed")
-                        .font(.mainFont(size: 18))
-                        .padding(.top, 13)
-                        .padding(.bottom, 10)
                     
-                    VStack {
-                        ForEach(0...5, id: \.self) { row in
-                            HStack {
-                                ForEach(1...4, id: \.self)  { index in
-                                    RestoreSeedField(text: $viewModel.seed[(row * 4 + index) - 1], index: row * 4 + index)
+                    HStack {
+                        Text("Seed")
+                            .font(.mainFont(size: 18))
+                            .padding(.top, 13)
+                            .padding(.bottom, 10)
+                        
+                        Spacer()
+                        
+                        if !viewModel.seedInput.isEmpty {
+                            Text(viewModel.secureField ? "Show" : "Hide")
+                                .underline()
+                                .frame(width: 50)
+                                .font(.mainFont(size: 12))
+                                .foregroundColor(Color.txListTxType)
+                                .onTapGesture {
+                                    viewModel.secureField.toggle()
                                 }
-                            }
                         }
                     }
+                    .frame(width: 725)
+                    
+
+                    PTextField(
+                        secure: viewModel.secureField,
+                        text: $viewModel.seedInput,
+                        placeholder: "Enter your seed...",
+                        upperCase: false,
+                        width: 725,
+                        height: 48
+                    )
                     
                     HStack {
                         PButton(bgColor: Color(red: 250/255, green: 147/255, blue: 36/255), label: "Restore", width: 203, height: 48, fontSize: 15, enabled: viewModel.restoreReady) {
