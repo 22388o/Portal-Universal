@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct StoreSeedView: View {
-    private let description = """
+    private let description24 = """
     See the 24 words on the right? It’s called a seed, and you’ll need it to access your wallet. If you lose it, you’ll lose the wallet and all the money in it. And we can’t restore it.
-
+    
     
     Make 100% sure you have all the words, in that same order, and continue when you’re ready.
     """
-        
+    
+    private let description12 = """
+    See the 12 words on the right? It’s called a seed, and you’ll need it to access your wallet. If you lose it, you’ll lose the wallet and all the money in it. And we can’t restore it.
+    
+    
+    Make 100% sure you have all the words, in that same order, and continue when you’re ready.
+    """
+    
     @ObservedObject private var viewModel: CreateAccountViewModel
     
     init(viewModel: CreateAccountViewModel) {
@@ -39,7 +46,7 @@ struct StoreSeedView: View {
                 
                 Spacer().frame(height: 31)
                 
-                Text(description)
+                Text(viewModel.isUsingStrongSeed ? description24 : description12)
                     .font(.mainFont(size: 14))
                     .foregroundColor(.coinViewRouteButtonActive)
                     .frame(width: 298)
@@ -72,30 +79,53 @@ struct StoreSeedView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.seedBoxBorder, lineWidth: 1)
                     )
-                HStack(spacing: 0) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach((1...viewModel.test.seed.count/2), id: \.self) { index in
-                            HStack {
-                                Text("\(index))")
-                                    .foregroundColor(.blush)
-                                Text("\(viewModel.test.seed[index - 1])")
-                                    .foregroundColor(.brownishOrange)
-                            }
-                        }
-                    }
-                    .frame(width: 150)
+                
+                VStack(spacing: 0) {
+                    Toggle("24 words seed", isOn: $viewModel.isUsingStrongSeed)
+                        .font(.mainFont(size: 10))
+                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                        .toggleStyle(.switch)
+                        .padding(.bottom)
                     
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach((viewModel.test.seed.count/2 + 1...viewModel.test.seed.count), id: \.self) { index in
-                            HStack {
-                                Text("\(index))")
-                                    .foregroundColor(.blush)
-                                Text("\(viewModel.test.seed[index - 1])")
-                                    .foregroundColor(.brownishOrange)
+                    HStack(spacing: 0) {
+                        if viewModel.isUsingStrongSeed {
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach((1...viewModel.test.seed.count/2), id: \.self) { index in
+                                    HStack {
+                                        Text("\(index))")
+                                            .foregroundColor(.blush)
+                                        Text("\(viewModel.test.seed[index - 1])")
+                                            .foregroundColor(.brownishOrange)
+                                    }
+                                }
                             }
+                            .frame(width: 150)
+                            
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach((viewModel.test.seed.count/2 + 1...viewModel.test.seed.count), id: \.self) { index in
+                                    HStack {
+                                        Text("\(index))")
+                                            .foregroundColor(.blush)
+                                        Text("\(viewModel.test.seed[index - 1])")
+                                            .foregroundColor(.brownishOrange)
+                                    }
+                                }
+                            }
+                            .frame(width: 150)
+                        } else {
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach((1...viewModel.test.seed.count/2), id: \.self) { index in
+                                    HStack {
+                                        Text("\(index))")
+                                            .foregroundColor(.blush)
+                                        Text("\(viewModel.test.seed[index - 1])")
+                                            .foregroundColor(.brownishOrange)
+                                    }
+                                }
+                            }
+                            .frame(width: 150)
                         }
                     }
-                    .frame(width: 150)
                 }
             }
         }

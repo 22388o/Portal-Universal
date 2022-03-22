@@ -8,14 +8,12 @@
 import Combine
 
 final class SeedTestViewModel: ObservableObject {
-    @Published var testString1 = String()
-    @Published var testString2 = String()
-    @Published var testString3 = String()
-    @Published var testString4 = String()
-    
     private(set) var formIsValid = false
     private(set) var testIndices = [Int]()
+    private(set) var testArray = [String]()
     private(set) var testSolved = [String]()
+    
+    @Published var selectedWords = [String]()
     
     let seed: [String]
 
@@ -32,7 +30,7 @@ final class SeedTestViewModel: ObservableObject {
     
     func setup() {
         while testIndices.count <= 3 {
-            let 🎲 = Int.random(in: 1..<seed.count)
+            let 🎲 = Int.random(in: 1..<seed.count/2)
             if !testIndices.contains(🎲) {
                 testIndices.append(🎲)
             }
@@ -40,17 +38,26 @@ final class SeedTestViewModel: ObservableObject {
                                        
         for index in testIndices {
             testSolved.append(seed[index - 1])
+            testArray.append(seed[index - 1])
         }
-                    
-        bindInputs()
-        
+                            
         print("Test solved: \(testSolved)")
+        
+        while testArray.count < 12 {
+            let word = seed.randomElement()!
+            if !testArray.contains(word) {
+                testArray.append(word)
+            }
+        }
+        
+        testArray.shuffle()
+        
+        bindInputs()
     }
     
     private func bindInputs() {
-        cancalable = $testString1.combineLatest($testString2, $testString3, $testString4)
-            .sink(receiveValue: { [weak self] output in
-                self?.formIsValid = self?.testSolved == [output.0, output.1, output.2, output.3]
-            })
+        cancalable = $selectedWords.sink { [weak self] _selectedWords in
+            self?.formIsValid = self?.testSolved == _selectedWords
+        }
     }
 }
