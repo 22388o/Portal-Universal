@@ -499,7 +499,8 @@ enum AccountType {
     
     var mnemonicSeed: Data? {
         switch self {
-        case let .mnemonic(words, salt): return Mnemonic.seed(mnemonic: words, passphrase: salt)
+        case let .mnemonic(words, salt):
+            return Mnemonic.seed(mnemonic: words, passphrase: salt)
         }
     }
 }
