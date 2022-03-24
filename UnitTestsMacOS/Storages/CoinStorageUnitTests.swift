@@ -25,14 +25,14 @@ class CoinStorageUnitTests: XCTestCase {
     
     
     func testOnTokensUpdateSubscription() throws {
-        XCTAssertEqual(sut.coins.isEmpty, true)
+        XCTAssertEqual(sut.coins.value.isEmpty, true)
         
         let btcToken = Erc20TokenCodable.mockedBTCToken
         let ethToken = Erc20TokenCodable.mockedETHToken
         
         erc20Updater.onTokensUpdate.send([ethToken])
         
-        XCTAssertEqual(sut.coins.isEmpty, false)
+        XCTAssertEqual(sut.coins.value.isEmpty, false)
         
         let eth = Coin(
             type: .erc20(address: ethToken.contractAddress),
@@ -42,7 +42,7 @@ class CoinStorageUnitTests: XCTestCase {
             iconUrl: ethToken.iconURL
         )
         
-        XCTAssertEqual(sut.coins[0], eth)
+        XCTAssertEqual(sut.coins.value[0], eth)
         
         let btc = Coin(
             type: .erc20(address: btcToken.contractAddress),
@@ -54,8 +54,8 @@ class CoinStorageUnitTests: XCTestCase {
         
         erc20Updater.onTokensUpdate.send([btcToken, ethToken])
         
-        XCTAssertEqual(sut.coins[0], btc)
-        XCTAssertEqual(sut.coins[1], eth)
+        XCTAssertEqual(sut.coins.value[0], btc)
+        XCTAssertEqual(sut.coins.value[1], eth)
         
         erc20Updater.onTokensUpdate.send([])
     }

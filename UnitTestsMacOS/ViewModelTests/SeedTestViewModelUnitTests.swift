@@ -12,7 +12,8 @@ class SeedTestViewModelUnitTests: XCTestCase {
     
     private var sut: SeedTestViewModel!
     private let mnemonicWords = [
-        "kit", "clog", "mesh", "scrap", "blood", "frost", "siege", "blind", "combine", "model", "village", "comics", "rival", "august", "develop", "betray", "boy", "surprise", "unusual", "strike", "sound", "morning", "escape", "alter"
+        "kit", "clog", "mesh", "scrap", "blood", "frost", "siege", "blind", "combine", "model", "village", "comics",
+        "rival", "august", "develop", "betray", "boy", "surprise", "unusual", "strike", "sound", "morning", "escape", "alter"
     ]
 
     override func setUpWithError() throws {
@@ -26,13 +27,11 @@ class SeedTestViewModelUnitTests: XCTestCase {
     }
     
     func testDefaultValues() throws {
-        XCTAssertEqual(sut.testString1, String())
-        XCTAssertEqual(sut.testString2, String())
-        XCTAssertEqual(sut.testString3, String())
-        XCTAssertEqual(sut.testString4, String())
         XCTAssertEqual(sut.formIsValid, false)
         XCTAssertEqual(sut.testIndices.count, 4)
-        XCTAssertEqual(sut.testSolved.count , 4)
+        XCTAssertEqual(sut.testSolved.count, 4)
+        XCTAssertEqual(sut.testArray.count, 12)
+        XCTAssertEqual(sut.selectedWords.isEmpty , true)
     }
 
     func testFormIsValid() throws {
@@ -40,20 +39,20 @@ class SeedTestViewModelUnitTests: XCTestCase {
         
         XCTAssertEqual(sut.formIsValid, false)
         
-        sut.testString1 = solvedTest[0]
+        sut.selectedWords.append(solvedTest[0])
         
         XCTAssertEqual(sut.formIsValid, false)
         
-        sut.testString2 = solvedTest[1]
-        
+        sut.selectedWords.append(solvedTest[1])
+
         XCTAssertEqual(sut.formIsValid, false)
         
-        sut.testString3 = solvedTest[2]
-        
+        sut.selectedWords.append(solvedTest[2])
+
         XCTAssertEqual(sut.formIsValid, false)
         
-        sut.testString4 = solvedTest[3]
-        
+        sut.selectedWords.append(solvedTest[3])
+
         XCTAssertEqual(sut.formIsValid, true)
     }
 }

@@ -9,5 +9,6 @@
 import Combine
 
 struct MockedERC20Updater: IERC20Updater {
+    var tokens = [Erc20TokenCodable]()
     var onTokensUpdate = PassthroughSubject<[Erc20TokenCodable], Never>()
 }

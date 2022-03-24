@@ -10,7 +10,6 @@ import Combine
 @testable import Portal
 
 struct MockedAccountManager: IAccountManager {
-    
     private let mockedAccount = Account(
         id: UUID().uuidString,
         name: "Mocked",
@@ -40,6 +39,10 @@ struct MockedAccountManager: IAccountManager {
     
     var activeAccount: Account? {
         mockedAccount
+    }
+    
+    func addCoin(coin: String) {
+        
     }
     
     func account(id: String) -> Account? {
