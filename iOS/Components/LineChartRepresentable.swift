@@ -10,6 +10,7 @@ import Charts
 
 struct LineChartRepresentable: UIViewRepresentable {
     let chartDataEntries: [ChartDataEntry]
+    let isPortfolioChart: Bool
         
     func makeUIView(context: Context) -> LineChartView {
         let lineChart = LineChartView()

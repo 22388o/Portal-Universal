@@ -88,7 +88,7 @@ final class CreateAccountViewModel: ObservableObject {
         }
         
         #if os(iOS)
-        UIPasteboard.general.string = seedString.dropFirst()
+        UIPasteboard.general.string = String(seedString.dropFirst())
         #else
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(String(seedString.dropFirst()), forType: NSPasteboard.PasteboardType.string)
