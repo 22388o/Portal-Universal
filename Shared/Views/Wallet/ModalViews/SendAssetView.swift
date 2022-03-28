@@ -224,7 +224,7 @@ struct SendAssetView: View {
             } else {
                 return Alert(
                     title: Text("Sent \(viewModel.exchangerViewModel.assetValue) \(viewModel.coin.code)"),
-                    message: Text("Reciever address: \(viewModel.receiverAddress)"), dismissButton: .default(Text("Dismiss"), action: {
+                    message: Text("Receiver address: \(viewModel.receiverAddress)"), dismissButton: .default(Text("Dismiss"), action: {
                         Portal.shared.state.modalView = .none
                 }))
             }

@@ -49,7 +49,7 @@ struct AssetViewPortrait: View {
                 GeometryReader { geometry in
                     VStack(spacing: 8) {
                         HStack {
-                            PButton(label: "Recieve", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: true) {
+                            PButton(label: "Receive", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: true) {
                                 withAnimation(.easeIn(duration: 3.0)) {
                                     state.modalView = .receiveAsset
                                 }
