@@ -206,7 +206,7 @@ struct SendAssetView: View {
                             }
                         }
                     } else {
-                        Text("There is no transactions yet")
+                        Text("There are no transactions yet")
                             .font(.mainFont(size: 12))
                             .foregroundColor(Color.coinViewRouteButtonActive)
                     }
