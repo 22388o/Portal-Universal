@@ -74,7 +74,7 @@ struct StoreSeedView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.seedBoxBackground)
-                    .frame(width: 319, height: 428)
+                    .frame(width: 319, height: 448)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.seedBoxBorder, lineWidth: 1)
@@ -82,6 +82,7 @@ struct StoreSeedView: View {
                 
                 VStack(spacing: 0) {
                     Toggle("24 words seed", isOn: $viewModel.isUsingStrongSeed)
+                        .frame(width: 150)
                         .font(.mainFont(size: 10))
                         .foregroundColor(Color.coinViewRouteButtonInactive)
                         .toggleStyle(.switch)
