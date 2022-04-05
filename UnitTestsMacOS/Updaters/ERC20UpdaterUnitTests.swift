@@ -27,31 +27,25 @@ class ERC20UpdaterUnitTests: XCTestCase {
     func testOnTokensUpdate() throws {
         sut = ERC20Updater()
         
-        let promise = expectation(description: "Tokens fetched")
-        
-        sut.onTokensUpdate.sink { tokens in
-            XCTAssertNotNil(tokens, "Tokens are nil")
-            XCTAssertEqual(tokens.filter{ $0.iconURL.isEmpty }.count, 0)
-            promise.fulfill()
-        }
-        .store(in: &subsriptions)
-        
-        wait(for: [promise], timeout: 5)
+        XCTAssertNotNil(sut.tokens, "Tokens are nil")
+        XCTAssertEqual(sut.tokens.filter{ $0.iconURL.isEmpty }.count, 0)
     }
     
-    func testOnTokensUpdateLoadsLocallyStoredTokensIfFetchingFails() throws {
-        sut = ERC20Updater(jsonDecoder: JSONDecoder(), url: URL(string: "https://www.google.com"))
-        
-        let promise = expectation(description: "Locally stored tokens fetched")
-        
-        sut.onTokensUpdate.sink { tokens in
-            XCTAssertNotNil(tokens, "Tokens are nil")
-            XCTAssertEqual(tokens.filter{ $0.iconURL.isEmpty }.count, 0)
-            XCTAssertEqual(tokens.count, 709)
-            promise.fulfill()
-        }
-        .store(in: &subsriptions)
-        
-        wait(for: [promise], timeout: 5)
-    }
+///    Commented out until fetch tokens from server implemented
+    
+//    func testOnTokensUpdateLoadsLocallyStoredTokensIfFetchingFails() throws {
+//        sut = ERC20Updater(jsonDecoder: JSONDecoder(), url: URL(string: "https://www.google.com"))
+//
+//        let promise = expectation(description: "Locally stored tokens fetched")
+//
+//        sut.onTokensUpdate.sink { tokens in
+//            XCTAssertNotNil(tokens, "Tokens are nil")
+//            XCTAssertEqual(tokens.filter{ $0.iconURL.isEmpty }.count, 0)
+//            XCTAssertEqual(tokens.count, 709)
+//            promise.fulfill()
+//        }
+//        .store(in: &subsriptions)
+//
+//        wait(for: [promise], timeout: 5)
+//    }
 }

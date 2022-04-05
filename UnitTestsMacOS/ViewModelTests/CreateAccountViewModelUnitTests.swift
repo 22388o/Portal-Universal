@@ -90,16 +90,31 @@ class CreateAccountViewModelUnitTests: XCTestCase {
     }
     
     func testCopyToClipboard() throws {
-        let seedString = sut.test.seed.reduce(String(), { $0 + " " + $1 })
+        let twelveWordsSeedString = String(sut.test.seed.prefix(12).reduce(String(), { $0 + " " + $1 }).dropFirst())
         
         sut.copyToClipboard()
         
         #if os(iOS)
         XCTAssertEqual(UIPasteboard.general.string, seedString)
         #else
-        let testString = NSPasteboard.general.string(forType: .string)
-        XCTAssertNotNil(testString, "pastboard test is empty")
-        XCTAssertEqual(testString, seedString)
+        let pasteBoardString = NSPasteboard.general.string(forType: .string)
+        XCTAssertNotNil(pasteBoardString, "pastboard test is empty")
+        XCTAssertEqual(pasteBoardString, twelveWordsSeedString)
         #endif
+        
+        sut.isUsingStrongSeed = true
+        
+        let twentyFourWordsSeedString = String(sut.test.seed.reduce(String(), { $0 + " " + $1 }).dropFirst())
+        
+        sut.copyToClipboard()
+        
+        #if os(iOS)
+        XCTAssertEqual(UIPasteboard.general.string, seedString)
+        #else
+        let updatedPasteBoardString = NSPasteboard.general.string(forType: .string)
+        XCTAssertNotNil(updatedPasteBoardString, "pastboard test is empty")
+        XCTAssertEqual(updatedPasteBoardString, twentyFourWordsSeedString)
+        #endif
+
     }
 }

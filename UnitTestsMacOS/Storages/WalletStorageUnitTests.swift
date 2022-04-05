@@ -11,11 +11,12 @@ import XCTest
 import Combine
 
 class MockedCoinMannager: ICoinManager {
+    var walletCoins = [Coin]()
+    var avaliableCoins = [Coin]()
     var onCoinsUpdate = PassthroughSubject<[Coin], Never>()
-    var coins: [Coin] = []
     
     func addCoins() {
-        coins = [.bitcoin(), .ethereum()]
+        walletCoins = [.bitcoin(), .ethereum()]
     }
 }
 

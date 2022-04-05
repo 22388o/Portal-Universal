@@ -11,10 +11,10 @@ import Foundation
 final class RestoreAccountViewModel: ObservableObject {
     private var anyCancellable = Set<AnyCancellable>()
     
-    @Published private var seed = [String]()
+    @Published var seed = [String]()
 
     @Published private(set) var restoreReady = false
-    @Published private(set) var btcAddressFormat = BtcAddressFormat.segwit.rawValue
+    @Published var btcAddressFormat = BtcAddressFormat.segwit.rawValue
     
     @Published var accountName = String()
     @Published var seedInput = String()
