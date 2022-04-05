@@ -81,9 +81,5 @@ class PortalState: ObservableObject {
             }
             .store(in: &anyCancellable)
         #endif
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.loading = false
-        }
     }
 }
