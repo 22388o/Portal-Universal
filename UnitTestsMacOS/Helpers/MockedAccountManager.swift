@@ -1,5 +1,5 @@
 //
-//  MockedAccountMannager.swift
+//  MockedAccountManager.swift
 //  UnitTestsMacOS
 //
 //  Created by farid on 1/21/22.

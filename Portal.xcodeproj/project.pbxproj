@@ -281,7 +281,7 @@
 		753BA72B2799B39A009FEC20 /* MockedNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA72A2799B39A009FEC20 /* MockedNotificationService.swift */; };
 		753BA72D2799B3B9009FEC20 /* MockedReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA72C2799B3B9009FEC20 /* MockedReachabilityService.swift */; };
 		753BA730279AE2FC009FEC20 /* WalletStorageUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA72F279AE2FC009FEC20 /* WalletStorageUnitTests.swift */; };
-		753BA732279AE6FC009FEC20 /* MockedAccountMannager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA731279AE6FC009FEC20 /* MockedAccountMannager.swift */; };
+		753BA732279AE6FC009FEC20 /* MockedAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA731279AE6FC009FEC20 /* MockedAccountManager.swift */; };
 		753BA734279B18E4009FEC20 /* KeychainStorageUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA733279B18E4009FEC20 /* KeychainStorageUnitTests.swift */; };
 		753BA737279DA8CF009FEC20 /* LocalStorageUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA736279DA8CF009FEC20 /* LocalStorageUnitTests.swift */; };
 		753BA73A279DC74C009FEC20 /* CoinStorageUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753BA739279DC74C009FEC20 /* CoinStorageUnitTests.swift */; };
@@ -808,7 +808,7 @@
 		753BA72A2799B39A009FEC20 /* MockedNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedNotificationService.swift; sourceTree = "<group>"; };
 		753BA72C2799B3B9009FEC20 /* MockedReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedReachabilityService.swift; sourceTree = "<group>"; };
 		753BA72F279AE2FC009FEC20 /* WalletStorageUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletStorageUnitTests.swift; sourceTree = "<group>"; };
-		753BA731279AE6FC009FEC20 /* MockedAccountMannager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedAccountMannager.swift; sourceTree = "<group>"; };
+		753BA731279AE6FC009FEC20 /* MockedAccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedAccountManager.swift; sourceTree = "<group>"; };
 		753BA733279B18E4009FEC20 /* KeychainStorageUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorageUnitTests.swift; sourceTree = "<group>"; };
 		753BA736279DA8CF009FEC20 /* LocalStorageUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageUnitTests.swift; sourceTree = "<group>"; };
 		753BA739279DC74C009FEC20 /* CoinStorageUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStorageUnitTests.swift; sourceTree = "<group>"; };
@@ -1191,7 +1191,7 @@
 			isa = PBXGroup;
 			children = (
 				75244519278CAB0300B38F8D /* MockedAdapterManager.swift */,
-				753BA731279AE6FC009FEC20 /* MockedAccountMannager.swift */,
+				753BA731279AE6FC009FEC20 /* MockedAccountManager.swift */,
 				75119D0B278DFC1A0073B03C /* MockedWalletManager.swift */,
 				753BA72A2799B39A009FEC20 /* MockedNotificationService.swift */,
 				753BA72C2799B3B9009FEC20 /* MockedReachabilityService.swift */,
@@ -2262,7 +2262,7 @@
 				7524450B278C883700B38F8D /* AssetViewModelUnitTests.swift in Sources */,
 				75119D0C278DFC1A0073B03C /* MockedWalletManager.swift in Sources */,
 				753BA70727957FC9009FEC20 /* ExchangerViewModelUnitTests.swift in Sources */,
-				753BA732279AE6FC009FEC20 /* MockedAccountMannager.swift in Sources */,
+				753BA732279AE6FC009FEC20 /* MockedAccountManager.swift in Sources */,
 				753BA70D27959B06009FEC20 /* RestoreAccountViewModelUnitTests.swift in Sources */,
 				753BA7092795907B009FEC20 /* CreateAccountViewModelUnitTests.swift in Sources */,
 				753BA737279DA8CF009FEC20 /* LocalStorageUnitTests.swift in Sources */,

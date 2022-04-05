@@ -98,10 +98,10 @@ final class AccountSettingsViewModel: ObservableObject {
 
 extension AccountSettingsViewModel {
     static func config() -> AccountSettingsViewModel {
-        let mannager = Portal.shared.accountManager
+        let manager = Portal.shared.accountManager
         let adapterManager = Portal.shared.adapterManager
         
-        return AccountSettingsViewModel(accountManager: mannager, adapterManager: adapterManager)
+        return AccountSettingsViewModel(accountManager: manager, adapterManager: adapterManager)
     }
 }
 
