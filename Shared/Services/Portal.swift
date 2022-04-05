@@ -34,6 +34,7 @@ final class Portal {
     let reachabilityService: IReachabilityService
     let pushNotificationService: PushNotificationService
     let coinManager: ICoinManager
+    let passcodeManager: IPasscodeManager
     
     @ObservedObject var state: PortalState
         
@@ -57,6 +58,7 @@ final class Portal {
         
         let keychain = Keychain(service: appConfigProvider.keychainStorageID)
         secureStorage = KeychainStorage(keychain: keychain)
+        passcodeManager = PasscodeManager(storage: secureStorage)
         
         let dbContext: NSManagedObjectContext = {
             let backgroundContext = PersistenceController.shared.container.newBackgroundContext()
