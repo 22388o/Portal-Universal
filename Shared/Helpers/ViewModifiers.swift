@@ -23,6 +23,7 @@ public struct AccessibilityIdentifiebleModifier: ViewModifier {
 }
 
 struct LoadingViewModifier: ViewModifier {
+    @StateObject private var viewModel = LoadingViewModel.config()
     @Binding var locked: Bool
             
     func body(content: Content) -> some View {
@@ -30,7 +31,7 @@ struct LoadingViewModifier: ViewModifier {
             content
             
             if locked {
-                LoadingAnimationView()
+                LoadingAnimationView(viewModel: viewModel)
                     .zIndex(1)
                     .transition(
                         AnyTransition.asymmetric(
