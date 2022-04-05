@@ -18,6 +18,8 @@ struct PTextField: View {
     let width: CGFloat
     let height: CGFloat
     
+    var onCommit: (() -> Void?)? = nil
+
     var body: some View {
         ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: height/2, style: .continuous)
@@ -35,13 +37,17 @@ struct PTextField: View {
                 }
                 #if os(iOS)
                 if secure {
-                    SecureField(String(), text: $text)
+                    SecureField(String(), text: $text, onCommit: {
+                        self.onCommit?()
+                    })
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .autocapitalization(upperCase ? .sentences : .none)
                         .disableAutocorrection(true)
                 } else {
-                    TextField(String(), text: $text)
+                    TextField(String(), text: $text, onCommit: {
+                        self.onCommit?()
+                    })
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .autocapitalization(upperCase ? .sentences : .none)
@@ -49,14 +55,18 @@ struct PTextField: View {
                 }
                 #else
                 if secure {
-                    SecureField(String(), text: $text)
+                    SecureField(String(), text: $text, onCommit: {
+                        self.onCommit?()
+                    })
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .colorMultiply(.lightInactiveLabel)
                         .disableAutocorrection(true)
                         .textFieldStyle(PlainTextFieldStyle())
                 } else {
-                    TextField(String(), text: $text)
+                    TextField(String(), text: $text, onCommit: {
+                        self.onCommit?()
+                    })
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightActiveLabel)
                         .colorMultiply(.lightInactiveLabel)
