@@ -19,7 +19,7 @@ struct RecentTxsView: View {
         if viewModel.txs.isEmpty {
             VStack {
                 Spacer()
-                Text("There is no transactions yet")
+                Text("There are no transactions yet")
                     .font(.mainFont(size: 12))
                     .foregroundColor(Color.coinViewRouteButtonActive)
                 Spacer()

@@ -31,7 +31,7 @@ struct NotificationsView: View {
                 Spacer()
                 
                 if service.notifications.value.isEmpty {
-                    Text("There is no notifications yet.")
+                    Text("There are no notifications yet.")
                         .font(.mainFont(size: 10, bold: true))
                         .foregroundColor(Color.lightActiveLabel)
                 } else {
