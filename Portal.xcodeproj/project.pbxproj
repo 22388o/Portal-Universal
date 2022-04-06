@@ -371,6 +371,7 @@
 		7556CA3E27FC8A1A000AAC59 /* ShakeEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556CA3C27FC8A1A000AAC59 /* ShakeEffect.swift */; };
 		7556CA4027FC9007000AAC59 /* PasscodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556CA3F27FC9007000AAC59 /* PasscodeManager.swift */; };
 		7556CA4127FC9007000AAC59 /* PasscodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556CA3F27FC9007000AAC59 /* PasscodeManager.swift */; };
+		7556CA4327FD8257000AAC59 /* PasscodeManagerUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556CA4227FD8257000AAC59 /* PasscodeManagerUnitTests.swift */; };
 		755782F026087905000E1686 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 755782C426087903000E1686 /* Portal.xcdatamodeld */; };
 		755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 755782C426087903000E1686 /* Portal.xcdatamodeld */; };
 		755782F226087905000E1686 /* PortalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755782C626087903000E1686 /* PortalApp.swift */; };
@@ -863,6 +864,7 @@
 		7556CA3927FC89C1000AAC59 /* LoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewModel.swift; sourceTree = "<group>"; };
 		7556CA3C27FC8A1A000AAC59 /* ShakeEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeEffect.swift; sourceTree = "<group>"; };
 		7556CA3F27FC9007000AAC59 /* PasscodeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeManager.swift; sourceTree = "<group>"; };
+		7556CA4227FD8257000AAC59 /* PasscodeManagerUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeManagerUnitTests.swift; sourceTree = "<group>"; };
 		755782C526087903000E1686 /* Shared.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Shared.xcdatamodel; sourceTree = "<group>"; };
 		755782C626087903000E1686 /* PortalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalApp.swift; sourceTree = "<group>"; };
 		755782C726087903000E1686 /* RootView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -1724,6 +1726,7 @@
 			isa = PBXGroup;
 			children = (
 				7584559627A025C700342330 /* NotificationServiceUnitTests.swift */,
+				7556CA4227FD8257000AAC59 /* PasscodeManagerUnitTests.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2262,6 +2265,7 @@
 				7524450B278C883700B38F8D /* AssetViewModelUnitTests.swift in Sources */,
 				75119D0C278DFC1A0073B03C /* MockedWalletManager.swift in Sources */,
 				753BA70727957FC9009FEC20 /* ExchangerViewModelUnitTests.swift in Sources */,
+				7556CA4327FD8257000AAC59 /* PasscodeManagerUnitTests.swift in Sources */,
 				753BA732279AE6FC009FEC20 /* MockedAccountManager.swift in Sources */,
 				753BA70D27959B06009FEC20 /* RestoreAccountViewModelUnitTests.swift in Sources */,
 				753BA7092795907B009FEC20 /* CreateAccountViewModelUnitTests.swift in Sources */,
