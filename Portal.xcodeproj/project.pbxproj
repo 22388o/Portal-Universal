@@ -372,6 +372,7 @@
 		7556CA4027FC9007000AAC59 /* PasscodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556CA3F27FC9007000AAC59 /* PasscodeManager.swift */; };
 		7556CA4127FC9007000AAC59 /* PasscodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556CA3F27FC9007000AAC59 /* PasscodeManager.swift */; };
 		7556CA4327FD8257000AAC59 /* PasscodeManagerUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556CA4227FD8257000AAC59 /* PasscodeManagerUnitTests.swift */; };
+		7556CA4527FD96A7000AAC59 /* PasscodeSetttingsViewModelUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7556CA4427FD96A7000AAC59 /* PasscodeSetttingsViewModelUnitTests.swift */; };
 		755782F026087905000E1686 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 755782C426087903000E1686 /* Portal.xcdatamodeld */; };
 		755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 755782C426087903000E1686 /* Portal.xcdatamodeld */; };
 		755782F226087905000E1686 /* PortalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755782C626087903000E1686 /* PortalApp.swift */; };
@@ -865,6 +866,7 @@
 		7556CA3C27FC8A1A000AAC59 /* ShakeEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeEffect.swift; sourceTree = "<group>"; };
 		7556CA3F27FC9007000AAC59 /* PasscodeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeManager.swift; sourceTree = "<group>"; };
 		7556CA4227FD8257000AAC59 /* PasscodeManagerUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeManagerUnitTests.swift; sourceTree = "<group>"; };
+		7556CA4427FD96A7000AAC59 /* PasscodeSetttingsViewModelUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeSetttingsViewModelUnitTests.swift; sourceTree = "<group>"; };
 		755782C526087903000E1686 /* Shared.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Shared.xcdatamodel; sourceTree = "<group>"; };
 		755782C626087903000E1686 /* PortalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalApp.swift; sourceTree = "<group>"; };
 		755782C726087903000E1686 /* RootView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -1339,6 +1341,7 @@
 				753BA7122795AE22009FEC20 /* WalletViewModelUnitTests.swift */,
 				753BA7142795B292009FEC20 /* ReceiveAssetViewModelUnitTests.swift */,
 				753BA7162795B854009FEC20 /* AccountViewModelUnitTests.swift */,
+				7556CA4427FD96A7000AAC59 /* PasscodeSetttingsViewModelUnitTests.swift */,
 			);
 			path = ViewModelTests;
 			sourceTree = "<group>";
@@ -2249,6 +2252,7 @@
 				753BA7112795AA03009FEC20 /* AssetAllocationViewModelUnitTests.swift in Sources */,
 				753BA72B2799B39A009FEC20 /* MockedNotificationService.swift in Sources */,
 				753BA74927A0236A009FEC20 /* ExchangeDataUpdaterUnitTests.swift in Sources */,
+				7556CA4527FD96A7000AAC59 /* PasscodeSetttingsViewModelUnitTests.swift in Sources */,
 				753BA74727A020D1009FEC20 /* FiatCurrenciesUpdaterUnitTests.swift in Sources */,
 				753BA7152795B292009FEC20 /* ReceiveAssetViewModelUnitTests.swift in Sources */,
 				753BA73C279DCB58009FEC20 /* MockedErc20Updater.swift in Sources */,
