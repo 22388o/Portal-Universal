@@ -11,13 +11,13 @@ import XCTest
 class NotificationServiceUnitTests: XCTestCase {
     
     private var sut: NotificationService!
-    private let accountMannager = MockedAccountManager()
+    private let accountManager = MockedAccountManager()
     private let testNotification = PNotification(message: "test")
 
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        sut = NotificationService(accountManager: accountMannager)
+        sut = NotificationService(accountManager: accountManager)
     }
 
     override func tearDownWithError() throws {

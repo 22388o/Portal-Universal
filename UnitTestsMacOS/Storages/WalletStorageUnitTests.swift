@@ -10,7 +10,7 @@ import XCTest
 
 import Combine
 
-class MockedCoinMannager: ICoinManager {
+class MockedCoinManager: ICoinManager {
     var walletCoins = [Coin]()
     var avaliableCoins = [Coin]()
     var onCoinsUpdate = PassthroughSubject<[Coin], Never>()
@@ -24,12 +24,12 @@ class WalletStorageUnitTests: XCTestCase {
     
     private var sut: WalletStorage!
     private var subscriptions = Set<AnyCancellable>()
-    private let accountMannager: IAccountManager = MockedAccountManager()
-    private var coinMannager = MockedCoinMannager()
+    private let accountManager: IAccountManager = MockedAccountManager()
+    private var coinManager = MockedCoinManager()
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        sut = WalletStorage(coinManager: coinMannager, accountManager: accountMannager)
+        sut = WalletStorage(coinManager: coinManager, accountManager: accountManager)
     }
 
     override func tearDownWithError() throws {
@@ -40,7 +40,7 @@ class WalletStorageUnitTests: XCTestCase {
     func testOnActiveAccountUpdateUpdatesWallets() throws {
         XCTAssertEqual(sut.wallets.count, 0)
         
-        coinMannager.addCoins()
+        coinManager.addCoins()
         
         let promise = expectation(description: "wallets updated")
         
@@ -50,7 +50,7 @@ class WalletStorageUnitTests: XCTestCase {
         })
         .store(in: &subscriptions)
         
-        accountMannager.onActiveAccountUpdate.send(nil)
+        accountManager.onActiveAccountUpdate.send(nil)
         
         wait(for: [promise], timeout: 0.2)
         
@@ -60,7 +60,7 @@ class WalletStorageUnitTests: XCTestCase {
     func testOnCoinsUpdateUpdatesWallets() throws {
         XCTAssertEqual(sut.wallets.count, 0)
 
-        coinMannager.addCoins()
+        coinManager.addCoins()
         
         let promise = expectation(description: "wallets updated")
         
@@ -70,7 +70,7 @@ class WalletStorageUnitTests: XCTestCase {
         })
         .store(in: &subscriptions)
         
-        coinMannager.onCoinsUpdate.send([])
+        coinManager.onCoinsUpdate.send([])
         
         wait(for: [promise], timeout: 0.2)
         
@@ -78,9 +78,9 @@ class WalletStorageUnitTests: XCTestCase {
     }
     
     func testClearWallets() throws {
-        coinMannager.addCoins()
+        coinManager.addCoins()
         
-        sut = WalletStorage(coinManager: coinMannager, accountManager: accountMannager)
+        sut = WalletStorage(coinManager: coinManager, accountManager: accountManager)
         
         XCTAssertEqual(sut.wallets.count, 2)
         

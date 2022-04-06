@@ -11,14 +11,14 @@ import XCTest
 class HeaderViewModelUnitTests: XCTestCase {
 
     private var sut: HeaderViewModel!
-    private let accountMannager = MockedAccountManager()
+    private let accountManager = MockedAccountManager()
     private let reachabilityService = MockedReachabilityService()
     private let notificationService = MockedNotificationService()
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         sut = HeaderViewModel.init(
-            accountManager: accountMannager,
+            accountManager: accountManager,
             notificationService: notificationService,
             reachabilityService: reachabilityService,
             currencies: [Currency.btc, Currency.eth]
@@ -52,7 +52,7 @@ class HeaderViewModelUnitTests: XCTestCase {
 
         let account = Account(id: UUID().uuidString, name: "Newly Mocked", bip: .bip44, type: .mnemonic(words: [], salt: String()))
         
-        accountMannager.onActiveAccountUpdate.send(account)
+        accountManager.onActiveAccountUpdate.send(account)
         
         let promise = expectation(description: "wait for publisher to trigger update")
         
@@ -63,7 +63,7 @@ class HeaderViewModelUnitTests: XCTestCase {
         wait(for: [promise], timeout: 0.2)
         XCTAssertEqual(sut.accountName, account.name)
         
-        accountMannager.onActiveAccountUpdate.send(nil)
+        accountManager.onActiveAccountUpdate.send(nil)
         
         let promise1 = expectation(description: "wait for publisher to trigger update")
         

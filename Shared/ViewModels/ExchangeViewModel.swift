@@ -18,7 +18,7 @@ final class ExchangeViewModel: ObservableObject {
     private let manager: ExchangeManager
     private let maxOrderBookItems = 30
     private let socketURL = URL(string: "https://portalex.herokuapp.com")
-    private var socketMannager: SocketManager?
+    private var socketManager: SocketManager?
     private var socketClient: SocketIOClient?
     private var subscriptions = Set<AnyCancellable>()
     
@@ -191,7 +191,7 @@ final class ExchangeViewModel: ObservableObject {
 
         guard let url = socketURL, let params = socketParamas() else { return }
 
-        socketMannager = SocketManager(
+        socketManager = SocketManager(
             socketURL: url,
             config: [.connectParams(params),
                      .log(false),
@@ -199,7 +199,7 @@ final class ExchangeViewModel: ObservableObject {
                      .reconnects(true),
                      .reconnectAttempts(10)]
         )
-        socketClient = socketMannager?.defaultSocket
+        socketClient = socketManager?.defaultSocket
         
         socketClient?.on(clientEvent: .connect) { [weak self] data, ack in
             print("socket connected")

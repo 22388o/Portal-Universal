@@ -26,35 +26,71 @@ private class Counter: ObservableObject {
 }
 
 struct LoadingAnimationView: View {
-    private let frames = (0...59).compactMap { Image("loading-frame_\($0)") }
+    @ObservedObject var viewModel: LoadingViewModel
     
-    @ObservedObject private var counter = Counter(interval: 0.05)
     @State private var animating: Bool = false
     @State private var onHide: Bool = false
     
+    @ObservedObject private var counter = Counter(interval: 0.05)
+    
+    private let frames = (0...59).compactMap { Image("loading-frame_\($0)") }
+        
     var body: some View {
         ZStack {
             Color.portalWalletBackground
             
-            frames[counter.value % frames.count]
-                .resizable()
-                .frame(width: 250, height: 250, alignment: .center)
-                .scaleEffect(animating ? 1 : 0.7)
-                .onAppear {
-                    withAnimation(Animation.easeInOut(duration: 0.4).repeatForever(autoreverses: true), {
-                        animating.toggle()
+            VStack {
+                Spacer()
+                
+                frames[counter.value % frames.count]
+                    .resizable()
+                    .frame(width: 250, height: 250, alignment: .center)
+                    .scaleEffect(animating ? 1 : 0.7)
+                    .onAppear {
+                        withAnimation(Animation.easeInOut(duration: 0.4).repeatForever(autoreverses: true), {
+                            animating.toggle()
+                        })
+                    }
+                    .onDisappear {
+                        onHide = true
+                        counter.reset()
+                    }
+                
+                if viewModel.isLocked {
+                    PTextField(secure: true, text: $viewModel.passcode, placeholder: "Enter passcode", upperCase: false, width: 250, height: 50, onCommit: {
+                        viewModel.tryUnlock()
                     })
+                    .modifier(ShakeEffect(shakes: viewModel.wrongPasscode ? 1 : 0))
+                    .animation(Animation.default.repeatCount(1).speed(5))
+                    .padding()
                 }
-                .onDisappear {
-                    onHide = true
-                    counter.reset()
+                
+                Spacer()
+                
+                if viewModel.isLocked {
+                    HStack {
+                        Text("Forgot passcode?")
+                            .font(.mainFont(size: 16))
+                            .foregroundColor(Color.white.opacity(0.82))
+                        
+                        Text("Reset")
+                            .font(.mainFont(size: 14))
+                            .underline()
+                            .foregroundColor(Color.red)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+
+                            }
+                    }
+                    .padding(40)
                 }
+            }
         }
     }
 }
 
 struct LoadingAnimationView_Previews: PreviewProvider {
     static var previews: some View {
-        LoadingAnimationView()
+        LoadingAnimationView(viewModel: LoadingViewModel.config())
     }
 }

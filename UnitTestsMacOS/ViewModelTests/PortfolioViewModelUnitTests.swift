@@ -11,8 +11,8 @@ import XCTest
 class PortfolioViewModelUnitTests: XCTestCase {
     
     private var sut: PortfolioViewModel!
-    private let walletMannager = MockedWalletManager()
-    private let adapterMannager = MockedAdapterManager()
+    private let walletManager = MockedWalletManager()
+    private let adapterManager = MockedAdapterManager()
     private let marketDataProvider = MockedMarketDataProvider()
     private let reachabilityService = MockedReachabilityService()
     private let state = PortalState()
@@ -20,8 +20,8 @@ class PortfolioViewModelUnitTests: XCTestCase {
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         sut = PortfolioViewModel(
-            walletManager: walletMannager,
-            adapterManager: adapterMannager,
+            walletManager: walletManager,
+            adapterManager: adapterManager,
             marketDataProvider: marketDataProvider,
             reachabilityService: reachabilityService,
             state: state
@@ -109,7 +109,7 @@ class PortfolioViewModelUnitTests: XCTestCase {
     func testAdapterReadySubscription() throws {
         XCTAssertEqual(sut.change, String())
 
-        adapterMannager.adapterReady.send(true)
+        adapterManager.adapterReady.send(true)
         
         let promise = expectation(description: "wait for publisher to trigger update")
         
