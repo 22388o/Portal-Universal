@@ -61,9 +61,9 @@ struct StoreSeedView: View {
                     }
                     .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     
-                    Text("Copy to clipboard")
-                        .underline()
-                        .foregroundColor(Color.txListTxType)
+                    Text(viewModel.copiedToClipboard ? "Copied to clipboard!" : "Copy to clipboard")
+                        .frame(width: 130)
+                        .foregroundColor(viewModel.copiedToClipboard ? Color.green : Color.txListTxType)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             viewModel.copyToClipboard()
