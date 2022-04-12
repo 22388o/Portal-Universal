@@ -11,14 +11,18 @@ import Combine
 import Coinpaprika
 
 final class SendAssetViewModel: ObservableObject {
-    enum SendAssetStep { case recipient, amount, summary }
+    enum SendAssetStep: Int, Comparable {
+        static func < (lhs: SendAssetViewModel.SendAssetStep, rhs: SendAssetViewModel.SendAssetStep) -> Bool {
+            lhs.rawValue < rhs.rawValue
+        }
+        case recipient = 0, amount, summary, sent
+    }
     
     @Published var step: SendAssetStep = .recipient
     @Published var memo = String()
     @Published var amountIsValid: Bool = true
     @Published var isSendingMax: Bool = false
     @Published var txFeePriority: FeeRatePriority = .medium
-    @Published var showConfirmationAlert: Bool = false
     
     @Published private(set) var txFee = String()
     @Published private(set) var addressIsValid: Bool = true
@@ -122,11 +126,15 @@ final class SendAssetViewModel: ObservableObject {
             case .recipient:
                 self.actionButtonEnabled = !self.sendService.receiverAddress.value.isEmpty && self.addressIsValid
             case .amount:
-                self.validate(address: self.sendService.receiverAddress.value, amount: self.sendService.amount.value)
+                self.validate(
+                    address: self.sendService.receiverAddress.value,
+                    amount: self.sendService.amount.value
+                )
             case .summary:
                 self.actionButtonEnabled = true
+            case .sent:
+                self.actionButtonEnabled = false
             }
-            
         }
         .store(in: &subscriptions)
         
@@ -193,7 +201,7 @@ final class SendAssetViewModel: ObservableObject {
             } else {
                 actionButtonEnabled = addressIsValid && (amount > 0 && amount <= sendService.spendable)
             }
-        case .summary:
+        case .summary, .sent:
             break
         }
     }
@@ -224,11 +232,11 @@ final class SendAssetViewModel: ObservableObject {
             .sink(receiveCompletion: { [weak self] completion in
                 if case let .failure(error) = completion {
                     self?.sendError = error
-                    self?.showConfirmationAlert.toggle()
+                    self?.step = .sent
                     print("Sending asset error: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] _ in
-                self?.showConfirmationAlert.toggle()
+                self?.step = .sent
             })
             .store(in: &subscriptions)
     }
@@ -241,9 +249,17 @@ final class SendAssetViewModel: ObservableObject {
             case .amount:
                 step = .recipient
             case .summary:
+                isSendingMax = false
+                exchangerViewModel.assetValue = String()
                 step = .amount
+            case .sent:
+                step = .summary
             }
         }
+    }
+    
+    func close() {
+        Portal.shared.state.modalView = .none
     }
     
     func resetErrorState() {
