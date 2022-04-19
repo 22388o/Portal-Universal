@@ -58,7 +58,7 @@ struct CoinMarketData {
     }
     
     func changeString(for timeframe: Timeframe, currrency: Currency) -> String {
-        let price = price(currency: currrency)
+        let price = self.price(currency: currrency)
         let change = changeInPercents(tf: timeframe)
 
         return StringFormatter.changeString(price: price, change: change, currency: currrency)

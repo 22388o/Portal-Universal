@@ -15,9 +15,9 @@ struct SettingsView: View {
     
     private var settingsWidth: CGFloat {
         #if os(iOS)
-            300
+            return 300
         #else
-            280
+            return 280
         #endif
     }
     

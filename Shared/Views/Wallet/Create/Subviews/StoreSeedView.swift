@@ -85,7 +85,7 @@ struct StoreSeedView: View {
                         .frame(width: 150)
                         .font(.mainFont(size: 10))
                         .foregroundColor(Color.coinViewRouteButtonInactive)
-                        .toggleStyle(.switch)
+                        .toggleStyle(SwitchToggleStyle())
                         .padding(.bottom)
                     
                     HStack(spacing: 0) {

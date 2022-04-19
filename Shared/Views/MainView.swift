@@ -26,7 +26,7 @@ struct MainView: View {
                 HStack(spacing: 0) {
                     if state.showPortfolio {
                         PortfolioView(viewModel: portfolioViewModel)
-                            .transition(.move(edge: .leading).combined(with: .opacity))
+                            .transition(AnyTransition.move(edge: .leading).combined(with: .opacity))
                     }
                     WalletView(viewModel: walletViewModel)
                     AssetViewLandscape(viewModel: assetViewModel)
