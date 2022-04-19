@@ -20,8 +20,8 @@ struct WalletModalViews: View {
                 )
             case .receiveAsset:
                 ReceiveAssetsView(coin: state.wallet.coin)
-            case .allTransactions:
-                AssetTxView(coin: state.wallet.coin)
+            case .allTransactions(let selectedTx):
+                AssetTxView(coin: state.wallet.coin, selectedTx: selectedTx)
             case .switchAccount:
                 AccountsView()
                     .animation(nil)

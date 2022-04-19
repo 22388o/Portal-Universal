@@ -38,28 +38,36 @@ struct RecentTxsView: View {
                             .frame(height: 1)
                         
                         ForEach(viewModel.txs, id: \.uid) { tx in
-                            VStack(spacing: 4) {
-                                HStack(spacing: 8) {
-                                    VStack {
-                                        Text(viewModel.title(tx: tx))
+                            Button {
+                                withAnimation(.easeIn(duration: 3.0)) {
+                                    viewModel.show(transaction: tx)
+                                }
+                            } label: {
+                                VStack(spacing: 4) {
+                                    HStack(spacing: 8) {
+                                        VStack {
+                                            Text(viewModel.title(tx: tx))
+                                        }
+                                        .font(.mainFont(size: 12))
+                                        .foregroundColor(Color.coinViewRouteButtonActive)
+                                        Spacer()
+                                        Text(viewModel.date(tx: tx))
+                                            .lineLimit(1)
+                                            .font(.mainFont(size: 12))
+                                            .foregroundColor(Color.coinViewRouteButtonInactive)
                                     }
-                                    .font(.mainFont(size: 12))
-                                    .foregroundColor(Color.coinViewRouteButtonActive)
-                                    Spacer()
-                                    Text(viewModel.date(tx: tx))
-                                        .lineLimit(1)
-                                        .font(.mainFont(size: 12))
-                                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                                    
+                                    HStack {
+                                        Text(viewModel.confimations(tx: tx))
+                                            .font(.mainFont(size: 12))
+                                            .foregroundColor(Color.coinViewRouteButtonInactive)
+                                        Spacer()
+                                    }
                                 }
-                                
-                                HStack {
-                                    Text(viewModel.confimations(tx: tx))
-                                        .font(.mainFont(size: 12))
-                                        .foregroundColor(Color.coinViewRouteButtonInactive)
-                                    Spacer()
-                                }
+                                .frame(height: 56)
+                                .contentShape(Rectangle())
                             }
-                            .frame(height: 56)
+                            .buttonStyle(PlainButtonStyle())
                             .id(tx.transactionHash)
                             
                             Rectangle()
@@ -72,7 +80,7 @@ struct RecentTxsView: View {
                 
                 PButton(label: "See all transactions", width: 256, height: 32, fontSize: 12, enabled: true) {
                     withAnimation(.easeIn(duration: 3.0)) {
-                        state.modalView = .allTransactions
+                        state.modalView = .allTransactions(selectedTx: nil)
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
