@@ -39,7 +39,7 @@ class PortalState: ObservableObject {
              sendAsset,
              switchAccount,
              createAlert,
-             allTransactions,
+             allTransactions(selectedTx: TransactionRecord?),
              allNotifications,
              accountSettings,
              withdrawFromExchange(balance: ExchangeBalanceModel)
