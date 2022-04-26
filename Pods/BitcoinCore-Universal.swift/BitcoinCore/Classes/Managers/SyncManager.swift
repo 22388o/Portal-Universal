@@ -115,11 +115,11 @@ class SyncManager {
     }
 
     private func startSync() {
-//        if apiSyncStateManager.restored {
+        if apiSyncStateManager.restored {
             startPeerGroup()
-//        } else {
-//            startInitialSync()
-//        }
+        } else {
+            startInitialSync()
+        }
     }
 
 }
