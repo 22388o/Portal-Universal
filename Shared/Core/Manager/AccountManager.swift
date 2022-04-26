@@ -57,11 +57,6 @@ extension AccountManager: IAccountManager {
         nextActiveAccount()
     }
     
-    func delete(accountId: String) {
-        accountStorage.delete(accountId: accountId)
-        nextActiveAccount()
-    }
-    
     func update(account: Account) {
         let currentAccountId = activeAccount?.id
         accountStorage.update(account: account)

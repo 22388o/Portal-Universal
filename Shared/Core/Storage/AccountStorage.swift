@@ -117,12 +117,8 @@ extension AccountStorage {
     }
 
     func delete(account: Account) {
-        accountStorage.deleteAccountRecord(by: account.id)
+        try? accountStorage.deleteAccount(account)
         try? clearSecureStorage(account: account)
-    }
-
-    func delete(accountId: String) {
-        accountStorage.deleteAccountRecord(by: accountId)
     }
 
     func clear() {
