@@ -28,8 +28,9 @@ final class AdapterManager {
         initAdapters(wallets: walletManager.activeWallets)
         
         walletManager.onWalletsUpdate
+            .receive(on: RunLoop.main)
             .sink { [weak self] wallets in
-                self?.initAdapters(wallets: wallets)
+                self?.refreshAdapters(wallets: wallets)
             }
             .store(in: &subscriptions)
     }

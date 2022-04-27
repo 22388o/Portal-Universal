@@ -58,12 +58,8 @@ extension AccountManager: IAccountManager {
     }
     
     func update(account: Account) {
-        let currentAccountId = activeAccount?.id
         accountStorage.update(account: account)
-        // Fast switching accounts to update settings of current account
-        nextActiveAccount(previousAccountId: currentAccountId)
-        // Updating current account
-        setActiveAccount(id: account.id)
+        onActiveAccountUpdate.send(account)
     }
     
     func updateWalletCurrency(code: String) {
