@@ -122,12 +122,15 @@ struct SendAssetView: View {
                 case .sent:
                     if let error = viewModel.sendError {
                         VStack {
-                            Text("Something went wrong :/")
+                            Text("Something went wrong:")
                                 .foregroundColor(Color.coinViewRouteButtonInactive)
                                 .font(.mainFont(size: 16))
+                                .padding()
                             Text(error.localizedDescription)
+                                .multilineTextAlignment(.center)
                                 .foregroundColor(Color.coinViewRouteButtonActive)
                                 .font(.mainFont(size: 12))
+                                .padding()
                         }
                         .padding()
                     } else {
