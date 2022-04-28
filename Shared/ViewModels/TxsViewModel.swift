@@ -50,7 +50,14 @@ final class TxsViewModel: ObservableObject {
         return balanceString
     }
     
-    init(state: PortalState, coin: Coin, balance: Decimal, transactionAdapter: ITransactionsAdapter, currency: Currency, ticker: Ticker?) {
+    init(
+        state: PortalState,
+        coin: Coin,
+        balance: Decimal,
+        transactionAdapter: ITransactionsAdapter,
+        currency: Currency,
+        ticker: Ticker?
+    ) {
         
         self.state = state
         self.coin = coin
@@ -71,7 +78,9 @@ final class TxsViewModel: ObservableObject {
         transactionAdapter.transactionRecords
             .receive(on: RunLoop.main)
             .sink { [weak self] records in
-                self?.allTxs = records
+                guard let self = self else { return }
+                let filteredRecords = records.filter{ !self.allTxs.contains($0) }
+                self.allTxs.insert(contentsOf: filteredRecords, at: 0)
             }
             .store(in: &subscriptions)
         
@@ -124,7 +133,7 @@ final class TxsViewModel: ObservableObject {
     }
     
     deinit {
-//        print("Tx view Model deinited")
+        print("Tx view Model deinited")
     }
 }
 

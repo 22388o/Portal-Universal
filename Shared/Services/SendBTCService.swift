@@ -41,6 +41,12 @@ class SendBTCService: ISendAssetService {
     }
     
     func send() -> Future<Void, Error> {
-        sendAdapter.send(amount: amount.value, address: receiverAddress.value, feeRate: feeRate.value, pluginData: [:], sortMode: .shuffle)
+        sendAdapter.send(
+            amount: amount.value,
+            address: receiverAddress.value,
+            feeRate: feeRate.value,
+            pluginData: [:],
+            sortMode: .shuffle
+        )
     }
 }
