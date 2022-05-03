@@ -15,8 +15,10 @@ struct SendAssetProgressView: View {
         case .recipient:
             return 0
         case .amount:
-            return 200
+            return 150
         case .summary:
+            return 300
+        case .sent:
             return 400
         }
     }
@@ -47,8 +49,8 @@ struct SendAssetProgressView: View {
                 Text("Amount")
                     .padding(.vertical, 6)
                     .padding(.horizontal)
-                    .foregroundColor(step == .amount || step == .summary ? Color.white : Color.coinViewRouteButtonActive)
-                    .background(step == .amount || step == .summary ? Color.pButtonEnabledBackground : Color.coinViewRouteButtonInactive)
+                    .foregroundColor(step >= .amount ? Color.white : Color.coinViewRouteButtonActive)
+                    .background(step >= .amount ? Color.pButtonEnabledBackground : Color.coinViewRouteButtonInactive)
                     .cornerRadius(8)
                     .animation(.easeInOut(duration: 0.75))
                 
@@ -57,8 +59,18 @@ struct SendAssetProgressView: View {
                 Text("Summary")
                     .padding(.vertical, 6)
                     .padding(.horizontal)
-                    .foregroundColor(step == .summary ? Color.white : Color.coinViewRouteButtonActive)
-                    .background(step == .summary ? Color.pButtonEnabledBackground : Color.coinViewRouteButtonInactive)
+                    .foregroundColor(step >= .summary ? Color.white : Color.coinViewRouteButtonActive)
+                    .background(step >= .summary ? Color.pButtonEnabledBackground : Color.coinViewRouteButtonInactive)
+                    .cornerRadius(8)
+                    .animation(.easeInOut(duration: 0.75))
+                
+                Spacer()
+                
+                Text("Sent")
+                    .padding(.vertical, 6)
+                    .padding(.horizontal)
+                    .foregroundColor(step >= .sent ? Color.white : Color.coinViewRouteButtonActive)
+                    .background(step >= .sent ? Color.pButtonEnabledBackground : Color.coinViewRouteButtonInactive)
                     .cornerRadius(8)
                     .animation(.easeInOut(duration: 0.75))
                 

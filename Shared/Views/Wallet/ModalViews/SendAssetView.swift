@@ -119,31 +119,110 @@ struct SendAssetView: View {
                     
                     Divider()
                         .padding(.vertical)
+                case .sent:
+                    if let error = viewModel.sendError {
+                        VStack {
+                            Text("Something went wrong :/")
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                                .font(.mainFont(size: 16))
+                            Text(error.localizedDescription)
+                                .foregroundColor(Color.coinViewRouteButtonActive)
+                                .font(.mainFont(size: 12))
+                        }
+                        .padding()
+                    } else {
+                        Divider()
+                            .padding(.vertical)
+
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Tx sent!")
+                                .foregroundColor(Color.coinViewRouteButtonInactive)
+                                .font(.mainFont(size: 16))
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Amount:")
+                                    .foregroundColor(Color.coinViewRouteButtonInactive)
+                                
+                                Text("\(viewModel.amount.string) \(viewModel.coin.code) (\(viewModel.exchangerViewModel.fiatValue) \(viewModel.exchangerViewModel.currency.code))")
+                                    .foregroundColor(Color.coinViewRouteButtonActive)
+
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Recipient address:")
+                                    .foregroundColor(Color.coinViewRouteButtonInactive)
+
+                                Text("\(viewModel.receiverAddress)")
+                                    .foregroundColor(Color.coinViewRouteButtonActive)
+
+                            }
+
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Network fees:")
+                                    .foregroundColor(Color.coinViewRouteButtonInactive)
+
+                                Text(viewModel.txFee)
+                                    .foregroundColor(Color.coinViewRouteButtonActive)
+
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Private description / memo (optional)")
+                                    .font(.mainFont(size: 12))
+                                    .foregroundColor(Color.coinViewRouteButtonInactive)
+                                
+                                Text(viewModel.memo.isEmpty ? "-" : viewModel.memo)
+                                    .foregroundColor(Color.coinViewRouteButtonActive)
+                                    .font(.mainFont(size: 12))
+                                
+                                Rectangle()
+                                    .frame(width: 480, height: 0)
+                            }
+
+                        }
+                        .font(.mainFont(size: 12))
+                        
+                        Divider()
+                            .padding(.vertical)
+                    }
                 }
                 
                 HStack {
-                    if viewModel.step != .recipient {
-                        PButton(label: "Back", width: 100, height: 44, fontSize: 12, enabled: true) {
+                    if viewModel.step != .sent {
+                        if viewModel.step != .recipient {
+                            PButton(label: "Back", width: 100, height: 44, fontSize: 12, enabled: true) {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    viewModel.goBack()
+                                }
+                            }
+                            .transition(.opacity.combined(with: .scale))
+                            .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                        }
+                        
+                        PButton(label: viewModel.step != .summary ? "Continue" : "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.actionButtonEnabled) {
                             withAnimation(.easeInOut(duration: 0.2)) {
-                                viewModel.goBack()
+                                switch viewModel.step {
+                                case .recipient:
+                                    viewModel.step = .amount
+                                case .amount:
+                                    viewModel.step = .summary
+                                case .summary:
+                                    viewModel.send()
+                                case .sent:
+                                    break
+                                }
                             }
                         }
-                        .transition(.opacity.combined(with: .scale))
+                        .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                    } else {
+                        PButton(label: "Close", width: 334, height: 48, fontSize: 14, enabled: true) {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                viewModel.close()
+                            }
+                        }
                         .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                     }
-                    PButton(label: viewModel.step != .summary ? "Continue" : "Send", width: 334, height: 48, fontSize: 14, enabled: viewModel.actionButtonEnabled) {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            switch viewModel.step {
-                            case .recipient:
-                                viewModel.step = .amount
-                            case .amount:
-                                viewModel.step = .summary
-                            case .summary:
-                                viewModel.send()
-                            }
-                        }
-                    }
-                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 }
                 .padding(.bottom, 40)
                 
@@ -214,21 +293,6 @@ struct SendAssetView: View {
                 .padding([.horizontal, .bottom], 4)
             }
         })
-        .alert(isPresented: $viewModel.showConfirmationAlert) {
-            if let error = viewModel.sendError {
-                return Alert(
-                    title: Text("Sending \(viewModel.coin.code) error"),
-                    message: Text(error.localizedDescription), dismissButton: .default(Text("Dismiss"), action: {
-                        viewModel.resetErrorState()
-                }))
-            } else {
-                return Alert(
-                    title: Text("Sent \(viewModel.exchangerViewModel.assetValue) \(viewModel.coin.code)"),
-                    message: Text("Receiver address: \(viewModel.receiverAddress)"), dismissButton: .default(Text("Dismiss"), action: {
-                        Portal.shared.state.modalView = .none
-                }))
-            }
-        }
     }
 }
 
