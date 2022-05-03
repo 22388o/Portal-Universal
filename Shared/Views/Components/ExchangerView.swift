@@ -26,7 +26,7 @@ struct ExchangerView: View {
                     Toggle("Send Max", isOn: $isSendingMax)
                         .font(.mainFont(size: 10))
                         .foregroundColor(Color.coinViewRouteButtonInactive)
-                        .toggleStyle(.switch)
+                        .toggleStyle(SwitchToggleStyle())
                 }
             }
             .padding(.horizontal, 4)

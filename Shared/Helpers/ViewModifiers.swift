@@ -12,6 +12,7 @@ import Combine
 public struct AccessibilityIdentifiebleModifier: ViewModifier {
     let identifier: String
     
+    @ViewBuilder
     public func body(content: Content) -> some View {
         if #available(macOS 11.0, *) {
             content

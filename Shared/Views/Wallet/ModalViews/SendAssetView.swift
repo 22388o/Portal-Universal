@@ -196,7 +196,7 @@ struct SendAssetView: View {
                                     viewModel.goBack()
                                 }
                             }
-                            .transition(.opacity.combined(with: .scale))
+                            .transition(AnyTransition.opacity.combined(with: .scale))
                             .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                         }
                         
