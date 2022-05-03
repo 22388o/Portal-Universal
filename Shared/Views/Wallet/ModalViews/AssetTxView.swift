@@ -12,11 +12,12 @@ struct AssetTxView: View {
     @ObservedObject private var viewModel: TxsViewModel
     @ObservedObject private var state = Portal.shared.state
     
-    init(coin: Coin) {
+    init(coin: Coin, selectedTx: TransactionRecord? = nil) {
         guard let viewModel = TxsViewModel.config(coin: coin) else {
             fatalError("\(#function) Cannot config TxsViewModel")
         }
         self.viewModel = viewModel
+        self._selectedTx = State(initialValue: selectedTx)
     }
     
     var body: some View {

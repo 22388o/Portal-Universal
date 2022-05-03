@@ -26,7 +26,8 @@ final class TxsViewModel: ObservableObject {
     private var transactionAdapter: ITransactionsAdapter
     private var balance: Decimal
     private let currency: Currency
-    private var ticker: Ticker?
+    private let state: PortalState
+    private let ticker: Ticker?
     private var subscriptions = Set<AnyCancellable>()
     
     var balanceString: String {
@@ -49,7 +50,9 @@ final class TxsViewModel: ObservableObject {
         return balanceString
     }
     
-    init(coin: Coin, balance: Decimal, transactionAdapter: ITransactionsAdapter, currency: Currency, ticker: Ticker?) {
+    init(state: PortalState, coin: Coin, balance: Decimal, transactionAdapter: ITransactionsAdapter, currency: Currency, ticker: Ticker?) {
+        
+        self.state = state
         self.coin = coin
         self.balance = balance
         self.transactionAdapter = transactionAdapter
@@ -116,6 +119,10 @@ final class TxsViewModel: ObservableObject {
         }
     }
     
+    func show(transaction: TransactionRecord) {
+        state.modalView = .allTransactions(selectedTx: transaction)
+    }
+    
     deinit {
 //        print("Tx view Model deinited")
     }
@@ -127,16 +134,28 @@ extension TxsViewModel {
         let adapterManager: IAdapterManager = Portal.shared.adapterManager
         let currency = Portal.shared.state.wallet.currency
         let ticker = Portal.shared.marketDataProvider.ticker(coin: coin)
+        let state = Portal.shared.state
         
         guard
-            let wallet = walletManager.activeWallets.first(where: { $0.coin == coin }),
-            let balanceAdapter = adapterManager.balanceAdapter(for: wallet),
+            let wallet = walletManager.activeWallets.first(where: { $0.coin == coin })
+        else {
+            fatalError("\(#function) There is no active wallet")
+        }
+        
+        guard
+            let balanceAdapter = adapterManager.balanceAdapter(for: wallet)
+        else {
+            fatalError("\(#function) There is no balance adapter for wallet with id: \(wallet.account.id)")
+        }
+        
+        guard
             let transactionAdapter = adapterManager.transactionsAdapter(for: wallet)
         else {
-            return nil
+            fatalError("\(#function) There is no transaction adapter for wallet with id: \(wallet.account.id)")
         }
         
         return TxsViewModel(
+            state: state,
             coin: coin,
             balance: balanceAdapter.balance,
             transactionAdapter: transactionAdapter,
