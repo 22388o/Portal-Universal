@@ -13,6 +13,6 @@ protocol IAccountStorage {
     var allAccountRecords: [AccountRecord] { get }
     func save(accountRecord: AccountRecord)
     func update(account: Account)
-    func deleteAccountRecord(by id: String)
+    func deleteAccount(_ account: Account) throws
     func deleteAllAccountRecords()
 }

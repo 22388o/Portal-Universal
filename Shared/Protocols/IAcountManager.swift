@@ -19,7 +19,6 @@ protocol IAccountManager {
     func save(account: Account)
     func update(account: Account)
     func delete(account: Account)
-    func delete(accountId: String)
     func clear()
 }
 

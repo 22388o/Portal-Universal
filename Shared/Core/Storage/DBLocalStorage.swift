@@ -168,9 +168,9 @@ extension DBlocalStorage: IAccountStorage {
             
         }
     }
-    
-    func deleteAccountRecord(by id: String) {
         
+    func deleteAccount(_ account: Account) throws {
+        try delete(account: account)
     }
     
     func deleteAllAccountRecords() {

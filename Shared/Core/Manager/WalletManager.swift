@@ -28,13 +28,7 @@ final class WalletManager {
         
         cachedWallets = storage.wallets
         handleUpdate(activeAccount: accountManager.activeAccount)
-        
-        accountManager.onActiveAccountUpdate
-            .sink { [weak self] account in
-                self?.handleUpdate(activeAccount: account)
-            }
-            .store(in: &subscriptions)
-        
+
         storage.onWalletsUpdate
             .sink { [weak self] _ in
                 self?.handleUpdate(activeAccount: accountManager.activeAccount)
