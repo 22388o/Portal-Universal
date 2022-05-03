@@ -17,6 +17,7 @@ final class CreateAccountViewModel: ObservableObject {
     @Published var accountName = String()
     @Published var isUsingStrongSeed = false
     @Published var btcAddressFormat = BtcAddressFormat.segwit.rawValue
+    @Published var copiedToClipboard: Bool = false
     @Published var test: SeedTestViewModel
     @Published private(set) var nameIsValid = false
     
@@ -93,6 +94,8 @@ final class CreateAccountViewModel: ObservableObject {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(String(seedString.dropFirst()), forType: NSPasteboard.PasteboardType.string)
         #endif
+        
+        copiedToClipboard = true
     }
     
     private var mnemonicDereviation: MnemonicDerivation {
