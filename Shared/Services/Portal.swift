@@ -21,7 +21,7 @@ final class Portal {
     private let localStorage: ILocalStorage
     private let secureStorage: IKeychainStorage
     
-    let dbStorage: IDBStorage & IAccountStorage & IDBCacheStorage & IPriceAlertStorage
+    let dbStorage: IAccountStorage & IDBCacheStorage & IPriceAlertStorage
     let appConfigProvider: IAppConfigProvider
     let accountManager: IAccountManager
     let walletManager: IWalletManager

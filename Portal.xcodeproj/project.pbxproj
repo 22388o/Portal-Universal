@@ -182,8 +182,6 @@
 		75308ABE26A021C10024AACD /* ILocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308ABC26A021C10024AACD /* ILocalStorage.swift */; };
 		75308AC226A0222A0024AACD /* DBLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AC126A0222A0024AACD /* DBLocalStorage.swift */; };
 		75308AC326A0222A0024AACD /* DBLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AC126A0222A0024AACD /* DBLocalStorage.swift */; };
-		75308AC726A022570024AACD /* IBDStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AC626A022570024AACD /* IBDStorage.swift */; };
-		75308AC826A022570024AACD /* IBDStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AC626A022570024AACD /* IBDStorage.swift */; };
 		75308ACC26A027B40024AACD /* AppConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308ACB26A027B40024AACD /* AppConfigProvider.swift */; };
 		75308ACD26A027B40024AACD /* AppConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308ACB26A027B40024AACD /* AppConfigProvider.swift */; };
 		75308AD126A027E60024AACD /* IAppConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75308AD026A027E60024AACD /* IAppConfigProvider.swift */; };
@@ -752,7 +750,6 @@
 		75308AB726A021900024AACD /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		75308ABC26A021C10024AACD /* ILocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILocalStorage.swift; sourceTree = "<group>"; };
 		75308AC126A0222A0024AACD /* DBLocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBLocalStorage.swift; sourceTree = "<group>"; };
-		75308AC626A022570024AACD /* IBDStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBDStorage.swift; sourceTree = "<group>"; };
 		75308ACB26A027B40024AACD /* AppConfigProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigProvider.swift; sourceTree = "<group>"; };
 		75308AD026A027E60024AACD /* IAppConfigProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAppConfigProvider.swift; sourceTree = "<group>"; };
 		75308AD526A0280E0024AACD /* FeeRateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeRateProvider.swift; sourceTree = "<group>"; };
@@ -1100,7 +1097,6 @@
 				75A3F52C26A57C3B006B1823 /* IAdapterManager.swift */,
 				75110D6B26A1FB3100BDD6C0 /* ISendEthereumAdapter.swift */,
 				75110D6826A1FAE000BDD6C0 /* IErc20Adapter.swift */,
-				75308AC626A022570024AACD /* IBDStorage.swift */,
 				755EBC322721959200B56B89 /* IDBCacheStorage.swift */,
 				75308ABC26A021C10024AACD /* ILocalStorage.swift */,
 				751B6554269D9924001B759C /* ITransactionAdapter.swift */,
@@ -2323,7 +2319,6 @@
 				75568BF0262D9F810010C7E6 /* ReceiveAssetsView.swift in Sources */,
 				75BEB20B26B96AE200C99F50 /* ERC20Updater.swift in Sources */,
 				75A3F54826A59F72006B1823 /* IAccount.swift in Sources */,
-				75308AC726A022570024AACD /* IBDStorage.swift in Sources */,
 				753364AD26F339C00073B0A4 /* ExchangeViewModel.swift in Sources */,
 				75271303261B5378008C962C /* PButton.swift in Sources */,
 				7556CA3327FB5E80000AAC59 /* PasscodeSettingsView.swift in Sources */,
@@ -2697,7 +2692,6 @@
 				75F5CDB72684CD7F005ECA5B /* AssetAllocationViewModel.swift in Sources */,
 				750AE9BE26149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
 				75A3F54626A57EBB006B1823 /* Wallet.swift in Sources */,
-				75308AC826A022570024AACD /* IBDStorage.swift in Sources */,
 				7556940526A6B15C00EE5CC4 /* WalletViewModel.swift in Sources */,
 				756C66B52640363500CD22B2 /* AlertsView.swift in Sources */,
 				7521917A275D6444003FA89D /* IPriceAlertStorage.swift in Sources */,
