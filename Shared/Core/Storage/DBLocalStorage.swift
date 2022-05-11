@@ -20,18 +20,7 @@ final class DBlocalStorage {
         self.context = context
         loadCache()
     }
-    
-    func delete(account: AccountRecord) throws {
-        context.performAndWait {
-            context.delete(account)
-        }
-        do {
-            try context.save()
-        } catch {
-            throw DBStorageError.cannotSaveContext(error: error)
-        }
-    }
-    
+        
     private func loadCache() {
         context.performAndWait {
             let request = DBCache.fetchRequest() as NSFetchRequest<DBCache>
@@ -59,39 +48,15 @@ final class DBlocalStorage {
             }
         }
     }
-        
-    private func alertsFor(accountId: String, coin: String) -> [PriceAlert] {
-        var alerts: [PriceAlert] = []
-        
-        context.performAndWait {
-            let request = PriceAlert.fetchRequest() as NSFetchRequest<PriceAlert>
             
-            let accountIdPredicate = NSPredicate(format: "accountId = %@", accountId)
-            let coinPredicate = NSPredicate(format: "coin = %@", coin)
-
-            request.predicate = NSCompoundPredicate(
-                andPredicateWithSubpredicates: [
-                    accountIdPredicate,
-                    coinPredicate
-                ]
-            )
-
-            if let records = try? context.fetch(request) {
-                alerts = records
-            }
-        }
-        
-        return alerts
-    }
-    
-    fileprivate func fetchCachedTickers() -> [Ticker] {
+    private func fetchCachedTickers() -> [Ticker] {
         guard let cache = self.cache, let tickersData = cache.tickersData else { return [] }
         let tickers = try? JSONDecoder().decode([Ticker].self, from: tickersData)
         print("Cached tickers fetched")
         return tickers ?? []
     }
     
-    fileprivate func fetchCachedFiatCurrencies() -> [FiatCurrency] {
+    private func fetchCachedFiatCurrencies() -> [FiatCurrency] {
         guard let cache = self.cache, let fiatCUrrenciesData = cache.fiatCurrenciesData else { return [] }
         let currencies = try? JSONDecoder().decode([FiatCurrency].self, from: fiatCUrrenciesData)
         print("Cached fiat currencies fetched")
@@ -99,35 +64,19 @@ final class DBlocalStorage {
     }
 }
 
-extension DBlocalStorage: IDBStorage {
-    func accountRecords() -> [AccountRecord] {
+extension DBlocalStorage: IAccountStorage {
+    var accountRecords: [AccountRecord] {
         var accountRecords: [AccountRecord] = []
-        
+
         context.performAndWait {
             let request = AccountRecord.fetchRequest() as NSFetchRequest<AccountRecord>
-                    
+
             if let records = try? context.fetch(request) {
                 accountRecords = records
             }
         }
-        
-        return accountRecords
-    }
-        
-    func delete(account: Account) throws {
-        if let record = accountRecords().first(where: { $0.id == account.id }) {
-            try delete(account: record)
-        }
-    }
-    
-    func clear() {
-        
-    }
-}
 
-extension DBlocalStorage: IAccountStorage {
-    var allAccountRecords: [AccountRecord] {
-        accountRecords()
+        return accountRecords
     }
     
     func save(accountRecord: AccountRecord) {
@@ -139,7 +88,7 @@ extension DBlocalStorage: IAccountStorage {
     
     func update(account: Account) {
         context.performAndWait {
-            if let record = accountRecords().first(where: { $0.id == account.id }) {
+            if let record = accountRecords.first(where: { $0.id == account.id }) {
                 switch account.btcNetworkType {
                 case .mainNet:
                     record.btcNetwork = 0
@@ -170,11 +119,24 @@ extension DBlocalStorage: IAccountStorage {
     }
         
     func deleteAccount(_ account: Account) throws {
-        try delete(account: account)
+        if let record = accountRecords.first(where: { $0.id == account.id }) {
+            context.performAndWait {
+                context.delete(record)
+            }
+            do {
+                try context.save()
+            } catch {
+                throw DBStorageError.cannotSaveContext(error: error)
+            }
+        }
     }
     
     func deleteAllAccountRecords() {
         
+    }
+    
+    func clear() {
+
     }
 }
 
@@ -216,7 +178,27 @@ extension DBlocalStorage: IDBCacheStorage {
 
 extension DBlocalStorage: IPriceAlertStorage {    
     func alerts(accountId: String, coin: String) -> [PriceAlert] {
-        alertsFor(accountId: accountId, coin: coin)
+        var alerts: [PriceAlert] = []
+        
+        context.performAndWait {
+            let request = PriceAlert.fetchRequest() as NSFetchRequest<PriceAlert>
+            
+            let accountIdPredicate = NSPredicate(format: "accountId = %@", accountId)
+            let coinPredicate = NSPredicate(format: "coin = %@", coin)
+
+            request.predicate = NSCompoundPredicate(
+                andPredicateWithSubpredicates: [
+                    accountIdPredicate,
+                    coinPredicate
+                ]
+            )
+
+            if let records = try? context.fetch(request) {
+                alerts = records
+            }
+        }
+        
+        return alerts
     }
     
     func addAlert(_ model: PriceAlertModel) {
