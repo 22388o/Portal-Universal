@@ -99,14 +99,14 @@ extension AccountStorage {
     var activeAccount: Account? {
         guard
             let currentAccountID = localStorage.getCurrentAccountID(),
-            let record = accountStorage.allAccountRecords.first(where: { $0.id == currentAccountID })
+            let record = accountStorage.accountRecords.first(where: { $0.id == currentAccountID })
         else { return nil }
         
         return createAccount(record: record)
     }
 
     var allAccounts: [Account] {
-        accountStorage.allAccountRecords.compactMap { createAccount(record: $0) }
+        accountStorage.accountRecords.compactMap { createAccount(record: $0) }
     }
 
     func save(account: Account) {
