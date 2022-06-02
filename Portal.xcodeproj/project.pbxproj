@@ -432,6 +432,9 @@
 		7574C34B2619DCE400299131 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateAccountView.swift */; };
 		75777C0F28479F8000866B02 /* LDKFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; };
 		75777C1028479F8000866B02 /* LDKFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		75777C142848E27700866B02 /* LightningRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75777C132848E27700866B02 /* LightningRootView.swift */; };
+		75777C152848E27700866B02 /* LightningRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75777C132848E27700866B02 /* LightningRootView.swift */; };
+		75777C162848E27700866B02 /* LightningRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75777C132848E27700866B02 /* LightningRootView.swift */; };
 		7581900F26E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */; };
 		7581901026E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */; };
 		7581901226EA753E00E0691B /* ExchangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901126EA753D00E0691B /* ExchangeManager.swift */; };
@@ -916,6 +919,7 @@
 		756C66BA264038E900CD22B2 /* ManageAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAlertView.swift; sourceTree = "<group>"; };
 		7574C3492619DCE400299131 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		75777C0E28479F8000866B02 /* LDKFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = LDKFramework.xcframework; sourceTree = "<group>"; };
+		75777C132848E27700866B02 /* LightningRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningRootView.swift; sourceTree = "<group>"; };
 		7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersRouteSwitch.swift; sourceTree = "<group>"; };
 		7581901126EA753D00E0691B /* ExchangeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeManager.swift; sourceTree = "<group>"; };
 		75821D65277343AD004A65A2 /* TokenSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelector.swift; sourceTree = "<group>"; };
@@ -1653,6 +1657,7 @@
 				7599A7932695D5E300562009 /* HeaderView.swift */,
 				7555642126D8F038001B1C1A /* Portfolio */,
 				750C36AF261F2B4B0088CCED /* Wallet */,
+				75777C122848DFBE00866B02 /* Lightning */,
 				7555642526D8F10B001B1C1A /* Exchange */,
 				750C3696261F291E0088CCED /* Components */,
 			);
@@ -1728,6 +1733,14 @@
 				CB3605D5B5420D4371EE75EE /* Pods_UnitTestsMacOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		75777C122848DFBE00866B02 /* Lightning */ = {
+			isa = PBXGroup;
+			children = (
+				75777C132848E27700866B02 /* LightningRootView.swift */,
+			);
+			path = Lightning;
 			sourceTree = "<group>";
 		};
 		757E08F226165BC5006ABEC2 /* Create */ = {
@@ -2334,6 +2347,7 @@
 				750AE90D26149A8C00C45971 /* CoinMarketData.swift in Sources */,
 				75E5E08E26EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */,
 				7537DEEF2701A70D00B862AB /* KrakenBalance.swift in Sources */,
+				75777C142848E27700866B02 /* LightningRootView.swift in Sources */,
 				75A3F52426A57B69006B1823 /* CoinManager.swift in Sources */,
 				7599A7972695D63900562009 /* MainView.swift in Sources */,
 				75568BF0262D9F810010C7E6 /* ReceiveAssetsView.swift in Sources */,
@@ -2732,6 +2746,7 @@
 				7556CA3E27FC8A1A000AAC59 /* ShakeEffect.swift in Sources */,
 				7556CA3727FB601B000AAC59 /* GeneralSettingsView.swift in Sources */,
 				753364A626F339780073B0A4 /* TradingData.swift in Sources */,
+				75777C152848E27700866B02 /* LightningRootView.swift in Sources */,
 				75A3F54026A57E02006B1823 /* EthereumKitManager.swift in Sources */,
 				75A3F55C26A5A775006B1823 /* AccountRecord+CoreDataClass.swift in Sources */,
 				7537DEE62701A25100B862AB /* ExchangeBalanceInfo.swift in Sources */,
@@ -2886,6 +2901,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF73F2BD278E030800F39872 /* PortalUITests.swift in Sources */,
+				75777C162848E27700866B02 /* LightningRootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
