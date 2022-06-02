@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -430,6 +430,8 @@
 		756C66BC264038E900CD22B2 /* ManageAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756C66BA264038E900CD22B2 /* ManageAlertView.swift */; };
 		7574C34A2619DCE400299131 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateAccountView.swift */; };
 		7574C34B2619DCE400299131 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateAccountView.swift */; };
+		75777C0F28479F8000866B02 /* LDKFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; };
+		75777C1028479F8000866B02 /* LDKFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7581900F26E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */; };
 		7581901026E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */; };
 		7581901226EA753E00E0691B /* ExchangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581901126EA753D00E0691B /* ExchangeManager.swift */; };
@@ -641,6 +643,20 @@
 			remoteInfo = "Portal (macOS)";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		75777C1128479F8000866B02 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				75777C1028479F8000866B02 /* LDKFramework.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08F4560F04D36CA71E281A41 /* Pods-UnitTestsIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTestsIOS.debug.xcconfig"; path = "Target Support Files/Pods-UnitTestsIOS/Pods-UnitTestsIOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -899,6 +915,7 @@
 		756C66B32640363500CD22B2 /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		756C66BA264038E900CD22B2 /* ManageAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAlertView.swift; sourceTree = "<group>"; };
 		7574C3492619DCE400299131 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
+		75777C0E28479F8000866B02 /* LDKFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = LDKFramework.xcframework; sourceTree = "<group>"; };
 		7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersRouteSwitch.swift; sourceTree = "<group>"; };
 		7581901126EA753D00E0691B /* ExchangeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeManager.swift; sourceTree = "<group>"; };
 		75821D65277343AD004A65A2 /* TokenSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSelector.swift; sourceTree = "<group>"; };
@@ -1043,6 +1060,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75777C0F28479F8000866B02 /* LDKFramework.xcframework in Frameworks */,
 				38ADC71E533EB3177E55D088 /* Pods_Portal__macOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1699,6 +1717,7 @@
 		756A66A5262437C100353635 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				75777C0E28479F8000866B02 /* LDKFramework.xcframework */,
 				75EF8D642785CEA800F69A6E /* Pods_Portal__iOS_.framework */,
 				750D63BA2689D18000643FD3 /* AVFoundation.framework */,
 				BC9A9F3CB0318CDC9451AD23 /* Pods_Portal__iOS_.framework */,
@@ -1952,6 +1971,7 @@
 				755782D326087904000E1686 /* Frameworks */,
 				755782D426087904000E1686 /* Resources */,
 				10CEBEC6934F051D5ECB2109 /* [CP] Embed Pods Frameworks */,
+				75777C1128479F8000866B02 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
