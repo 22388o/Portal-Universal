@@ -42,6 +42,8 @@ struct WalletModalViews: View {
                 ManageAlertView(coin: state.wallet.coin)
             case .manageAssets:
                 ManageAssetsView()
+            case .channels:
+                LightningRootView()
             default:
                 EmptyView()
             }
