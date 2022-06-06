@@ -42,7 +42,8 @@ class PortalState: ObservableObject {
              allTransactions(selectedTx: TransactionRecord?),
              allNotifications,
              accountSettings,
-             withdrawFromExchange(balance: ExchangeBalanceModel)
+             withdrawFromExchange(balance: ExchangeBalanceModel),
+             channels
     }
         
     @Published var showPortfolio: Bool = true
