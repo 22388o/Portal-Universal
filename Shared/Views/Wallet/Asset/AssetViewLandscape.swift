@@ -63,11 +63,12 @@ struct AssetViewLandscape: View {
                             
                         }
                     }
-                    PButton(label: "Withdraw from exchange", width: 256, height: 32, fontSize: 12, enabled: false) {
-                        withAnimation(.easeIn(duration: 0)) {
-                            
+                    PButton(label: "Channels", width: 256, height: 32, fontSize: 12, enabled: true) {
+                        withAnimation(.easeIn(duration: 3.0)) {
+                            state.modalView = .channels
                         }
                     }
+                    .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 }
                 
                 Spacer().frame(height: 10)
