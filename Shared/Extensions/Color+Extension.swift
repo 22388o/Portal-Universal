@@ -121,4 +121,16 @@ extension Color {
     static var modalViewStrokeColor: Color {
         Color(red: 20.0/255.0, green: 60.0/255.0, blue: 79.0/255.0)
     }
+    static var portalBackground: some View {
+        ZStack {
+            LinearGradient(gradient: Gradient(colors: [Color.gradientTop, Color.gradientBottom]), startPoint: .top, endPoint: .bottom)
+            Color.black.opacity(0.58)
+        }
+    }
+    static var gradientTop: Color {
+        Color(red: 0.0/255.0, green: 92.0/255.0, blue: 142.0/255.0)
+    }
+    static var gradientBottom: Color {
+        Color(red: 85.0/255.0, green: 148.0/255.0, blue: 174.0/255.0)
+    }
 }
