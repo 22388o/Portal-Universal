@@ -107,6 +107,7 @@ struct PButtonEnabledStyle: ViewModifier {
             .cornerRadius(18)
             .font(Font.mainFont(size: 16))
             .foregroundColor(enabled ? .white : Color.white.opacity(0.35))
+            .buttonStyle(.borderless)
 //            .overlay(
 //                RoundedRectangle(cornerRadius: 18)
 //                    .stroke(enabled ? Color.assetViewButton : Color.pButtonDisableBackground, lineWidth: 1)
