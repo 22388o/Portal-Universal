@@ -298,5 +298,7 @@ struct OpenNewChannelView: View {
 struct OpenNewChannelView_Previews: PreviewProvider {
     static var previews: some View {
         OpenNewChannelView(viewModel: .init(), viewState: .constant(.manage))
+            .frame(width: 500, height: 650)
+            .padding()
     }
 }

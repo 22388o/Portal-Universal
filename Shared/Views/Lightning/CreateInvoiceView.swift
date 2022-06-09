@@ -231,6 +231,8 @@ struct CreateInvoiceView: View {
 struct CreateInvoiceView_Previews: PreviewProvider {
     static var previews: some View {
         CreateInvoiceView(viewState: .constant(.fundChannel))
+            .frame(width: 500, height: 650)
+            .padding()
     }
 }
 

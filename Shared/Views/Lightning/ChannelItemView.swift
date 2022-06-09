@@ -110,6 +110,7 @@ struct ChannelItemView_Previews: PreviewProvider {
         ChannelItemView(
             channel: LightningChannel(id: Int16.random(in: 1...100), satValue: 2000, state: .open, nodeAlias: "Test node")
         )
+            .padding()
     }
 }
 

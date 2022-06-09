@@ -58,7 +58,7 @@ struct AccountView: View {
     }
 }
 
-struct MainScene_Previews: PreviewProvider {
+struct AccountView_Previews: PreviewProvider {
     static var previews: some View {
         AccountView()
             .iPadLandscapePreviews()

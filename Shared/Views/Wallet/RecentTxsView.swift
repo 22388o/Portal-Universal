@@ -94,5 +94,6 @@ struct RecentTxsView: View {
 struct RecentTxsView_Previews: PreviewProvider {
     static var previews: some View {
         RecentTxsView(viewModel: TxsViewModel.config(coin: Coin.bitcoin())!)
+            .frame(width: 300, height: 650)
     }
 }

@@ -55,8 +55,10 @@ struct LightningPaymentItemView: View {
 struct LightningActivityItemView_Previews: PreviewProvider {
     static var previews: some View {
         LightningPaymentItemView(
-            payment: LightningPayment(id: UUID().uuidString, satAmount: 2000, created: Date(), description: "Preview", state: .requested)
+            payment: LightningPayment(id: UUID().uuidString, satAmount: 2000, created: Date(), description: "Preview", state: .sent)
         )
+            .frame(width: 350, height: 80)
+            .padding()
     }
 }
 

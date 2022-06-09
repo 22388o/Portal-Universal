@@ -121,5 +121,6 @@ struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
         HeaderView(viewModel: HeaderViewModel.config())
             .background(Color.portalWalletBackground)
+            .padding()
     }
 }
