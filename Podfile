@@ -78,3 +78,15 @@ target 'UnitTestsMacOS' do
   
 
 end
+
+target 'PortalUITests' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  platform :osx, '10.15'
+  use_frameworks!
+  inhibit_all_warnings!
+
+  # Pods for Tests macOS
+  portal_shared_pods
+  
+
+end
