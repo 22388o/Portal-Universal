@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct OpenNewChannelView: View {
-    @ObservedObject var viewModel: ChannelsViewModel
-    @Binding var viewState: LightningViewViewModel.ViewState
+    @StateObject private var viewModel = ChannelsViewModel()
+    @Binding var viewState: LightningRootView.ViewState
     @Environment(\.presentationMode) private var presentationMode
     @State var fundChannel: Bool = false
     @State var selectedNode: LightningNode?
@@ -297,7 +297,7 @@ struct OpenNewChannelView: View {
 
 struct OpenNewChannelView_Previews: PreviewProvider {
     static var previews: some View {
-        OpenNewChannelView(viewModel: .init(), viewState: .constant(.manage))
+        OpenNewChannelView(viewState: .constant(.manage))
             .frame(width: 500, height: 650)
             .padding()
     }
