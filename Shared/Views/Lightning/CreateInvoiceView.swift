@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CreateInvoiceView: View {
     @StateObject var vm = CreateInvoiceViewModel()
-    @Binding var viewState: LightningViewViewModel.ViewState
+    @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
         ZStack(alignment: .top) {
