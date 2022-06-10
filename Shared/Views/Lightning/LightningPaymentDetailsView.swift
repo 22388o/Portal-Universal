@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LightningPaymentDetailsView: View {
-    @Binding var state: LightningRootView.ViewState
+    @Binding var viewState: LightningRootView.ViewState
     let payment: LightningPayment
     
     var body: some View {
@@ -18,7 +18,7 @@ struct LightningPaymentDetailsView: View {
 
 struct LightningPaymentDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        LightningPaymentDetailsView(state: .constant(.root), payment: LightningPayment.samplePayment)
+        LightningPaymentDetailsView(viewState: .constant(.root), payment: LightningPayment.samplePayment)
             .frame(width: 500, height: 650)
             .padding()
     }

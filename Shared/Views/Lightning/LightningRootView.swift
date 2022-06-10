@@ -29,11 +29,11 @@ struct LightningRootView: View {
                 case .receive:
                     CreateInvoiceView(viewState: $state)
                 case .fundChannel:
-                    EmptyView()
+                    FundLightningChannelView(viewState: $state)
                 case .send:
-                    SendLightningPaymentView(state: $state)
+                    SendLightningPaymentView(viewState: $state)
                 case .paymentDetails(let payment):
-                    LightningPaymentDetailsView(state: $state, payment: payment)
+                    LightningPaymentDetailsView(viewState: $state, payment: payment)
                 }
             }
         })
