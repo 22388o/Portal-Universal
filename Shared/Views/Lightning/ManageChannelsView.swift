@@ -11,7 +11,7 @@ struct ManageChannelsView: View {
     @ObservedObject var viewModel: ChannelsViewModel = ChannelsViewModel()
     @State var channelIsOpened: Bool = false
     @State var openNewChannel: Bool = false
-    @Binding var viewState: LightningViewViewModel.ViewState
+    @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
         ZStack(alignment: .top) {
