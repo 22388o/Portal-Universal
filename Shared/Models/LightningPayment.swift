@@ -8,6 +8,15 @@
 import Foundation
 
 class LightningPayment: Identifiable {
+    
+    static let samplePayment = LightningPayment(
+        id: UUID().uuidString,
+        satAmount: 20000,
+        created: Date(),
+        description: "Test payment",
+        state: .sent
+    )
+    
     enum State: Int16 {
         case requested = 0, sent, recieved
         

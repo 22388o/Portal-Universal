@@ -318,6 +318,8 @@
 		754B2F562852266800DB7A71 /* LightningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F542852266800DB7A71 /* LightningView.swift */; };
 		754B2F582853367400DB7A71 /* SendLightningPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F572853367400DB7A71 /* SendLightningPaymentView.swift */; };
 		754B2F592853367400DB7A71 /* SendLightningPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F572853367400DB7A71 /* SendLightningPaymentView.swift */; };
+		754B2F5B2853372A00DB7A71 /* LightningPaymentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */; };
+		754B2F5C2853372A00DB7A71 /* LightningPaymentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
@@ -880,6 +882,7 @@
 		7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItemView.swift; sourceTree = "<group>"; };
 		754B2F542852266800DB7A71 /* LightningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningView.swift; sourceTree = "<group>"; };
 		754B2F572853367400DB7A71 /* SendLightningPaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendLightningPaymentView.swift; sourceTree = "<group>"; };
+		754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningPaymentDetailsView.swift; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1796,6 +1799,7 @@
 				75598DF5284DFE4A00B7825D /* CreateInvoiceView.swift */,
 				75598DF9284DFE8000B7825D /* OpenNewChannelView.swift */,
 				754B2F572853367400DB7A71 /* SendLightningPaymentView.swift */,
+				754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */,
 			);
 			path = Lightning;
 			sourceTree = "<group>";
@@ -2624,6 +2628,7 @@
 				753BA7222799B184009FEC20 /* FiatSymbols.swift in Sources */,
 				756C3C7626EA9B84009530A9 /* ExchangeBalanceModel.swift in Sources */,
 				753BA71C2799B101009FEC20 /* IFiatCurrenciesUpdater.swift in Sources */,
+				754B2F5B2853372A00DB7A71 /* LightningPaymentDetailsView.swift in Sources */,
 				7537DEF92701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
 				752E531326FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */,
 				752E532B26FDDE6400FCDB0C /* KrakenRequestConfig.swift in Sources */,
@@ -2778,6 +2783,7 @@
 				752E532E26FDDE6400FCDB0C /* BinanceRequestConfig.swift in Sources */,
 				FA70528426CEB582000EE935 /* SwapperViewModel.swift in Sources */,
 				7533658E27B691E900A2D3CE /* FindingColorOfImage.swift in Sources */,
+				754B2F5C2853372A00DB7A71 /* LightningPaymentDetailsView.swift in Sources */,
 				75598DED284DFE0400B7825D /* LightningRootViewViewModel.swift in Sources */,
 				75598DF7284DFE4A00B7825D /* CreateInvoiceView.swift in Sources */,
 				75B1514A2622F96800542415 /* MarketValueView.swift in Sources */,

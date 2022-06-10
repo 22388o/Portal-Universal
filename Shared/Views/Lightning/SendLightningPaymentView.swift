@@ -11,7 +11,7 @@ struct SendLightningPaymentView: View {
     @Binding var state: LightningRootView.ViewState
     
     var body: some View {
-        EmptyView()
+        Text("SendLightningPaymentView")
     }
 }
 

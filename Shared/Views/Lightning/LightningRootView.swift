@@ -33,7 +33,7 @@ struct LightningRootView: View {
                 case .send:
                     SendLightningPaymentView(state: $state)
                 case .paymentDetails(let payment):
-                    EmptyView()
+                    LightningPaymentDetailsView(state: $state, payment: payment)
                 }
             }
         })
@@ -55,6 +55,7 @@ struct LightningRootView_Previews: PreviewProvider {
             LightningRootView(state: .fundChannel)
             LightningRootView(state: .send)
             LightningRootView(state: .receive)
+            LightningRootView(state: .paymentDetails(LightningPayment.samplePayment))
         }
     }
 }
