@@ -1,5 +1,5 @@
 //
-//  LightningViewViewModel.swift
+//  LightningRootViewViewModel.swift
 //  Portal
 //
 //  Created by farid on 6/6/22.
@@ -7,22 +7,16 @@
 
 import Foundation
 
-class LightningViewViewModel: ObservableObject {
-    
-    enum ViewState {
-        case root, manage, openChannel, createInvoice, fundChannel
-    }
-    
+class LightningRootViewViewModel: ObservableObject {
     @Published var createInvoice: Bool = false
     @Published var payInvoice: Bool = false
     @Published var manageChannels: Bool = false
-    @Published var showActivityDetails: Bool = false
+//    @Published var showActivityDetails: Bool = false
     @Published var payments: [LightningPayment] = []
-    @Published var viewState: ViewState = .root
     
     var btcAdapter: IAdapter
 //    var channelManager = PolarConnectionExperiment.shared.service!.manager.channelManager
-    var selectedPayment: LightningPayment?
+//    var selectedPayment: LightningPayment?
     
     var onChainBalanceString: String {
         "0.000202" + " BTC"
@@ -51,9 +45,9 @@ class LightningViewViewModel: ObservableObject {
     }
 }
 
-extension LightningViewViewModel {
-    static func config() -> LightningViewViewModel {
-        let btcAdapter = Portal.shared.adapterManager.adapter(for: .bitcoin())
-        return LightningViewViewModel(adapter: btcAdapter!)
+extension LightningRootViewViewModel {
+    static func config() -> LightningRootViewViewModel {
+        let btcAdapter = Portal.shared.adapterManager.adapter(for: .bitcoin())!
+        return LightningRootViewViewModel(adapter: btcAdapter)
     }
 }
