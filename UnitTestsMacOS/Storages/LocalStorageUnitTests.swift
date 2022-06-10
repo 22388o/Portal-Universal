@@ -69,7 +69,7 @@ class LocalStorageUnitTests: XCTestCase {
         
         var testsCount: Int = 0
         
-        for _ in 1...Int.random(in: 0...10) {
+        for _ in 1...Int.random(in: 4...10) {
             sut.addSyncedExchange(id: UUID().uuidString)
             testsCount += 1
         }
