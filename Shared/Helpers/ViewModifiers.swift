@@ -130,6 +130,21 @@ struct TextFieldModifier: ViewModifier {
     }
 }
 
+struct TextFieldModifierDark: ViewModifier {
+    let cornerRadius: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .padding(12)
+            .background(Color.exchangerFieldBackgroundDark)
+            .cornerRadius(cornerRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(Color.exchangerFieldBackgroundDark, lineWidth: 1)
+            )
+    }
+}
+
 struct SmallTextFieldModifier: ViewModifier {
     let cornerRadius: CGFloat
     
