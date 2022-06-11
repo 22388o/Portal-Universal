@@ -10,15 +10,17 @@ import SwiftUI
 import Combine
 
 class CreateInvoiceViewModel: ObservableObject {
-    @ObservedObject var exchangerViewModel: ExchangerViewModel = .init(coin: .bitcoin(), currency: .fiat(USD) , ticker: nil)
     @Published var memo: String = ""
     @Published var qrCode: UIImage?
     @Published var invoiceString = String()
     @Published var showShareSheet: Bool = false
     @Published var fiatValue = String()
+    @Published var satAmount = String()
 //    @Published var invoice: Invoice?
     
     @Published var expireDate = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
+    
+    private var subscriptions = Set<AnyCancellable>()
     
     var pickerDateRange: ClosedRange<Date> {
         let anHourFromNow = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
@@ -30,7 +32,24 @@ class CreateInvoiceViewModel: ObservableObject {
     private var btcAdapter: IAdapter?
     
     init() {
+        let btc = Coin.bitcoin()
+        let ticker = Portal.shared.marketDataProvider.ticker(coin: btc)
+        let price = ticker?[.usd].price
         
+        $satAmount
+            .removeDuplicates()
+            .map { Double($0) ?? 0 }
+            .map { value in
+                "\(((value * (price?.double ?? 1.0))/1_000_000).rounded(toPlaces: 2))"
+            }
+            .sink { [weak self] value in
+                if value == "0.0" {
+                    self?.fiatValue = "0"
+                } else {
+                    self?.fiatValue = value
+                }
+            }
+            .store(in: &subscriptions)
     }
         
     var expires: Date {
