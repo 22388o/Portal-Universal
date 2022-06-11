@@ -1,5 +1,5 @@
 //
-//  ChannelsViewModel.swift
+//  OpenLightningChannelViewModel.swift
 //  Portal
 //
 //  Created by farid on 6/6/22.
@@ -7,20 +7,12 @@
 
 import Foundation
 
-class ChannelsViewModel: ObservableObject {
-    @Published var suggestedNodes = [LightningNode]()
-    @Published var openChannels = [LightningChannel]()
-    
-    @Published var createNewChannel: Bool = false
-    @Published var fundChannel: Bool = false
-    @Published var channelIsOpened: Bool = false
-    @Published var exchangerViewModel: ExchangerViewModel
-    @Published var txFee = String()
-    @Published var selctionIndex = 1
-    @Published var showChannelDetails: Bool = false
-    
-    var selectedNode: LightningNode?
-    
+class OpenLightningChannelViewModel: ObservableObject {
+    @Published var suggestedNodes: [LightningNode]
+    @Published var openChannels: [LightningChannel]
+    @Published var showAlert = false
+    @Published var errorMessage = String()
+        
 //    var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
     var channelBalance: UInt64 {
 //        var bal: UInt64 = 0
@@ -31,7 +23,7 @@ class ChannelsViewModel: ObservableObject {
     }
     
     init() {
-        exchangerViewModel = .init(coin: .bitcoin(), currency: .fiat(USD), ticker: nil)
+//        exchangerViewModel = .init(coin: .bitcoin(), currency: .fiat(USD), ticker: nil)
         suggestedNodes = LightningNode.sampleNodes
         openChannels = [LightningChannel(id: Int16(12364), satValue: 20000, state: .open, nodeAlias: "OGLE-TR-122")]
     }

@@ -8,14 +8,8 @@
 import SwiftUI
 
 struct OpenNewChannelView: View {
-    @StateObject private var viewModel = ChannelsViewModel()
-    @Binding var viewState: LightningRootView.ViewState
-    @Environment(\.presentationMode) private var presentationMode
-    //    @State var selectedNode: LightningNode?
-    @State var showAlert: Bool = false
-    @State var errorMessage = String()
-    private let suggestedNodes = LightningNode.sampleNodes
-    
+    @StateObject private var viewModel = OpenLightningChannelViewModel()
+    @Binding var viewState: LightningRootView.ViewState    
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -73,7 +67,7 @@ struct OpenNewChannelView: View {
                 
                 ScrollView {
                     VStack {
-                        ForEach(suggestedNodes) { node in
+                        ForEach(viewModel.suggestedNodes) { node in
                             LightningNodeView(node: node)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
@@ -94,13 +88,13 @@ struct OpenNewChannelView: View {
                 }
             }
             //            .padding()
-            .alert(isPresented: $showAlert) {
+            .alert(isPresented: $viewModel.showAlert) {
                 Alert(
                     title: Text("Something went wrong:"),
-                    message: Text("\(errorMessage)"),
+                    message: Text("\(viewModel.errorMessage)"),
                     dismissButton: Alert.Button.default(
                         Text("Dismiss"), action: {
-                            showAlert = false
+                            viewModel.showAlert = false
                         }
                     )
                 )

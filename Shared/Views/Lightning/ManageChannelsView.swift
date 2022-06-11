@@ -7,8 +7,16 @@
 
 import SwiftUI
 
+class ManageChannelsViewModel: ObservableObject {
+    @Published var openChannels = [LightningChannel]()
+    
+    init() {
+        openChannels = [LightningChannel(id: Int16(12364), satValue: 20000, state: .open, nodeAlias: "OGLE-TR-122")]
+    }
+}
+
 struct ManageChannelsView: View {
-    @ObservedObject var viewModel: ChannelsViewModel = ChannelsViewModel()
+    @StateObject var viewModel = ManageChannelsViewModel()
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LightningView: View {
     @Binding var viewState: LightningRootView.ViewState
-    @StateObject private var viewModel = LightningRootViewViewModel.config()
+    @StateObject private var viewModel = LightningViewViewModel.config()
     
     var body: some View {
         VStack {

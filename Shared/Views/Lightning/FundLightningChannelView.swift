@@ -7,66 +7,19 @@
 
 import SwiftUI
 
-import Combine
-import Coinpaprika
-
-class FundingLightningChannelViewModel: ObservableObject {
-    let node: LightningNode
-    
-    @Published var satAmount = String()
-    @Published var fiatValue = String()
-    @Published var txFeeSelectionIndex = 1
-    
+struct FundLightningChannelView: View {
+    @StateObject private var viewModel: FundLightningChannelViewModel
     @Binding var viewState: LightningRootView.ViewState
     
-    private var subscriptions = Set<AnyCancellable>()
-    
-    init(viewState: Binding<LightningRootView.ViewState>, node: LightningNode, ticker: Ticker?) {
-        _viewState = viewState
-        self.node = node
-        
-        let btcPrice = ticker?[.usd].price
-        
-        $satAmount
-            .removeDuplicates()
-            .map { Double($0) ?? 0 }
-            .map { value in
-                "\(((value * (btcPrice?.double ?? 1.0))/1_000_000).rounded(toPlaces: 2))"
-            }
-            .sink { [weak self] value in
-                if value == "0.0" {
-                    self?.fiatValue = "0"
-                } else {
-                    self?.fiatValue = value
-                }
-            }
-            .store(in: &subscriptions)
-    }
-}
-
-extension FundingLightningChannelViewModel {
-    static func config(viewState: Binding<LightningRootView.ViewState>, node: LightningNode) -> FundingLightningChannelViewModel {
-        let ticker = Portal.shared.marketDataProvider.ticker(coin: .bitcoin())
-        return FundingLightningChannelViewModel(
-            viewState: viewState,
-            node: node,
-            ticker: ticker
-        )
-    }
-}
-
-struct FundLightningChannelView: View {
-    @StateObject private var viewModel: FundingLightningChannelViewModel
-    
     init(viewState: Binding<LightningRootView.ViewState>, node: LightningNode) {
-        let viewModel = FundingLightningChannelViewModel.config(viewState: viewState, node: node)
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewState = viewState
+        _viewModel = StateObject(wrappedValue: FundLightningChannelViewModel.config(node: node))
     }
     
     var body: some View {
         VStack {
             ModalNavigationView(title: "Fund a channel", backButtonAction: {
-                viewModel.viewState = .openChannel
+                viewState = .openChannel
             })
             .padding()
             

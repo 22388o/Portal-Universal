@@ -1,5 +1,5 @@
 //
-//  LightningRootViewViewModel.swift
+//  LightningViewViewModel.swift
 //  Portal
 //
 //  Created by farid on 6/6/22.
@@ -7,11 +7,7 @@
 
 import Foundation
 
-class LightningRootViewViewModel: ObservableObject {
-    @Published var createInvoice: Bool = false
-    @Published var payInvoice: Bool = false
-    @Published var manageChannels: Bool = false
-//    @Published var showActivityDetails: Bool = false
+class LightningViewViewModel: ObservableObject {
     @Published var payments: [LightningPayment] = []
     
     var btcAdapter: IAdapter
@@ -45,9 +41,9 @@ class LightningRootViewViewModel: ObservableObject {
     }
 }
 
-extension LightningRootViewViewModel {
-    static func config() -> LightningRootViewViewModel {
+extension LightningViewViewModel {
+    static func config() -> LightningViewViewModel {
         let btcAdapter = Portal.shared.adapterManager.adapter(for: .bitcoin())!
-        return LightningRootViewViewModel(adapter: btcAdapter)
+        return LightningViewViewModel(adapter: btcAdapter)
     }
 }
