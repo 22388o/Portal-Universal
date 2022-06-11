@@ -101,7 +101,7 @@ struct ChannelItemView: View {
         }
         .frame(height: 100)
         .padding(.horizontal)
-        .padding(.vertical, 6)
+        .padding(.vertical, 10)
     }
 }
 

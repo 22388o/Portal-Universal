@@ -28,8 +28,8 @@ struct LightningRootView: View {
                     OpenNewChannelView(viewState: $state)
                 case .receive:
                     CreateInvoiceView(viewState: $state)
-                case .fundChannel:
-                    FundLightningChannelView(viewState: $state)
+                case .fundChannel(let node):
+                    FundLightningChannelView(viewState: $state, node: node)
                 case .send:
                     SendLightningPaymentView(viewState: $state)
                 case .paymentDetails(let payment):
@@ -42,7 +42,7 @@ struct LightningRootView: View {
 
 extension LightningRootView {
     enum ViewState {
-        case root, manage, openChannel, fundChannel, receive, send, paymentDetails(LightningPayment)
+        case root, manage, openChannel, fundChannel(LightningNode), receive, send, paymentDetails(LightningPayment)
     }
 }
 
@@ -52,7 +52,7 @@ struct LightningRootView_Previews: PreviewProvider {
             LightningRootView(state: .root)
             LightningRootView(state: .manage)
             LightningRootView(state: .openChannel)
-            LightningRootView(state: .fundChannel)
+            LightningRootView(state: .fundChannel(LightningNode.sampleNodes[0]))
             LightningRootView(state: .send)
             LightningRootView(state: .receive)
             LightningRootView(state: .paymentDetails(LightningPayment.samplePayment))

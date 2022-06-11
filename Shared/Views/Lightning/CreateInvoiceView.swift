@@ -52,7 +52,7 @@ struct CreateInvoiceView: View {
                             
                             Spacer()
                             
-                            Text("\(vm.exchangerViewModel.assetValue) sat")
+                            Text("\(vm.satAmount) sat")
                                 .font(.mainFont(size: 14))
                                 .foregroundColor(Color.lightActiveLabel)
                         }
@@ -138,37 +138,56 @@ struct CreateInvoiceView: View {
                     VStack(alignment: .leading) {
                         Text("Amount")
                             .font(Font.mainFont())
-                            .foregroundColor(Color.white)
-                        
-                        VStack(spacing: 4) {
-                            HStack(spacing: 8) {
-                                Image("iconBtc")
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
-                                TextField("", text: $vm.exchangerViewModel.assetValue)
-                                    .modifier(
-                                        PlaceholderStyle(
-                                            showPlaceHolder: vm.exchangerViewModel.assetValue.isEmpty,
-                                            placeholder: "0"
-                                        )
+                            .foregroundColor(Color.lightActiveLabelNew)
+
+                        HStack(spacing: 8) {
+                            Image("iconBtc")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                            
+                            #if os(iOS)
+                            TextField(String(), text: $vm.satAmount)
+                                .foregroundColor(Color.white)
+                                .modifier(
+                                    PlaceholderStyle(
+                                        showPlaceHolder: vm.satAmount.isEmpty,
+                                        placeholder: "0"
                                     )
-                                    .frame(height: 20)
-                                    .colorMultiply(.lightActiveLabel)
-                                    .textFieldStyle(PlainTextFieldStyle())
-                                
-                                Text("sat")
-                                    .foregroundColor(Color.lightActiveLabelNew)//.opacity(0.4)
-                            }
-                            .modifier(TextFieldModifier(cornerRadius: 26))
-                            .font(Font.mainFont(size: 16))
+                                )
+                                .frame(height: 20)
+                                .keyboardType(.numberPad)
+                            #else
+                            TextField(String(), text: $vm.satAmount)
+                                .font(Font.mainFont(size: 16))
+                                .foregroundColor(Color.white)
+                                .modifier(
+                                    PlaceholderStyle(
+                                        showPlaceHolder: vm.satAmount.isEmpty,
+                                        placeholder: "0"
+                                    )
+                                )
+                                .frame(height: 20)
+                                .textFieldStyle(PlainTextFieldStyle())
+            //                    .disabled(isSendingMax)
+                            #endif
+                            
+                            Text("sat")
+                                .foregroundColor(Color.lightActiveLabelNew)
+                                .font(Font.mainFont(size: 16))
                         }
+                        .modifier(TextFieldModifierDark(cornerRadius: 26))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(true ? Color.clear : Color.red, lineWidth: 1)
+                        )
                         
                         HStack(spacing: 2) {
                             Spacer()
                             Text(vm.fiatValue)
                                 .font(Font.mainFont())
                                 .foregroundColor(Color.lightActiveLabelNew)
-                            if !vm.exchangerViewModel.fiatValue.isEmpty {
+                            
+                            if !vm.fiatValue.isEmpty {
                                 Text("USD")
                                     .font(Font.mainFont())
                                     .foregroundColor(Color.lightActiveLabelNew)
@@ -180,36 +199,45 @@ struct CreateInvoiceView: View {
                             .font(Font.mainFont())
                             .foregroundColor(Color.lightActiveLabelNew)
                         
-                        TextField("", text: $vm.memo)
-                            .modifier(
-                                PlaceholderStyle(
-                                    showPlaceHolder: vm.memo.isEmpty,
-                                    placeholder: "Description..."
-                                )
-                            )
-                            .frame(height: 20)
-                            .colorMultiply(.lightActiveLabel)
-                            .textFieldStyle(PlainTextFieldStyle())
-                            .modifier(TextFieldModifier(cornerRadius: 26))
-                        
-                        HStack {
-                            Text("Expires:")
-                                .font(Font.mainFont())
+                        HStack(spacing: 8) {
+                            #if os(iOS)
+                            TextField(String(), text: $vm.memo)
                                 .foregroundColor(Color.white)
-
-                            Text("\(vm.expireDate)")
-                                .lineLimit(1)
-                                .font(Font.mainFont())
-                                .foregroundColor(Color.lightActiveLabelNew)
+                                .modifier(
+                                    PlaceholderStyle(
+                                        showPlaceHolder: $vm.memo.isEmpty,
+                                        placeholder: "Description..."
+                                    )
+                                )
+                                .frame(height: 20)
+                                .keyboardType(.numberPad)
+                            #else
+                            TextField(String(), text: $vm.memo)
+                                .font(Font.mainFont(size: 16))
+                                .foregroundColor(Color.white)
+                                .modifier(
+                                    PlaceholderStyle(
+                                        showPlaceHolder: vm.memo.isEmpty,
+                                        placeholder: "Description..."
+                                    )
+                                )
+                                .frame(height: 20)
+                                .textFieldStyle(PlainTextFieldStyle())
+                            #endif
                         }
-                        .padding(.vertical)
+                        .modifier(TextFieldModifierDark(cornerRadius: 26))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(true ? Color.clear : Color.red, lineWidth: 1)
+                        )
                         
                         DatePicker("Expire date", selection: $vm.expireDate, in: vm.pickerDateRange, displayedComponents: [.date, .hourAndMinute])
                             .font(Font.mainFont())
-                            .foregroundColor(Color.white)
-//                            .datePickerStyle(WheelDatePickerStyle())
+                            .foregroundColor(Color.lightActiveLabelNew)
+                            .datePickerStyle(CompactDatePickerStyle())
+                            .padding(.vertical)
                     }
-                    .padding()
+                    .padding(.horizontal, 30)
                     
                     Spacer()
                     
@@ -220,17 +248,13 @@ struct CreateInvoiceView: View {
                     .padding()
                 }
             }
-            .padding()
-            .onReceive(vm.exchangerViewModel.$fiatValue, perform: { value in
-                vm.fiatValue = value
-            })
         }
     }
 }
 
 struct CreateInvoiceView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateInvoiceView(viewState: .constant(.fundChannel))
+        CreateInvoiceView(viewState: .constant(.fundChannel(LightningNode.sampleNodes[0])))
             .frame(width: 500, height: 650)
             .padding()
     }

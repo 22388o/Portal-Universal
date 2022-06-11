@@ -58,11 +58,15 @@ struct LightningView: View {
                 
                 HStack {
                     Button("Receive") {
-                        viewState = .receive
+                        withAnimation {
+                            viewState = .receive
+                        }
                     }
                     .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                     Button("Send") {
-                        viewState = .send
+                        withAnimation {
+                            viewState = .send
+                        }
                     }
                     .modifier(PButtonEnabledStyle(enabled: .constant(true)))
                 }
@@ -95,8 +99,9 @@ struct LightningView: View {
                         ForEach(viewModel.payments) { payment in
                             LightningPaymentItemView(payment: payment)
                                 .onTapGesture {
-                                    guard payment.state == .requested else { return }
-                                    viewState = .paymentDetails(payment)
+                                    withAnimation {
+                                        viewState = .paymentDetails(payment)
+                                    }
                                 }
                         }
                         .frame(height: 80)

@@ -11,7 +11,28 @@ struct SendLightningPaymentView: View {
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
-        Text("SendLightningPaymentView")
+        VStack {
+            ZStack {
+                Text("Send Lightning Payment")
+                    .font(.mainFont(size: 18))
+                    .foregroundColor(Color.white)
+                    .padding()
+                
+                HStack {
+                    Text("Back")
+                        .foregroundColor(Color.lightActiveLabel)
+                        .font(.mainFont(size: 14))
+                        .padding()
+                        .onTapGesture {
+                            withAnimation {
+                                viewState = .root
+                            }
+                        }
+                    Spacer()
+                }
+            }
+            .padding()
+        }
     }
 }
 
