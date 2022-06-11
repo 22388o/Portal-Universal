@@ -22,8 +22,9 @@ struct SendLightningPaymentView: View {
 
 struct SendLightningPaymentView_Previews: PreviewProvider {
     static var previews: some View {
-        SendLightningPaymentView(viewState: .constant(.send))
-            .frame(width: 500, height: 650)
-            .padding()
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            SendLightningPaymentView(viewState: .constant(.send))
+        }
     }
 }

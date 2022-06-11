@@ -63,8 +63,11 @@ struct LightningNodeView: View {
 
 struct LightningNodeView_Previews: PreviewProvider {
     static var previews: some View {
-        LightningNodeView(node: LightningNode.sampleNodes[0])
-            .frame(width: 460, height: 100)
-            .padding()
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            LightningNodeView(node: LightningNode.sampleNodes[0])
+        }
+        .frame(width: 460, height: 100)
+        .padding()
     }
 }

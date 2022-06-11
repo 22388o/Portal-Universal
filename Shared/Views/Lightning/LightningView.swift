@@ -118,8 +118,9 @@ struct LightningView: View {
 
 struct LightningView_Previews: PreviewProvider {
     static var previews: some View {
-        ModalViewContainer(size: CGSize(width: 500, height: 650), {
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
             LightningView(viewState: .constant(.root))
-        })
+        }
     }
 }

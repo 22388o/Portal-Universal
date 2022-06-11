@@ -236,9 +236,11 @@ struct CreateInvoiceView: View {
 
 struct CreateInvoiceView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateInvoiceView(viewState: .constant(.fundChannel(LightningNode.sampleNodes[0])))
-            .frame(width: 500, height: 650)
-            .padding()
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            CreateInvoiceView(viewState: .constant(.fundChannel(LightningNode.sampleNodes[0])))
+        }
+        .frame(width: 500, height: 650)
     }
 }
 

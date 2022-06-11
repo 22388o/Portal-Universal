@@ -127,6 +127,9 @@ struct SelectLightningNodeView: View {
 
 struct SelectLightningNodeView_Previews: PreviewProvider {
     static var previews: some View {
-        SelectLightningNodeView(viewState: .constant(.root), node: .constant(nil))
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            SelectLightningNodeView(viewState: .constant(.root), node: .constant(nil))
+        }
     }
 }

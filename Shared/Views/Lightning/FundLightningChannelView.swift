@@ -195,8 +195,10 @@ struct FundLightningChannelView: View {
 
 struct FundLightningChannelView_Previews: PreviewProvider {
     static var previews: some View {
-        FundLightningChannelView(viewState: .constant(.root), node: LightningNode.sampleNodes[0])
-            .frame(width: 500, height: 650)
-            .padding()
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            FundLightningChannelView(viewState: .constant(.root), node: LightningNode.sampleNodes[0])
+        }
+        .frame(width: 500, height: 650)
     }
 }

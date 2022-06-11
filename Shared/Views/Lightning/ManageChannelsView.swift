@@ -70,7 +70,10 @@ struct ManageChannelsView: View {
 
 struct ManageChannelsView_Previews: PreviewProvider {
     static var previews: some View {
-        ManageChannelsView(viewState: .constant(.manage))
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            ManageChannelsView(viewState: .constant(.manage))
+        }
     }
 }
 

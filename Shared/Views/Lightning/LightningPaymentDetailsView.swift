@@ -21,8 +21,9 @@ struct LightningPaymentDetailsView: View {
 
 struct LightningPaymentDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        LightningPaymentDetailsView(viewState: .constant(.root), payment: LightningPayment.samplePayment)
-            .frame(width: 500, height: 650)
-            .padding()
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            LightningPaymentDetailsView(viewState: .constant(.root), payment: LightningPayment.samplePayment)
+        }
     }
 }

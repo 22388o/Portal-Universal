@@ -111,8 +111,10 @@ struct OpenNewChannelView: View {
 
 struct OpenNewChannelView_Previews: PreviewProvider {
     static var previews: some View {
-        OpenNewChannelView(viewState: .constant(.manage))
-            .frame(width: 500, height: 650)
-            .padding()
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            OpenNewChannelView(viewState: .constant(.manage))
+        }
+        .frame(width: 500, height: 650)
     }
 }
