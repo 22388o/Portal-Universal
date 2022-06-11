@@ -18,7 +18,7 @@ class ChannelsViewModel: ObservableObject {
     @Published var txFee = String()
     @Published var selctionIndex = 1
     @Published var showChannelDetails: Bool = false
-
+    
     var selectedNode: LightningNode?
     
 //    var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter

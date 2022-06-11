@@ -11,12 +11,12 @@ import Combine
 import Coinpaprika
 
 class FundingLightningChannelViewModel: ObservableObject {
-    let coin = Coin.bitcoin()
     let node: LightningNode
-
-    @Published var txFeeSelectionIndex = 1
+    
     @Published var satAmount = String()
     @Published var fiatValue = String()
+    @Published var txFeeSelectionIndex = 1
+    
     @Binding var viewState: LightningRootView.ViewState
     
     private var subscriptions = Set<AnyCancellable>()
@@ -25,13 +25,13 @@ class FundingLightningChannelViewModel: ObservableObject {
         _viewState = viewState
         self.node = node
         
-        let price = ticker?[.usd].price
+        let btcPrice = ticker?[.usd].price
         
         $satAmount
             .removeDuplicates()
             .map { Double($0) ?? 0 }
             .map { value in
-                "\(((value * (price?.double ?? 1.0))/1_000_000).rounded(toPlaces: 2))"
+                "\(((value * (btcPrice?.double ?? 1.0))/1_000_000).rounded(toPlaces: 2))"
             }
             .sink { [weak self] value in
                 if value == "0.0" {
@@ -65,32 +65,16 @@ struct FundLightningChannelView: View {
     
     var body: some View {
         VStack {
-            ZStack {
-                Text("Fund a channel")
-                    .font(.mainFont(size: 18))
-                    .foregroundColor(Color.white)
-                    .padding()
-                
-                HStack {
-                    Text("Back")
-                        .foregroundColor(Color.lightActiveLabel)
-                        .font(.mainFont(size: 14))
-                        .padding()
-                        .onTapGesture {
-                            withAnimation {
-                                viewModel.viewState = .openChannel
-                            }
-                        }
-                    Spacer()
-                }
-            }
+            ModalNavigationView(title: "Fund a channel", backButtonAction: {
+                viewModel.viewState = .openChannel
+            })
             .padding()
             
             HStack {
                 Text("On-chain balance:")
                     .font(.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabelNew)
-
+                
                 Spacer()
                 
                 Text("0.000202 BTC")
@@ -99,75 +83,29 @@ struct FundLightningChannelView: View {
             }
             .padding(.horizontal)
             
-            ZStack {
-                RoundedRectangle(cornerRadius: 8)
-                    .background(Color.black.opacity(0.25))
-                
-                VStack {
-                    HStack {
-                        Text("Alias:")
-                            .foregroundColor(Color.lightInactiveLabel)
-                        
-                        Spacer()
-                        Text(viewModel.node.alias)
-                            .foregroundColor(Color.white)
-                        
+            LightningNodeView(node: viewModel.node)
+                .frame(height: 120)
+                .padding(.horizontal)
+                .onDisappear {
+                    var shouldDisconnect: Bool = true
+                    for channel in viewModel.node.channels {
+                        if channel.state != .closed {
+                            shouldDisconnect = false
+                            break
+                        }
                     }
-                    HStack {
-                        Text("PubKey:")
-                            .foregroundColor(Color.lightInactiveLabel)
-                        
-                        Spacer()
-                        
-                        Text(viewModel.node.publicKey)
-                            .foregroundColor(Color.lightActiveLabel)
-                            .multilineTextAlignment(.trailing)
-                        
+                    if shouldDisconnect && viewModel.node.connected {
+                        //                    PolarConnectionExperiment.shared.service?.disconnect(node: node)
                     }
-                    HStack {
-                        Text("Host:")
-                            .foregroundColor(Color.lightInactiveLabel)
-                        
-                        Spacer()
-                        Text("\(viewModel.node.host)")
-                            .foregroundColor(Color.lightActiveLabel)
-                        
-                    }
-                    HStack {
-                        Text("Port:")
-                            .foregroundColor(Color.lightInactiveLabel)
-                        
-                        Spacer()
-                        Text("\(viewModel.node.port)")
-                            .foregroundColor(Color.lightActiveLabel)
-                        
-                    }
+                    //                node = nil
                 }
-                .font(.mainFont(size: 14))
-                .padding()
-            }
-            .frame(height: 120)
-            .padding(.horizontal)
-            .onDisappear {
-                var shouldDisconnect: Bool = true
-                for channel in viewModel.node.channels {
-                    if channel.state != .closed {
-                        shouldDisconnect = false
-                        break
-                    }
-                }
-                if shouldDisconnect && viewModel.node.connected {
-                    //                    PolarConnectionExperiment.shared.service?.disconnect(node: node)
-                }
-                //                node = nil
-            }
             
             HStack(spacing: 8) {
                 Image("iconBtc")
                     .resizable()
                     .frame(width: 24, height: 24)
                 
-                #if os(iOS)
+#if os(iOS)
                 TextField(String(), text: $viewModel.satAmount)
                     .foregroundColor(Color.white)
                     .modifier(
@@ -178,7 +116,7 @@ struct FundLightningChannelView: View {
                     )
                     .frame(height: 20)
                     .keyboardType(.numberPad)
-                #else
+#else
                 TextField(String(), text: $viewModel.satAmount)
                     .font(Font.mainFont(size: 16))
                     .foregroundColor(Color.white)
@@ -190,7 +128,7 @@ struct FundLightningChannelView: View {
                     )
                     .frame(height: 20)
                     .textFieldStyle(PlainTextFieldStyle())
-                #endif
+#endif
                 
                 Text("sat")
                     .foregroundColor(Color.lightActiveLabelNew)
@@ -217,7 +155,7 @@ struct FundLightningChannelView: View {
                 }
             }
             .padding([.horizontal, .bottom])
-
+            
             
             Text("Set ammount of BTC you'd like to commit to the channel")
                 .font(.mainFont(size: 14))
@@ -238,21 +176,18 @@ struct FundLightningChannelView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 
-                VStack {
-                    Text(TxSpeed.allCases[viewModel.txFeeSelectionIndex].description)
-                        .font(Font.mainFont())
-                        .foregroundColor(Color.lightActiveLabelNew)
-                }
+                Text(TxSpeed.allCases[viewModel.txFeeSelectionIndex].description)
+                    .font(Font.mainFont())
+                    .foregroundColor(Color.lightActiveLabelNew)
             }
             .padding()
             
             Spacer()
             
-            Button("Open") {
-                //                self.viewModel.openAChannel(node: node)
-                //                viewModel.channelIsOpened = true
-            }
-            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+            PButtonDark(label: "Fund", height: 40, fontSize: 16, enabled: true, action: {
+//                self.viewModel.openAChannel(node: node)
+//                viewModel.channelIsOpened = true
+            })
             .padding()
         }
     }

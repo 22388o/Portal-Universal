@@ -57,18 +57,17 @@ struct LightningView: View {
                 }
                 
                 HStack {
-                    Button("Receive") {
+                    PButtonDark(label: "Recieve", height: 40, fontSize: 16, enabled: true, action: {
                         withAnimation {
                             viewState = .receive
                         }
-                    }
-                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                    Button("Send") {
+                    })
+
+                    PButtonDark(label: "Send", height: 40, fontSize: 16, enabled: true, action: {
                         withAnimation {
                             viewState = .send
                         }
-                    }
-                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                    })
                 }
             }
             .padding()

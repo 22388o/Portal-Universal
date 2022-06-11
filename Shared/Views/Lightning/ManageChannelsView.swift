@@ -9,8 +9,6 @@ import SwiftUI
 
 struct ManageChannelsView: View {
     @ObservedObject var viewModel: ChannelsViewModel = ChannelsViewModel()
-    @State var channelIsOpened: Bool = false
-    @State var openNewChannel: Bool = false
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
@@ -18,24 +16,9 @@ struct ManageChannelsView: View {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             
             VStack {
-                ZStack {
-                    Text("Channels")
-                        .font(.mainFont(size: 18))
-                        .foregroundColor(Color.white)
-                    
-                    HStack {
-                        Text("Back")
-                            .foregroundColor(Color.lightActiveLabel)
-                            .font(.mainFont(size: 14))
-                            .padding()
-                            .onTapGesture {
-                                withAnimation {
-                                    viewState = .root
-                                }
-                            }
-                        Spacer()
-                    }
-                }
+                ModalNavigationView(title: "Channels", backButtonAction: {
+                    viewState = .root
+                })
                 .padding()
                 
                 HStack {

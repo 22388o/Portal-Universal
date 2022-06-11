@@ -11,7 +11,7 @@ struct OpenNewChannelView: View {
     @StateObject private var viewModel = ChannelsViewModel()
     @Binding var viewState: LightningRootView.ViewState
     @Environment(\.presentationMode) private var presentationMode
-//    @State var selectedNode: LightningNode?
+    //    @State var selectedNode: LightningNode?
     @State var showAlert: Bool = false
     @State var errorMessage = String()
     private let suggestedNodes = LightningNode.sampleNodes
@@ -22,25 +22,9 @@ struct OpenNewChannelView: View {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             
             VStack {
-                ZStack {
-                    Text("Open a channel")
-                        .font(.mainFont(size: 18))
-                        .foregroundColor(Color.white)
-                        .padding()
-                    
-                    HStack {
-                        Text("Back")
-                            .foregroundColor(Color.lightActiveLabel)
-                            .font(.mainFont(size: 14))
-                            .padding()
-                            .onTapGesture {
-                                withAnimation {
-                                    viewState = .manage
-                                }
-                            }
-                        Spacer()
-                    }
-                }
+                ModalNavigationView(title: "Open a Channel", backButtonAction: {
+                    viewState = .manage
+                })
                 .padding()
                 
                 Text("Open channels to other nodes on the network to start using Lightning Network.")
@@ -90,72 +74,26 @@ struct OpenNewChannelView: View {
                 ScrollView {
                     VStack {
                         ForEach(suggestedNodes) { node in
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .background(Color.black.opacity(0.25))
-                                
-                                VStack {
-                                    HStack {
-                                        Text("Alias:")
-                                            .foregroundColor(Color.lightInactiveLabel)
-                                        
-                                        Spacer()
-                                        Text(node.alias)
-                                            .foregroundColor(Color.white)
-                                        
+                            LightningNodeView(node: node)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    withAnimation {
+                                        viewState = .fundChannel(node)
                                     }
-                                    HStack {
-                                        Text("PubKey:")
-                                            .foregroundColor(Color.lightInactiveLabel)
-                                        
-                                        Spacer()
-                                        
-                                        Text(node.publicKey)
-                                            .foregroundColor(Color.lightActiveLabel)
-                                            .multilineTextAlignment(.trailing)
-                                        
-                                    }
-                                    HStack {
-                                        Text("Host:")
-                                            .foregroundColor(Color.lightInactiveLabel)
-                                        
-                                        Spacer()
-                                        Text(node.host)
-                                            .foregroundColor(Color.lightActiveLabel)
-                                        
-                                    }
-                                    HStack {
-                                        Text("Port:")
-                                            .foregroundColor(Color.lightInactiveLabel)
-                                        
-                                        Spacer()
-                                        Text("\(node.port)")
-                                            .foregroundColor(Color.lightActiveLabel)
-                                        
-                                    }
+                                    //                                    if PolarConnectionExperiment.shared.service?.connect(node: node) ?? false {
+                                    //                                        selectedNode = node
+                                    //                                        fundChannel.toggle()
+                                    //                                    } else {
+                                    //                                        errorMessage = "Unable connect to \(node.alias)"
+                                    //                                        showAlert = true
+                                    //                                    }
                                 }
-                                .font(.mainFont(size: 14))
-                                .padding()
-                            }
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                withAnimation {
-                                    viewState = .fundChannel(node)
-                                }
-                                //                                    if PolarConnectionExperiment.shared.service?.connect(node: node) ?? false {
-                                //                                        selectedNode = node
-                                //                                        fundChannel.toggle()
-                                //                                    } else {
-                                //                                        errorMessage = "Unable connect to \(node.alias)"
-                                //                                        showAlert = true
-                                //                                    }
-                            }
-                            .padding(.horizontal)
+                                .padding(.horizontal)
                         }
                     }
                 }
             }
-//            .padding()
+            //            .padding()
             .alert(isPresented: $showAlert) {
                 Alert(
                     title: Text("Something went wrong:"),

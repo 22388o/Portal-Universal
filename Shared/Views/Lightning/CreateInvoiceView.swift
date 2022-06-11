@@ -16,25 +16,9 @@ struct CreateInvoiceView: View {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             
             VStack {
-                ZStack {
-                    Text("Create Invoice")
-                        .font(.mainFont(size: 18))
-                        .foregroundColor(Color.white)
-                        .padding()
-                    
-                    HStack {
-                        Text("Back")
-                            .foregroundColor(Color.lightActiveLabel)
-                            .font(.mainFont(size: 14))
-                            .padding()
-                            .onTapGesture {
-                                withAnimation {
-                                    viewState = .root
-                                }
-                            }
-                        Spacer()
-                    }
-                }
+                ModalNavigationView(title: "Create Invoice", backButtonAction: {
+                    viewState = .root
+                })
                 .padding()
                 
                 if let code = vm.qrCode {
@@ -126,10 +110,9 @@ struct CreateInvoiceView: View {
                     
                     Spacer()
                     
-                    Button("Share") {
+                    PButtonDark(label: "Share", height: 40, fontSize: 16, enabled: true, action: {
                         vm.showShareSheet.toggle()
-                    }
-                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                    })
                     .padding()
 //                    .sheet(isPresented: $vm.showShareSheet) {
 //                        ShareSheet(activityItems: [vm.invoiceString])
@@ -241,10 +224,9 @@ struct CreateInvoiceView: View {
                     
                     Spacer()
                     
-                    Button("Create") {
+                    PButtonDark(label: "Create", height: 40, fontSize: 16, enabled: true, action: {
                         vm.createInvoice()
-                    }
-                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                    })
                     .padding()
                 }
             }

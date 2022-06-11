@@ -12,25 +12,9 @@ struct LightningPaymentDetailsView: View {
     let payment: LightningPayment
     
     var body: some View {
-        ZStack {
-            Text("Payment Details")
-                .font(.mainFont(size: 18))
-                .foregroundColor(Color.white)
-                .padding()
-            
-            HStack {
-                Text("Back")
-                    .foregroundColor(Color.lightActiveLabel)
-                    .font(.mainFont(size: 14))
-                    .padding()
-                    .onTapGesture {
-                        withAnimation {
-                            viewState = .root
-                        }
-                    }
-                Spacer()
-            }
-        }
+        ModalNavigationView(title: "Payment Details", backButtonAction: {
+            viewState = .root
+        })
         .padding()
     }
 }
