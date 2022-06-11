@@ -36,8 +36,10 @@ struct ModalNavigationView: View {
 
 struct ModalNavigationView_Previews: PreviewProvider {
     static var previews: some View {
-        ModalNavigationView(title: "Test Navigation", backButtonAction: nil)
-            .padding()
+        ZStack {
+            Color.portalBackground.edgesIgnoringSafeArea(.all)
+            ModalNavigationView(title: "Test Navigation", backButtonAction: nil)
+        }
     }
 }
 
