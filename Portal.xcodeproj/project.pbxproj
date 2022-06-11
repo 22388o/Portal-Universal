@@ -324,6 +324,10 @@
 		754B2F5F28533AA800DB7A71 /* FundLightningChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */; };
 		754B2F612853406700DB7A71 /* SelectLightningNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */; };
 		754B2F622853406700DB7A71 /* SelectLightningNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */; };
+		754B2F642854E32900DB7A71 /* LightningNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F632854E32900DB7A71 /* LightningNodeView.swift */; };
+		754B2F652854E32900DB7A71 /* LightningNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F632854E32900DB7A71 /* LightningNodeView.swift */; };
+		754B2F672854E74800DB7A71 /* ModalNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F662854E74800DB7A71 /* ModalNavigationView.swift */; };
+		754B2F682854E74800DB7A71 /* ModalNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F662854E74800DB7A71 /* ModalNavigationView.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
@@ -889,6 +893,8 @@
 		754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningPaymentDetailsView.swift; sourceTree = "<group>"; };
 		754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundLightningChannelView.swift; sourceTree = "<group>"; };
 		754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLightningNodeView.swift; sourceTree = "<group>"; };
+		754B2F632854E32900DB7A71 /* LightningNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeView.swift; sourceTree = "<group>"; };
+		754B2F662854E74800DB7A71 /* ModalNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalNavigationView.swift; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1808,6 +1814,8 @@
 				754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */,
 				754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */,
 				754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */,
+				754B2F632854E32900DB7A71 /* LightningNodeView.swift */,
+				754B2F662854E74800DB7A71 /* ModalNavigationView.swift */,
 			);
 			path = Lightning;
 			sourceTree = "<group>";
@@ -2653,6 +2661,7 @@
 				750AE91526149A8C00C45971 /* MarketPrice.swift in Sources */,
 				7537DEE52701A25100B862AB /* ExchangeBalanceInfo.swift in Sources */,
 				75B1512C26222B2700542415 /* AssetSearchField.swift in Sources */,
+				754B2F642854E32900DB7A71 /* LightningNodeView.swift in Sources */,
 				7544741827DA41FC00AFD02F /* Erc20ItemModel.swift in Sources */,
 				75F5CD952684C8D6005ECA5B /* CreateAccountViewModel.swift in Sources */,
 				750C36A0261F298B0088CCED /* AccountView.swift in Sources */,
@@ -2661,6 +2670,7 @@
 				750AE9D526149DD900C45971 /* IPieChartModel.swift in Sources */,
 				75308ADB26A0284A0024AACD /* BitcoinFeeRateProvider.swift in Sources */,
 				7537DF03270309CF00B862AB /* SocketTicker.swift in Sources */,
+				754B2F672854E74800DB7A71 /* ModalNavigationView.swift in Sources */,
 				751A1CE027306E460024586B /* AccountSettingsViewModel.swift in Sources */,
 				7585AF4227B4407400A373F7 /* SendETHService.swift in Sources */,
 				7555643726D8FB51001B1C1A /* BuySellView.swift in Sources */,
@@ -2784,6 +2794,7 @@
 				75BEB20C26B96AE200C99F50 /* ERC20Updater.swift in Sources */,
 				756C3C7D26EA9C1D009530A9 /* MarketLimitSwitch.swift in Sources */,
 				752E533426FDDE6400FCDB0C /* EndPointType.swift in Sources */,
+				754B2F682854E74800DB7A71 /* ModalNavigationView.swift in Sources */,
 				750AE90E26149A8C00C45971 /* CoinMarketData.swift in Sources */,
 				75271304261B5378008C962C /* PButton.swift in Sources */,
 				75598DF2284DFE2300B7825D /* CreateInvoiceViewModel.swift in Sources */,
@@ -2824,6 +2835,7 @@
 				751B6545269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */,
 				7537E6C6272C03AC007B4E78 /* SettingsView.swift in Sources */,
 				750D63C7268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */,
+				754B2F652854E32900DB7A71 /* LightningNodeView.swift in Sources */,
 				750AE9CA26149DD900C45971 /* IAsset.swift in Sources */,
 				750AE9DE26149DD900C45971 /* IChartDataProvider.swift in Sources */,
 				756C3C7A26EA9BE1009530A9 /* ExchangeBalanceItem.swift in Sources */,
