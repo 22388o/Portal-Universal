@@ -31,7 +31,6 @@ struct PButton: View {
                 foregroundColor: .white,
                 backgroundColor: bgColor!,
                 pressedColor: bgColor!.opacity(0.5),
-                width: width,
                 height: height,
                 enabled: enabled
             )
@@ -40,12 +39,46 @@ struct PButton: View {
     }
 }
 
+struct PButtonDark: View {
+    private let backgroundColor = Color.assetViewButton
+    private let foregroundColor = Color.white
+    
+    let label: String
+    let height: CGFloat
+    let fontSize: CGFloat
+    let enabled: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: {
+            if enabled {
+                action()
+            }
+        }) {
+            Text(label)
+                .frame(maxWidth: .infinity)
+                .frame(height: height)
+        }
+        .buttonStyle(
+            PortalButtonStyle(
+                fontSize: fontSize,
+                foregroundColor: enabled ? foregroundColor : foregroundColor.opacity(0.5),
+                backgroundColor: backgroundColor,
+                pressedColor: backgroundColor.opacity(0.5),
+                height: height,
+                enabled: enabled
+            )
+        )
+        .disabled(!enabled)
+    }
+}
+
+
 struct PortalButtonStyle: ButtonStyle {
     let fontSize: CGFloat
     let foregroundColor: Color
     let backgroundColor: Color
     let pressedColor: Color
-    let width: CGFloat
     let height: CGFloat
     let enabled: Bool
     
