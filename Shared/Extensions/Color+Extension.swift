@@ -58,6 +58,9 @@ extension Color {
     static var exchangerFieldBackground: Color {
         Color(red: 249.0/255.0, green: 249.0/255.0, blue: 251.0/255.0)
     }
+    static var exchangerFieldBackgroundDark: Color {
+        Color(red: 40.0/255.0, green: 70.0/255.0, blue: 86.0/255.0)
+    }
     static var exchangerFieldBackgroundNew: Color {
         Color(red: 40.0/255.0, green: 70.0/255.0, blue: 86.0/255.0)
     }
