@@ -8,6 +8,7 @@
 import SwiftUI
 
 import Combine
+import Coinpaprika
 
 class FundingLightningChannelViewModel: ObservableObject {
     let coin = Coin.bitcoin()
@@ -20,11 +21,10 @@ class FundingLightningChannelViewModel: ObservableObject {
     
     private var subscriptions = Set<AnyCancellable>()
     
-    init(viewState: Binding<LightningRootView.ViewState>, node: LightningNode) {
+    init(viewState: Binding<LightningRootView.ViewState>, node: LightningNode, ticker: Ticker?) {
         _viewState = viewState
         self.node = node
         
-        let ticker = Portal.shared.marketDataProvider.ticker(coin: coin)
         let price = ticker?[.usd].price
         
         $satAmount
@@ -44,11 +44,22 @@ class FundingLightningChannelViewModel: ObservableObject {
     }
 }
 
+extension FundingLightningChannelViewModel {
+    static func config(viewState: Binding<LightningRootView.ViewState>, node: LightningNode) -> FundingLightningChannelViewModel {
+        let ticker = Portal.shared.marketDataProvider.ticker(coin: .bitcoin())
+        return FundingLightningChannelViewModel(
+            viewState: viewState,
+            node: node,
+            ticker: ticker
+        )
+    }
+}
+
 struct FundLightningChannelView: View {
     @StateObject private var viewModel: FundingLightningChannelViewModel
     
     init(viewState: Binding<LightningRootView.ViewState>, node: LightningNode) {
-        let viewModel = FundingLightningChannelViewModel(viewState: viewState, node: node)
+        let viewModel = FundingLightningChannelViewModel.config(viewState: viewState, node: node)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
