@@ -42,7 +42,7 @@ class FundLightningChannelViewModel: ObservableObject {
 extension FundLightningChannelViewModel {
     static func config(node: LightningNode) -> FundLightningChannelViewModel {
         let ticker = Portal.shared.marketDataProvider.ticker(coin: .bitcoin())
-        return FundingLightningChannelViewModel(
+        return FundLightningChannelViewModel(
             node: node,
             ticker: ticker
         )
