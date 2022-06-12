@@ -31,6 +31,15 @@
         <attribute name="publicKey" optional="YES" attributeType="String"/>
         <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="DBLightningChannel" inverseName="node" inverseEntity="DBLightningChannel"/>
     </entity>
+    <entity name="DBLightningPayment" representedClassName="DBLightningPayment" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expires" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="invoice" optional="YES" attributeType="String"/>
+        <attribute name="memo" optional="YES" attributeType="String"/>
+        <attribute name="paymentID" optional="YES" attributeType="String"/>
+        <attribute name="satValue" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="PortalNotification" representedClassName="PortalNotification" syncable="YES" codeGenerationType="class">
         <attribute name="accountId" optional="YES" attributeType="String"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -52,5 +61,6 @@
         <element name="DBChannelMonitor" positionX="-666" positionY="216" width="128" height="59"/>
         <element name="DBLightningChannel" positionX="-657" positionY="225" width="128" height="89"/>
         <element name="DBLightningNode" positionX="-648" positionY="234" width="128" height="104"/>
+        <element name="DBLightningPayment" positionX="-639" positionY="243" width="128" height="134"/>
     </elements>
 </model>

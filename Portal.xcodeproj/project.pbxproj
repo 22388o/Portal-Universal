@@ -342,6 +342,10 @@
 		754C60742855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606D2855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift */; };
 		754C60752855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */; };
 		754C60762855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */; };
+		754C60792855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60772855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift */; };
+		754C607A2855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60772855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift */; };
+		754C607B2855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60782855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift */; };
+		754C607C2855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60782855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
@@ -916,6 +920,8 @@
 		754C606C2855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningNode+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		754C606D2855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningChannel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningChannel+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		754C60772855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DBLightningPayment+CoreDataClass.swift"; path = "Shared/DB/CoreData Objects/DBLightningPayment+CoreDataClass.swift"; sourceTree = "<group>"; };
+		754C60782855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DBLightningPayment+CoreDataProperties.swift"; path = "Shared/DB/CoreData Objects/DBLightningPayment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1639,6 +1645,8 @@
 		755782BE26087903000E1686 = {
 			isa = PBXGroup;
 			children = (
+				754C60772855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift */,
+				754C60782855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift */,
 				750D63BC2689D9F200643FD3 /* alert.mp3 */,
 				755782C326087903000E1686 /* Shared */,
 				755782D026087904000E1686 /* iOS */,
@@ -2623,6 +2631,7 @@
 				752712FC261B48A7008C962C /* AccountNameInputView.swift in Sources */,
 				752E531B26FDDE6400FCDB0C /* ParameterEncoding.swift in Sources */,
 				75B151022621DAB700542415 /* AssetViewLandscape.swift in Sources */,
+				754C607B2855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift in Sources */,
 				75984F2E2648219B002CD1EA /* RestoreAccountView.swift in Sources */,
 				75A3F54226A57E63006B1823 /* Account.swift in Sources */,
 				753BA7252799B225009FEC20 /* IReachabilityService.swift in Sources */,
@@ -2704,6 +2713,7 @@
 				750AE9D526149DD900C45971 /* IPieChartModel.swift in Sources */,
 				75308ADB26A0284A0024AACD /* BitcoinFeeRateProvider.swift in Sources */,
 				7537DF03270309CF00B862AB /* SocketTicker.swift in Sources */,
+				754C60792855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift in Sources */,
 				754B2F672854E74800DB7A71 /* ModalNavigationView.swift in Sources */,
 				751A1CE027306E460024586B /* AccountSettingsViewModel.swift in Sources */,
 				7585AF4227B4407400A373F7 /* SendETHService.swift in Sources */,
@@ -2878,6 +2888,7 @@
 				751B6550269D98E8001B759C /* IAdapter.swift in Sources */,
 				756C3C8026EA9C83009530A9 /* BuySellButton.swift in Sources */,
 				758F3AE126A9A9EF00F345E1 /* IAccountStorage.swift in Sources */,
+				754C607A2855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift in Sources */,
 				75568BF1262D9F810010C7E6 /* ReceiveAssetsView.swift in Sources */,
 				75308AC326A0222A0024AACD /* DBLocalStorage.swift in Sources */,
 				75308AEB26A0291F0024AACD /* BitcoinCore + Holder.swift in Sources */,
@@ -2986,6 +2997,7 @@
 				750D63C4268B2B0800643FD3 /* ValueCurrencySwitchView.swift in Sources */,
 				75308ACD26A027B40024AACD /* AppConfigProvider.swift in Sources */,
 				75308AD726A0280E0024AACD /* FeeRateProvider.swift in Sources */,
+				754C607C2855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift in Sources */,
 				75BBC73A261C41A200032A90 /* PTextField.swift in Sources */,
 				75A3F53726A57CFB006B1823 /* WalletManager.swift in Sources */,
 				75A3F52526A57B69006B1823 /* CoinManager.swift in Sources */,
