@@ -334,6 +334,14 @@
 		754C60612855D22F00FA9ACF /* PayInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */; };
 		754C60632855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60622855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift */; };
 		754C60642855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60622855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift */; };
+		754C606F2855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606B2855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift */; };
+		754C60702855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606B2855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift */; };
+		754C60712855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606C2855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift */; };
+		754C60722855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606C2855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift */; };
+		754C60732855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606D2855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift */; };
+		754C60742855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606D2855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift */; };
+		754C60752855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */; };
+		754C60762855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
@@ -904,6 +912,10 @@
 		754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundLightningChannelViewModel.swift; sourceTree = "<group>"; };
 		754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayInvoiceViewModel.swift; sourceTree = "<group>"; };
 		754C60622855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningPaymentDetailsViewModel.swift; sourceTree = "<group>"; };
+		754C606B2855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningNode+CoreDataClass.swift"; sourceTree = "<group>"; };
+		754C606C2855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningNode+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		754C606D2855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningChannel+CoreDataClass.swift"; sourceTree = "<group>"; };
+		754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningChannel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1737,6 +1749,10 @@
 		7557858E260F719C000E1686 /* CoreData Objects */ = {
 			isa = PBXGroup;
 			children = (
+				754C606B2855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift */,
+				754C606C2855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift */,
+				754C606D2855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift */,
+				754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */,
 				75A3F55826A5A775006B1823 /* AccountRecord+CoreDataClass.swift */,
 				75A3F55726A5A775006B1823 /* AccountRecord+CoreDataProperties.swift */,
 			);
@@ -2567,6 +2583,8 @@
 				7546CFCC2636980A00E8A8B7 /* AccountItemView.swift in Sources */,
 				7556940426A6B15C00EE5CC4 /* WalletViewModel.swift in Sources */,
 				750AE9B926149DD900C45971 /* IKeyChainStorage.swift in Sources */,
+				754C606F2855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift in Sources */,
+				754C60732855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift in Sources */,
 				FA70527C26CEB536000EE935 /* SwapperModel.swift in Sources */,
 				75F5CD9A2684C904005ECA5B /* SeedTestViewModel.swift in Sources */,
 				752E533326FDDE6400FCDB0C /* EndPointType.swift in Sources */,
@@ -2650,6 +2668,7 @@
 				75D476D3262DAC2B0006FD91 /* RecentTxsView.swift in Sources */,
 				75308AB326A0215C0024AACD /* Portal.swift in Sources */,
 				75C95C7C2614CC3700B0EE10 /* RepeatingTimer.swift in Sources */,
+				754C60752855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift in Sources */,
 				75A3F53926A57D35006B1823 /* WalletStorage.swift in Sources */,
 				7574C34A2619DCE400299131 /* CreateAccountView.swift in Sources */,
 				750D63C3268B2B0800643FD3 /* ValueCurrencySwitchView.swift in Sources */,
@@ -2759,6 +2778,7 @@
 				7537DEFE2701D6B000B862AB /* ExchangeVolumeDataModel.swift in Sources */,
 				75598DDF284DFD6E00B7825D /* ChannelItemView.swift in Sources */,
 				75308ABD26A021C10024AACD /* ILocalStorage.swift in Sources */,
+				754C60712855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift in Sources */,
 				755D9FDF275FB64800EE363D /* AlertsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2872,6 +2892,7 @@
 				7555644826DD0DF6001B1C1A /* OrderBookItem.swift in Sources */,
 				7599A7922694566800562009 /* PortalLoader.swift in Sources */,
 				75A3F54326A57E63006B1823 /* Account.swift in Sources */,
+				754C60722855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift in Sources */,
 				7537DEF02701A70D00B862AB /* KrakenBalance.swift in Sources */,
 				7555644526DD0DCA001B1C1A /* OrderBook.swift in Sources */,
 				75308AB926A021900024AACD /* LocalStorage.swift in Sources */,
@@ -2894,9 +2915,11 @@
 				7527130B261BAAE8008C962C /* StoreSeedView.swift in Sources */,
 				7537DEDC2700B17200B862AB /* CoinbaseProApi.swift in Sources */,
 				75A3F53426A57CC9006B1823 /* IAcountManager.swift in Sources */,
+				754C60762855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift in Sources */,
 				75F5CDB72684CD7F005ECA5B /* AssetAllocationViewModel.swift in Sources */,
 				750AE9BE26149DD900C45971 /* IMarketCHangeProvider.swift in Sources */,
 				75A3F54626A57EBB006B1823 /* Wallet.swift in Sources */,
+				754C60702855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift in Sources */,
 				7556940526A6B15C00EE5CC4 /* WalletViewModel.swift in Sources */,
 				756C66B52640363500CD22B2 /* AlertsView.swift in Sources */,
 				7521917A275D6444003FA89D /* IPriceAlertStorage.swift in Sources */,
@@ -2977,6 +3000,7 @@
 				7517F89B26B40DBF0020AECB /* ICoinStorage.swift in Sources */,
 				755785B8260F73A2000E1686 /* FiatCurrency.swift in Sources */,
 				750AE9C226149DD900C45971 /* IPricesData.swift in Sources */,
+				754C60742855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift in Sources */,
 				753364B326F33A0B0073B0A4 /* ExchangeCredentialsView.swift in Sources */,
 				75A00BD526D3F56E00ABCA7E /* StateObject.swift in Sources */,
 				75F5CD892684C541005ECA5B /* TxsViewModel.swift in Sources */,
