@@ -920,8 +920,8 @@
 		754C606C2855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningNode+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		754C606D2855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningChannel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningChannel+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		754C60772855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DBLightningPayment+CoreDataClass.swift"; path = "Shared/DB/CoreData Objects/DBLightningPayment+CoreDataClass.swift"; sourceTree = "<group>"; };
-		754C60782855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DBLightningPayment+CoreDataProperties.swift"; path = "Shared/DB/CoreData Objects/DBLightningPayment+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		754C60772855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningPayment+CoreDataClass.swift"; sourceTree = "<group>"; };
+		754C60782855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBLightningPayment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1645,8 +1645,6 @@
 		755782BE26087903000E1686 = {
 			isa = PBXGroup;
 			children = (
-				754C60772855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift */,
-				754C60782855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift */,
 				750D63BC2689D9F200643FD3 /* alert.mp3 */,
 				755782C326087903000E1686 /* Shared */,
 				755782D026087904000E1686 /* iOS */,
@@ -1761,6 +1759,8 @@
 				754C606C2855DD7800FA9ACF /* DBLightningNode+CoreDataProperties.swift */,
 				754C606D2855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift */,
 				754C606E2855DD7800FA9ACF /* DBLightningChannel+CoreDataProperties.swift */,
+				754C60772855DFA300FA9ACF /* DBLightningPayment+CoreDataClass.swift */,
+				754C60782855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift */,
 				75A3F55826A5A775006B1823 /* AccountRecord+CoreDataClass.swift */,
 				75A3F55726A5A775006B1823 /* AccountRecord+CoreDataProperties.swift */,
 			);
