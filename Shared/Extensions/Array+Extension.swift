@@ -10,6 +10,14 @@ import Foundation
 import Charts
 import SwiftUI
 
+extension Array where Element == UInt8 {
+    func bytesToHexString() -> String {
+        let format = "%02hhx" // "%02hhX" (uppercase)
+        return self.map { String(format: format, $0) }.joined()
+    }
+}
+
+
 extension Array where Element: ChartDataEntry {
     func dataSet(portfolio: Bool = true) -> LineChartDataSet {
         let ds = LineChartDataSet(values: self, label: String())
