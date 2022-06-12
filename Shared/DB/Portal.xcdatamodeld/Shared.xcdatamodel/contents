@@ -24,6 +24,12 @@
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DBLightningNode" inverseName="channels" inverseEntity="DBLightningNode"/>
     </entity>
+    <entity name="DBLightningChannelManager" representedClassName="DBLightningChannelManager" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Binary"/>
+    </entity>
+    <entity name="DBLightningNetGraph" representedClassName="DBLightningNetGraph" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Binary"/>
+    </entity>
     <entity name="DBLightningNode" representedClassName="DBLightningNode" syncable="YES">
         <attribute name="alias" optional="YES" attributeType="String"/>
         <attribute name="host" optional="YES" attributeType="String"/>
@@ -62,5 +68,7 @@
         <element name="DBLightningChannel" positionX="-657" positionY="225" width="128" height="89"/>
         <element name="DBLightningNode" positionX="-648" positionY="234" width="128" height="104"/>
         <element name="DBLightningPayment" positionX="-639" positionY="243" width="128" height="134"/>
+        <element name="DBLightningChannelManager" positionX="-630" positionY="261" width="128" height="44"/>
+        <element name="DBLightningNetGraph" positionX="-612" positionY="270" width="128" height="44"/>
     </elements>
 </model>
