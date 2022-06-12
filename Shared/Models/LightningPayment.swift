@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LDKFramework_Mac
 
 class LightningPayment: Identifiable {
     
@@ -47,16 +48,16 @@ class LightningPayment: Identifiable {
         return Date() > expireDate
     }
     
-//    init(invoice: Invoice, memo: String) {
-//        self.id = UUID().uuidString
-//        self.satAmount = invoice.amount_milli_satoshis().getValue()!/1000
-//        self.created = Date()
-//        let expiteTime = TimeInterval(invoice.expiry_time())
-//        self.expires = Date(timeInterval: expiteTime, since: created)
-//        self.state = .requested
-//        self.invoice = invoice.to_str()
-//        self.memo = memo//invoice.into_signed_raw().raw_invoice().description().into_inner()
-//    }
+    init(invoice: Invoice, memo: String) {
+        self.id = UUID().uuidString
+        self.satAmount = invoice.amount_milli_satoshis().getValue()!/1000
+        self.created = Date()
+        let expiteTime = TimeInterval(invoice.expiry_time())
+        self.expires = Date(timeInterval: expiteTime, since: created)
+        self.state = .requested
+        self.invoice = invoice.to_str()
+        self.description = memo//invoice.into_signed_raw().raw_invoice().description().into_inner()
+    }
     
     init(id: String, satAmount: Int64, created: Date, description: String, state: State) {
         self.id = id
@@ -66,13 +67,13 @@ class LightningPayment: Identifiable {
         self.state = state
     }
     
-//    init(record: DBLightningPayment) {
-//        self.id = record.paymentID
-//        self.satAmount = UInt64(record.satValue)
-//        self.created = record.created
-//        self.expires = record.expires
-//        self.memo = record.memo
-//        self.state = State(rawValue: record.state)!
-//        self.invoice = record.invoice
-//    }
+    init(record: DBLightningPayment) {
+        self.id = record.paymentID
+        self.satAmount = UInt64(record.satValue)
+        self.created = record.created
+        self.expires = record.expires
+        self.description = record.memo
+        self.state = State(rawValue: record.state)!
+        self.invoice = record.invoice
+    }
 }

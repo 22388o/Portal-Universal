@@ -6,10 +6,11 @@
 //
 
 import Combine
+import LDKFramework_Mac
 
 class PayInvoiceViewModel: ObservableObject {
     @Published var invoiceString = String()
-//    @Published var invoice: Invoice?
+    @Published var invoice: Invoice?
     @Published var sent: Bool = false
     private var subscriptions = Set<AnyCancellable>()
     
@@ -24,46 +25,42 @@ class PayInvoiceViewModel: ObservableObject {
     }
     
     var amountString: String? {
-        "3000 sat"
-//        guard let inv = invoice else { return "" }
-//        let amount = inv.amount_milli_satoshis().getValue()!/1000
-//        return "\(amount) sat"
+        guard let inv = invoice else { return "" }
+        let amount = inv.amount_milli_satoshis().getValue()!/1000
+        return "\(amount) sat"
     }
     
     var expires: String? {
-        nil
-//        guard let inv = invoice else { return "" }
-//        let expiteTime = TimeInterval(inv.expiry_time())
-//        return "\(Date(timeInterval: expiteTime, since: Date()))"
+        guard let inv = invoice else { return "" }
+        let expiteTime = TimeInterval(inv.expiry_time())
+        return "\(Date(timeInterval: expiteTime, since: Date()))"
     }
     
     var payeePubKey: String? {
-        "wajdhfasdihasdouoi21iodwjkqbhas89asdkgas9823lknaslka"
-//        guard let inv = invoice else { return "" }
-//        return LDKBlock.bytesToHexString(bytes: inv.payee_pub_key())
+        guard let inv = invoice else { return "" }
+        return inv.payee_pub_key().bytesToHexString()
     }
     
     var networkString: String? {
-        "test network"
-//        guard let inv = invoice else { return "" }
-//
-//        switch inv.currency() {
-//        case LDKCurrency_Bitcoin:
-//            return "Bitcoin"
-//        case LDKCurrency_BitcoinTestnet:
-//            return "Bitcoin testnet"
-//        case LDKCurrency_Regtest:
-//            return "Bitcoin regtest"
-//        default:
-//            return "Bitcoin ?"
-//        }
+        guard let inv = invoice else { return "" }
+
+        switch inv.currency() {
+        case LDKCurrency_Bitcoin:
+            return "Bitcoin"
+        case LDKCurrency_BitcoinTestnet:
+            return "Bitcoin testnet"
+        case LDKCurrency_Regtest:
+            return "Bitcoin regtest"
+        default:
+            return "Bitcoin ?"
+        }
     }
     
     func scan() {
-//        let result = Invoice.from_str(s: "lntb10200n1p3f58cspp5flky3wyhtajzpx37smjcce0cqj8d0ral9q8zm9hgph0qk54uajqqdqqcqzpgxqyz5vqsp5a90cd6an69xh057tvanwsdkecv3pc2tmtzl0g36fcyl9sy7p200s9qyyssqs9gdf7xqlee4f2kzq506fa38tumsjxu4fxly2mf4rs78cz5t2l7hc4zzte4zk3kcuestqxt2qkgm5farcz2a24thdjv8lxxt7hsqtfgq0mlw7c")
-//        if result.isOk() {
-//            invoice = result.getValue()!
-//        }
+        let result = Invoice.from_str(s: "lntb10200n1p3f58cspp5flky3wyhtajzpx37smjcce0cqj8d0ral9q8zm9hgph0qk54uajqqdqqcqzpgxqyz5vqsp5a90cd6an69xh057tvanwsdkecv3pc2tmtzl0g36fcyl9sy7p200s9qyyssqs9gdf7xqlee4f2kzq506fa38tumsjxu4fxly2mf4rs78cz5t2l7hc4zzte4zk3kcuestqxt2qkgm5farcz2a24thdjv8lxxt7hsqtfgq0mlw7c")
+        if result.isOk() {
+            invoice = result.getValue()!
+        }
     }
     
     func send() {

@@ -18,7 +18,7 @@ class LightningNode: Identifiable {
     var channels: [LightningChannel]
     var connected: Bool
     var nodeId: [UInt8] {
-        []//LDKBlock.hexStringToBytes(hexString: publicKey)!
+        publicKey.hexStringToBytes() ?? []
     }
     
     init(alias: String, publicKey: String, host: String, port: UInt16) {
@@ -30,15 +30,15 @@ class LightningNode: Identifiable {
         self.connected = false
     }
     
-//    init(record: DBLightningNode) {
-//        self.alias = record.alias
-//        self.publicKey = record.publicKey
-//        self.host = record.host
-//        self.port = UInt16(record.port)
-//        let dbChannels = record.channels.sortedArray(using: []) as? [DBLightningChannel]
-//        self.channels = dbChannels?.map{ LightningChannel(record: $0) } ?? [LightningChannel]()
-//        self.connected = false
-//    }
+    init(record: DBLightningNode) {
+        self.alias = record.alias
+        self.publicKey = record.publicKey
+        self.host = record.host
+        self.port = UInt16(record.port)
+        let dbChannels = record.channels.sortedArray(using: []) as? [DBLightningChannel]
+        self.channels = dbChannels?.map{ LightningChannel(record: $0) } ?? [LightningChannel]()
+        self.connected = false
+    }
     
     static var sampleNodes: [LightningNode] {
         [LightningNode(

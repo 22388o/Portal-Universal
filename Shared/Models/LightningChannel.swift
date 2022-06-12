@@ -34,10 +34,10 @@ class LightningChannel: Identifiable {
         self.state = state
     }
     
-//    init(record: DBLightningChannel) {
-//        self.id = UInt16(record.channelID)
-//        self.nodeAlias = record.node.alias
-//        self.satValue = UInt64(record.satValue)
-//        self.state = State.init(rawValue: record.state)!
-//    }
+    init(record: DBLightningChannel) {
+        self.id = UInt16(record.channelID)
+        self.nodeAlias = record.node.alias
+        self.satValue = UInt64(record.satValue)
+        self.state = State.init(rawValue: record.state)!
+    }
 }
