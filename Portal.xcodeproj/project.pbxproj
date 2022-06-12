@@ -332,6 +332,8 @@
 		754B2F6B2854F72600DB7A71 /* FundLightningChannelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */; };
 		754C60602855D22F00FA9ACF /* PayInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */; };
 		754C60612855D22F00FA9ACF /* PayInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */; };
+		754C60632855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60622855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift */; };
+		754C60642855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60622855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
@@ -901,6 +903,7 @@
 		754B2F662854E74800DB7A71 /* ModalNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalNavigationView.swift; sourceTree = "<group>"; };
 		754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundLightningChannelViewModel.swift; sourceTree = "<group>"; };
 		754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayInvoiceViewModel.swift; sourceTree = "<group>"; };
+		754C60622855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningPaymentDetailsViewModel.swift; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1969,6 +1972,7 @@
 				75598DEB284DFE0400B7825D /* LightningViewViewModel.swift */,
 				75598DF0284DFE2300B7825D /* CreateInvoiceViewModel.swift */,
 				754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */,
+				754C60622855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2619,6 +2623,7 @@
 				75598DEC284DFE0400B7825D /* LightningViewViewModel.swift in Sources */,
 				752E532D26FDDE6400FCDB0C /* BinanceRequestConfig.swift in Sources */,
 				756C3C7026EA9B2C009530A9 /* TraidingPair.swift in Sources */,
+				754C60632855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift in Sources */,
 				750C36CB261F44BF0088CCED /* AssetItemView.swift in Sources */,
 				752E531D26FDDE6400FCDB0C /* URLParameterEncoding.swift in Sources */,
 				752E532326FDDE6400FCDB0C /* HTTPTask.swift in Sources */,
@@ -2929,6 +2934,7 @@
 				75C95C432614CC0400B0EE10 /* Publisher+Extension.swift in Sources */,
 				753364A326F339510073B0A4 /* TradingPairModel.swift in Sources */,
 				753471FE262C2ECA005CD93C /* ExchangerViewModel.swift in Sources */,
+				754C60642855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift in Sources */,
 				752712FD261B48A7008C962C /* AccountNameInputView.swift in Sources */,
 				7537DF0827035F7800B862AB /* WebViewRepresentalble.swift in Sources */,
 				75B151032621DAB700542415 /* AssetViewLandscape.swift in Sources */,
