@@ -233,3 +233,335 @@ extension DBlocalStorage: IPriceAlertStorage {
         }
     }
 }
+
+enum DBError: Error {
+    case missingContext
+    case fetchingError
+    case storingError
+}
+
+extension DBlocalStorage: ILightningDataStorage {
+    func channelWith(id: UInt64) throws -> LightningChannel? {
+        let request = DBLightningChannel.fetchRequest() as NSFetchRequest<DBLightningChannel>
+        var channel: LightningChannel?
+        
+        try context.performAndWait {
+            do {
+                if let record = try context.fetch(request).first(where: { $0.channelID == id }) {
+                    channel = LightningChannel(record: record)
+                } else {
+                    throw DBError.fetchingError
+                }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return channel
+    }
+    
+    func removeChannelWith(id: UInt64) throws {
+        let request = DBLightningChannel.fetchRequest() as NSFetchRequest<DBLightningChannel>
+        
+        try context.performAndWait {
+            do {
+                if let record = try context.fetch(request).first(where: { $0.channelID == id }) {
+                    context.delete(record)
+                    try context.save()
+                } else {
+                    throw DBError.fetchingError
+                }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    func update(channelMonitor: Data, id: String) throws {
+        let request = DBChannelMonitor.fetchRequest() as NSFetchRequest<DBChannelMonitor>
+        
+        try context.performAndWait {
+            do {
+                if let record = try context.fetch(request).first(where: { $0.channelId == id }) {
+                    record.data = channelMonitor
+                } else {
+                    let dbMonitor = DBChannelMonitor(context: context)
+                    dbMonitor.channelId = id
+                    dbMonitor.data = channelMonitor
+                }
+                
+                try context.save()
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    
+    func fetchNetGraph() throws -> Data? {
+        let request = DBLightningNetGraph.fetchRequest() as NSFetchRequest<DBLightningNetGraph>
+        var netGraphData: Data?
+        
+        try context.performAndWait {
+            do {
+                let record = try context.fetch(request).first
+                netGraphData = record?.data
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return netGraphData
+    }
+    
+    func fetchChannelManager() throws -> Data? {
+        let request = DBLightningChannelManager.fetchRequest() as NSFetchRequest<DBLightningChannelManager>
+        var channelManagerData: Data?
+        
+        try context.performAndWait {
+            do {
+                let record = try context.fetch(request).first
+                channelManagerData = record?.data
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return channelManagerData
+    }
+    
+    func fetchChannelMonitors() throws -> [Data]? {
+        let request = DBChannelMonitor.fetchRequest() as NSFetchRequest<DBChannelMonitor>
+        var channelMonitors = [Data]()
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                for record in records {
+                    channelMonitors.append(record.data!)
+                }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return !channelMonitors.isEmpty ? channelMonitors : nil
+    }
+    
+
+    func fetchNodes() throws -> [LightningNode] {
+        let request = DBLightningNode.fetchRequest() as NSFetchRequest<DBLightningNode>
+        var nodes = [LightningNode]()
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                nodes = records.map { LightningNode(record: $0) }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return nodes
+    }
+    
+    func fetchChannels() throws -> [LightningChannel] {
+        let request = DBLightningChannel.fetchRequest() as NSFetchRequest<DBLightningChannel>
+        var channels = [LightningChannel]()
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                channels = records.map { LightningChannel(record: $0) }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return channels
+    }
+    
+    func fetchPayments() throws -> [LightningPayment] {
+        let request = DBLightningPayment.fetchRequest() as NSFetchRequest<DBLightningPayment>
+        var payments = [LightningPayment]()
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                payments = records.map { LightningPayment(record: $0) }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+        
+        return payments
+    }
+    
+    func save(channelManager: Data) throws {
+        let request = DBLightningChannelManager.fetchRequest() as NSFetchRequest<DBLightningChannelManager>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                
+                if let record = records.first {
+                    record.data = channelManager
+                } else {
+                    let manager = DBLightningChannelManager(context: context)
+                    manager.data = channelManager
+                }
+                try context.save()
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    func save(networkGraph: Data) throws {
+        let request = DBLightningNetGraph.fetchRequest() as NSFetchRequest<DBLightningNetGraph>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                
+                if let record = records.first {
+                    record.data = networkGraph
+                } else {
+                    let network = DBLightningNetGraph(context: context)
+                    network.data = networkGraph
+                }
+                
+                try context.save()
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    func save(nodes: [LightningNode]) throws {
+        try context.performAndWait {
+            do {
+                for node in nodes {
+                    let dbNode = DBLightningNode(context: context)
+                    dbNode.alias = node.alias
+                    dbNode.publicKey = node.publicKey
+                    dbNode.host = node.host
+                    dbNode.port = Int16(node.port)
+                }
+                try context.save()
+            } catch {
+                throw DBError.storingError
+            }
+        }
+    }
+    
+    func save(channel: LightningChannel) throws {
+        let newChannel = DBLightningChannel(context: context)
+        newChannel.channelID = Int16(channel.id)
+        newChannel.satValue = Int64(channel.satValue)
+        newChannel.state = channel.state.rawValue
+        
+        try context.performAndWait {
+            do {
+                try context.save()
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    func save(payment: LightningPayment) throws {
+        let record = DBLightningPayment(context: context)
+        record.paymentID = payment.id
+        record.satValue = Int64(payment.satAmount)
+        record.memo = payment.description
+        record.created = payment.created
+        record.expires = payment.expires
+        record.state = payment.state.rawValue
+        record.invoice = payment.invoice
+        
+        try context.performAndWait {
+            do {
+                try context.save()
+            } catch {
+                throw DBError.storingError
+            }
+        }
+
+    }
+    
+    func update(node: LightningNode) throws {
+        let request = DBLightningNode.fetchRequest() as NSFetchRequest<DBLightningNode>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                
+                if let record = records.first(where: { $0.publicKey == node.publicKey }) {
+                    record.alias = node.alias
+                    record.publicKey = node.publicKey
+                    record.host = node.host
+                    record.port = Int16(node.port)
+                    
+                    for channel in node.channels {
+                        let channelRecord = DBLightningChannel(context: context)
+                        channelRecord.satValue = Int64(channel.satValue)
+                        channelRecord.channelID = Int16(channel.id)
+                        channelRecord.state = channel.state.rawValue
+                        
+                        record.addToChannels(channelRecord)
+                    }
+                    
+                    try context.save()
+                } else {
+                    throw DBError.storingError
+                }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    func update(channel: LightningChannel) throws {
+        let request = DBLightningChannel.fetchRequest() as NSFetchRequest<DBLightningChannel>
+        
+        try context.performAndWait {
+            do {
+                if let record = try context.fetch(request).first(where: { $0.channelID == channel.id }) {
+                    record.state = channel.state.rawValue
+                    record.satValue = Int64(channel.satValue)
+                    try context.save()
+                } else {
+                    throw DBError.fetchingError
+                }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+    
+    func update(payment: LightningPayment) throws {
+        let request = DBLightningPayment.fetchRequest() as NSFetchRequest<DBLightningPayment>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(request)
+                
+                if let record = records.first(where: { $0.paymentID == payment.id }) {
+                    record.state = payment.state.rawValue
+                    record.satValue = Int64(payment.satAmount)
+                    record.memo = payment.description
+                    record.created = payment.created
+                    record.expires = payment.expires
+                    record.invoice = payment.invoice
+                    
+                    try context.save()
+                } else {
+                    throw DBError.storingError
+                }
+            } catch {
+                throw DBError.fetchingError
+            }
+        }
+    }
+}
