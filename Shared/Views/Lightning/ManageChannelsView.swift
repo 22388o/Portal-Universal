@@ -16,7 +16,7 @@ class ManageChannelsViewModel: ObservableObject {
 }
 
 struct ManageChannelsView: View {
-    @StateObject var viewModel = ManageChannelsViewModel()
+    @StateObject private var viewModel = ManageChannelsViewModel()
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {

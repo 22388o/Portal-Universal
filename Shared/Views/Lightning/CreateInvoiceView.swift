@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CreateInvoiceView: View {
-    @StateObject var vm = CreateInvoiceViewModel()
+    @StateObject private var viewModel = CreateInvoiceViewModel()
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
@@ -21,7 +21,7 @@ struct CreateInvoiceView: View {
                 })
                 .padding()
                 
-                if let code = vm.qrCode {
+                if let code = viewModel.qrCode {
                     Image(nsImage: code)
                         .resizable()
                         .frame(width: 350, height: 350)
@@ -36,7 +36,7 @@ struct CreateInvoiceView: View {
                             
                             Spacer()
                             
-                            Text("\(vm.satAmount) sat")
+                            Text("\(viewModel.satAmount) sat")
                                 .font(.mainFont(size: 14))
                                 .foregroundColor(Color.lightActiveLabel)
                         }
@@ -49,7 +49,7 @@ struct CreateInvoiceView: View {
                             
                             Spacer()
                             
-                            Text(vm.memo)
+                            Text(viewModel.memo)
                                 .font(.mainFont(size: 14))
                                 .foregroundColor(Color.lightActiveLabel)
                         }
@@ -77,7 +77,7 @@ struct CreateInvoiceView: View {
                                 
                                 Spacer()
                                 
-                                Text("\(vm.expires)")
+                                Text("\(viewModel.expires)")
                                     .lineLimit(1)
                                     .font(.mainFont(size: 14))
                                     .foregroundColor(Color.lightActiveLabel)
@@ -103,7 +103,7 @@ struct CreateInvoiceView: View {
 //                        .font(.mainFont(size: 14))
 //                        .foregroundColor(Color.lightInactiveLabel)
                     
-                    Text("\(vm.invoiceString)")
+                    Text("\(viewModel.invoiceString)")
                         .font(.mainFont(size: 12))
                         .foregroundColor(Color.white)
                         .padding()
@@ -111,7 +111,7 @@ struct CreateInvoiceView: View {
                     Spacer()
                     
                     PButtonDark(label: "Share", height: 40, fontSize: 16, enabled: true, action: {
-                        vm.showShareSheet.toggle()
+                        viewModel.showShareSheet.toggle()
                     })
                     .padding()
 //                    .sheet(isPresented: $vm.showShareSheet) {
@@ -129,7 +129,7 @@ struct CreateInvoiceView: View {
                                 .frame(width: 24, height: 24)
                             
                             #if os(iOS)
-                            TextField(String(), text: $vm.satAmount)
+                            TextField(String(), text: $viewModel.satAmount)
                                 .foregroundColor(Color.white)
                                 .modifier(
                                     PlaceholderStyle(
@@ -140,12 +140,12 @@ struct CreateInvoiceView: View {
                                 .frame(height: 20)
                                 .keyboardType(.numberPad)
                             #else
-                            TextField(String(), text: $vm.satAmount)
+                            TextField(String(), text: $viewModel.satAmount)
                                 .font(Font.mainFont(size: 16))
                                 .foregroundColor(Color.white)
                                 .modifier(
                                     PlaceholderStyle(
-                                        showPlaceHolder: vm.satAmount.isEmpty,
+                                        showPlaceHolder: viewModel.satAmount.isEmpty,
                                         placeholder: "0"
                                     )
                                 )
@@ -166,11 +166,11 @@ struct CreateInvoiceView: View {
                         
                         HStack(spacing: 2) {
                             Spacer()
-                            Text(vm.fiatValue)
+                            Text(viewModel.fiatValue)
                                 .font(Font.mainFont())
                                 .foregroundColor(Color.lightActiveLabelNew)
                             
-                            if !vm.fiatValue.isEmpty {
+                            if !viewModel.fiatValue.isEmpty {
                                 Text("USD")
                                     .font(Font.mainFont())
                                     .foregroundColor(Color.lightActiveLabelNew)
@@ -195,12 +195,12 @@ struct CreateInvoiceView: View {
                                 .frame(height: 20)
                                 .keyboardType(.numberPad)
                             #else
-                            TextField(String(), text: $vm.memo)
+                            TextField(String(), text: $viewModel.memo)
                                 .font(Font.mainFont(size: 16))
                                 .foregroundColor(Color.white)
                                 .modifier(
                                     PlaceholderStyle(
-                                        showPlaceHolder: vm.memo.isEmpty,
+                                        showPlaceHolder: viewModel.memo.isEmpty,
                                         placeholder: "Description..."
                                     )
                                 )
@@ -214,7 +214,7 @@ struct CreateInvoiceView: View {
                                 .stroke(true ? Color.clear : Color.red, lineWidth: 1)
                         )
                         
-                        DatePicker("Expire date", selection: $vm.expireDate, in: vm.pickerDateRange, displayedComponents: [.date, .hourAndMinute])
+                        DatePicker("Expire date", selection: $viewModel.expireDate, in: viewModel.pickerDateRange, displayedComponents: [.date, .hourAndMinute])
                             .font(Font.mainFont())
                             .foregroundColor(Color.lightActiveLabelNew)
                             .datePickerStyle(CompactDatePickerStyle())
@@ -225,7 +225,7 @@ struct CreateInvoiceView: View {
                     Spacer()
                     
                     PButtonDark(label: "Create", height: 40, fontSize: 16, enabled: true, action: {
-                        vm.createInvoice()
+                        viewModel.createInvoice()
                     })
                     .padding()
                 }

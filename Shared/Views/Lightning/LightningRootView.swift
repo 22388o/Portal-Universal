@@ -31,7 +31,7 @@ struct LightningRootView: View {
                 case .fundChannel(let node):
                     FundLightningChannelView(viewState: $state, node: node)
                 case .send:
-                    SendLightningPaymentView(viewState: $state)
+                    PayInvoiceView(viewState: $state)
                 case .paymentDetails(let payment):
                     LightningPaymentDetailsView(viewState: $state, payment: payment)
                 }
