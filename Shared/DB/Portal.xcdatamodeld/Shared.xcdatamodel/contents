@@ -14,6 +14,10 @@
         <attribute name="fiatCurrenciesData" optional="YES" attributeType="Binary"/>
         <attribute name="tickersData" optional="YES" attributeType="Binary"/>
     </entity>
+    <entity name="DBChannelMonitor" representedClassName="DBChannelMonitor" syncable="YES" codeGenerationType="class">
+        <attribute name="channelId" optional="YES" attributeType="String"/>
+        <attribute name="data" optional="YES" attributeType="Binary"/>
+    </entity>
     <entity name="PortalNotification" representedClassName="PortalNotification" syncable="YES" codeGenerationType="class">
         <attribute name="accountId" optional="YES" attributeType="String"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -32,5 +36,6 @@
         <element name="DBCache" positionX="-657.4296875" positionY="99.34375" width="128" height="59"/>
         <element name="PortalNotification" positionX="-666" positionY="207" width="128" height="74"/>
         <element name="PriceAlert" positionX="-666" positionY="207" width="128" height="119"/>
+        <element name="DBChannelMonitor" positionX="-666" positionY="216" width="128" height="59"/>
     </elements>
 </model>
