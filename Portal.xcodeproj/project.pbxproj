@@ -316,8 +316,8 @@
 		754B2F2B2851CAF500DB7A71 /* Portal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 755782C426087903000E1686 /* Portal.xcdatamodeld */; };
 		754B2F552852266800DB7A71 /* LightningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F542852266800DB7A71 /* LightningView.swift */; };
 		754B2F562852266800DB7A71 /* LightningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F542852266800DB7A71 /* LightningView.swift */; };
-		754B2F582853367400DB7A71 /* SendLightningPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F572853367400DB7A71 /* SendLightningPaymentView.swift */; };
-		754B2F592853367400DB7A71 /* SendLightningPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F572853367400DB7A71 /* SendLightningPaymentView.swift */; };
+		754B2F582853367400DB7A71 /* PayInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F572853367400DB7A71 /* PayInvoiceView.swift */; };
+		754B2F592853367400DB7A71 /* PayInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F572853367400DB7A71 /* PayInvoiceView.swift */; };
 		754B2F5B2853372A00DB7A71 /* LightningPaymentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */; };
 		754B2F5C2853372A00DB7A71 /* LightningPaymentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */; };
 		754B2F5E28533AA800DB7A71 /* FundLightningChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */; };
@@ -330,6 +330,8 @@
 		754B2F682854E74800DB7A71 /* ModalNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F662854E74800DB7A71 /* ModalNavigationView.swift */; };
 		754B2F6A2854F72600DB7A71 /* FundLightningChannelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */; };
 		754B2F6B2854F72600DB7A71 /* FundLightningChannelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */; };
+		754C60602855D22F00FA9ACF /* PayInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */; };
+		754C60612855D22F00FA9ACF /* PayInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
@@ -891,13 +893,14 @@
 		7544741727DA41FC00AFD02F /* Erc20ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc20ItemModel.swift; sourceTree = "<group>"; };
 		7546CFCB2636980A00E8A8B7 /* AccountItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItemView.swift; sourceTree = "<group>"; };
 		754B2F542852266800DB7A71 /* LightningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningView.swift; sourceTree = "<group>"; };
-		754B2F572853367400DB7A71 /* SendLightningPaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendLightningPaymentView.swift; sourceTree = "<group>"; };
+		754B2F572853367400DB7A71 /* PayInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayInvoiceView.swift; sourceTree = "<group>"; };
 		754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningPaymentDetailsView.swift; sourceTree = "<group>"; };
 		754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundLightningChannelView.swift; sourceTree = "<group>"; };
 		754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLightningNodeView.swift; sourceTree = "<group>"; };
 		754B2F632854E32900DB7A71 /* LightningNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeView.swift; sourceTree = "<group>"; };
 		754B2F662854E74800DB7A71 /* ModalNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalNavigationView.swift; sourceTree = "<group>"; };
 		754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundLightningChannelViewModel.swift; sourceTree = "<group>"; };
+		754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayInvoiceViewModel.swift; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1813,7 +1816,7 @@
 				75598DE2284DFD9B00B7825D /* LightningPaymentItemView.swift */,
 				75598DF5284DFE4A00B7825D /* CreateInvoiceView.swift */,
 				75598DF9284DFE8000B7825D /* OpenNewChannelView.swift */,
-				754B2F572853367400DB7A71 /* SendLightningPaymentView.swift */,
+				754B2F572853367400DB7A71 /* PayInvoiceView.swift */,
 				754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */,
 				754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */,
 				754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */,
@@ -1938,6 +1941,7 @@
 			isa = PBXGroup;
 			children = (
 				75C95C992614D08900B0EE10 /* AssetViewModel.swift */,
+				754C605F2855D22F00FA9ACF /* PayInvoiceViewModel.swift */,
 				751A1CDF27306E460024586B /* AccountSettingsViewModel.swift */,
 				75F5CD8F2684C6AD005ECA5B /* AssetItemViewModel.swift */,
 				758F3AEB26A9BE3C00F345E1 /* HeaderViewModel.swift */,
@@ -2490,9 +2494,10 @@
 				753364AD26F339C00073B0A4 /* ExchangeViewModel.swift in Sources */,
 				75271303261B5378008C962C /* PButton.swift in Sources */,
 				7556CA3327FB5E80000AAC59 /* PasscodeSettingsView.swift in Sources */,
-				754B2F582853367400DB7A71 /* SendLightningPaymentView.swift in Sources */,
+				754B2F582853367400DB7A71 /* PayInvoiceView.swift in Sources */,
 				75B151492622F96800542415 /* MarketValueView.swift in Sources */,
 				FA70528326CEB582000EE935 /* SwapperViewModel.swift in Sources */,
+				754C60602855D22F00FA9ACF /* PayInvoiceViewModel.swift in Sources */,
 				75C95C842614CC3700B0EE10 /* MockData.swift in Sources */,
 				750C36C4261F3AEE0088CCED /* WalletView.swift in Sources */,
 				75308AD626A0280E0024AACD /* FeeRateProvider.swift in Sources */,
@@ -2853,7 +2858,7 @@
 				75308AEB26A0291F0024AACD /* BitcoinCore + Holder.swift in Sources */,
 				7521917F275D6473003FA89D /* PriceAlertModel.swift in Sources */,
 				7585AF3D27AEA2E700A373F7 /* ModalViewContainer.swift in Sources */,
-				754B2F592853367400DB7A71 /* SendLightningPaymentView.swift in Sources */,
+				754B2F592853367400DB7A71 /* PayInvoiceView.swift in Sources */,
 				75F5CDAF2684CBF7005ECA5B /* SendAssetViewModel.swift in Sources */,
 				75A3F55A26A5A775006B1823 /* AccountRecord+CoreDataProperties.swift in Sources */,
 				7555640E26D8E7B8001B1C1A /* WalletCurrencyButton.swift in Sources */,
@@ -3052,6 +3057,7 @@
 				750AE90A26149A8C00C45971 /* Coin.swift in Sources */,
 				750AE9B226149DD900C45971 /* ICoinKit.swift in Sources */,
 				75EF8D5E2783463700F69A6E /* TxFeesPicker.swift in Sources */,
+				754C60612855D22F00FA9ACF /* PayInvoiceViewModel.swift in Sources */,
 				7555643226D8FB08001B1C1A /* OrderBookView.swift in Sources */,
 				7544741027DA3CE100AFD02F /* ManageAssetViews.swift in Sources */,
 				7599A7952695D5E400562009 /* HeaderView.swift in Sources */,
