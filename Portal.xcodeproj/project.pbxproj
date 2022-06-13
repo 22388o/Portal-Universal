@@ -356,6 +356,24 @@
 		754C608B28562C0600FA9ACF /* ILightningSerivice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C608128562C0600FA9ACF /* ILightningSerivice.swift */; };
 		754C608D2856420A00FA9ACF /* ILocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C608C2856420A00FA9ACF /* ILocalStorage.swift */; };
 		754C608E2856420A00FA9ACF /* ILocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C608C2856420A00FA9ACF /* ILocalStorage.swift */; };
+		754C6090285643DD00FA9ACF /* LightningDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C608F285643DD00FA9ACF /* LightningDataService.swift */; };
+		754C6091285643DD00FA9ACF /* LightningDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C608F285643DD00FA9ACF /* LightningDataService.swift */; };
+		754C60932856450100FA9ACF /* LightningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60922856450100FA9ACF /* LightningService.swift */; };
+		754C60942856450100FA9ACF /* LightningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60922856450100FA9ACF /* LightningService.swift */; };
+		754C60962857224B00FA9ACF /* LightningChannelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60952857224B00FA9ACF /* LightningChannelManager.swift */; };
+		754C60972857224B00FA9ACF /* LightningChannelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60952857224B00FA9ACF /* LightningChannelManager.swift */; };
+		754C609A285729A800FA9ACF /* LDKFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C6099285729A800FA9ACF /* LDKFilter.swift */; };
+		754C609B285729A800FA9ACF /* LDKFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C6099285729A800FA9ACF /* LDKFilter.swift */; };
+		754C609D28572A3E00FA9ACF /* LDKFeesEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C609C28572A3E00FA9ACF /* LDKFeesEstimator.swift */; };
+		754C609E28572A3E00FA9ACF /* LDKFeesEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C609C28572A3E00FA9ACF /* LDKFeesEstimator.swift */; };
+		754C60A028572A8700FA9ACF /* LDKChannelPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C609F28572A8700FA9ACF /* LDKChannelPersister.swift */; };
+		754C60A128572A8700FA9ACF /* LDKChannelPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C609F28572A8700FA9ACF /* LDKChannelPersister.swift */; };
+		754C60A328572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A228572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift */; };
+		754C60A428572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A228572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift */; };
+		754C60A628572C5100FA9ACF /* LDKLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A528572C5100FA9ACF /* LDKLogger.swift */; };
+		754C60A728572C5100FA9ACF /* LDKLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A528572C5100FA9ACF /* LDKLogger.swift */; };
+		754C60A928572CFC00FA9ACF /* LDKChannelManagerPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A828572CFC00FA9ACF /* LDKChannelManagerPersister.swift */; };
+		754C60AA28572CFC00FA9ACF /* LDKChannelManagerPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A828572CFC00FA9ACF /* LDKChannelManagerPersister.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
@@ -937,6 +955,15 @@
 		754C608028562C0600FA9ACF /* ILightningChannelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ILightningChannelManager.swift; sourceTree = "<group>"; };
 		754C608128562C0600FA9ACF /* ILightningSerivice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ILightningSerivice.swift; sourceTree = "<group>"; };
 		754C608C2856420A00FA9ACF /* ILocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ILocalStorage.swift; sourceTree = "<group>"; };
+		754C608F285643DD00FA9ACF /* LightningDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningDataService.swift; sourceTree = "<group>"; };
+		754C60922856450100FA9ACF /* LightningService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningService.swift; sourceTree = "<group>"; };
+		754C60952857224B00FA9ACF /* LightningChannelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningChannelManager.swift; sourceTree = "<group>"; };
+		754C6099285729A800FA9ACF /* LDKFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKFilter.swift; sourceTree = "<group>"; };
+		754C609C28572A3E00FA9ACF /* LDKFeesEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKFeesEstimator.swift; sourceTree = "<group>"; };
+		754C609F28572A8700FA9ACF /* LDKChannelPersister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKChannelPersister.swift; sourceTree = "<group>"; };
+		754C60A228572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKTestNetBroadcasterInterface.swift; sourceTree = "<group>"; };
+		754C60A528572C5100FA9ACF /* LDKLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKLogger.swift; sourceTree = "<group>"; };
+		754C60A828572CFC00FA9ACF /* LDKChannelManagerPersister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKChannelManagerPersister.swift; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1207,6 +1234,9 @@
 				755D9FD4275E6DD000EE363D /* PushNotificationService.swift */,
 				7585AF4127B4407400A373F7 /* SendETHService.swift */,
 				7585AF4427B4410700A373F7 /* SendBTCService.swift */,
+				754C608F285643DD00FA9ACF /* LightningDataService.swift */,
+				754C60922856450100FA9ACF /* LightningService.swift */,
+				754C60952857224B00FA9ACF /* LightningChannelManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1347,13 +1377,14 @@
 		751F07132697082D000647FD /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				75A3F55026A5A1D5006B1823 /* Deprecated */,
+				754C60982857295D00FA9ACF /* LDK batteries */,
 				751B6560269DF35B001B759C /* Adapters */,
 				75A3F53B26A57D5C006B1823 /* Storage */,
 				75A3F53C26A57D70006B1823 /* Manager */,
 				75A3F53D26A57D83006B1823 /* Updaters */,
 				75C95C2E2614CBC000B0EE10 /* Providers */,
 				7555642626D8F6C9001B1C1A /* Factories */,
+				75A3F55026A5A1D5006B1823 /* Deprecated */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1493,6 +1524,19 @@
 				753BA74827A0236A009FEC20 /* ExchangeDataUpdaterUnitTests.swift */,
 			);
 			path = Updaters;
+			sourceTree = "<group>";
+		};
+		754C60982857295D00FA9ACF /* LDK batteries */ = {
+			isa = PBXGroup;
+			children = (
+				754C6099285729A800FA9ACF /* LDKFilter.swift */,
+				754C609C28572A3E00FA9ACF /* LDKFeesEstimator.swift */,
+				754C609F28572A8700FA9ACF /* LDKChannelPersister.swift */,
+				754C60A228572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift */,
+				754C60A528572C5100FA9ACF /* LDKLogger.swift */,
+				754C60A828572CFC00FA9ACF /* LDKChannelManagerPersister.swift */,
+			);
+			path = "LDK batteries";
 			sourceTree = "<group>";
 		};
 		7555640226D79432001B1C1A /* Components */ = {
@@ -2534,6 +2578,8 @@
 				FA70527126CEB4BD000EE935 /* SwapperView.swift in Sources */,
 				750AE90D26149A8C00C45971 /* CoinMarketData.swift in Sources */,
 				75E5E08E26EF8FF500C05568 /* FloatingPoint+Extension.swift in Sources */,
+				754C60A028572A8700FA9ACF /* LDKChannelPersister.swift in Sources */,
+				754C609A285729A800FA9ACF /* LDKFilter.swift in Sources */,
 				7537DEEF2701A70D00B862AB /* KrakenBalance.swift in Sources */,
 				75777C142848E27700866B02 /* LightningRootView.swift in Sources */,
 				75A3F52426A57B69006B1823 /* CoinManager.swift in Sources */,
@@ -2554,6 +2600,7 @@
 				7585AF4827B50D1D00A373F7 /* ISendAssetService.swift in Sources */,
 				7555641826D8EA22001B1C1A /* TxDetailsViewModel.swift in Sources */,
 				75C95C662614CC0400B0EE10 /* Array+Extension.swift in Sources */,
+				754C60932856450100FA9ACF /* LightningService.swift in Sources */,
 				7555644126DCF7F7001B1C1A /* OrderBookItemView.swift in Sources */,
 				750D63C9268B2B9500643FD3 /* FiatCurrencyView.swift in Sources */,
 				7544741227DA3FBE00AFD02F /* ManageAssetViewModel.swift in Sources */,
@@ -2573,7 +2620,9 @@
 				754B2F5E28533AA800DB7A71 /* FundLightningChannelView.swift in Sources */,
 				75A3F53026A57C9C006B1823 /* AccountManager.swift in Sources */,
 				75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */,
+				754C60A628572C5100FA9ACF /* LDKLogger.swift in Sources */,
 				75C95C5E2614CC0400B0EE10 /* Int+Extension.swift in Sources */,
+				754C6090285643DD00FA9ACF /* LightningDataService.swift in Sources */,
 				756C66BB264038E900CD22B2 /* ManageAlertView.swift in Sources */,
 				758F3AE026A9A9EF00F345E1 /* IAccountStorage.swift in Sources */,
 				750AE9C926149DD900C45971 /* IAsset.swift in Sources */,
@@ -2669,6 +2718,7 @@
 				75308ACC26A027B40024AACD /* AppConfigProvider.swift in Sources */,
 				75598DF1284DFE2300B7825D /* CreateInvoiceViewModel.swift in Sources */,
 				755563FF26D79390001B1C1A /* LineChartRepresentable.swift in Sources */,
+				754C60A928572CFC00FA9ACF /* LDKChannelManagerPersister.swift in Sources */,
 				7537DED32700B17200B862AB /* BinanceApi.swift in Sources */,
 				7517F8A326B802DD0020AECB /* CoinImageView.swift in Sources */,
 				75598DEC284DFE0400B7825D /* LightningViewViewModel.swift in Sources */,
@@ -2718,6 +2768,7 @@
 				7537DEF92701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
 				752E531326FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift in Sources */,
 				752E532B26FDDE6400FCDB0C /* KrakenRequestConfig.swift in Sources */,
+				754C60A328572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift in Sources */,
 				75598DD6284DFADD00B7825D /* OpenLightningChannelViewModel.swift in Sources */,
 				75598DCC284DF90600B7825D /* LightningChannel.swift in Sources */,
 				7556CA4027FC9007000AAC59 /* PasscodeManager.swift in Sources */,
@@ -2752,6 +2803,7 @@
 				75A00BD726D3FC7000ABCA7E /* LazyVStack_.swift in Sources */,
 				751B6549269D9711001B759C /* TransactionRecord.swift in Sources */,
 				75F5CD882684C541005ECA5B /* TxsViewModel.swift in Sources */,
+				754C60962857224B00FA9ACF /* LightningChannelManager.swift in Sources */,
 				755785A9260F7331000E1686 /* AccounttModel.swift in Sources */,
 				752E532526FDDE6400FCDB0C /* HTTPMethod.swift in Sources */,
 				75A3F53626A57CFB006B1823 /* WalletManager.swift in Sources */,
@@ -2801,6 +2853,7 @@
 				75C95C9A2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
 				750AE90926149A8C00C45971 /* Coin.swift in Sources */,
 				75308AE026A028940024AACD /* EthereumFeeRateProvider.swift in Sources */,
+				754C609D28572A3E00FA9ACF /* LDKFeesEstimator.swift in Sources */,
 				750AE9B126149DD900C45971 /* ICoinKit.swift in Sources */,
 				7555642E26D8FADF001B1C1A /* ExchangeBalancesView.swift in Sources */,
 				75F5CDB62684CD7F005ECA5B /* AssetAllocationViewModel.swift in Sources */,
@@ -2825,6 +2878,7 @@
 				75F5CDA52684CA76005ECA5B /* RestoreAccountViewModel.swift in Sources */,
 				7537DEFA2701CFA300B862AB /* CoinbaseAccount.swift in Sources */,
 				75327D55270C940400F4484B /* OrderItemView.swift in Sources */,
+				754C60A428572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift in Sources */,
 				75C95C632614CC0400B0EE10 /* Color+Extension.swift in Sources */,
 				75821D66277343AD004A65A2 /* TokenSelector.swift in Sources */,
 				752229FB271435C900003D3F /* ExchangePicker.swift in Sources */,
@@ -2843,9 +2897,11 @@
 				75598DD2284DF92500B7825D /* LightningNode.swift in Sources */,
 				753364AE26F339C00073B0A4 /* ExchangeViewModel.swift in Sources */,
 				752229F72714343400003D3F /* TradingPairPicker.swift in Sources */,
+				754C60A128572A8700FA9ACF /* LDKChannelPersister.swift in Sources */,
 				75F5CD962684C8D6005ECA5B /* CreateAccountViewModel.swift in Sources */,
 				753BA7292799B25C009FEC20 /* INotificationService.swift in Sources */,
 				75A00BD826D3FC7000ABCA7E /* LazyVStack_.swift in Sources */,
+				754C60AA28572CFC00FA9ACF /* LDKChannelManagerPersister.swift in Sources */,
 				751B6547269CA219001B759C /* BitcoinAdapter.swift in Sources */,
 				755782F126087905000E1686 /* Portal.xcdatamodeld in Sources */,
 				7556CA4127FC9007000AAC59 /* PasscodeManager.swift in Sources */,
@@ -2860,6 +2916,8 @@
 				75254EAA273C63A1005DB4EF /* LineChartMarkerView.swift in Sources */,
 				7555640626D798D5001B1C1A /* LineChartRepresentable.swift in Sources */,
 				751A1CE72732BDE70024586B /* EthNetworkPicker.swift in Sources */,
+				754C6091285643DD00FA9ACF /* LightningDataService.swift in Sources */,
+				754C60972857224B00FA9ACF /* LightningChannelManager.swift in Sources */,
 				751B655C269D999F001B759C /* LastBlockInfo.swift in Sources */,
 				75BEB20C26B96AE200C99F50 /* ERC20Updater.swift in Sources */,
 				756C3C7D26EA9C1D009530A9 /* MarketLimitSwitch.swift in Sources */,
@@ -2907,6 +2965,7 @@
 				7537E6C6272C03AC007B4E78 /* SettingsView.swift in Sources */,
 				750D63C7268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */,
 				754B2F652854E32900DB7A71 /* LightningNodeView.swift in Sources */,
+				754C609E28572A3E00FA9ACF /* LDKFeesEstimator.swift in Sources */,
 				750AE9CA26149DD900C45971 /* IAsset.swift in Sources */,
 				750AE9DE26149DD900C45971 /* IChartDataProvider.swift in Sources */,
 				756C3C7A26EA9BE1009530A9 /* ExchangeBalanceItem.swift in Sources */,
@@ -3055,12 +3114,14 @@
 				75F5CD8E2684C5FA005ECA5B /* CircularProgressBar.swift in Sources */,
 				758F3AE726A9B84F00F345E1 /* NotificationView.swift in Sources */,
 				750AE9C626149DD900C45971 /* IBalanceProvider.swift in Sources */,
+				754C609B285729A800FA9ACF /* LDKFilter.swift in Sources */,
 				75308AB426A0215C0024AACD /* Portal.swift in Sources */,
 				750AE9B626149DD900C45971 /* IHistoricalData.swift in Sources */,
 				7517F89E26B40DD50020AECB /* ICoinManager.swift in Sources */,
 				753E7E2D2756630400C96F33 /* PortfolioItem.swift in Sources */,
 				7585AF4927B50D1D00A373F7 /* ISendAssetService.swift in Sources */,
 				7555644B26DD0E17001B1C1A /* SocketOrderBookItem.swift in Sources */,
+				754C60A728572C5100FA9ACF /* LDKLogger.swift in Sources */,
 				75327D52270C92CB00F4484B /* BinanceBalance.swift in Sources */,
 				7555643B26D8FB7A001B1C1A /* ExchangeMarketView.swift in Sources */,
 				750AE9DA26149DD900C45971 /* IQRCodeProvider.swift in Sources */,
@@ -3113,6 +3174,7 @@
 				750AE8EC2614992400C45971 /* FiatCurrenciesUpdater.swift in Sources */,
 				751B6553269D9902001B759C /* IBalanceAdapter.swift in Sources */,
 				7555643826D8FB51001B1C1A /* BuySellView.swift in Sources */,
+				754C60942856450100FA9ACF /* LightningService.swift in Sources */,
 				75C95C812614CC3700B0EE10 /* StringFormatter.swift in Sources */,
 				750D63B72689C32B00643FD3 /* NotificationService.swift in Sources */,
 				75C95C9B2614D08900B0EE10 /* AssetViewModel.swift in Sources */,
