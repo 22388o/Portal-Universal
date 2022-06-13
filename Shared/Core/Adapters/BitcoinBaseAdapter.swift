@@ -328,7 +328,10 @@ extension BitcoinBaseAdapter {
     var statusInfo: [(String, Any)] {
         abstractKit.statusInfo
     }
-
+    
+    func blocks(from startHeight: Int, to endHeight: Int) -> [Block] {
+        abstractKit.blocks(from: startHeight, to: endHeight)
+    }
 }
 
 extension BitcoinBaseAdapter: ITransactionsAdapter {
@@ -337,7 +340,7 @@ extension BitcoinBaseAdapter: ITransactionsAdapter {
     }
 
     var lastBlockInfo: LastBlockInfo? {
-        abstractKit.lastBlockInfo.map { LastBlockInfo(height: $0.height, timestamp: $0.timestamp) }
+        abstractKit.lastBlockInfo.map { LastBlockInfo(height: $0.height, timestamp: $0.timestamp, headerHash: $0.headerHash) }
     }
     
     var transactionStateUpdated: AnyPublisher<Void, Never> {

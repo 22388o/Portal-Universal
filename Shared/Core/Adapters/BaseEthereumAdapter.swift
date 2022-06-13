@@ -47,7 +47,7 @@ class BaseEthereumAdapter {
 extension BaseEthereumAdapter {
 
     var lastBlockInfo: LastBlockInfo? {
-        ethereumKit.lastBlockHeight.map { LastBlockInfo(height: $0, timestamp: nil) }
+        ethereumKit.lastBlockHeight.map { LastBlockInfo(height: $0, timestamp: nil, headerHash: nil) }
     }
     
     var lastBlockUpdated: AnyPublisher<Void, Never> {
