@@ -101,7 +101,7 @@ class LightningDataService: ILightningDataService {
         do {
             try storage.save(channel: channel)
         } catch {
-            print("Error saving channle data: \(error)")
+            print("Error saving channel data: \(error)")
         }
     }
     
