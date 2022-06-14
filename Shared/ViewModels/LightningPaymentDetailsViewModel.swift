@@ -40,4 +40,14 @@ class LightningPaymentDetailsViewModel: ObservableObject {
         guard let invoice = payment.invoice else { return }
         qrCode = qrCode(invoice: invoice)
     }
+    
+    func copyToClipboard() {
+        guard let invoice = payment.invoice else { return }
+#if os(iOS)
+        UIPasteboard.general.string = String(invoice)
+#else
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(String(invoice), forType: NSPasteboard.PasteboardType.string)
+#endif
+    }
 }
