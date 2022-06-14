@@ -63,7 +63,7 @@ struct LightningView: View {
                         }
                     })
 
-                    PButtonDark(label: "Send", height: 40, fontSize: 16, enabled: true, action: {
+                    PButtonDark(label: "Send", height: 40, fontSize: 16, enabled: viewModel.channelsBalanceString != "0 sat", action: {
                         withAnimation {
                             viewState = .send
                         }
