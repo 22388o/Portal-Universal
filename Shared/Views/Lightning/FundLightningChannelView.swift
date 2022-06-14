@@ -40,17 +40,7 @@ struct FundLightningChannelView: View {
                 .frame(height: 120)
                 .padding(.horizontal)
                 .onDisappear {
-                    var shouldDisconnect: Bool = true
-                    for channel in viewModel.node.channels {
-                        if channel.state != .closed {
-                            shouldDisconnect = false
-                            break
-                        }
-                    }
-                    if shouldDisconnect && viewModel.node.connected {
-                        //                    PolarConnectionExperiment.shared.service?.disconnect(node: node)
-                    }
-                    //                node = nil
+                    viewModel.disconectIfNeeded()
                 }
             
             HStack(spacing: 8) {
@@ -137,9 +127,11 @@ struct FundLightningChannelView: View {
             
             Spacer()
             
-            PButtonDark(label: "Fund", height: 40, fontSize: 16, enabled: true, action: {
-//                self.viewModel.openAChannel(node: node)
-//                viewModel.channelIsOpened = true
+            PButtonDark(label: "Fund", height: 40, fontSize: 16, enabled: viewModel.fundButtonAvaliable, action: {
+                viewModel.openAChannel()
+                withAnimation {
+                    viewState = .manage
+                }
             })
             .padding()
         }
