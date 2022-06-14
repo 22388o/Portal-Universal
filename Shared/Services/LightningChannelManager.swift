@@ -33,7 +33,7 @@ class LightningChannelManager: ILightningChannelManager {
     var channelManagerPersister: ExtendedChannelManagerPersister
     var dataService: ILightningDataService
     
-    init(bestBlock: LastBlockInfo, mnemonic: Data, dataService: ILightningDataService) {
+    init(adapter: BitcoinAdapter, dataService: ILightningDataService, notificationService: INotificationService) {
         self.dataService = dataService
         
         let userConfig = UserConfig()
@@ -46,11 +46,11 @@ class LightningChannelManager: ILightningChannelManager {
         let broadcaster = LDKTestNetBroadcasterInterface()
         let logger = LDKLogger()
     
-        let seed = mnemonic.bytes
-        let timestamp_seconds = UInt64(Date().timeIntervalSince1970)
-        let timestamp_nanos = UInt32(truncating: NSNumber(value: timestamp_seconds * 1000 * 1000))
+        let seed: [UInt8] = [UInt8](Data(base64Encoded: "13/12/////////////////////////////////////13")!)
+        let timestampSeconds = UInt64(Date().timeIntervalSince1970)
+        let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
         
-        keysManager = KeysManager(seed: seed, starting_time_secs: timestamp_seconds, starting_time_nanos: timestamp_nanos)
+        keysManager = KeysManager(seed: seed, starting_time_secs: timestampSeconds, starting_time_nanos: timestampNanos)
         
         chainMonitor = ChainMonitor(
             chain_source: filterOption,
@@ -61,7 +61,8 @@ class LightningChannelManager: ILightningChannelManager {
         )
         
         if let channelManagerSerialized = dataService.channelManagerData?.bytes {
-
+            //restoring node
+            
             let networkGraphSerizlized = dataService.networkGraph?.bytes ?? []
             let channelMonitorsSeriaziled = dataService.channelMonitors?.map{ $0.bytes } ?? []
 
@@ -83,15 +84,30 @@ class LightningChannelManager: ILightningChannelManager {
 
         } else {
             //start new node
+            
+            guard let bestBlock = adapter.lastBlockInfo else {
+                fatalError("not synced with network")
+            }
+
+            print("Best block: \(bestBlock)")
+            
+            guard
+                let reversedLastBlockHash = bestBlock.headerHash?.reversed,
+                let chainTipHash = reversedLastBlockHash.hexStringToBytes()
+            else {
+                fatalError("header hash :/")
+            }
         
-            let reversedLastBlockHash = String(describing: bestBlock.headerHash!.reversed)
-            let chainTipHash = reversedLastBlockHash.hexStringToBytes()!
             let chainTipHeight = UInt32(bestBlock.height)
             
             //test net genesis block hash
-            let reversedGenesisBlockHash = String(describing: "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943".reversed)
-            let genesis_hash = reversedGenesisBlockHash.hexStringToBytes()!
-            let networkGraph = NetworkGraph(genesis_hash: genesis_hash)
+            let reversedGenesisBlockHash = "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943".reversed
+            
+            guard let genesisHash = reversedGenesisBlockHash.hexStringToBytes() else {
+                fatalError("genesisHash :/")
+            }
+            
+            let networkGraph = NetworkGraph(genesis_hash: genesisHash)
             
             constructor = ChannelManagerConstructor(
                 network: network,
@@ -111,7 +127,12 @@ class LightningChannelManager: ILightningChannelManager {
         let bestBlockHash = constructor.channelManager.current_best_block().block_hash()
         print("Best block height: \(bestBlockHeight), hash: \(bestBlockHash.bytesToHexString())")
         
-        channelManagerPersister = LDKChannelManagerPersister(channelManager: constructor.channelManager, dataService: dataService)
+        channelManagerPersister = LDKChannelManagerPersister(
+            adapter: adapter,
+            channelManager: constructor.channelManager,
+            dataService: dataService,
+            notificationService: notificationService
+        )
     }
     
     func chainSyncCompleted() {
