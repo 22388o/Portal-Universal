@@ -19,7 +19,7 @@ class BitcoinBaseAdapter {
     private let abstractKit: AbstractKit
     private let coinRate: Decimal = pow(10, 8)
     
-    private let lastBlockUpdatedSubject = PassthroughSubject<Void, Never>()
+    private let lastBlockUpdatedSubject = PassthroughSubject<LastBlockInfo?, Never>()
     private let stateUpdatedSubject = PassthroughSubject<Void, Never>()
     private let balanceUpdatedSubject = PassthroughSubject<Void, Never>()
     private let transactionRecordsSubject = PassthroughSubject<[TransactionRecord], Never>()
@@ -206,7 +206,13 @@ extension BitcoinBaseAdapter: BitcoinCoreDelegate {
 
     func lastBlockInfoUpdated(lastBlockInfo: BlockInfo) {
         print(lastBlockInfo)
-        lastBlockUpdatedSubject.send()
+        lastBlockUpdatedSubject.send(
+            LastBlockInfo(
+                height: lastBlockInfo.height,
+                timestamp: lastBlockInfo.timestamp,
+                headerHash: lastBlockInfo.headerHash
+            )
+        )
     }
 
     func kitStateUpdated(state: BitcoinCore.KitState) {
@@ -324,6 +330,17 @@ extension BitcoinBaseAdapter {
             }
         }
     }
+    
+    func createRawTransaction(amountSat: UInt64, address: String, feeRate: Int, sortMode: TransactionDataSortMode) throws -> Data {
+        let sortType = convertToKitSortMode(sort: sortMode)
+        
+        return try self.abstractKit.createRawTransaction(
+            to: address,
+            value: Int(amountSat),
+            feeRate: feeRate,
+            sortType: sortType
+        )
+    }
 
     var statusInfo: [(String, Any)] {
         abstractKit.statusInfo
@@ -347,7 +364,7 @@ extension BitcoinBaseAdapter: ITransactionsAdapter {
         stateUpdatedSubject.eraseToAnyPublisher()
     }
     
-    var lastBlockUpdated: AnyPublisher<Void, Never> {
+    var lastBlockUpdated: AnyPublisher<LastBlockInfo?, Never> {
         lastBlockUpdatedSubject.eraseToAnyPublisher()
     }
     
