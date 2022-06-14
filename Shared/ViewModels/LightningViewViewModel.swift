@@ -6,44 +6,57 @@
 //
 
 import Foundation
+import LDKFramework_Mac
 
 class LightningViewViewModel: ObservableObject {
     @Published var payments: [LightningPayment] = []
     
-    var btcAdapter: IAdapter
-//    var channelManager = PolarConnectionExperiment.shared.service!.manager.channelManager
-//    var selectedPayment: LightningPayment?
+    private let adapter: BitcoinAdapter
+    private let channelManager: ChannelManager
+    private let service: ILightningDataService
     
     var onChainBalanceString: String {
-        "0.000202" + " BTC"
+        "\(adapter.balance)" + " BTC"
     }
     
     var channelsBalanceString: String {
-//        var balaance: UInt64 = 0
-//        for channel in channelManager.list_usable_channels() {
-//            balaance+=channel.get_balance_msat()/1000
-//        }
-        return "\(20000) sat"
+        var balance: UInt64 = 0
+        for channel in channelManager.list_usable_channels() {
+            balance+=channel.get_balance_msat()/1000
+        }
+        return "\(balance) sat"
     }
     
-    init(adapter: IAdapter) {
-        self.btcAdapter = adapter
+    init(adapter: BitcoinAdapter, channelManager: ChannelManager, service: ILightningDataService) {
+        self.adapter = adapter
+        self.channelManager = channelManager
+        self.service = service
     }
     
     func refreshPayments() {
-        payments = [
-            LightningPayment(id: UUID().uuidString, satAmount: 1000, created: Date(), description: "Coffee", state: .sent),
-            LightningPayment(id: UUID().uuidString, satAmount: 3000, created: Date(), description: "Dinner", state: .recieved),
-            LightningPayment(id: UUID().uuidString, satAmount: 5000, created: Date(), description: "Test2", state: .requested),
-            LightningPayment(id: UUID().uuidString, satAmount: 2030, created: Date(), description: "Test1", state: .recieved),
-            LightningPayment(id: UUID().uuidString, satAmount: 5000, created: Date(), description: "Test", state: .requested)
-        ]
+//        payments = [
+//            LightningPayment(id: UUID().uuidString, satAmount: 1000, created: Date(), description: "Coffee", state: .sent),
+//            LightningPayment(id: UUID().uuidString, satAmount: 3000, created: Date(), description: "Dinner", state: .recieved),
+//            LightningPayment(id: UUID().uuidString, satAmount: 5000, created: Date(), description: "Test2", state: .requested),
+//            LightningPayment(id: UUID().uuidString, satAmount: 2030, created: Date(), description: "Test1", state: .recieved),
+//            LightningPayment(id: UUID().uuidString, satAmount: 5000, created: Date(), description: "Test", state: .requested)
+//        ]
+        payments = service.payments.sorted(by: {$0.created > $1.created})
     }
 }
 
 extension LightningViewViewModel {
     static func config() -> LightningViewViewModel {
-        let btcAdapter = Portal.shared.adapterManager.adapter(for: .bitcoin())!
-        return LightningViewViewModel(adapter: btcAdapter)
+        guard let btcAdapter = Portal.shared.adapterManager.adapter(for: .bitcoin()) as? BitcoinAdapter else {
+            fatalError("\(#function) Bitcoin Adapter :/")
+        }
+        guard let manager = Portal.shared.lightningService?.manager else {
+            fatalError("\(#function) Channel manager :/")
+        }
+        guard let service = Portal.shared.lightningService?.dataService else {
+            fatalError("\(#function) lightning data service :/")
+
+        }
+        return LightningViewViewModel(adapter: btcAdapter, channelManager: manager.channelManager, service: service)
     }
 }
