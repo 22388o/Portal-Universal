@@ -13,7 +13,7 @@ protocol ITransactionsAdapter {
     var transactionState: AdapterState { get }
     var lastBlockInfo: LastBlockInfo? { get }
     var transactionStateUpdated: AnyPublisher<Void, Never> { get }
-    var lastBlockUpdated: AnyPublisher<Void, Never> { get }
+    var lastBlockUpdated: AnyPublisher<LastBlockInfo?, Never> { get }
     var transactionRecords: AnyPublisher<[TransactionRecord], Never> { get }
     func transactions(from: TransactionRecord?, limit: Int) -> Future<[TransactionRecord], Never>
     func rawTransaction(hash: String) -> String?

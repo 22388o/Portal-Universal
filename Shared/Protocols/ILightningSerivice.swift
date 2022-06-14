@@ -17,7 +17,7 @@ protocol ILightningService {
     
     func connect(node: LightningNode) -> Bool
     func disconnect(node: LightningNode)
-    func openChannelWith(node: LightningNode, sat: Int)
+    func openChannelWith(node: LightningNode, sat: Int64)
     func createInvoice(amount: String, memo: String) -> String?
     func pay(invoice: String) throws
     func syncBlockchainData() async throws
