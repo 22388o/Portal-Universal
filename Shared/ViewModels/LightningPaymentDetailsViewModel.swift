@@ -10,30 +10,36 @@ import SwiftUI
 
 class LightningPaymentDetailsViewModel: ObservableObject {
     let payment: LightningPayment
-    @Published var qrCode: UIImage?
+    @Published var qrCode: Image?
     
     init(payment: LightningPayment) {
         self.payment = payment
         updateQRCode()
     }
     
-    private func qrCode(invoice: String?) -> UIImage {
-        guard let message = invoice?.data(using: .utf8) else { return UIImage() }
+    func qrCode(invoice: String) -> Image {
+        guard let message = invoice.data(using: .utf8) else { return Image("cloud") }
         
         let parameters: [String : Any] = [
-            "inputMessage": message,
-            "inputCorrectionLevel": "L"
-        ]
+                    "inputMessage": message,
+                    "inputCorrectionLevel": "L"
+                ]
         let filter = CIFilter(name: "CIQRCodeGenerator", parameters: parameters)
         
-        guard let outputImage = filter?.outputImage else { return UIImage() }
-        
+        guard let outputImage = filter?.outputImage else { return Image("cloud") }
+               
         let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 6, y: 6))
         guard let cgImage = CIContext().createCGImage(scaledImage, from: scaledImage.extent) else {
-            return UIImage()
+            return Image("cloud")
         }
         
-        return UIImage(cgImage: cgImage, size: NSSize(width: 350, height: 350))
+        #if os(iOS)
+        let uiImage = UIImage(cgImage: cgImage)
+        return Image(uiImage: uiImage)
+        #elseif os(macOS)
+        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: 300, height: 300))
+        return Image(nsImage: nsImage)
+        #endif
     }
     
     private func updateQRCode() {
