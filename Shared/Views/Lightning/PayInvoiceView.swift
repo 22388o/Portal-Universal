@@ -9,135 +9,115 @@ import SwiftUI
 
 struct PayInvoiceView: View {
     @Binding var viewState: LightningRootView.ViewState
-    @StateObject private var viewModel = PayInvoiceViewModel()
+    @StateObject private var viewModel = PayInvoiceViewModel.config()
     
     var body: some View {
         ZStack {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
             
-                VStack {
-                    ModalNavigationView(title: "Send Lightning Payment", backButtonAction: {
-                        viewState = .root
-                    })
+            VStack {
+                ModalNavigationView(title: "Send Lightning Payment", backButtonAction: {
+                    viewState = .root
+                })
+                    .padding()
+                
+                HStack(spacing: 4) {
+                    Text("You have")
+                        .font(Font.mainFont())
+                        .opacity(0.6)
+                    
+                    Text("\(viewModel.channelBalance) sat")
+                        .font(Font.mainFont(size: 14))
+                }
+                .foregroundColor(Color.white)
+                
+                if let invoice = viewModel.invoice {
+                    if let network = viewModel.networkString {
+                        HStack {
+                            Text("Network:")
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightInactiveLabel)
+                            
+                            Spacer()
+                            
+                            Text(network)
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightActiveLabel)
+                        }
+                        .padding(.horizontal)
+                        .padding(.top)
+                    }
+                    
+                    if let amount = viewModel.amountString {
+                        HStack {
+                            Text("Amount:")
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightInactiveLabel)
+                            
+                            Spacer()
+                            
+                            Text(amount)
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightActiveLabel)
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    HStack {
+                        Text("Description:")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightInactiveLabel)
+                        
+                        Spacer()
+                        
+                        Text("-")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightActiveLabel)
+                    }
+                    .padding(.horizontal)
+                    
+                    if !invoice.is_expired(), let expires = viewModel.expires {
+                        HStack {
+                            Text("Expires:")
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightInactiveLabel)
+                            
+                            Spacer()
+                            
+                            Text(expires)
+                                .lineLimit(1)
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightActiveLabel)
+                        }
+                        .padding(.horizontal)
+                    } else {
+                        HStack {
+                            Text("Status:")
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightInactiveLabel)
+                            
+                            Spacer()
+                            
+                            Text("Expired")
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightActiveLabel)
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    Spacer()
+                    
+                    Button("Send") {
+                        print("SEND")
+                        viewModel.send()
+                    }
+                    .modifier(PButtonEnabledStyle(enabled: $viewModel.sendButtonAvaliable))
+                    .disabled(!viewModel.sendButtonAvaliable)
                     .padding()
                     
-//                    HStack {
-//                        Text("You have")
-//                            .font(Font.mainFont())
-//                            .opacity(0.6)
-//
-//                        Text("\(self.viewModel.channelBalance) sat")
-//                            .font(Font.mainFont(size: 14))
-//                    }
-//                    .foregroundColor(Color.white)
-                    
-                    
-//                    if viewModel.invoice != nil {
-//                        HStack {
-//                            Text("Network:")
-//                                .font(.mainFont(size: 14))
-//                                .foregroundColor(Color.lightInactiveLabel)
-//
-//                            Spacer()
-//
-//                            Text(viewModel.networkString!)
-//                                .font(.mainFont(size: 14))
-//                                .foregroundColor(Color.lightActiveLabel)
-//                        }
-//                        .padding(.horizontal)
-//                        .padding(.top)
-//
-//                        HStack {
-//                            Text("Amount:")
-//                                .font(.mainFont(size: 14))
-//                                .foregroundColor(Color.lightInactiveLabel)
-//
-//                            Spacer()
-//
-//                            Text(viewModel.amountString!)
-//                                .font(.mainFont(size: 14))
-//                                .foregroundColor(Color.lightActiveLabel)
-//                        }
-//                        .padding(.horizontal)
-//
-//                        HStack {
-//                            Text("Description:")
-//                                .font(.mainFont(size: 14))
-//                                .foregroundColor(Color.lightInactiveLabel)
-//
-//                            Spacer()
-//
-//                            Text("-")
-//                                .font(.mainFont(size: 14))
-//                                .foregroundColor(Color.lightActiveLabel)
-//                        }
-//                        .padding(.horizontal)
-//
-//                        if !viewModel.invoice!.is_expired() {
-//                            HStack {
-//                                Text("Expires:")
-//                                    .font(.mainFont(size: 14))
-//                                    .foregroundColor(Color.lightInactiveLabel)
-//
-//                                Spacer()
-//
-//                                Text(viewModel.expires!)
-//                                    .lineLimit(1)
-//                                    .font(.mainFont(size: 14))
-//                                    .foregroundColor(Color.lightActiveLabel)
-//                            }
-//                            .padding(.horizontal)
-//                        } else {
-//                            HStack {
-//                                Text("Status:")
-//                                    .font(.mainFont(size: 14))
-//                                    .foregroundColor(Color.lightInactiveLabel)
-//
-//                                Spacer()
-//
-//                                Text("Expired")
-//                                    .font(.mainFont(size: 14))
-//                                    .foregroundColor(Color.lightActiveLabel)
-//                            }
-//                            .padding(.horizontal)
-//                        }
-//
-//                        Spacer()
-//
-//                        if !viewModel.invoice!.is_expired() {
-//                            Button("Send") {
-//                                print("SEND")
-//                                viewModel.send()
-//                            }
-//                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-//                        }
-//                    } else {
-//                        Spacer().frame(height: 15)
-//
-//                        Text("Scan QR code")
-//                            .font(Font.mainFont())
-//                            .opacity(0.6)
-//
-//                        Spacer().frame(height: 15)
-//
-//                        ZStack {
-//                            RoundedRectangle(cornerRadius: 8)
-//                                .frame(width: 350, height: 350)
-//                            Button("Scan") {
-//                                viewModel.scan()
-//                            }
-//                            .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-//                            .frame(width: 80)
-//                        }
-//
-//                        Spacer().frame(height: 15)
-//
-//                        Text("Or")
-//                            .font(Font.mainFont())
-//                            .opacity(0.6)
-                        
+                } else {
                     HStack(spacing: 8) {
-                        #if os(iOS)
+#if os(iOS)
                         TextField(String(), text: $viewModel.invoiceString)
                             .foregroundColor(Color.white)
                             .modifier(
@@ -148,7 +128,7 @@ struct PayInvoiceView: View {
                             )
                             .frame(height: 20)
                             .keyboardType(.numberPad)
-                        #else
+#else
                         TextField(String(), text: $viewModel.invoiceString)
                             .font(Font.mainFont(size: 16))
                             .foregroundColor(Color.white)
@@ -160,7 +140,7 @@ struct PayInvoiceView: View {
                             )
                             .frame(height: 20)
                             .textFieldStyle(PlainTextFieldStyle())
-                        #endif
+#endif
                     }
                     .modifier(TextFieldModifierDark(cornerRadius: 26))
                     .overlay(
@@ -168,20 +148,20 @@ struct PayInvoiceView: View {
                             .stroke(true ? Color.clear : Color.red, lineWidth: 1)
                     )
                     .padding()
-                        
-                        Spacer()
-                    }
+                    
+                    Spacer()
                 }
-                .alert(isPresented: $viewModel.sent) {
-                    Alert(
-                        title: Text("Sent"),
-                        message: Text(viewModel.amountString!),
-                        dismissButton: Alert.Button.default(
-                            Text("Dismiss"), action: { }
-                        )
+            }
+            .alert(isPresented: $viewModel.sent) {
+                Alert(
+                    title: Text("Sent"),
+                    message: Text(viewModel.amountString!),
+                    dismissButton: Alert.Button.default(
+                        Text("Dismiss"), action: { }
                     )
-                }
-//        }
+                )
+            }
+        }
     }
 }
 
