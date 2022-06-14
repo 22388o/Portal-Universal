@@ -7,16 +7,8 @@
 
 import SwiftUI
 
-class ManageChannelsViewModel: ObservableObject {
-    @Published var openChannels = [LightningChannel]()
-    
-    init() {
-        openChannels = [LightningChannel(id: Int16(12364), satValue: 20000, state: .open, nodeAlias: "OGLE-TR-122")]
-    }
-}
-
 struct ManageChannelsView: View {
-    @StateObject private var viewModel = ManageChannelsViewModel()
+    @StateObject private var viewModel = ManageChannelsViewModel.config()
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
@@ -35,17 +27,18 @@ struct ManageChannelsView: View {
                         .foregroundColor(Color.white)
                     Spacer()
                     
-                    Button {
-                        withAnimation {
-                            viewState = .openChannel
+                    if viewModel.openChannels.isEmpty {
+                        Button {
+                            withAnimation {
+                                viewState = .openChannel
+                            }
+                        } label: {
+                            Image(systemName: "plus.viewfinder")
+                                .foregroundColor(Color.accentColor)
+                                .font(.system(size: 16, weight: .regular))
                         }
-                    } label: {
-                        Image(systemName: "plus.viewfinder")
-                            .foregroundColor(Color.accentColor)
-                            .font(.system(size: 16, weight: .regular))
+                        .buttonStyle(.borderless)
                     }
-                    .buttonStyle(.borderless)
-                    
                 }
                 .padding(.horizontal)                    
                 
@@ -71,7 +64,6 @@ struct ManageChannelsView: View {
                     Spacer()
                 }
             }
-//            .padding()
         }
     }
 }
