@@ -8,18 +8,22 @@
 import Foundation
 import SwiftUI
 import Combine
+import Coinpaprika
+import LDKFramework_Mac
 
 class CreateInvoiceViewModel: ObservableObject {
     @Published var memo: String = ""
-    @Published var qrCode: UIImage?
+    @Published var qrCode: Image?
     @Published var invoiceString = String()
     @Published var showShareSheet: Bool = false
     @Published var fiatValue = String()
     @Published var satAmount = String()
-//    @Published var invoice: Invoice?
+    @Published var invoice: Invoice?
+    @Published var createButtonAvaliable: Bool = false
     
     @Published var expireDate = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
     
+    private let service: ILightningService
     private var subscriptions = Set<AnyCancellable>()
     
     var pickerDateRange: ClosedRange<Date> {
@@ -31,10 +35,10 @@ class CreateInvoiceViewModel: ObservableObject {
 
     private var btcAdapter: IAdapter?
     
-    init() {
-        let btc = Coin.bitcoin()
-        let ticker = Portal.shared.marketDataProvider.ticker(coin: btc)
+    init(service: ILightningService, ticker: Ticker?) {
         let price = ticker?[.usd].price
+        
+        self.service = service
         
         $satAmount
             .removeDuplicates()
@@ -45,17 +49,19 @@ class CreateInvoiceViewModel: ObservableObject {
             .sink { [weak self] value in
                 if value == "0.0" {
                     self?.fiatValue = "0"
+                    self?.createButtonAvaliable = false
                 } else {
                     self?.fiatValue = value
+                    self?.createButtonAvaliable = true
                 }
             }
             .store(in: &subscriptions)
     }
         
-    var expires: Date {
-        Date()
-//        let expiteTime = TimeInterval(invoice!.expiry_time())
-//        return Date(timeInterval: expiteTime, since: Date())
+    var expires: Date? {
+        guard let inv = invoice else { return nil }
+        let expiteTime = TimeInterval(inv.expiry_time())
+        return Date(timeInterval: expiteTime, since: Date())
     }
     
     func code(for address: String?) -> Image {
@@ -84,11 +90,31 @@ class CreateInvoiceViewModel: ObservableObject {
     }
     
     func createInvoice() {
-//        if let invoice = PolarConnectionExperiment.shared.service?.createInvoice(amount: exchangerViewModel.assetValue, memo: memo) {
-//            invoiceString = invoice
-//            qrCode = qrCode(address: invoice)
-//
-//            self.invoice = Invoice.from_str(s: invoice).getValue()!
-//        }
+        if let invoice = service.createInvoice(amount: satAmount, memo: memo) {
+            invoiceString = invoice
+            qrCode = code(for: invoice)
+
+            self.invoice = Invoice.from_str(s: invoice).getValue()!
+        }
+    }
+    
+    func copyToClipboard() {
+#if os(iOS)
+        UIPasteboard.general.string = String(invoiceString)
+#else
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(String(invoiceString), forType: NSPasteboard.PasteboardType.string)
+#endif
+    }
+}
+
+extension CreateInvoiceViewModel {
+    static func config() -> CreateInvoiceViewModel {
+        guard let service = Portal.shared.lightningService else {
+            fatalError("\(#function) lightning service :/")
+        }
+        let btcTicker = Portal.shared.marketDataProvider.ticker(coin: .bitcoin())
+        
+        return CreateInvoiceViewModel(service: service, ticker: btcTicker)
     }
 }
