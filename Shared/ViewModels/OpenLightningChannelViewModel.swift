@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LDKFramework_Mac
 
 class OpenLightningChannelViewModel: ObservableObject {
     @Published var suggestedNodes: [LightningNode]
@@ -13,31 +14,38 @@ class OpenLightningChannelViewModel: ObservableObject {
     @Published var showAlert = false
     @Published var errorMessage = String()
         
-//    var btcAdapter = PolarConnectionExperiment.shared.bitcoinAdapter
+    private let adapter: BitcoinAdapter
+    private let service: ILightningService
+    
     var channelBalance: UInt64 {
-//        var bal: UInt64 = 0
-//        for channel in PolarConnectionExperiment.shared.service!.manager.channelManager.list_usable_channels() {
-//            bal+=channel.get_balance_msat()/1000
-//        }
-        return 0//bal
+        var bal: UInt64 = 0
+        for channel in service.manager.channelManager.list_usable_channels() {
+            bal+=channel.get_balance_msat()/1000
+        }
+        return bal
     }
     
-    init() {
-//        exchangerViewModel = .init(coin: .bitcoin(), currency: .fiat(USD), ticker: nil)
+    init(adapter: BitcoinAdapter, service: ILightningService) {
+        self.adapter = adapter
+        self.service = service
+        
         suggestedNodes = LightningNode.sampleNodes
         openChannels = [LightningChannel(id: Int16(12364), satValue: 20000, state: .open, nodeAlias: "OGLE-TR-122")]
     }
     
-    func openAChannel(node: LightningNode) {
-//        if let decimalAmount = Decimal(string: exchangerViewModel.assetValue) {
-//            let satoshiAmount = btcAdapter.convertToSatoshi(value: decimalAmount)
-//            selectedNode = node
-////            PolarConnectionExperiment.shared.service?.openChannelWith(node: node, sat: satoshiAmount)
-//            channelIsOpened.toggle()
-//        }
+    func connect(node: LightningNode) -> Bool {
+        service.connect(node: node)
     }
-    
-    func sendPayment() {
-//        try? PolarConnectionExperiment.shared.service?.pay(invoice: "")
+}
+
+extension OpenLightningChannelViewModel {
+    static func config() -> OpenLightningChannelViewModel {
+        guard let adapter = Portal.shared.adapterManager.adapter(for: .bitcoin()) as? BitcoinAdapter else {
+            fatalError("\(#function) bitcoin adapter :/")
+        }
+        guard let service = Portal.shared.lightningService else {
+            fatalError("\(#function) channel manager :/")
+        }
+        return OpenLightningChannelViewModel(adapter: adapter, service: service)
     }
 }
