@@ -10,15 +10,18 @@ import Coinpaprika
 
 class FundLightningChannelViewModel: ObservableObject {
     let node: LightningNode
+    private let service: ILightningService
     
     @Published var satAmount = String()
     @Published var fiatValue = String()
     @Published var txFeeSelectionIndex = 1
+    @Published var fundButtonAvaliable: Bool = false
         
     private var subscriptions = Set<AnyCancellable>()
     
-    init(node: LightningNode, ticker: Ticker?) {
+    init(node: LightningNode, ticker: Ticker?, service: ILightningService) {
         self.node = node
+        self.service = service
         
         let btcPrice = ticker?[.usd].price
         
@@ -31,20 +34,49 @@ class FundLightningChannelViewModel: ObservableObject {
             .sink { [weak self] value in
                 if value == "0.0" {
                     self?.fiatValue = "0"
+                    self?.fundButtonAvaliable = false
                 } else {
                     self?.fiatValue = value
+                    self?.fundButtonAvaliable = true
                 }
             }
             .store(in: &subscriptions)
+    }
+    
+    func disconectIfNeeded() {
+        var shouldDisconnect: Bool = true
+        for channel in node.channels {
+            if channel.state != .closed {
+                shouldDisconnect = false
+                break
+            }
+        }
+        if shouldDisconnect && node.connected {
+            service.disconnect(node: node)
+        }
+    }
+    
+    func openAChannel() {
+        guard let amount = Int64(satAmount) else {
+            print("Incorrect amount \(satAmount)")
+            return
+        }
+        service.openChannelWith(node: node, sat: amount)
     }
 }
 
 extension FundLightningChannelViewModel {
     static func config(node: LightningNode) -> FundLightningChannelViewModel {
         let ticker = Portal.shared.marketDataProvider.ticker(coin: .bitcoin())
+        
+        guard let service = Portal.shared.lightningService else {
+            fatalError("\(#function) lightning service :/")
+        }
+        
         return FundLightningChannelViewModel(
             node: node,
-            ticker: ticker
+            ticker: ticker,
+            service: service
         )
     }
 }
