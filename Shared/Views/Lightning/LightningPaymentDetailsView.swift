@@ -32,7 +32,6 @@ struct LightningPaymentDetailsView: View {
                             .resizable()
                             .frame(width: 350, height: 350)
                             .cornerRadius(10)
-                            .padding()
                     }
                     
                     HStack {
@@ -124,14 +123,15 @@ struct LightningPaymentDetailsView: View {
                     
                     Spacer()
                     
-                    Button("Share") {
-                        //                    showShareSheet.toggle()
+                    if viewModel.payment.invoice != nil {
+                        Button("Copy to clipboard") {
+                            withAnimation {
+                                viewModel.copyToClipboard()
+                            }
+                        }
+                        .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                        .padding()
                     }
-                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                    .padding()
-                    //                .sheet(isPresented: $showShareSheet) {
-                    //                    ShareSheet(activityItems: [payment.invoice!])
-                    //                }
                 }
                 .padding()
             }
