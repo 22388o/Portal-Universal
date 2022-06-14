@@ -7,20 +7,25 @@
 
 import Combine
 import LDKFramework_Mac
+import NIOConcurrencyHelpers
 
 class PayInvoiceViewModel: ObservableObject {
     @Published var invoiceString = String()
     @Published var invoice: Invoice?
     @Published var sent: Bool = false
+    @Published var sendButtonAvaliable: Bool = false
+    
     private var subscriptions = Set<AnyCancellable>()
+    private let channelManager: ChannelManager
+    private let payer: InvoicePayer
+    private let dataService: ILightningDataService
+    private let notificationService: INotificationService
     
     var channelBalance: UInt64 {
         var balance: UInt64 = 0
-        
-//        for channel in PolarConnectionExperiment.shared.service!.manager.channelManager.list_usable_channels() {
-//            balance+=channel.get_balance_msat()/1000
-//        }
-        
+        for channel in channelManager.list_usable_channels() {
+            balance+=channel.get_balance_msat()/1000
+        }
         return balance
     }
     
@@ -56,65 +61,100 @@ class PayInvoiceViewModel: ObservableObject {
         }
     }
     
-    func scan() {
-        let result = Invoice.from_str(s: "lntb10200n1p3f58cspp5flky3wyhtajzpx37smjcce0cqj8d0ral9q8zm9hgph0qk54uajqqdqqcqzpgxqyz5vqsp5a90cd6an69xh057tvanwsdkecv3pc2tmtzl0g36fcyl9sy7p200s9qyyssqs9gdf7xqlee4f2kzq506fa38tumsjxu4fxly2mf4rs78cz5t2l7hc4zzte4zk3kcuestqxt2qkgm5farcz2a24thdjv8lxxt7hsqtfgq0mlw7c")
-        if result.isOk() {
-            invoice = result.getValue()!
+    init(dataService: ILightningDataService, channelManager: ChannelManager, payer: InvoicePayer, notificationService: INotificationService) {
+        self.dataService = dataService
+        self.notificationService = notificationService
+        self.channelManager = channelManager
+        self.payer = payer
+        
+        $invoiceString.sink { [weak self] invString in
+            let result = Invoice.from_str(s: invString)
+            if result.isOk() {
+                self?.invoice = result.getValue()!
+            }
         }
+        .store(in: &subscriptions)
+        
+        $invoice.sink { [weak self] inv in
+            guard let self = self, let _invoice = inv else { return }
+            self.sendButtonAvaliable = !_invoice.is_expired() && self.channelBalance > (_invoice.amount_milli_satoshis().getValue()!/1000)
+        }
+        .store(in: &subscriptions)
     }
     
     func send() {
-//        guard let invoice = invoice else {
-//            return
-//        }
-//
-//        let expired = invoice.is_expired()
-//
-//        if expired {
-//            print("invoice is expired")
-//            return
-//        }
-//
-//        let amount = invoice.amount_milli_satoshis().getValue()!/1000
-//        print("amount \(amount) sat")
-//
-//        let payee_pub_key = LDKBlock.bytesToHexString(bytes: invoice.payee_pub_key())
-//        print(payee_pub_key)
-//
-//        let network = invoice.currency()
-//        print(network)
-//
-//        let payer = PolarConnectionExperiment.shared.service!.manager.payer!
-//
-//        let payerResult = payer.pay_invoice(invoice: invoice)
-//
-//        if payerResult.isOk() {
-//            print("invoice payed")
-//            let payment = LightningPayment(id: UUID().uuidString, satAmount: Int64(amount), created: Date(), memo: "-", state: .sent)
-//            PolarConnectionExperiment.shared.service?.dataService.save(payment: payment)
-//            sent = true
-//        } else {
-//            if let error = payerResult.getError() {
-//                switch error.getValueType() {
-//                case .Invoice:
-//                    print("invoice error")
-//                    print("\(error.getValueAsInvoice()!)")
-//                    let error = error.getValueAsInvoice()!
-//                    PolarConnectionExperiment.shared.userMessage = "Invoice error: \(error)"
-//                case .Routing:
-//                    print("routing error")
-//                    print("\(error.getValueAsRouting()!.get_err())")
-//                    let error = error.getValueAsRouting()!.get_err()
-//                    PolarConnectionExperiment.shared.userMessage = "Routing error: \(error)"
-//                case .Sending:
-//                    print("sending error")
-//                    print("\(error.getValueAsSending()!)")
-//                    let error = error.getValueAsSending()!
-//                    PolarConnectionExperiment.shared.userMessage = "Sending error: \(error)"
-//                case .none:
-//                    print("unknown error")
-//                }
-//            }
-//        }
+        guard let invoice = invoice else {
+            return
+        }
+
+        guard !invoice.is_expired() else {
+            print("invoice is expired")
+            return
+        }
+
+        let amount = invoice.amount_milli_satoshis().getValue()!/1000
+        print("amount \(amount) sat")
+
+        let payee_pub_key = invoice.payee_pub_key().bytesToHexString()
+        print(payee_pub_key)
+
+        let network = invoice.currency()
+        print(network)
+
+        let payerResult = payer.pay_invoice(invoice: invoice)
+
+        if payerResult.isOk() {
+            print("invoice payed")
+            let payment = LightningPayment(id: UUID().uuidString, satAmount: Int64(amount), created: Date(), description: "-", state: .sent)
+            dataService.save(payment: payment)
+            sent = true
+        } else {
+            if let error = payerResult.getError() {
+                let notification: PNotification
+                switch error.getValueType() {
+                case .Invoice:
+                    print("invoice error")
+                    print("\(error.getValueAsInvoice()!)")
+                    let error = error.getValueAsInvoice()!
+                    notification = PNotification(message: "Invoice error: \(error)")
+                case .Routing:
+                    print("routing error")
+                    print("\(error.getValueAsRouting()!.get_err())")
+                    let error = error.getValueAsRouting()!.get_err()
+                    notification = PNotification(message: "Routing error: \(error)")
+                case .Sending:
+                    print("sending error")
+                    print("\(error.getValueAsSending()!)")
+                    let error = error.getValueAsSending()!
+                    notification = PNotification(message: "Sending error: \(error)")
+                case .none:
+                    print("unknown error")
+                    notification = PNotification(message: "unknown invoice payer error")
+                }
+                notificationService.notify(notification)
+            }
+        }
+    }
+}
+
+extension PayInvoiceViewModel {
+    static func config() -> PayInvoiceViewModel {
+        guard let manager = Portal.shared.lightningService?.manager.channelManager else {
+            fatalError("\(#function) channel manager :/")
+        }
+        guard let dataService = Portal.shared.lightningService?.dataService else {
+            fatalError("\(#function) data service :/")
+        }
+        guard let payer = Portal.shared.lightningService?.manager.payer else {
+            fatalError("\(#function) invoice payer :/")
+        }
+        let notificationService = Portal.shared.notificationService
+        
+        return PayInvoiceViewModel(
+            dataService: dataService,
+            channelManager: manager,
+            payer: payer,
+            notificationService: notificationService
+        )
     }
 }
