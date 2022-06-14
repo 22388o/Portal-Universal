@@ -129,7 +129,7 @@ struct MockedTransactionAdapter: ITransactionsAdapter {
     
     var transactionStateUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
     
-    var lastBlockUpdated: AnyPublisher<Void, Never> = Just(()).eraseToAnyPublisher()
+    var lastBlockUpdated: AnyPublisher<LastBlockInfo?, Never> = Just(nil).eraseToAnyPublisher()
     
     var transactionRecords: AnyPublisher<[TransactionRecord], Never> {
         Future { promise in
