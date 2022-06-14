@@ -27,11 +27,9 @@ struct LightningPaymentDetailsView: View {
                 .padding()
                 
                 VStack {
-                    if let code = viewModel.qrCode {
-                        Image(nsImage: code)
-                            .resizable()
-                            .frame(width: 350, height: 350)
-                            .cornerRadius(10)
+                    if let QRCodeImage = viewModel.qrCode {
+                        QRCodeImage
+                            .cornerRadius(2)
                     }
                     
                     HStack {
@@ -123,7 +121,7 @@ struct LightningPaymentDetailsView: View {
                     
                     Spacer()
                     
-                    if viewModel.payment.invoice != nil {
+                    if viewModel.payment.invoice != nil && !viewModel.payment.isExpired {
                         Button("Copy to clipboard") {
                             withAnimation {
                                 viewModel.copyToClipboard()
