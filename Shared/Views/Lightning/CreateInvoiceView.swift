@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CreateInvoiceView: View {
-    @StateObject private var viewModel = CreateInvoiceViewModel()
+    @StateObject private var viewModel = CreateInvoiceViewModel.config()
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
@@ -21,8 +21,8 @@ struct CreateInvoiceView: View {
                 })
                 .padding()
                 
-                if let code = viewModel.qrCode {
-                    Image(nsImage: code)
+                if let code = viewModel.qrCode, let invoice = viewModel.invoice {
+                    code
                         .resizable()
                         .frame(width: 350, height: 350)
                         .cornerRadius(10)
@@ -69,7 +69,7 @@ struct CreateInvoiceView: View {
                         }
                         .padding(.horizontal)
                         
-                        if false {
+                        if !invoice.is_expired() {
                             HStack {
                                 Text("Expires:")
                                     .font(.mainFont(size: 14))
@@ -77,10 +77,16 @@ struct CreateInvoiceView: View {
                                 
                                 Spacer()
                                 
-                                Text("\(viewModel.expires)")
-                                    .lineLimit(1)
-                                    .font(.mainFont(size: 14))
-                                    .foregroundColor(Color.lightActiveLabel)
+                                if let expireDate = viewModel.expires {
+                                    Text("\(expireDate)")
+                                        .lineLimit(1)
+                                        .font(.mainFont(size: 14))
+                                        .foregroundColor(Color.lightActiveLabel)
+                                } else {
+                                    Text("-")
+                                        .font(.mainFont(size: 14))
+                                        .foregroundColor(Color.lightActiveLabel)
+                                }
                             }
                             .padding(.horizontal)
                         } else {
@@ -99,10 +105,6 @@ struct CreateInvoiceView: View {
                         }
                     }
                     
-//                    Text("Invoice:")
-//                        .font(.mainFont(size: 14))
-//                        .foregroundColor(Color.lightInactiveLabel)
-                    
                     Text("\(viewModel.invoiceString)")
                         .font(.mainFont(size: 12))
                         .foregroundColor(Color.white)
@@ -110,13 +112,11 @@ struct CreateInvoiceView: View {
                     
                     Spacer()
                     
-                    PButtonDark(label: "Share", height: 40, fontSize: 16, enabled: true, action: {
-                        viewModel.showShareSheet.toggle()
+                    PButtonDark(label: "Copy to clipboard", height: 40, fontSize: 16, enabled: true, action: {
+                        viewModel.copyToClipboard()
                     })
                     .padding()
-//                    .sheet(isPresented: $vm.showShareSheet) {
-//                        ShareSheet(activityItems: [vm.invoiceString])
-//                    }
+                    
                 } else {
                     VStack(alignment: .leading) {
                         Text("Amount")
@@ -224,9 +224,10 @@ struct CreateInvoiceView: View {
                     
                     Spacer()
                     
-                    PButtonDark(label: "Create", height: 40, fontSize: 16, enabled: true, action: {
+                    PButtonDark(label: "Create", height: 40, fontSize: 16, enabled: viewModel.createButtonAvaliable, action: {
                         viewModel.createInvoice()
                     })
+                    .disabled(!viewModel.createButtonAvaliable)
                     .padding()
                 }
             }
