@@ -60,7 +60,7 @@ struct AssetViewLandscape: View {
                     }
                     
                     if viewModel.coin == .bitcoin() {
-                        PButton(label: "Channels", width: 256, height: 32, fontSize: 12, enabled: viewModel.channelsAvaliable) {
+                        PButton(label: "Channels", width: 256, height: 32, fontSize: 12, enabled: true) {
                             withAnimation(.easeIn(duration: 3.0)) {
                                 state.modalView = .channels
                             }
