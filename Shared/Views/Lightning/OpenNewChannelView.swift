@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OpenNewChannelView: View {
-    @StateObject private var viewModel = OpenLightningChannelViewModel()
+    @StateObject private var viewModel = OpenLightningChannelViewModel.config()
     @Binding var viewState: LightningRootView.ViewState    
     
     var body: some View {
@@ -71,23 +71,20 @@ struct OpenNewChannelView: View {
                             LightningNodeView(node: node)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    withAnimation {
-                                        viewState = .fundChannel(node)
+                                    if viewModel.connect(node: node) {
+                                        withAnimation {
+                                            viewState = .fundChannel(node)
+                                        }
+                                    } else {
+                                        viewModel.errorMessage = "Unable connect to \(node.alias)"
+                                        viewModel.showAlert = true
                                     }
-                                    //                                    if PolarConnectionExperiment.shared.service?.connect(node: node) ?? false {
-                                    //                                        selectedNode = node
-                                    //                                        fundChannel.toggle()
-                                    //                                    } else {
-                                    //                                        errorMessage = "Unable connect to \(node.alias)"
-                                    //                                        showAlert = true
-                                    //                                    }
                                 }
                                 .padding(.horizontal)
                         }
                     }
                 }
             }
-            //            .padding()
             .alert(isPresented: $viewModel.showAlert) {
                 Alert(
                     title: Text("Something went wrong:"),
