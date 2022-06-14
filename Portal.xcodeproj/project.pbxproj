@@ -322,8 +322,6 @@
 		754B2F5C2853372A00DB7A71 /* LightningPaymentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */; };
 		754B2F5E28533AA800DB7A71 /* FundLightningChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */; };
 		754B2F5F28533AA800DB7A71 /* FundLightningChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */; };
-		754B2F612853406700DB7A71 /* SelectLightningNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */; };
-		754B2F622853406700DB7A71 /* SelectLightningNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */; };
 		754B2F642854E32900DB7A71 /* LightningNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F632854E32900DB7A71 /* LightningNodeView.swift */; };
 		754B2F652854E32900DB7A71 /* LightningNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F632854E32900DB7A71 /* LightningNodeView.swift */; };
 		754B2F672854E74800DB7A71 /* ModalNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B2F662854E74800DB7A71 /* ModalNavigationView.swift */; };
@@ -374,6 +372,8 @@
 		754C60A728572C5100FA9ACF /* LDKLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A528572C5100FA9ACF /* LDKLogger.swift */; };
 		754C60A928572CFC00FA9ACF /* LDKChannelManagerPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A828572CFC00FA9ACF /* LDKChannelManagerPersister.swift */; };
 		754C60AA28572CFC00FA9ACF /* LDKChannelManagerPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60A828572CFC00FA9ACF /* LDKChannelManagerPersister.swift */; };
+		754C60AD2858DE3600FA9ACF /* ManageChannelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60AC2858DE3600FA9ACF /* ManageChannelsViewModel.swift */; };
+		754C60AE2858DE3600FA9ACF /* ManageChannelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754C60AC2858DE3600FA9ACF /* ManageChannelsViewModel.swift */; };
 		75502B4A273966B40075201B /* AssetViewPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502B49273966B40075201B /* AssetViewPortrait.swift */; };
 		755563FB26D78F4C001B1C1A /* PieChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */; };
 		755563FD26D7906B001B1C1A /* BarChartRepresentableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */; };
@@ -938,7 +938,6 @@
 		754B2F572853367400DB7A71 /* PayInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayInvoiceView.swift; sourceTree = "<group>"; };
 		754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningPaymentDetailsView.swift; sourceTree = "<group>"; };
 		754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundLightningChannelView.swift; sourceTree = "<group>"; };
-		754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLightningNodeView.swift; sourceTree = "<group>"; };
 		754B2F632854E32900DB7A71 /* LightningNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeView.swift; sourceTree = "<group>"; };
 		754B2F662854E74800DB7A71 /* ModalNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalNavigationView.swift; sourceTree = "<group>"; };
 		754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundLightningChannelViewModel.swift; sourceTree = "<group>"; };
@@ -964,6 +963,7 @@
 		754C60A228572B7400FA9ACF /* LDKTestNetBroadcasterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKTestNetBroadcasterInterface.swift; sourceTree = "<group>"; };
 		754C60A528572C5100FA9ACF /* LDKLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKLogger.swift; sourceTree = "<group>"; };
 		754C60A828572CFC00FA9ACF /* LDKChannelManagerPersister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKChannelManagerPersister.swift; sourceTree = "<group>"; };
+		754C60AC2858DE3600FA9ACF /* ManageChannelsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageChannelsViewModel.swift; sourceTree = "<group>"; };
 		75502B49273966B40075201B /* AssetViewPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPortrait.swift; sourceTree = "<group>"; };
 		755563FA26D78F4C001B1C1A /* PieChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentableView.swift; sourceTree = "<group>"; };
 		755563FC26D7906B001B1C1A /* BarChartRepresentableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartRepresentableView.swift; sourceTree = "<group>"; };
@@ -1910,7 +1910,6 @@
 				754B2F572853367400DB7A71 /* PayInvoiceView.swift */,
 				754B2F5A2853372A00DB7A71 /* LightningPaymentDetailsView.swift */,
 				754B2F5D28533AA800DB7A71 /* FundLightningChannelView.swift */,
-				754B2F602853406700DB7A71 /* SelectLightningNodeView.swift */,
 				754B2F632854E32900DB7A71 /* LightningNodeView.swift */,
 				754B2F662854E74800DB7A71 /* ModalNavigationView.swift */,
 			);
@@ -2061,6 +2060,7 @@
 				75598DF0284DFE2300B7825D /* CreateInvoiceViewModel.swift */,
 				754B2F692854F72600DB7A71 /* FundLightningChannelViewModel.swift */,
 				754C60622855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift */,
+				754C60AC2858DE3600FA9ACF /* ManageChannelsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2555,7 +2555,6 @@
 				75C95C622614CC0400B0EE10 /* Color+Extension.swift in Sources */,
 				75C95C4A2614CC0400B0EE10 /* Date+Extension.swift in Sources */,
 				754B2F6A2854F72600DB7A71 /* FundLightningChannelViewModel.swift in Sources */,
-				754B2F612853406700DB7A71 /* SelectLightningNodeView.swift in Sources */,
 				750D63C6268B2B4300643FD3 /* TimeframeButtonsView.swift in Sources */,
 				7537DED72700B17200B862AB /* KrakenApi.swift in Sources */,
 				75598DF6284DFE4A00B7825D /* CreateInvoiceView.swift in Sources */,
@@ -2598,6 +2597,7 @@
 				750C36C4261F3AEE0088CCED /* WalletView.swift in Sources */,
 				75308AD626A0280E0024AACD /* FeeRateProvider.swift in Sources */,
 				7585AF4827B50D1D00A373F7 /* ISendAssetService.swift in Sources */,
+				754C60AD2858DE3600FA9ACF /* ManageChannelsViewModel.swift in Sources */,
 				7555641826D8EA22001B1C1A /* TxDetailsViewModel.swift in Sources */,
 				75C95C662614CC0400B0EE10 /* Array+Extension.swift in Sources */,
 				754C60932856450100FA9ACF /* LightningService.swift in Sources */,
@@ -2959,7 +2959,6 @@
 				758F3AEA26A9B89000F345E1 /* NotificationsView.swift in Sources */,
 				7555640C26D7A2AD001B1C1A /* ReceiveAssetViewModel.swift in Sources */,
 				755EBC342721959200B56B89 /* IDBCacheStorage.swift in Sources */,
-				754B2F622853406700DB7A71 /* SelectLightningNodeView.swift in Sources */,
 				75598DE0284DFD6E00B7825D /* ChannelItemView.swift in Sources */,
 				751B6545269CA219001B759C /* BitcoinBaseAdapter.swift in Sources */,
 				7537E6C6272C03AC007B4E78 /* SettingsView.swift in Sources */,
@@ -3037,6 +3036,7 @@
 				752229FF27145BA200003D3F /* ExchangeBalancePicker.swift in Sources */,
 				754B2F6B2854F72600DB7A71 /* FundLightningChannelViewModel.swift in Sources */,
 				7556940226A6B13F00EE5CC4 /* WalletItem.swift in Sources */,
+				754C60AE2858DE3600FA9ACF /* ManageChannelsViewModel.swift in Sources */,
 				7556CA3E27FC8A1A000AAC59 /* ShakeEffect.swift in Sources */,
 				7556CA3727FB601B000AAC59 /* GeneralSettingsView.swift in Sources */,
 				753364A626F339780073B0A4 /* TradingData.swift in Sources */,
