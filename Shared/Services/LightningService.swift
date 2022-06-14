@@ -19,17 +19,11 @@ class LightningService: ILightningService {
     private var bitcoinAdapter: BitcoinAdapter
     private var subscriptions = Set<AnyCancellable>()
     
-    init(mnemonic: Data, adapter: BitcoinAdapter, dataService: ILightningDataService) {
+    init(adapter: BitcoinAdapter, dataService: ILightningDataService, notificationService: INotificationService) {
         self.bitcoinAdapter = adapter
         self.dataService = dataService
         
-        guard let bestBlock = adapter.lastBlockInfo else {
-            fatalError("not synced with network")
-        }
-        
-        print("Best block: \(bestBlock)")
-        
-        manager = LightningChannelManager(bestBlock: bestBlock, mnemonic: mnemonic, dataService: dataService)
+        manager = LightningChannelManager(adapter: bitcoinAdapter, dataService: dataService, notificationService: notificationService)
                         
         bitcoinAdapter.transactionRecords
             .sink { [weak self] txs in
@@ -78,16 +72,15 @@ class LightningService: ILightningService {
                 Just($0).delay(for: .seconds(2), scheduler: DispatchQueue.global(qos: .background))
             }
             .sink { [weak self] newBlock in
-                guard let self = self else { return }
-                guard self.blockChainDataSynced.value else { return }
+                guard let self = self, self.blockChainDataSynced.value, let block = newBlock else { return }
                 
-//                Task {
-//                    do {
-//                        try await self.connect(block: newBlock)
-//                    } catch {
-//                        print(error)
-//                    }
-//                }
+                Task {
+                    do {
+                        try await self.connect(block: block)
+                    } catch {
+                        print(error)
+                    }
+                }
             }
             .store(in: &subscriptions)
     }
@@ -105,7 +98,7 @@ class LightningService: ILightningService {
         print("Node: \(node.alias) is \(node.connected ? "connected": "disconnected")")
     }
     
-    func openChannelWith(node: LightningNode, sat: Int) {
+    func openChannelWith(node: LightningNode, sat: Int64) {
         guard node.connected else {
             print("Cannot open a channel with \(node.alias): ISN'T CONNECTED")
             return
@@ -124,7 +117,7 @@ class LightningService: ILightningService {
                 
         if channelOpenResult.isOk() {
             print("Channel is open. Waiting funding tx")
-            let channel = LightningChannel(id: Int16(userChannelId), satValue: Int64(sat), state: .waitingFunds, nodeAlias: node.alias)
+            let channel = LightningChannel(id: Int16(userChannelId), satValue: sat, state: .waitingFunds, nodeAlias: node.alias)
             node.channels.append(channel)
             dataService.update(node: node)
         } else if let errorDetails = channelOpenResult.getError(){
@@ -215,8 +208,9 @@ extension LightningService {
         case missingBinary
     }
     //TODO: - move api calls to network layer
-    private func getBlockBinary(hash: String) async throws -> Data {
-        let urlString = "https://blockstream.info/testnet/api/block/\(hash)/raw"
+    private func getBlockBinary(hash: String?) async throws -> Data {
+        guard let _hash = hash else { throw FetchingDataError.invalidURL }
+        let urlString = "https://blockstream.info/testnet/api/block/\(_hash)/raw"
         guard let url = URL(string: urlString) else {
             throw FetchingDataError.invalidURL
         }
@@ -233,7 +227,7 @@ extension LightningService {
         return blockData
     }
     
-    private func connect(block: BlockInfo) async throws {
+    private func connect(block: LastBlockInfo) async throws {
         let bestBlockHeight = manager.channelManager.current_best_block().height()
         
         guard block.height == bestBlockHeight + 1 else { return }
