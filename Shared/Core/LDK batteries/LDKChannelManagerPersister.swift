@@ -8,14 +8,19 @@
 import Foundation
 import BitcoinCore
 import LDKFramework_Mac
+import Combine
 
 class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
+    private let adapter: BitcoinAdapter
     private let dataService: ILightningDataService
     private let channelManager: ChannelManager
+    private let notificationService: INotificationService
     
-    init(channelManager: ChannelManager, dataService: ILightningDataService) {
+    init(adapter: BitcoinAdapter, channelManager: ChannelManager, dataService: ILightningDataService, notificationService: INotificationService) {
+        self.adapter = adapter
         self.channelManager = channelManager
         self.dataService = dataService
+        self.notificationService = notificationService
         super.init()
     }
     
@@ -47,7 +52,8 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                     errorMessage = "Channel \(id) closed: Unknown"
                 }
                 
-//                PolarConnectionExperiment.shared.userMessage = errorMessage
+                let notification = PNotification(message: errorMessage)
+                notificationService.notify(notification)
             }
         case .DiscardFunding:
             print("================")
@@ -57,8 +63,9 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
             if let value = event.getValueAsDiscardFunding() {
                 let channelId = value.getChannel_id().bytesToHexString()
                 print("Channel id: \(channelId)")
-                let errorMsg = "Channel \(channelId) closed: DISCARD FUNDING"
-//                PolarConnectionExperiment.shared.userMessage = errorMsg
+                let errorMessage = "Channel \(channelId) closed: DISCARD FUNDING"
+                let notification = PNotification(message: errorMessage)
+                notificationService.notify(notification)
             }
         case .FundingGenerationReady:
             print("=========================")
@@ -71,58 +78,61 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 let channelId = fundingReadyEvent.getUser_channel_id()
 
                 do {
-//                    if let rawTx = try PolarConnectionExperiment.shared.createRawTransaction(outputScript: outputScript, amount: amount) {
-//                        let rawTxBytes = rawTx.bytes
-//                        let tcid = fundingReadyEvent.getTemporary_channel_id()
-//
-//                        let sendingFundingTx = channelManager.funding_transaction_generated(
-//                            temporary_channel_id: tcid,
-//                            funding_transaction: rawTxBytes
-//                        )
-//
-//
-//                        if sendingFundingTx.isOk() {
-//                            print("funding tx sent")
-//                            let userMessage = "Chanel is open. Waiting funding tx to be confirmed"
-//                            PolarConnectionExperiment.shared.userMessage = userMessage
-//                        } else if let errorDetails = sendingFundingTx.getError() {
-//                            print("sending failed")
-//
-//                            dataService.removeChannelWith(id: channelId)
-//
-//                            let errorMessage: String
-//
-//                            switch errorDetails {
-//                            case .channel_unavailable(err: "channel unavalibale"):
-//                                print("channel unavalibale")
-//                                let details = errorDetails.getValueAsChannelUnavailable()?.getErr()
-//                                errorMessage = "Cannot send funding transaction: Channel unavalibale \(String(describing: details))"
-//                            case .fee_rate_too_high(err: "fee rate too hight", feerate: 1):
-//                                print("fee rate too hight")
-//                                errorMessage = "Cannot send funding transaction: Fee rate too hight"
-//                            case .apimisuse_error(err: "Api missuse"):
-//                                print("Api missuse")
-//                                let details = errorDetails.getValueAsAPIMisuseError()?.getErr()
-//                                errorMessage = "Cannot send funding transaction: Api missuse \(String(describing: details))"
-//                            case .route_error(err: "Route error"):
-//                                print("route error")
-//                                let details = errorDetails.getValueAsRouteError()?.getErr()
-//                                errorMessage = "Cannot send funding transaction: Route error \(String(describing: details))"
-//                            case .monitor_update_failed():
-//                                print("Monitor update failed")
-//                                errorMessage = "Cannot send funding transaction: Monitor update failed"
-//                            default:
-//                                errorMessage = "Cannot send funding transaction: Unknown error"
-//                            }
-//
-//                            PolarConnectionExperiment.shared.userMessage = errorMessage
-//                        }
-//                    }
+                    if let rawTx = try createRawTransaction(outputScript: outputScript, amount: amount) {
+                        let rawTxBytes = rawTx.bytes
+                        let tcid = fundingReadyEvent.getTemporary_channel_id()
+
+                        let sendingFundingTx = channelManager.funding_transaction_generated(
+                            temporary_channel_id: tcid,
+                            funding_transaction: rawTxBytes
+                        )
+
+
+                        if sendingFundingTx.isOk() {
+                            print("funding tx sent")
+                            let userMessage = "Chanel is open. Waiting funding tx to be confirmed"
+                            let notification = PNotification(message: userMessage)
+                            notificationService.notify(notification)
+                        } else if let errorDetails = sendingFundingTx.getError() {
+                            print("sending failed")
+
+                            dataService.removeChannelWith(id: channelId)
+
+                            let errorMessage: String
+
+                            switch errorDetails {
+                            case .channel_unavailable(err: "channel unavalibale"):
+                                print("channel unavalibale")
+                                let details = errorDetails.getValueAsChannelUnavailable()?.getErr()
+                                errorMessage = "Cannot send funding transaction: Channel unavalibale \(String(describing: details))"
+                            case .fee_rate_too_high(err: "fee rate too hight", feerate: 1):
+                                print("fee rate too hight")
+                                errorMessage = "Cannot send funding transaction: Fee rate too hight"
+                            case .apimisuse_error(err: "Api missuse"):
+                                print("Api missuse")
+                                let details = errorDetails.getValueAsAPIMisuseError()?.getErr()
+                                errorMessage = "Cannot send funding transaction: Api missuse \(String(describing: details))"
+                            case .route_error(err: "Route error"):
+                                print("route error")
+                                let details = errorDetails.getValueAsRouteError()?.getErr()
+                                errorMessage = "Cannot send funding transaction: Route error \(String(describing: details))"
+                            case .monitor_update_failed():
+                                print("Monitor update failed")
+                                errorMessage = "Cannot send funding transaction: Monitor update failed"
+                            default:
+                                errorMessage = "Cannot send funding transaction: Unknown error"
+                            }
+                            let notification = PNotification(message: errorMessage)
+                            notificationService.notify(notification)
+                        }
+                    }
                 } catch {
-//                    print("Unable to create funding transactino error: \(error)")
-//                    dataService.removeChannelWith(id: channelId)
-//                    let errorMsg = "Unable to create funding transactino error: \(error)"
-//                    PolarConnectionExperiment.shared.userMessage = errorMsg
+                    print("Unable to create funding transactino error: \(error)")
+                    dataService.removeChannelWith(id: channelId)
+                    
+                    let errorMessage = "Unable to create funding transactino error: \(error)"
+                    let notification = PNotification(message: errorMessage)
+                    notificationService.notify(notification)
                 }
             }
         case .PaymentReceived:
@@ -153,7 +163,8 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                     userMessage = "Claming funds error: \(amount) sat"
                 }
                 
-//                PolarConnectionExperiment.shared.userMessage = userMessage
+                let notification = PNotification(message: userMessage)
+                notificationService.notify(notification)
             }
         case .PaymentSent:
             print("==============")
@@ -179,8 +190,9 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 errorMessage = "Payment path failed"
             }
             
-//            PolarConnectionExperiment.shared.userMessage = errorMessage
-            
+            let notification = PNotification(message: errorMessage)
+            notificationService.notify(notification)
+                        
         case .PaymentFailed:
             print("================")
             print("PAYMENT FAILED")
@@ -275,5 +287,19 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
         dataService.save(networkGraph: Data(netGraphBytes))
         
         return Result_NoneErrorZ.ok()
+    }
+    
+    func createRawTransaction(outputScript: [UInt8], amount: UInt64) throws -> Data? {
+        let scriptConverter = ScriptConverter()
+        let addressConverter = SegWitBech32AddressConverter(prefix: "tb", scriptConverter: scriptConverter)
+        
+        let receiverAddress = try addressConverter.convert(keyHash: Data(outputScript), type: .p2wsh)
+        let address = receiverAddress.stringValue
+        
+        let txData = try adapter.createRawTransaction(amountSat: amount, address: address, feeRate: 80, sortMode: .shuffle)
+        
+        print("TX DATA: \(txData.hex)")
+        
+        return txData
     }
 }
