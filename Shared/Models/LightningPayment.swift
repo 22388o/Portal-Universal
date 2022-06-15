@@ -36,7 +36,7 @@ class LightningPayment: Identifiable {
     let id: String
     let satAmount: UInt64
     let created: Date
-    var expires: Date?
+    let expires: Date?
     let description: String
     var state: State
     var invoice: String?
@@ -65,6 +65,7 @@ class LightningPayment: Identifiable {
         self.created = created
         self.description = description
         self.state = state
+        self.expires = nil
     }
     
     init(record: DBLightningPayment) {
