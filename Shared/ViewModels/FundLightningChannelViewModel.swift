@@ -16,10 +16,17 @@ class FundLightningChannelViewModel: ObservableObject {
     @Published var fiatValue = String()
     @Published var txFeeSelectionIndex = 1
     @Published var fundButtonAvaliable: Bool = false
+    
+    private var adapter: BitcoinAdapter
+    
+    var onChainBalanceString: String {
+        "\(adapter.balance.rounded(toPlaces: 6))" + " BTC"
+    }
         
     private var subscriptions = Set<AnyCancellable>()
     
-    init(node: LightningNode, ticker: Ticker?, service: ILightningService) {
+    init(adapter: BitcoinAdapter, node: LightningNode, ticker: Ticker?, service: ILightningService) {
+        self.adapter = adapter
         self.node = node
         self.service = service
         
@@ -73,7 +80,12 @@ extension FundLightningChannelViewModel {
             fatalError("\(#function) lightning service :/")
         }
         
+        guard let adapter = Portal.shared.adapterManager.adapter(for: .bitcoin()) as? BitcoinAdapter else {
+            fatalError("\(#function) bitcoin adapter :/")
+        }
+        
         return FundLightningChannelViewModel(
+            adapter: adapter,
             node: node,
             ticker: ticker,
             service: service
