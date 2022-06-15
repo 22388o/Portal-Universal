@@ -16,7 +16,7 @@ class LightningViewViewModel: ObservableObject {
     private let service: ILightningDataService
     
     var onChainBalanceString: String {
-        "\(adapter.balance)" + " BTC"
+        "\(adapter.balance.rounded(toPlaces: 6))" + " BTC"
     }
     
     var channelsBalanceString: String {

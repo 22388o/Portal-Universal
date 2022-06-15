@@ -30,7 +30,7 @@ struct FundLightningChannelView: View {
                 
                 Spacer()
                 
-                Text("0.000202 BTC")
+                Text(viewModel.onChainBalanceString)
                     .font(.mainFont(size: 14))
                     .foregroundColor(Color.lightActiveLabel)
             }
