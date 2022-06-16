@@ -8,7 +8,6 @@
 import Foundation
 
 class LightningDataService: ILightningDataService {
-    
     private let storage: ILightningDataStorage
     
     init(storage: ILightningDataStorage) {
@@ -152,6 +151,14 @@ class LightningDataService: ILightningDataService {
             try storage.removeChannelWith(id: id)
         } catch {
             print("Removing channel with id: \(id) error: \(error)")
+        }
+    }
+    
+    func clearLightningData() {
+        do {
+            try storage.clearLightningData()
+        } catch {
+            print("Clearing lightning data error: \(error)")
         }
     }
 }
