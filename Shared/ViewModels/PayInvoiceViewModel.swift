@@ -131,7 +131,7 @@ class PayInvoiceViewModel: ObservableObject {
                     print("unknown error")
                     notification = PNotification(message: "unknown invoice payer error")
                 }
-                notificationService.notify(notification)
+//                notificationService.notify(notification)
             }
         }
     }
