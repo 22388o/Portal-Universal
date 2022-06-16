@@ -26,4 +26,5 @@ protocol ILightningDataStorage {
     func update(channelMonitor: Data, id: String) throws
     func channelWith(id: UInt64) throws -> LightningChannel?
     func removeChannelWith(id: UInt64) throws
+    func clearLightningData() throws
 }
