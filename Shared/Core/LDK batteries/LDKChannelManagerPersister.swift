@@ -11,16 +11,12 @@ import LDKFramework_Mac
 import Combine
 
 class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
-    private let adapter: BitcoinAdapter
     private let dataService: ILightningDataService
     private let channelManager: ChannelManager
-    private let notificationService: INotificationService
     
-    init(adapter: BitcoinAdapter, channelManager: ChannelManager, dataService: ILightningDataService, notificationService: INotificationService) {
-        self.adapter = adapter
+    init(channelManager: ChannelManager, dataService: ILightningDataService) {
         self.channelManager = channelManager
         self.dataService = dataService
-        self.notificationService = notificationService
         super.init()
     }
     
@@ -38,22 +34,21 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 let id = value.getChannel_id().bytesToHexString()
                 let errorMessage: String
                 
-                let reason = value.getReason()
-                switch reason.getValueType() {
-                case .ProcessingError:
-                    let closingReasonMessage = "\(reason.getValueAsProcessingError()?.getErr() ?? "Unknown")"
-                    print("reason: \(closingReasonMessage)")
-                    errorMessage = "Channel \(id) closed: \(closingReasonMessage)"
-                case .CounterpartyForceClosed:
-                    let closingReasonMessage = "\(reason.getValueAsCounterpartyForceClosed()?.getPeer_msg() ?? "Unknown")"
-                    print("reason: \(closingReasonMessage)")
-                    errorMessage = "Channel \(id) closed: \(closingReasonMessage)"
-                case .none:
-                    errorMessage = "Channel \(id) closed: Unknown"
-                }
-                
-                let notification = PNotification(message: errorMessage)
-                notificationService.notify(notification)
+//                let reason = value.getReason()
+//                switch reason.getValueType() {
+//                case .ProcessingError:
+//                    let closingReasonMessage = "\(reason.getValueAsProcessingError()?.getErr() ?? "Unknown")"
+//                    print("reason: \(closingReasonMessage)")
+//                    errorMessage = "Channel \(id) closed: \(closingReasonMessage)"
+//                case .CounterpartyForceClosed:
+//                    let closingReasonMessage = "\(reason.getValueAsCounterpartyForceClosed()?.getPeer_msg() ?? "Unknown")"
+//                    print("reason: \(closingReasonMessage)")
+//                    errorMessage = "Channel \(id) closed: \(closingReasonMessage)"
+//                case .none:
+//                    errorMessage = "Channel \(id) closed: Unknown"
+//                }
+//
+//                print(errorMessage)
             }
         case .DiscardFunding:
             print("================")
@@ -64,8 +59,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 let channelId = value.getChannel_id().bytesToHexString()
                 print("Channel id: \(channelId)")
                 let errorMessage = "Channel \(channelId) closed: DISCARD FUNDING"
-                let notification = PNotification(message: errorMessage)
-                notificationService.notify(notification)
+                print(errorMessage)
             }
         case .FundingGenerationReady:
             print("=========================")
@@ -79,6 +73,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
 
                 do {
                     if let rawTx = try createRawTransaction(outputScript: outputScript, amount: amount) {
+                        print("RAW TX: \(rawTx)")
                         let rawTxBytes = rawTx.bytes
                         let tcid = fundingReadyEvent.getTemporary_channel_id()
 
@@ -87,12 +82,10 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                             funding_transaction: rawTxBytes
                         )
 
-
                         if sendingFundingTx.isOk() {
                             print("funding tx sent")
                             let userMessage = "Chanel is open. Waiting funding tx to be confirmed"
-                            let notification = PNotification(message: userMessage)
-                            notificationService.notify(notification)
+                            print(userMessage)
                         } else if let errorDetails = sendingFundingTx.getError() {
                             print("sending failed")
 
@@ -122,8 +115,8 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                             default:
                                 errorMessage = "Cannot send funding transaction: Unknown error"
                             }
-                            let notification = PNotification(message: errorMessage)
-                            notificationService.notify(notification)
+                            
+                            print(errorMessage)
                         }
                     }
                 } catch {
@@ -131,8 +124,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                     dataService.removeChannelWith(id: channelId)
                     
                     let errorMessage = "Unable to create funding transactino error: \(error)"
-                    let notification = PNotification(message: errorMessage)
-                    notificationService.notify(notification)
+                    print(errorMessage)
                 }
             }
         case .PaymentReceived:
@@ -163,8 +155,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                     userMessage = "Claming funds error: \(amount) sat"
                 }
                 
-                let notification = PNotification(message: userMessage)
-                notificationService.notify(notification)
+                print(userMessage)
             }
         case .PaymentSent:
             print("==============")
@@ -190,8 +181,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 errorMessage = "Payment path failed"
             }
             
-            let notification = PNotification(message: errorMessage)
-            notificationService.notify(notification)
+            print(errorMessage)
                         
         case .PaymentFailed:
             print("================")
@@ -225,6 +215,8 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
             print("====================")
         case .none:
             print("none")
+        case .some(_):
+            print("some")
         }
     }
         
@@ -296,10 +288,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
         let receiverAddress = try addressConverter.convert(keyHash: Data(outputScript), type: .p2wsh)
         let address = receiverAddress.stringValue
         
-        let txData = try adapter.createRawTransaction(amountSat: amount, address: address, feeRate: 80, sortMode: .shuffle)
-        
-        print("TX DATA: \(txData.hex)")
-        
-        return txData
+        guard let adapter = Portal.shared.adapterManager.adapter(for: .bitcoin()) as? BitcoinAdapter else { return nil }
+        return try adapter.createRawTransaction(amountSat: amount, address: address, feeRate: 80, sortMode: .shuffle)
     }
 }
