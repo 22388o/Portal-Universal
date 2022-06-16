@@ -33,7 +33,7 @@ class LightningChannelManager: ILightningChannelManager {
     var channelManagerPersister: ExtendedChannelManagerPersister
     var dataService: ILightningDataService
     
-    init(adapter: BitcoinAdapter, dataService: ILightningDataService, notificationService: INotificationService) {
+    init(lastBlock: LastBlockInfo?, dataService: ILightningDataService, notificationService: INotificationService) {
         self.dataService = dataService
         
         let userConfig = UserConfig()
@@ -79,13 +79,54 @@ class LightningChannelManager: ILightningChannelManager {
                     logger: logger
                 )
             } catch {
-                fatalError("\(error)")
+                print("fatalError: \(error)")
+                
+                dataService.clearLightningData()
+                
+                //start new node
+                
+                guard let bestBlock = lastBlock else {
+                    fatalError("not synced with network")
+                }
+
+                print("Best block: \(bestBlock)")
+                
+                guard
+                    let reversedLastBlockHash = bestBlock.headerHash?.reversed,
+                    let chainTipHash = reversedLastBlockHash.hexStringToBytes()
+                else {
+                    fatalError("header hash :/")
+                }
+            
+                let chainTipHeight = UInt32(bestBlock.height)
+                
+                //test net genesis block hash
+                let reversedGenesisBlockHash = "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943".reversed
+                
+                guard let genesisHash = reversedGenesisBlockHash.hexStringToBytes() else {
+                    fatalError("genesisHash :/")
+                }
+                
+                let networkGraph = NetworkGraph(genesis_hash: genesisHash)
+                
+                constructor = ChannelManagerConstructor(
+                    network: network,
+                    config: userConfig,
+                    current_blockchain_tip_hash: chainTipHash,
+                    current_blockchain_tip_height: chainTipHeight,
+                    keys_interface: keysManager.as_KeysInterface(),
+                    fee_estimator: feeEstimator,
+                    chain_monitor: chainMonitor,
+                    net_graph: networkGraph,
+                    tx_broadcaster: broadcaster,
+                    logger: logger
+                )
             }
 
         } else {
             //start new node
             
-            guard let bestBlock = adapter.lastBlockInfo else {
+            guard let bestBlock = lastBlock else {
                 fatalError("not synced with network")
             }
 
@@ -128,10 +169,8 @@ class LightningChannelManager: ILightningChannelManager {
         print("Best block height: \(bestBlockHeight), hash: \(bestBlockHash.bytesToHexString())")
         
         channelManagerPersister = LDKChannelManagerPersister(
-            adapter: adapter,
             channelManager: constructor.channelManager,
-            dataService: dataService,
-            notificationService: notificationService
+            dataService: dataService
         )
     }
     
