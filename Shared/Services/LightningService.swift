@@ -257,6 +257,7 @@ extension LightningService {
             let blockBinary = try await getBlockBinary(hash: block.headerHash.reversedHex)
             let blockBytes = blockBinary.bytes
             let blockHeight = UInt32(block.height)
+            guard block.height == bestBlockHeight + 1 else { return }
             channelManagerListener.block_connected(block: blockBytes, height: blockHeight)
             chainMonitorListener.block_connected(block: blockBytes, height: blockHeight)
         }
