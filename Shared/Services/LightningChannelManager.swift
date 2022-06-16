@@ -85,10 +85,8 @@ class LightningChannelManager: ILightningChannelManager {
                 
                 //start new node
                 
-                guard let bestBlock = lastBlock else {
-                    fatalError("not synced with network")
-                }
-
+                let bestBlock = lastBlock ?? LastBlockInfo(height: 2265663, timestamp: 1655386489, headerHash: "000000000000cad6a31264a90dc78cc8c876b6af780f1bcb8b6fc80729267e24")
+                
                 print("Best block: \(bestBlock)")
                 
                 guard
