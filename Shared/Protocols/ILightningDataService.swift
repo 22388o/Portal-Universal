@@ -25,4 +25,5 @@ protocol ILightningDataService {
     func update(channelMonitor: Data, id: String)
     func channelWith(id: UInt64) -> LightningChannel?
     func removeChannelWith(id: UInt64)
+    func clearLightningData()
 }
