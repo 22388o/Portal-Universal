@@ -23,7 +23,7 @@ class LightningService: ILightningService {
         self.bitcoinAdapter = adapter
         self.dataService = dataService
         
-        manager = LightningChannelManager(adapter: bitcoinAdapter, dataService: dataService, notificationService: notificationService)
+        manager = LightningChannelManager(lastBlock: bitcoinAdapter.lastBlockInfo, dataService: dataService, notificationService: notificationService)
                         
         bitcoinAdapter.transactionRecords
             .sink { [weak self] txs in
@@ -42,7 +42,6 @@ class LightningService: ILightningService {
             .store(in: &subscriptions)
         
         bitcoinAdapter.balanceStateUpdated
-            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
 
@@ -72,7 +71,7 @@ class LightningService: ILightningService {
                 Just($0).delay(for: .seconds(2), scheduler: DispatchQueue.global(qos: .background))
             }
             .sink { [weak self] newBlock in
-                guard let self = self, self.blockChainDataSynced.value, let block = newBlock else { return }
+                guard let self = self, let block = newBlock else { return }
                 
                 Task {
                     do {
