@@ -564,4 +564,79 @@ extension DBlocalStorage: ILightningDataStorage {
             }
         }
     }
+    
+    func clearLightningData() throws {
+        do {
+            try clearChannelManager()
+            try clearNetGraph()
+            try clearChannelMonitors()
+            try clearChannels()
+        } catch {
+            print("Error clearing lightning data")
+        }
+    }
+    
+    private func clearChannelManager() throws {
+        let channelManagerRequest = DBLightningChannelManager.fetchRequest() as NSFetchRequest<DBLightningChannelManager>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(channelManagerRequest)
+                
+                for record in records {
+                    context.delete(record)
+                }
+                
+                try context.save()
+            }
+        }
+    }
+    
+    private func clearNetGraph() throws {
+        let networkGraphRequest = DBLightningNetGraph.fetchRequest() as NSFetchRequest<DBLightningNetGraph>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(networkGraphRequest)
+                
+                for record in records {
+                    context.delete(record)
+                }
+                
+                try context.save()
+            }
+        }
+    }
+    
+    private func clearChannelMonitors() throws {
+        let channelMonitorsRequest = DBChannelMonitor.fetchRequest() as NSFetchRequest<DBChannelMonitor>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(channelMonitorsRequest)
+                
+                for record in records {
+                    context.delete(record)
+                }
+                
+                try context.save()
+            }
+        }
+    }
+    
+    private func clearChannels() throws {
+        let channelsRequest = DBLightningChannel.fetchRequest() as NSFetchRequest<DBLightningChannel>
+        
+        try context.performAndWait {
+            do {
+                let records = try context.fetch(channelsRequest)
+                
+                for record in records {
+                    context.delete(record)
+                }
+                
+                try context.save()
+            }
+        }
+    }
 }
