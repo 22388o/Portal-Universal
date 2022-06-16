@@ -119,6 +119,11 @@ final class Portal {
         if let activeAccount = accountManager.activeAccount {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
         }
+        
+        if let adapter = adapterManager.adapter(for: .bitcoin()) as? BitcoinAdapter {
+            let dataService = LightningDataService(storage: dbStorage)
+            self.lightningService = LightningService(adapter: adapter, dataService: dataService, notificationService: notificationService)
+        }
                 
         adapterManager.adapterReady
             .receive(on: RunLoop.main)
@@ -129,12 +134,6 @@ final class Portal {
                         self.state.rootView = .account
                     }
                     self.state.wallet.coin = .bitcoin()
-                    
-                    if lightningService == nil, let adapter = adapterManager.adapter(for: .bitcoin()) as? BitcoinAdapter {
-                        let dataService = LightningDataService(storage: dbStorage)
-                        self.lightningService = LightningService(adapter: adapter, dataService: dataService, notificationService: notificationService)
-                    }
-                    
                 } else if !hasAccount {
                     self.state.rootView = .createAccount
                     self.lightningService = nil
