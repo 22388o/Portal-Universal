@@ -22,8 +22,9 @@ class LightningService: ILightningService {
     init(adapter: BitcoinAdapter, dataService: ILightningDataService, notificationService: INotificationService) {
         self.bitcoinAdapter = adapter
         self.dataService = dataService
+//        self.dataService.clearLightningData()
         
-        manager = LightningChannelManager(lastBlock: bitcoinAdapter.lastBlockInfo, dataService: dataService, notificationService: notificationService)
+        self.manager = LightningChannelManager(lastBlock: bitcoinAdapter.lastBlockInfo, dataService: dataService, notificationService: notificationService)
                         
         bitcoinAdapter.transactionRecords
             .sink { [weak self] txs in
@@ -71,7 +72,7 @@ class LightningService: ILightningService {
                 Just($0).delay(for: .seconds(2), scheduler: DispatchQueue.global(qos: .background))
             }
             .sink { [weak self] newBlock in
-                guard let self = self, let block = newBlock else { return }
+                guard let self = self, self.blockChainDataSynced.value, let block = newBlock else { return }
                 
                 Task {
                     do {
@@ -257,7 +258,6 @@ extension LightningService {
             let blockBinary = try await getBlockBinary(hash: block.headerHash.reversedHex)
             let blockBytes = blockBinary.bytes
             let blockHeight = UInt32(block.height)
-            guard block.height == bestBlockHeight + 1 else { return }
             channelManagerListener.block_connected(block: blockBytes, height: blockHeight)
             chainMonitorListener.block_connected(block: blockBytes, height: blockHeight)
         }
@@ -277,7 +277,7 @@ extension LightningService {
         }
         
         print("=========================")
-        print("Blockchain data synced:\nOn-chain balance: \(bitcoinAdapter.balance) BTC")
+        print("Blockchain data synced:\nOn-chain balance: \(bitcoinAdapter.balance.rounded(toPlaces: 6)) BTC")
         print("=========================")
     }
 }
