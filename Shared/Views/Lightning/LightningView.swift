@@ -10,10 +10,21 @@ import SwiftUI
 struct LightningView: View {
     @Binding var viewState: LightningRootView.ViewState
     @StateObject private var viewModel = LightningViewViewModel.config()
+    @Binding var close: Bool
     
     var body: some View {
         VStack {
             HStack {
+                Text("Back")
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.lightActiveLabel)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation {
+                            close.toggle()
+                        }
+                    }
+                Spacer()
                 Text("Channels")
                     .font(.mainFont(size: 18))
                     .foregroundColor(Color.white)
@@ -57,13 +68,13 @@ struct LightningView: View {
                 }
                 
                 HStack {
-                    PButtonDark(label: "Recieve", height: 40, fontSize: 16, enabled: true, action: {
+                    PButtonDark(label: "Receive", height: 32, fontSize: 12, enabled: true, action: {
                         withAnimation {
                             viewState = .receive
                         }
                     })
 
-                    PButtonDark(label: "Send", height: 40, fontSize: 16, enabled: viewModel.channelsBalanceString != "0 sat", action: {
+                    PButtonDark(label: "Send", height: 32, fontSize: 12, enabled: viewModel.channelsBalanceString != "0 sat", action: {
                         withAnimation {
                             viewState = .send
                         }
@@ -120,7 +131,7 @@ struct LightningView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color.portalBackground.edgesIgnoringSafeArea(.all)
-            LightningView(viewState: .constant(.root))
+            LightningView(viewState: .constant(.root), close: .constant(false))
         }
     }
 }

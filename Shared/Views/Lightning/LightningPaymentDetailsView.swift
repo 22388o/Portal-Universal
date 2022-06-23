@@ -17,122 +17,117 @@ struct LightningPaymentDetailsView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            Color.portalBackground.edgesIgnoringSafeArea(.all)
+        VStack {
+            ModalNavigationView(title: "Payment Details", backButtonAction: {
+                viewState = .root
+            })
             
             VStack {
-                ModalNavigationView(title: "Payment Details", backButtonAction: {
-                    viewState = .root
-                })
-                .padding()
+                if let QRCodeImage = viewModel.qrCode {
+                    QRCodeImage
+                        .cornerRadius(2)
+                }
                 
-                VStack {
-                    if let QRCodeImage = viewModel.qrCode {
-                        QRCodeImage
-                            .cornerRadius(2)
-                    }
-                    
-                    HStack {
-                        Text("Amount:")
-                            .font(.mainFont(size: 14))
-                            .foregroundColor(Color.lightInactiveLabel)
-                        
-                        Spacer()
-                        
-                        Text("\(viewModel.payment.satAmount) sat")
-                            .font(.mainFont(size: 14))
-                            .foregroundColor(Color.lightActiveLabel)
-                    }
-                    .padding(.horizontal)
-                    
-                    HStack {
-                        Text("Description:")
-                            .font(.mainFont(size: 14))
-                            .foregroundColor(Color.lightInactiveLabel)
-                        
-                        Spacer()
-                        
-                        Text("\(viewModel.payment.description)")
-                            .font(.mainFont(size: 14))
-                            .foregroundColor(Color.lightActiveLabel)
-                    }
-                    .padding(.horizontal)
-                    
-                    HStack {
-                        Text("Created:")
-                            .font(.mainFont(size: 14))
-                            .foregroundColor(Color.lightInactiveLabel)
-                        
-                        Spacer()
-                        
-                        Text("\(viewModel.payment.created)")
-                            .lineLimit(1)
-                            .font(.mainFont(size: 14))
-                            .foregroundColor(Color.lightActiveLabel)
-                    }
-                    .padding(.horizontal)
-                    
-                    if !viewModel.payment.isExpired {
-                        HStack {
-                            Text("Expires:")
-                                .font(.mainFont(size: 14))
-                                .foregroundColor(Color.lightInactiveLabel)
-                            
-                            Spacer()
-                            
-                            if let expireDate = viewModel.payment.expires {
-                                Text("\(expireDate)")
-                                    .lineLimit(1)
-                                    .font(.mainFont(size: 14))
-                                    .foregroundColor(Color.lightActiveLabel)
-                            } else {
-                                Text("-")
-                                    .font(.mainFont(size: 14))
-                                    .foregroundColor(Color.lightActiveLabel)
-                            }
-                        }
-                        .padding(.horizontal)
-                    } else {
-                        HStack {
-                            Text("Status:")
-                                .font(.mainFont(size: 14))
-                                .foregroundColor(Color.lightInactiveLabel)
-                            
-                            Spacer()
-                            
-                            Text("Expired")
-                                .font(.mainFont(size: 14))
-                                .foregroundColor(Color.lightActiveLabel)
-                        }
-                        .padding(.horizontal)
-                    }
-                    
-                    Text("Invoice:")
+                HStack {
+                    Text("Amount:")
                         .font(.mainFont(size: 14))
                         .foregroundColor(Color.lightInactiveLabel)
-                        .padding(.vertical)
-                    
-                    if let invoice = viewModel.payment.invoice {
-                        Text("\(invoice)")
-                            .font(.mainFont(size: 12))
-                            .foregroundColor(Color.white)
-                            .padding(.horizontal)
-                    }
                     
                     Spacer()
                     
-                    if viewModel.payment.invoice != nil && !viewModel.payment.isExpired {
-                        Button("Copy to clipboard") {
-                            withAnimation {
-                                viewModel.copyToClipboard()
-                            }
-                        }
-                        .modifier(PButtonEnabledStyle(enabled: .constant(true)))
-                        .padding()
-                    }
+                    Text("\(viewModel.payment.satAmount) sat")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
                 }
-                .padding()
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Description:")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightInactiveLabel)
+                    
+                    Spacer()
+                    
+                    Text("\(viewModel.payment.description)")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Created:")
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightInactiveLabel)
+                    
+                    Spacer()
+                    
+                    Text("\(viewModel.payment.created)")
+                        .lineLimit(1)
+                        .font(.mainFont(size: 14))
+                        .foregroundColor(Color.lightActiveLabel)
+                }
+                .padding(.horizontal)
+                
+                if !viewModel.payment.isExpired {
+                    HStack {
+                        Text("Expires:")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightInactiveLabel)
+                        
+                        Spacer()
+                        
+                        if let expireDate = viewModel.payment.expires {
+                            Text("\(expireDate)")
+                                .lineLimit(1)
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightActiveLabel)
+                        } else {
+                            Text("-")
+                                .font(.mainFont(size: 14))
+                                .foregroundColor(Color.lightActiveLabel)
+                        }
+                    }
+                    .padding(.horizontal)
+                } else {
+                    HStack {
+                        Text("Status:")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightInactiveLabel)
+                        
+                        Spacer()
+                        
+                        Text("Expired")
+                            .font(.mainFont(size: 14))
+                            .foregroundColor(Color.lightActiveLabel)
+                    }
+                    .padding(.horizontal)
+                }
+                
+                Text("Invoice:")
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.lightInactiveLabel)
+                    .padding(.vertical)
+                
+                if let invoice = viewModel.payment.invoice {
+                    Text("\(invoice)")
+                        .font(.mainFont(size: 12))
+                        .foregroundColor(Color.white)
+                        .padding(.horizontal)
+                }
+                
+                Spacer()
+                
+                if viewModel.payment.invoice != nil && !viewModel.payment.isExpired {
+                    Button("Copy to clipboard") {
+                        withAnimation {
+                            viewModel.copyToClipboard()
+                        }
+                    }
+                    .modifier(PButtonEnabledStyle(enabled: .constant(true)))
+                    .padding()
+                }
             }
+            .padding()
         }
     }
 }

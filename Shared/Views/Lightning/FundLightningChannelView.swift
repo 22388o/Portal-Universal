@@ -21,7 +21,6 @@ struct FundLightningChannelView: View {
             ModalNavigationView(title: "Fund a channel", backButtonAction: {
                 viewState = .openChannel
             })
-            .padding()
             
             HStack {
                 Text("On-chain balance:")

@@ -43,7 +43,7 @@ struct WalletModalViews: View {
             case .manageAssets:
                 ManageAssetsView()
             case .channels:
-                LightningRootView()
+                LightningRootView(close: .constant(false))
             default:
                 EmptyView()
             }

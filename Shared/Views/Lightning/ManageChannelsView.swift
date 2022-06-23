@@ -12,57 +12,52 @@ struct ManageChannelsView: View {
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
-        ZStack(alignment: .top) {
-            Color.portalBackground.edgesIgnoringSafeArea(.all)
+        VStack {
+            ModalNavigationView(title: "Channels", backButtonAction: {
+                viewState = .root
+            })
             
-            VStack {
-                ModalNavigationView(title: "Channels", backButtonAction: {
-                    viewState = .root
-                })
-                .padding()
+            HStack {
+                Text("Open channels")
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.white)
+                Spacer()
                 
-                HStack {
-                    Text("Open channels")
-                        .font(.mainFont(size: 14))
-                        .foregroundColor(Color.white)
-                    Spacer()
-                    
-                    if viewModel.openChannels.isEmpty {
-                        Button {
-                            withAnimation {
-                                viewState = .openChannel
-                            }
-                        } label: {
-                            Image(systemName: "plus.viewfinder")
-                                .foregroundColor(Color.accentColor)
-                                .font(.system(size: 16, weight: .regular))
+//                    if viewModel.openChannels.isEmpty {
+                    Button {
+                        withAnimation {
+                            viewState = .openChannel
                         }
-                        .buttonStyle(.borderless)
+                    } label: {
+                        Image(systemName: "plus.viewfinder")
+                            .foregroundColor(Color.accentColor)
+                            .font(.system(size: 16, weight: .regular))
                     }
-                }
-                .padding(.horizontal)                    
-                
-                Rectangle()
-                    .frame(height: 1)
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(.white)
-                    .padding([.horizontal, .bottom])
-                
-                if !viewModel.openChannels.isEmpty {
-                    ScrollView {
-                        VStack(spacing: 0) {
-                            ForEach(viewModel.openChannels) { channel in
-                                ChannelItemView(channel: channel)
-                            }
+                    .buttonStyle(.borderless)
+//                    }
+            }
+            .padding(.horizontal)
+            
+            Rectangle()
+                .frame(height: 1)
+                .frame(maxWidth: .infinity)
+                .foregroundColor(.white)
+                .padding([.horizontal, .bottom])
+            
+            if !viewModel.openChannels.isEmpty {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.openChannels) { channel in
+                            ChannelItemView(channel: channel)
                         }
                     }
-                } else {
-                    Spacer()
-                    Text("There is no open channels yet.")
-                        .font(.mainFont(size: 14))
-                        .foregroundColor(Color.lightActiveLabel)
-                    Spacer()
                 }
+            } else {
+                Spacer()
+                Text("There is no open channels yet.")
+                    .font(.mainFont(size: 14))
+                    .foregroundColor(Color.lightActiveLabel)
+                Spacer()
             }
         }
     }
