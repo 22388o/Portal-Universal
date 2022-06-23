@@ -46,7 +46,7 @@ class LightningChannelManager: ILightningChannelManager {
         let broadcaster = LDKTestNetBroadcasterInterface()
         let logger = LDKLogger()
     
-        let seed: [UInt8] = [UInt8](Data(base64Encoded: "13/12/////////////////////////////////////13")!)
+        let seed: [UInt8] = [UInt8](Data(base64Encoded: "13/12//////////////////////////////////11113")!)
         let timestampSeconds = UInt64(Date().timeIntervalSince1970)
         let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
         
@@ -85,7 +85,7 @@ class LightningChannelManager: ILightningChannelManager {
                 
                 //start new node
                 
-                let bestBlock = lastBlock ?? LastBlockInfo(height: 2265663, timestamp: 1655386489, headerHash: "000000000000cad6a31264a90dc78cc8c876b6af780f1bcb8b6fc80729267e24")
+                let bestBlock = lastBlock ?? LastBlockInfo(height: 2278337, timestamp: 1655445673, headerHash: "000000000000006834c0a2e3507fe17d5ae5fb67e5fd32a1c03583eae7ecf08b")
                 
                 print("Best block: \(bestBlock)")
                 
@@ -124,11 +124,7 @@ class LightningChannelManager: ILightningChannelManager {
         } else {
             //start new node
             
-            guard let bestBlock = lastBlock else {
-                fatalError("not synced with network")
-            }
-
-            print("Best block: \(bestBlock)")
+            let bestBlock = lastBlock ?? LastBlockInfo(height: 2278337, timestamp: 1655445673, headerHash: "000000000000006834c0a2e3507fe17d5ae5fb67e5fd32a1c03583eae7ecf08b")
             
             guard
                 let reversedLastBlockHash = bestBlock.headerHash?.reversed,
