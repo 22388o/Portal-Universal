@@ -145,6 +145,8 @@
 		75271304261B5378008C962C /* PButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271302261B5378008C962C /* PButton.swift */; };
 		7527130A261BAAE8008C962C /* StoreSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271309261BAAE8008C962C /* StoreSeedView.swift */; };
 		7527130B261BAAE8008C962C /* StoreSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271309261BAAE8008C962C /* StoreSeedView.swift */; };
+		752757B12864677A00103348 /* LDKFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; };
+		752757B22864677A00103348 /* LDKFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		752E530D26FDDE6300FCDB0C /* BinancePrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */; };
 		752E530E26FDDE6300FCDB0C /* BinancePrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */; };
 		752E531126FDDE6300FCDB0C /* KrakenPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F626FDDE6300FCDB0C /* KrakenPrivateApi.swift */; };
@@ -733,6 +735,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		752757B32864677A00103348 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				752757B22864677A00103348 /* LDKFramework.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75777C1128479F8000866B02 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1186,6 +1199,7 @@
 			files = (
 				5943885CDFB1C0DCB277A5D6 /* Pods_Portal__iOS_.framework in Frameworks */,
 				BF730E6C550AC2E80F0D1F2F /* Pods_Portal__iOS_.framework in Frameworks */,
+				752757B12864677A00103348 /* LDKFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2147,6 +2161,7 @@
 				755782CB26087904000E1686 /* Frameworks */,
 				755782CC26087904000E1686 /* Resources */,
 				A85FA94A557661B339D7D864 /* [CP] Embed Pods Frameworks */,
+				752757B32864677A00103348 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2173,6 +2188,8 @@
 			dependencies = (
 			);
 			name = "Portal (macOS)";
+			packageProductDependencies = (
+			);
 			productName = "Portal (macOS)";
 			productReference = 755782D626087904000E1686 /* Portal.app */;
 			productType = "com.apple.product-type.application";
@@ -2235,6 +2252,8 @@
 				Base,
 			);
 			mainGroup = 755782BE26087903000E1686;
+			packageReferences = (
+			);
 			productRefGroup = 755782CF26087904000E1686 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
