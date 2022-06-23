@@ -31,9 +31,9 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 let channelId = value.getUser_channel_id()
                 dataService.removeChannelWith(id: channelId)
                 
-                let id = value.getChannel_id().bytesToHexString()
-                let errorMessage: String
-                
+//                let id = value.getChannel_id().bytesToHexString()
+//                let errorMessage: String
+//                
 //                let reason = value.getReason()
 //                switch reason.getValueType() {
 //                case .ProcessingError:
@@ -147,7 +147,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 
                 if claimResult {
                     print("Claimed")
-                    let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), created: Date(), description: "incoming payment", state: .recieved)
+                    let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), created: Date(), description: "incoming payment", state: .received)
                     dataService.save(payment: payment)
                     userMessage = "Payment received: \(amount) sat"
                 } else {
@@ -225,13 +225,13 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
         print("PERSIST CHANNEL MANAGER")
         print("========================")
         
-        let managerBytes = channel_manager.write()
-        dataService.save(channelManager: Data(managerBytes))
-        
-        print("OUR NODE ID: \(channel_manager.get_our_node_id().bytesToHexString())")
-        print("Avaliable channels: \(channel_manager.list_channels().count)")
-        
-        DispatchQueue.global(qos: .background).async {
+//        DispatchQueue.global(qos: .background).async {
+            let managerBytes = channel_manager.write()
+            self.dataService.save(channelManager: Data(managerBytes))
+            
+            print("OUR NODE ID: \(channel_manager.get_our_node_id().bytesToHexString())")
+            print("Avaliable channels: \(channel_manager.list_channels().count)")
+            
             for channel in channel_manager.list_channels() {
                 let userChannelID = channel.get_user_channel_id()
                 let balance = channel.get_balance_msat()/1000
@@ -267,7 +267,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                     }
                 }
             }
-        }
+//        }
         
         return Result_NoneErrorZ.ok()
     }

@@ -19,7 +19,7 @@ class LightningPayment: Identifiable {
     )
     
     enum State: Int16 {
-        case requested = 0, sent, recieved
+        case requested = 0, sent, received
         
         var description: String {
             switch self {
@@ -27,7 +27,7 @@ class LightningPayment: Identifiable {
                 return "Requested payment"
             case .sent:
                 return "Sent"
-            case .recieved:
+            case .received:
                 return "Received"
             }
         }
