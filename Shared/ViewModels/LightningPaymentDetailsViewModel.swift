@@ -37,7 +37,7 @@ class LightningPaymentDetailsViewModel: ObservableObject {
         let uiImage = UIImage(cgImage: cgImage)
         return Image(uiImage: uiImage)
         #elseif os(macOS)
-        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: 300, height: 300))
+        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: 200, height: 200))
         return Image(nsImage: nsImage)
         #endif
     }
