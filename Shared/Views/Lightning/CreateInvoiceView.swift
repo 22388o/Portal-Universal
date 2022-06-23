@@ -129,7 +129,7 @@ struct CreateInvoiceView: View {
                             .foregroundColor(Color.white)
                             .modifier(
                                 PlaceholderStyle(
-                                    showPlaceHolder: vm.satAmount.isEmpty,
+                                    showPlaceHolder: viewModel.satAmount.isEmpty,
                                     placeholder: "0"
                                 )
                             )
@@ -180,11 +180,11 @@ struct CreateInvoiceView: View {
                     
                     HStack(spacing: 8) {
                         #if os(iOS)
-                        TextField(String(), text: $vm.memo)
+                        TextField(String(), text: $viewModel.memo)
                             .foregroundColor(Color.white)
                             .modifier(
                                 PlaceholderStyle(
-                                    showPlaceHolder: $vm.memo.isEmpty,
+                                    showPlaceHolder: viewModel.memo.isEmpty,
                                     placeholder: "Description..."
                                 )
                             )
