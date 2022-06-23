@@ -26,13 +26,7 @@ class WalletStorage: IWalletStorage {
     }
     
     private func subscribeForUpdates() {
-        accountManager.onActiveAccountUpdate
-            .sink { [weak self] _ in
-                self?.syncWallets()
-            }
-            .store(in: &subscriptions)
-        
-        coinManager.onCoinsUpdate
+        Publishers.CombineLatest(accountManager.onActiveAccountUpdate, coinManager.onCoinsUpdate)
             .sink { [weak self] _ in
                 self?.syncWallets()
             }
