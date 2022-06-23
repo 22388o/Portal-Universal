@@ -7,7 +7,11 @@
 
 import Foundation
 import BitcoinCore
+#if os(iOS)
+import LDKFramework
+#elseif os(macOS)
 import LDKFramework_Mac
+#endif
 import Combine
 
 class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {

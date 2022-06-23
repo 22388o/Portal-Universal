@@ -9,7 +9,11 @@ import Foundation
 import SwiftUI
 import Combine
 import Coinpaprika
+#if os(iOS)
+import LDKFramework
+#elseif os(macOS)
 import LDKFramework_Mac
+#endif
 
 class CreateInvoiceViewModel: ObservableObject {
     @Published var memo: String = ""
