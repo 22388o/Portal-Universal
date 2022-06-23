@@ -3487,7 +3487,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				btc_core_rpc_url = "https:/$()/btc.horizontalsystems.xyz/rpc";
 				etherscan_api_key = PYPJHJFA2MUT12KPTT8FCKPAMGHTRDQICB;
 				fixer_api_key = 13af1e52c56117b6c7d513603fb7cee8;
@@ -3522,7 +3522,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				btc_core_rpc_url = "https:/$()/btc.horizontalsystems.xyz/rpc";
 				etherscan_api_key = PYPJHJFA2MUT12KPTT8FCKPAMGHTRDQICB;
