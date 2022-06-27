@@ -64,11 +64,11 @@ struct AssetViewPortrait: View {
                             .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                         }
                         HStack {
-                            PButton(label: "Send to exchange", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: false) {
-                                withAnimation(.easeInOut(duration: 0.4)) {
-                                    
-                                }
-                            }
+//                            PButton(label: "Send to exchange", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: false) {
+//                                withAnimation(.easeInOut(duration: 0.4)) {
+//
+//                                }
+//                            }
                             
                             PButton(label: "Withdraw from exchange", width: geometry.size.width/2, height: 32, fontSize: 12, enabled: false) {
                                 withAnimation(.easeIn(duration: 0.2)) {

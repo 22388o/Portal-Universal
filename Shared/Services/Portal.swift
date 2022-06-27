@@ -21,7 +21,7 @@ final class Portal {
     private let localStorage: ILocalStorage
     private let secureStorage: IKeychainStorage
     
-    let dbStorage: IDBStorage & IAccountStorage & IDBCacheStorage & IPriceAlertStorage
+    let dbStorage: IAccountStorage & IDBCacheStorage & IPriceAlertStorage & ILightningDataStorage
     let appConfigProvider: IAppConfigProvider
     let accountManager: IAccountManager
     let walletManager: IWalletManager
@@ -35,6 +35,7 @@ final class Portal {
     let pushNotificationService: PushNotificationService
     let coinManager: ICoinManager
     let passcodeManager: IPasscodeManager
+    var lightningService: ILightningService?
     
     @ObservedObject var state: PortalState
         
@@ -118,6 +119,11 @@ final class Portal {
         if let activeAccount = accountManager.activeAccount {
             updateWalletCurrency(code: activeAccount.fiatCurrencyCode)
         }
+        
+        if let adapter = adapterManager.adapter(for: .bitcoin()) as? BitcoinAdapter {
+            let dataService = LightningDataService(storage: dbStorage)
+            self.lightningService = LightningService(adapter: adapter, dataService: dataService, notificationService: notificationService)
+        }
                 
         adapterManager.adapterReady
             .receive(on: RunLoop.main)
@@ -130,6 +136,7 @@ final class Portal {
                     self.state.wallet.coin = .bitcoin()
                 } else if !hasAccount {
                     self.state.rootView = .createAccount
+                    self.lightningService = nil
                 }
             }
             .store(in: &anyCancellables)

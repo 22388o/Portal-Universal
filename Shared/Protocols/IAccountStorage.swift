@@ -10,9 +10,10 @@ import CoreData
 
 protocol IAccountStorage {
     var context: NSManagedObjectContext { get }
-    var allAccountRecords: [AccountRecord] { get }
+    var accountRecords: [AccountRecord] { get }
     func save(accountRecord: AccountRecord)
     func update(account: Account)
     func deleteAccount(_ account: Account) throws
     func deleteAllAccountRecords()
+    func clear()
 }

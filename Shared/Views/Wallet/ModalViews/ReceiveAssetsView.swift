@@ -86,7 +86,7 @@ struct ReceiveAssetsView: View {
 struct ReceiveAssetsView_Previews: PreviewProvider {
     static var previews: some View {
         ReceiveAssetsView(coin: Coin.bitcoin())
-            .frame(width: 576, height: 350)
+            .frame(width: 650, height: 350)
             .padding()
             .previewLayout(PreviewLayout.sizeThatFits)
     }

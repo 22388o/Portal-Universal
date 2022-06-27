@@ -107,6 +107,7 @@ struct PButtonEnabledStyle: ViewModifier {
             .cornerRadius(18)
             .font(Font.mainFont(size: 16))
             .foregroundColor(enabled ? .white : Color.white.opacity(0.35))
+            .buttonStyle(.borderless)
 //            .overlay(
 //                RoundedRectangle(cornerRadius: 18)
 //                    .stroke(enabled ? Color.assetViewButton : Color.pButtonDisableBackground, lineWidth: 1)
@@ -125,6 +126,21 @@ struct TextFieldModifier: ViewModifier {
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(Color.exchangerFieldBorder, lineWidth: 1)
+            )
+    }
+}
+
+struct TextFieldModifierDark: ViewModifier {
+    let cornerRadius: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .padding(12)
+            .background(Color.exchangerFieldBackgroundDark)
+            .cornerRadius(cornerRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(Color.exchangerFieldBackgroundDark, lineWidth: 1)
             )
     }
 }
