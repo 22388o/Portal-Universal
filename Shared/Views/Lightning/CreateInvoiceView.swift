@@ -13,9 +13,22 @@ struct CreateInvoiceView: View {
     
     var body: some View {
         VStack {
+            #if os(macOS)
             ModalNavigationView(title: "Create Invoice", backButtonAction: {
                 viewState = .root
             })
+            #else
+            VStack(spacing: 16) {
+                Text("Create Invoice")
+                    .font(.mainFont(size: 23))
+                    .foregroundColor(Color.coinViewRouteButtonActive)
+            }
+            .padding(.top, 57)
+            .padding(.bottom, 16)
+            
+            Divider()
+                .padding()
+            #endif
             
             if let code = viewModel.qrCode, let invoice = viewModel.invoice {
                 code
