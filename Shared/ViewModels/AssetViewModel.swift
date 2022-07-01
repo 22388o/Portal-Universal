@@ -21,8 +21,8 @@ final class AssetViewModel: ObservableObject {
     @Published private(set) var chartDataEntries = [ChartDataEntry]()
     @Published private(set) var currency: Currency = .fiat(USD)
     @Published private(set) var canSend: Bool = false
+    @ObservedObject private(set) var state: PortalState
     
-    @ObservedObject private var state: PortalState
     @ObservedObject var txsViewModel: TxsViewModel
         
     private let marketDataProvider: IMarketDataProvider
