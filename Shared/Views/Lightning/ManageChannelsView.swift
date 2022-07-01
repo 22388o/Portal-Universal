@@ -7,20 +7,30 @@
 
 import SwiftUI
 
-struct ManageChannelsView: View {
+struct `ManageChannelsView`: View {
     @StateObject private var viewModel = ManageChannelsViewModel.config()
     @Binding var viewState: LightningRootView.ViewState
     
     var body: some View {
         VStack {
+            #if os(macOS)
             ModalNavigationView(title: "Channels", backButtonAction: {
                 viewState = .root
             })
+            #else
+            VStack(spacing: 16) {
+                Text("Lightning channels")
+                    .font(.mainFont(size: 23))
+                    .foregroundColor(Color.coinViewRouteButtonActive)
+            }
+            .padding(.top, 57)
+            .padding(.bottom, 16)
+            #endif
             
             HStack {
                 Text("Open channels")
                     .font(.mainFont(size: 14))
-                    .foregroundColor(Color.white)
+                    .foregroundColor(Color.gray)
                 Spacer()
                 
 //                    if viewModel.openChannels.isEmpty {
@@ -41,7 +51,7 @@ struct ManageChannelsView: View {
             Rectangle()
                 .frame(height: 1)
                 .frame(maxWidth: .infinity)
-                .foregroundColor(.white)
+                .foregroundColor(.gray)
                 .padding([.horizontal, .bottom])
             
             if !viewModel.openChannels.isEmpty {
