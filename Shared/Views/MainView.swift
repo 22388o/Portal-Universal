@@ -29,7 +29,7 @@ struct MainView: View {
                             .transition(AnyTransition.move(edge: .leading).combined(with: .opacity))
                     }
                     WalletView(viewModel: walletViewModel)
-                    AssetViewLandscape(viewModel: assetViewModel)
+                    AssetView(viewModel: assetViewModel)
                         .padding([.top, .trailing, .bottom], 8)
                 }
                 #else
@@ -43,7 +43,7 @@ struct MainView: View {
                         WalletView(viewModel: walletViewModel)
 
                         if state.orientation == .landscapeLeft || state.orientation == .landscapeRight {
-                            AssetViewLandscape(viewModel: assetViewModel)
+                            AssetView(viewModel: assetViewModel)
                                 .transition(.identity)
                                 .id(UUID())
                                 .padding([.top, .trailing, .bottom], 8)
