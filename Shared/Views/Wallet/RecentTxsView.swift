@@ -76,8 +76,10 @@ struct RecentTxsView: View {
                         }
                     }
                 }
+#if os(macOS)
                 .frame(width: 256)
-                
+#endif
+#if os(macOS)
                 PButton(label: "See all transactions", width: 256, height: 32, fontSize: 12, enabled: true) {
                     withAnimation(.easeIn(duration: 3.0)) {
                         state.modalView = .allTransactions(selectedTx: nil)
@@ -86,6 +88,7 @@ struct RecentTxsView: View {
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
                 .padding(.bottom, 41)
                 .padding(.top, 20)
+#endif
             }
         }
     }
