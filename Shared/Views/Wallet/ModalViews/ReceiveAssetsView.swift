@@ -135,9 +135,6 @@ struct ReceiveAssetsView: View {
             }
         }
         .padding(.horizontal, 40)
-        .onAppear {
-            viewModel.update()
-        }
         #endif
     }
 }
