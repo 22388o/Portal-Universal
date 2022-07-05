@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct `ManageChannelsView`: View {
+struct ManageChannelsView: View {
     @StateObject private var viewModel = ManageChannelsViewModel.config()
     @Binding var viewState: LightningRootView.ViewState
     
