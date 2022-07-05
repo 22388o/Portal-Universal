@@ -29,6 +29,7 @@ struct StoreSeedView: View {
     }
     
     var body: some View {
+        #if os(macOS)
         HStack(spacing: 55) {
             VStack(spacing: 0) {
                 HStack(spacing: 14) {
@@ -132,6 +133,107 @@ struct StoreSeedView: View {
         }
         .frame(minWidth: 650)
         .frame(minHeight: 550)
+        #else
+        VStack(spacing: 0) {
+            HStack(spacing: 14) {
+                Image("lockedSafeIcon")
+                    .offset(y: -2)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Secure your wallet")
+                        .font(.mainFont(size: 23))
+                        .foregroundColor(.createWalletLabel)
+                    Text("Store the seed")
+                        .font(.mainFont(size: 15))
+                        .foregroundColor(.coinViewRouteButtonInactive)
+                }
+            }
+            
+            Spacer().frame(height: 31)
+            
+            Text(viewModel.isUsingStrongSeed ? description24 : description12)
+                .font(.mainFont(size: 14))
+                .foregroundColor(.coinViewRouteButtonActive)
+                .frame(width: 298)
+            
+            ZStack {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.seedBoxBackground)
+                    .frame(width: 319, height: 448)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.seedBoxBorder, lineWidth: 1)
+                    )
+                
+                VStack(spacing: 0) {
+                    Toggle("24 words seed", isOn: $viewModel.isUsingStrongSeed)
+                        .frame(width: 150)
+                        .font(.mainFont(size: 10))
+                        .foregroundColor(Color.coinViewRouteButtonInactive)
+                        .toggleStyle(SwitchToggleStyle())
+                        .padding()
+                    
+                    HStack(spacing: 0) {
+                        if viewModel.isUsingStrongSeed {
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach((1...viewModel.test.seed.count/2), id: \.self) { index in
+                                    HStack {
+                                        Text("\(index))")
+                                            .foregroundColor(.blush)
+                                        Text("\(viewModel.test.seed[index - 1])")
+                                            .foregroundColor(.brownishOrange)
+                                    }
+                                }
+                            }
+                            .frame(width: 150)
+                            
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach((viewModel.test.seed.count/2 + 1...viewModel.test.seed.count), id: \.self) { index in
+                                    HStack {
+                                        Text("\(index))")
+                                            .foregroundColor(.blush)
+                                        Text("\(viewModel.test.seed[index - 1])")
+                                            .foregroundColor(.brownishOrange)
+                                    }
+                                }
+                            }
+                            .frame(width: 150)
+                        } else {
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach((1...viewModel.test.seed.count/2), id: \.self) { index in
+                                    HStack {
+                                        Text("\(index))")
+                                            .foregroundColor(.blush)
+                                        Text("\(viewModel.test.seed[index - 1])")
+                                            .foregroundColor(.brownishOrange)
+                                    }
+                                }
+                            }
+                            .frame(width: 150)
+                        }
+                    }
+                    .padding()
+                }
+            }
+            .scaleEffect(0.85)
+            
+            HStack(spacing: 12) {
+                PButton(label: "Next", width: 180, height: 48, fontSize: 15, enabled: true) {
+                    withAnimation {
+                        viewModel.step = .test
+                    }
+                }
+                .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
+                
+                Text(viewModel.copiedToClipboard ? "Copied to clipboard!" : "Copy to clipboard")
+                    .frame(width: 130)
+                    .foregroundColor(viewModel.copiedToClipboard ? Color.green : Color.txListTxType)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        viewModel.copyToClipboard()
+                    }
+            }
+        }
+        #endif
     }
 }
 
