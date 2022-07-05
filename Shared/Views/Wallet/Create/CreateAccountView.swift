@@ -16,6 +16,7 @@ struct CreateAccountView: View {
     
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
+            #if os(macOS)
             Color.portalWalletBackground
             
             HStack(spacing: 12) {
@@ -44,16 +45,19 @@ struct CreateAccountView: View {
                 .padding(.top, 30)
                 .padding(.leading, 30)
             }
-            
+            #endif
             ZStack {
+                #if os(macOS)
                 Color.black.opacity(0.58)
-                                
+                #endif
                 HStack(spacing: 0) {
+                    #if os(macOS)
                     if viewModel.step == .name {
                         TopCoinView()
                             .frame(width: 312)
                             .transition(AnyTransition.move(edge: .leading).combined(with: .opacity))
                     }
+                    #endif
                     
                     ZStack {
                         Rectangle()
@@ -66,10 +70,12 @@ struct CreateAccountView: View {
                             switch viewModel.step {
                             case .name:
                                 AccountNameView(scene: $scene, viewModel: viewModel)
+                                    .scaleEffect(0.85)
                             case .seed:
                                 StoreSeedView(viewModel: viewModel)
                             case .test:
                                 SeedTestView(viewModel: viewModel)
+                                    .scaleEffect(0.85)
                             case .confirmation:
                                 EmptyView()
                             }
