@@ -78,8 +78,10 @@ struct AccountNameView: View {
                 Spacer()
             }
         }
+        #if os(macOS)
         .frame(minWidth: 400)
         .frame(minHeight: 600)
+        #endif
     }
 }
 
