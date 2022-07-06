@@ -61,7 +61,7 @@ struct LoadingAnimationView: View {
                         viewModel.tryUnlock()
                     })
                     .modifier(ShakeEffect(shakes: viewModel.wrongPasscode ? 1 : 0))
-                    .animation(Animation.default.repeatCount(1).speed(5))
+                    .animation(Animation.default.repeatCount(1).speed(5), value: viewModel.wrongPasscode)
                     .padding()
                 }
                 
