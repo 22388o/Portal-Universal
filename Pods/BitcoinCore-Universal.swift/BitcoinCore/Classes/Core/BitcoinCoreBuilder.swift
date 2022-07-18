@@ -17,6 +17,7 @@ public class BitcoinCoreBuilder {
     private var initialSyncApi: ISyncTransactionApi?
     private var plugins = [IPlugin]()
     private var logger: Logger
+    private var accountIndex: Int = 0
 
     private var blockHeaderHasher: IHasher?
     private var blockValidator: IBlockValidator?
@@ -62,6 +63,11 @@ public class BitcoinCoreBuilder {
 
     public func set(syncMode: BitcoinCore.SyncMode) -> BitcoinCoreBuilder {
         self.syncMode = syncMode
+        return self
+    }
+    
+    public func set(accountIndex: Int) -> BitcoinCoreBuilder {
+        self.accountIndex = accountIndex
         return self
     }
 
@@ -153,7 +159,7 @@ public class BitcoinCoreBuilder {
 
         let factory = Factory(network: network, networkMessageParser: networkMessageParser, networkMessageSerializer: networkMessageSerializer)
 
-        let publicKeyManager = PublicKeyManager.instance(storage: storage, hdWallet: hdWallet, restoreKeyConverter: restoreKeyConverterChain)
+        let publicKeyManager = PublicKeyManager.instance(storage: storage, hdWallet: hdWallet, restoreKeyConverter: restoreKeyConverterChain, accountIndex: accountIndex)
         let pendingOutpointsProvider = PendingOutpointsProvider(storage: storage)
 
         let myOutputsCache = OutputsCache.instance(storage: storage)
@@ -185,7 +191,7 @@ public class BitcoinCoreBuilder {
 
         let stateManager = ApiSyncStateManager(storage: storage, restoreFromApi: network.syncableFromApi && syncMode == BitcoinCore.SyncMode.api)
 
-        let initialSyncer = InitialSyncer(storage: storage, blockDiscovery: blockDiscovery, publicKeyManager: publicKeyManager, logger: logger)
+        let initialSyncer = InitialSyncer(accountIndex: accountIndex, storage: storage, blockDiscovery: blockDiscovery, publicKeyManager: publicKeyManager, logger: logger)
 
         let bloomFilterLoader = BloomFilterLoader(bloomFilterManager: bloomFilterManager, peerManager: peerManager)
         let watchedTransactionManager = WatchedTransactionManager()
