@@ -31,8 +31,17 @@ struct AccountNameView: View {
             HStack(spacing: 8) {
                 AccountNameInputView(name: $viewModel.accountName)
                 PButton(label: "Continue", width: 124, height: 48, fontSize: 15, enabled: viewModel.nameIsValid) {
-                    withAnimation {
-                        viewModel.step = .seed
+                    if viewModel.currentAccount == nil {
+                        withAnimation {
+                            viewModel.step = .seed
+                        }
+                    } else {
+                        withAnimation {
+                            Portal.shared.state.loading = true
+                        }
+                        DispatchQueue.global(qos: .userInitiated).async {
+                            Portal.shared.accountManager.save(account: viewModel.account)
+                        }
                     }
                 }
                 .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
