@@ -6,7 +6,11 @@
 //
 
 import Combine
+#if os(macOS)
 import LDKFramework_Mac
+#else
+import LDKFramework
+#endif
 import NIOConcurrencyHelpers
 
 class PayInvoiceViewModel: ObservableObject {

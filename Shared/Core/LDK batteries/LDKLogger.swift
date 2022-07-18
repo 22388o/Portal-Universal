@@ -5,7 +5,11 @@
 //  Created by farid on 6/13/22.
 //
 
+#if os(macOS)
 import LDKFramework_Mac
+#else
+import LDKFramework
+#endif
 
 class LDKLogger: Logger {
     override func log(record: Record) {

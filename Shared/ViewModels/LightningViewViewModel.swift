@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if os(macOS)
 import LDKFramework_Mac
+#else
+import LDKFramework
+#endif
 
 class LightningViewViewModel: ObservableObject {
     @Published var payments: [LightningPayment] = []

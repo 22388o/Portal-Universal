@@ -7,7 +7,11 @@
 
 import Foundation
 import BitcoinCore
+#if os(macOS)
 import LDKFramework_Mac
+#else
+import LDKFramework
+#endif
 
 class LightningChannelManager: ILightningChannelManager {
     private var constructor: ChannelManagerConstructor
