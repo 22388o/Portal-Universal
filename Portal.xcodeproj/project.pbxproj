@@ -484,6 +484,8 @@
 		755EBC2F272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
 		755EBC332721959200B56B89 /* IDBCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC322721959200B56B89 /* IDBCacheStorage.swift */; };
 		755EBC342721959200B56B89 /* IDBCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC322721959200B56B89 /* IDBCacheStorage.swift */; };
+		756A3106287D9CAC004978E2 /* LDKFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; };
+		756A3107287D9CAC004978E2 /* LDKFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		756A66AF262441B500353635 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66AE262441B500353635 /* PortfolioView.swift */; };
 		756A66B0262441B500353635 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66AE262441B500353635 /* PortfolioView.swift */; };
 		756A66B62624443A00353635 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66B52624443A00353635 /* PortfolioViewModel.swift */; };
@@ -733,6 +735,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		756A3108287D9CAC004978E2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				756A3107287D9CAC004978E2 /* LDKFramework.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75777C1128479F8000866B02 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1186,6 +1199,7 @@
 			files = (
 				5943885CDFB1C0DCB277A5D6 /* Pods_Portal__iOS_.framework in Frameworks */,
 				BF730E6C550AC2E80F0D1F2F /* Pods_Portal__iOS_.framework in Frameworks */,
+				756A3106287D9CAC004978E2 /* LDKFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2147,6 +2161,7 @@
 				755782CB26087904000E1686 /* Frameworks */,
 				755782CC26087904000E1686 /* Resources */,
 				A85FA94A557661B339D7D864 /* [CP] Embed Pods Frameworks */,
+				756A3108287D9CAC004978E2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3476,7 +3491,7 @@
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3511,7 +3526,7 @@
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
