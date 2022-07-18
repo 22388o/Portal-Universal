@@ -50,7 +50,7 @@ final class FiatCurrenciesUpdater: IFiatCurrenciesUpdater {
                         print(error)
                     }
                 } receiveValue: { (rates, symbols) in
-                    onFiatCurrenciesUpdate.send(
+                    self.onFiatCurrenciesUpdate.send(
                         zip(
                             symbols.sorted(by: { $0.key < $1.key }),
                             rates.sorted(by: { $0.key < $1.key })

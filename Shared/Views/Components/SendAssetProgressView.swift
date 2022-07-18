@@ -33,7 +33,7 @@ struct SendAssetProgressView: View {
                 Rectangle()
                     .foregroundColor(Color.pButtonEnabledBackground)
                     .frame(width: progress, height: 3)
-                    .animation(.linear(duration: 0.55))
+                    .animation(.linear(duration: 0.55), value: step)
             }
             
             HStack {
@@ -52,8 +52,8 @@ struct SendAssetProgressView: View {
                     .foregroundColor(step >= .amount ? Color.white : Color.coinViewRouteButtonActive)
                     .background(step >= .amount ? Color.pButtonEnabledBackground : Color.coinViewRouteButtonInactive)
                     .cornerRadius(8)
-                    .animation(.easeInOut(duration: 0.75))
-                
+                    .animation(.linear(duration: 0.75), value: step)
+
                 Spacer()
                 
                 Text("Summary")
@@ -62,8 +62,8 @@ struct SendAssetProgressView: View {
                     .foregroundColor(step >= .summary ? Color.white : Color.coinViewRouteButtonActive)
                     .background(step >= .summary ? Color.pButtonEnabledBackground : Color.coinViewRouteButtonInactive)
                     .cornerRadius(8)
-                    .animation(.easeInOut(duration: 0.75))
-                
+                    .animation(.linear(duration: 0.75), value: step)
+
                 Spacer()
                 
                 Text("Sent")
@@ -72,8 +72,7 @@ struct SendAssetProgressView: View {
                     .foregroundColor(step >= .sent ? Color.white : Color.coinViewRouteButtonActive)
                     .background(step >= .sent ? Color.pButtonEnabledBackground : Color.coinViewRouteButtonInactive)
                     .cornerRadius(8)
-                    .animation(.easeInOut(duration: 0.75))
-                
+                    .animation(.linear(duration: 0.75), value: step)
             }
             .font(.mainFont(size: 10))
         }
