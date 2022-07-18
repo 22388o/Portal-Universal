@@ -11,6 +11,7 @@ import EthereumKit
 
 class Account: IAccount {
     let id: String
+    let index: Int
     let type: AccountType
     let mnemonicDereviation: MnemonicDerivation
 
@@ -25,8 +26,9 @@ class Account: IAccount {
     var fiatCurrencyCode: String
     var coins: [String]
 
-    init(id: String, name: String, bip: MnemonicDerivation, type: AccountType) {
+    init(id: String, index: Int, name: String, bip: MnemonicDerivation, type: AccountType) {
         self.id = id
+        self.index = index
         self.name = name
         self.type = type
         self.fiatCurrencyCode = "USD"
@@ -57,6 +59,7 @@ class Account: IAccount {
     
     init(record: AccountRecord, type: AccountType) {
         self.id = record.id
+        self.index = Int(record.index)
         self.name = record.name
         self.type = type
         self.fiatCurrencyCode = record.fiatCurrencyCode
@@ -99,6 +102,8 @@ extension Account: Hashable {
 }
 
 class MockedAccount: IAccount {
+    var index: Int = 0
+    
     var id: String {
         UUID().uuidString
     }
