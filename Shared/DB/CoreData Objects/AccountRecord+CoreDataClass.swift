@@ -17,10 +17,11 @@ public class AccountRecord: NSManagedObject {
         MnemonicDerivation.bip84
     }
     
-    convenience init(id: String, name: String, bip: MnemonicDerivation, context: NSManagedObjectContext) {
+    convenience init(id: String, index: Int, name: String, bip: MnemonicDerivation, context: NSManagedObjectContext) {
         self.init(context: context)
         
         self.id = id
+        self.index = Int16(index)
         self.name = name
         
         self.btcNetwork = 1 //testNet
