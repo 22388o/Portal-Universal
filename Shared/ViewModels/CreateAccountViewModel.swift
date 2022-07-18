@@ -25,6 +25,7 @@ final class CreateAccountViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     private var type: AccountType
+    private(set) var currentAccount: Account?
     
     init(type: AccountType) {
         self.type = type
@@ -37,6 +38,10 @@ final class CreateAccountViewModel: ObservableObject {
         cancalable = $accountName.sink { [weak self] name in
             self?.nameIsValid = !name.isEmpty
         }
+        
+        if let account = Portal.shared.accountManager.activeAccount {
+            currentAccount = account
+        }
     }
     
     deinit {
@@ -44,20 +49,22 @@ final class CreateAccountViewModel: ObservableObject {
     }
     
     var account: Account {
-        let accountId = UUID().uuidString
-        let accountType: AccountType
-        
-        if !isUsingStrongSeed {
-            switch type {
-            case .mnemonic(let words, _):
-                let firstTwelveWords = Array(words.prefix(12))
-                accountType = .mnemonic(words: firstTwelveWords, salt: "salty_password")
+        guard let currentAccount = currentAccount else {
+            let accountId = UUID().uuidString
+            let accountType: AccountType
+            
+            if !isUsingStrongSeed {
+                switch type {
+                case .mnemonic(let words, _):
+                    let firstTwelveWords = Array(words.prefix(12))
+                    accountType = .mnemonic(words: ["tissue", "venue", "space", "captain", "symbol", "tent", "first", "insect", "cube", "shrug", "electric", "certain"], salt: "salty_password")
+                }
+            } else {
+                accountType = type
             }
-        } else {
-            accountType = type
+            return Account(id: accountId, index: 0, name: accountName, bip: mnemonicDereviation, type: accountType)
         }
-        
-        return Account(id: accountId, name: accountName, bip: mnemonicDereviation, type: accountType)
+        return Account(id: UUID().uuidString, index: currentAccount.index + 1, name: accountName, bip: currentAccount.mnemonicDereviation, type: currentAccount.type)
     }
     
     func formattedIndexString(_ index: Int) -> String {
