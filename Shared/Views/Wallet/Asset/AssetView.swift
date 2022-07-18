@@ -1,5 +1,5 @@
 //
-//  AssetViewLandscape.swift
+//  AssetView.swift
 //  Portal
 //
 //  Created by Farid on 10.04.2021.
@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 import Coinpaprika
 
-struct AssetViewLandscape: View {
+struct AssetView: View {
     @ObservedObject private var viewModel: AssetViewModel
     @ObservedObject private var state = Portal.shared.state
     @State private var channels: Bool = false
@@ -181,14 +181,41 @@ struct AssetViewLandscape: View {
     }
 }
 
-struct AssetViewLandscape_Previews: PreviewProvider {
+struct AssetView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            AssetViewLandscape(viewModel: AssetViewModel.config())
+            AssetView(viewModel: AssetViewModel.config())
         }
         .frame(width: 304, height: 656)
         .previewLayout(PreviewLayout.sizeThatFits)
+    }
+}
+
+struct RoundedRectangleButtonStyle: ButtonStyle {
+    private let fontSize: CGFloat
+    private let cornerRadius: CGFloat
+    private let hasShadow: Bool
+    
+    init(fontSize: CGFloat = 12, cornerRadius: CGFloat = 18, hasShadow: Bool = true) {
+        self.fontSize = fontSize
+        self.cornerRadius = cornerRadius
+        self.hasShadow = hasShadow
+    }
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(8)
+            .font(.mainFont(size: fontSize))
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .background(
+                Color.pButtonEnabledBackground
+                    .cornerRadius(cornerRadius)
+                    .opacity(configuration.isPressed ? 0.9 : 1)
+            )
+            .scaleEffect(configuration.isPressed ? 0.95 : 1)
+            .shadow(color: Color.pButtonShadowColor.opacity(0.1), radius: 6, x: 0, y: 4)
     }
 }

@@ -17,6 +17,8 @@ class ReceiveAssetViewModel: ObservableObject {
     init(address: String) {
         receiveAddress = address
         qrCodeProvider = QRCodeProvider()
+        qrCode = qrCodeProvider.code(for: receiveAddress)
+        print("RECEIVE ADDRESS: \(receiveAddress)")
     }
     
     func update() {

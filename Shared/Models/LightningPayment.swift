@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if os(iOS)
+import LDKFramework
+#elseif os(macOS)
 import LDKFramework_Mac
+#endif
 
 class LightningPayment: Identifiable {
     

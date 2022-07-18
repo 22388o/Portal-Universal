@@ -21,8 +21,11 @@ final class AssetViewModel: ObservableObject {
     @Published private(set) var chartDataEntries = [ChartDataEntry]()
     @Published private(set) var currency: Currency = .fiat(USD)
     @Published private(set) var canSend: Bool = false
+    @ObservedObject private(set) var state: PortalState
     
-    @ObservedObject private var state: PortalState
+    @Published var syncProgress: Float = 0.01
+    @Published private(set) var adapterState: AdapterState = .notSynced(error: AdapterError.wrongParameters)
+    
     @ObservedObject var txsViewModel: TxsViewModel
         
     private let marketDataProvider: IMarketDataProvider
@@ -287,6 +290,23 @@ final class AssetViewModel: ObservableObject {
             .sink(receiveValue: { [weak self] _ in
                 self?.update()
             })
+            .store(in: &subscriptions)
+        
+        adapter?.balanceStateUpdated
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self = self, let state = self.adapter?.balanceState else { return }
+                if case let .syncing(currentProgress, _) = state {
+                    let progress = Float(currentProgress)/100
+                    if self.syncProgress != progress {
+                        self.syncProgress = progress
+                    }
+                }
+                if case .synced  = state {
+                    print("BTC synced")
+                }
+                self.adapterState = state
+            }
             .store(in: &subscriptions)
     }
     

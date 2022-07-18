@@ -119,7 +119,7 @@ struct AssetViewPortrait_Previews: PreviewProvider {
         ZStack {
             Color.portalWalletBackground
             Color.black.opacity(0.58)
-            AssetViewLandscape(viewModel: AssetViewModel.config())
+            AssetView(viewModel: AssetViewModel.config())
         }
         .frame(width: .infinity, height: 656)
         .previewLayout(PreviewLayout.sizeThatFits)

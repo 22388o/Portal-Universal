@@ -5,7 +5,11 @@
 //  Created by farid on 6/13/22.
 //
 
+#if os(iOS)
+import LDKFramework
+#elseif os(macOS)
 import LDKFramework_Mac
+#endif
 
 class LDKChannelPersister: Persist {
     let dataService: ILightningDataService

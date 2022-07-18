@@ -145,6 +145,9 @@
 		75271304261B5378008C962C /* PButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271302261B5378008C962C /* PButton.swift */; };
 		7527130A261BAAE8008C962C /* StoreSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271309261BAAE8008C962C /* StoreSeedView.swift */; };
 		7527130B261BAAE8008C962C /* StoreSeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75271309261BAAE8008C962C /* StoreSeedView.swift */; };
+		752757B12864677A00103348 /* LDKFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; };
+		752757B22864677A00103348 /* LDKFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		752757B5286B3A5400103348 /* AssetViewPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752757B4286B3A5400103348 /* AssetViewPhone.swift */; };
 		752E530D26FDDE6300FCDB0C /* BinancePrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */; };
 		752E530E26FDDE6300FCDB0C /* BinancePrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */; };
 		752E531126FDDE6300FCDB0C /* KrakenPrivateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E52F626FDDE6300FCDB0C /* KrakenPrivateApi.swift */; };
@@ -604,8 +607,8 @@
 		75A3F55A26A5A775006B1823 /* AccountRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3F55726A5A775006B1823 /* AccountRecord+CoreDataProperties.swift */; };
 		75A3F55B26A5A775006B1823 /* AccountRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3F55826A5A775006B1823 /* AccountRecord+CoreDataClass.swift */; };
 		75A3F55C26A5A775006B1823 /* AccountRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A3F55826A5A775006B1823 /* AccountRecord+CoreDataClass.swift */; };
-		75B151022621DAB700542415 /* AssetViewLandscape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B151012621DAB700542415 /* AssetViewLandscape.swift */; };
-		75B151032621DAB700542415 /* AssetViewLandscape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B151012621DAB700542415 /* AssetViewLandscape.swift */; };
+		75B151022621DAB700542415 /* AssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B151012621DAB700542415 /* AssetView.swift */; };
+		75B151032621DAB700542415 /* AssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B151012621DAB700542415 /* AssetView.swift */; };
 		75B1512C26222B2700542415 /* AssetSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1512B26222B2700542415 /* AssetSearchField.swift */; };
 		75B1512D26222B2700542415 /* AssetSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1512B26222B2700542415 /* AssetSearchField.swift */; };
 		75B151332622D68F00542415 /* WalletCurrencyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B151322622D68F00542415 /* WalletCurrencyButton.swift */; };
@@ -733,6 +736,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		752757B32864677A00103348 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				752757B22864677A00103348 /* LDKFramework.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75777C1128479F8000866B02 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -836,6 +850,7 @@
 		752712FB261B48A7008C962C /* AccountNameInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameInputView.swift; sourceTree = "<group>"; };
 		75271302261B5378008C962C /* PButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PButton.swift; sourceTree = "<group>"; };
 		75271309261BAAE8008C962C /* StoreSeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSeedView.swift; sourceTree = "<group>"; };
+		752757B4286B3A5400103348 /* AssetViewPhone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewPhone.swift; sourceTree = "<group>"; };
 		752E52F426FDDE6300FCDB0C /* BinancePrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinancePrivateApi.swift; sourceTree = "<group>"; };
 		752E52F626FDDE6300FCDB0C /* KrakenPrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KrakenPrivateApi.swift; sourceTree = "<group>"; };
 		752E52F726FDDE6300FCDB0C /* CoinbaseProPrivateApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinbaseProPrivateApi.swift; sourceTree = "<group>"; };
@@ -1093,7 +1108,7 @@
 		75A3F54D26A59FFC006B1823 /* IWalletStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IWalletStorage.swift; sourceTree = "<group>"; };
 		75A3F55726A5A775006B1823 /* AccountRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccountRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		75A3F55826A5A775006B1823 /* AccountRecord+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccountRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
-		75B151012621DAB700542415 /* AssetViewLandscape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewLandscape.swift; sourceTree = "<group>"; };
+		75B151012621DAB700542415 /* AssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetView.swift; sourceTree = "<group>"; };
 		75B1512B26222B2700542415 /* AssetSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSearchField.swift; sourceTree = "<group>"; };
 		75B151322622D68F00542415 /* WalletCurrencyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCurrencyButton.swift; sourceTree = "<group>"; };
 		75B151412622EC0F00542415 /* AssetRouteSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRouteSwitch.swift; sourceTree = "<group>"; };
@@ -1186,6 +1201,7 @@
 			files = (
 				5943885CDFB1C0DCB277A5D6 /* Pods_Portal__iOS_.framework in Frameworks */,
 				BF730E6C550AC2E80F0D1F2F /* Pods_Portal__iOS_.framework in Frameworks */,
+				752757B12864677A00103348 /* LDKFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1578,6 +1594,7 @@
 				7542B5812763BF6B006B9786 /* AlertTypePicker.swift */,
 				FA3FD81226FCC8A200953727 /* TokenSelector.swift */,
 				75EF8D5F27834A3700F69A6E /* TxFeesPicker.swift */,
+				752757B4286B3A5400103348 /* AssetViewPhone.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1627,7 +1644,7 @@
 		7555641F26D8F023001B1C1A /* Asset */ = {
 			isa = PBXGroup;
 			children = (
-				75B151012621DAB700542415 /* AssetViewLandscape.swift */,
+				75B151012621DAB700542415 /* AssetView.swift */,
 				750C36CA261F44BF0088CCED /* AssetItemView.swift */,
 			);
 			path = Asset;
@@ -2147,6 +2164,7 @@
 				755782CB26087904000E1686 /* Frameworks */,
 				755782CC26087904000E1686 /* Resources */,
 				A85FA94A557661B339D7D864 /* [CP] Embed Pods Frameworks */,
+				752757B32864677A00103348 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2173,6 +2191,8 @@
 			dependencies = (
 			);
 			name = "Portal (macOS)";
+			packageProductDependencies = (
+			);
 			productName = "Portal (macOS)";
 			productReference = 755782D626087904000E1686 /* Portal.app */;
 			productType = "com.apple.product-type.application";
@@ -2235,6 +2255,8 @@
 				Base,
 			);
 			mainGroup = 755782BE26087903000E1686;
+			packageReferences = (
+			);
 			productRefGroup = 755782CF26087904000E1686 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -2666,6 +2688,7 @@
 				754C606F2855DD7800FA9ACF /* DBLightningNode+CoreDataClass.swift in Sources */,
 				754C60732855DD7800FA9ACF /* DBLightningChannel+CoreDataClass.swift in Sources */,
 				FA70527C26CEB536000EE935 /* SwapperModel.swift in Sources */,
+				752757B5286B3A5400103348 /* AssetViewPhone.swift in Sources */,
 				75F5CD9A2684C904005ECA5B /* SeedTestViewModel.swift in Sources */,
 				752E533326FDDE6400FCDB0C /* EndPointType.swift in Sources */,
 				753471F6262C2E97005CD93C /* ExchangerView.swift in Sources */,
@@ -2703,7 +2726,7 @@
 				756C3C7326EA9B52009530A9 /* TraidingPairItem.swift in Sources */,
 				752712FC261B48A7008C962C /* AccountNameInputView.swift in Sources */,
 				752E531B26FDDE6400FCDB0C /* ParameterEncoding.swift in Sources */,
-				75B151022621DAB700542415 /* AssetViewLandscape.swift in Sources */,
+				75B151022621DAB700542415 /* AssetView.swift in Sources */,
 				754C607B2855DFA300FA9ACF /* DBLightningPayment+CoreDataProperties.swift in Sources */,
 				75984F2E2648219B002CD1EA /* RestoreAccountView.swift in Sources */,
 				75A3F54226A57E63006B1823 /* Account.swift in Sources */,
@@ -3059,7 +3082,7 @@
 				754C60642855DA2000FA9ACF /* LightningPaymentDetailsViewModel.swift in Sources */,
 				752712FD261B48A7008C962C /* AccountNameInputView.swift in Sources */,
 				7537DF0827035F7800B862AB /* WebViewRepresentalble.swift in Sources */,
-				75B151032621DAB700542415 /* AssetViewLandscape.swift in Sources */,
+				75B151032621DAB700542415 /* AssetView.swift in Sources */,
 				750C36CC261F44BF0088CCED /* AssetItemView.swift in Sources */,
 				759E51222618F81700FA737C /* AccountNameView.swift in Sources */,
 				7537DED42700B17200B862AB /* BinanceApi.swift in Sources */,
@@ -3476,7 +3499,7 @@
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3487,7 +3510,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				btc_core_rpc_url = "https:/$()/btc.horizontalsystems.xyz/rpc";
 				etherscan_api_key = PYPJHJFA2MUT12KPTT8FCKPAMGHTRDQICB;
 				fixer_api_key = 13af1e52c56117b6c7d513603fb7cee8;
@@ -3511,7 +3534,7 @@
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3522,7 +3545,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				btc_core_rpc_url = "https:/$()/btc.horizontalsystems.xyz/rpc";
 				etherscan_api_key = PYPJHJFA2MUT12KPTT8FCKPAMGHTRDQICB;

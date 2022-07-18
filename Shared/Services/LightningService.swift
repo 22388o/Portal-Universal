@@ -8,7 +8,11 @@
 import Foundation
 import Combine
 import BitcoinCore
+#if os(iOS)
+import LDKFramework
+#elseif os(macOS)
 import LDKFramework_Mac
+#endif
 
 class LightningService: ILightningService {
     var dataService: ILightningDataService

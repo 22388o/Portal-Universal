@@ -5,7 +5,11 @@
 //  Created by farid on 6/13/22.
 //
 
+#if os(iOS)
+import LDKFramework
+#elseif os(macOS)
 import LDKFramework_Mac
+#endif
 
 class LDKFilter: Filter {
     override func register_tx(txid: [UInt8]?, script_pubkey: [UInt8]) {

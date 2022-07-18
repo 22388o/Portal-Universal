@@ -9,6 +9,13 @@ import SwiftUI
 
 struct RootView: View {
     @ObservedObject private var state = Portal.shared.state
+    private var isIPhone: Bool = false
+    
+    init() {
+        #if os(iOS)
+        isIPhone = UIDevice.current.model.hasPrefix("iPhone")
+        #endif
+    }
         
     var body: some View {
         ZStack {
@@ -18,8 +25,15 @@ struct RootView: View {
             case .idle:
                 Color.clear
             case .account:
-                AccountView()
-                    .transition(.identity)
+                if isIPhone {
+#if os(iOS)
+                    AssetViewPhone(viewModel: AssetViewModel.config())
+                        .transition(.identity)
+#endif
+                } else {
+                    AccountView()
+                        .transition(.identity)
+                }
 	            case .createAccount:
                 CreateAccountView(scene: $state.rootView)
                     .transition(.scale(scale: 0.99))

@@ -7,7 +7,11 @@
 
 import Foundation
 import Alamofire
+#if os(iOS)
+import LDKFramework
+#elseif os(macOS)
 import LDKFramework_Mac
+#endif
 
 class LDKTestNetBroadcasterInterface: BroadcasterInterface {
     private static let url = "https://blockstream.info/testnet/api/tx"

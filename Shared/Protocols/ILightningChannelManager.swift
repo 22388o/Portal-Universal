@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if os(iOS)
+import LDKFramework
+#elseif os(macOS)
 import LDKFramework_Mac
+#endif
 
 protocol ILightningChannelManager {
     var payer: InvoicePayer? { get }

@@ -13,9 +13,17 @@ struct PayInvoiceView: View {
     
     var body: some View {
         VStack {
+            #if os(macOS)
             ModalNavigationView(title: "Send Lightning Payment", backButtonAction: {
                 viewState = .root
             })
+            #else
+            Text("Send lightning payment")
+                .font(.mainFont(size: 23))
+                .foregroundColor(Color.coinViewRouteButtonActive)
+                .padding(.top, 57)
+                .padding(.bottom, 8)
+            #endif
             
             HStack(spacing: 4) {
                 Text("You have")
@@ -25,7 +33,7 @@ struct PayInvoiceView: View {
                 Text("\(viewModel.channelBalance) sat")
                     .font(Font.mainFont(size: 14))
             }
-            .foregroundColor(Color.white)
+            .foregroundColor(Color.gray)
             
             if let invoice = viewModel.invoice {
                 if let network = viewModel.networkString {
