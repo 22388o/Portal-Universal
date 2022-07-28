@@ -7,11 +7,7 @@
 
 import Foundation
 import BitcoinCore
-#if os(macOS)
-import LDKFramework_Mac
-#else
-import LDKFramework
-#endif
+import LightningDevKit
 import Combine
 
 class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
@@ -81,8 +77,10 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                         let rawTxBytes = rawTx.bytes
                         let tcid = fundingReadyEvent.getTemporary_channel_id()
 
+                        //TODO: fix counterparty_node_id
                         let sendingFundingTx = channelManager.funding_transaction_generated(
                             temporary_channel_id: tcid,
+                            counterparty_node_id: [],
                             funding_transaction: rawTxBytes
                         )
 
@@ -137,7 +135,7 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
             print("==================")
             
             if let value = event.getValueAsPaymentReceived() {
-                let amount = value.getAmt()/1000
+                let amount = value.getAmount_msat()/1000
                 print("Amount: \(amount)")
                 let paymentId = value.getPayment_hash().bytesToHexString()
                 print("Payment id: \(paymentId)")
@@ -145,19 +143,14 @@ class LDKChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 let paymentPurpose = value.getPurpose()
                 let invoicePayment = paymentPurpose.getValueAsInvoicePayment()!
                 let preimage = invoicePayment.getPayment_preimage()
-                let claimResult = channelManager.claim_funds(payment_preimage: preimage)
+                channelManager.claim_funds(payment_preimage: preimage)
                 
                 let userMessage: String
                 
-                if claimResult {
-                    print("Claimed")
-                    let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), created: Date(), description: "incoming payment", state: .received)
-                    dataService.save(payment: payment)
-                    userMessage = "Payment received: \(amount) sat"
-                } else {
-                    print("CLAIMING ERROR")
-                    userMessage = "Claming funds error: \(amount) sat"
-                }
+                print("Claimed")
+                let payment = LightningPayment(id: paymentId, satAmount: Int64(amount), created: Date(), description: "incoming payment", state: .received)
+                dataService.save(payment: payment)
+                userMessage = "Payment received: \(amount) sat"
                 
                 print(userMessage)
             }

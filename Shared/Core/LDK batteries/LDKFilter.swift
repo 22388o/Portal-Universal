@@ -5,11 +5,7 @@
 //  Created by farid on 6/13/22.
 //
 
-#if os(macOS)
-import LDKFramework_Mac
-#else
-import LDKFramework
-#endif
+import LightningDevKit
 
 class LDKFilter: Filter {
     override func register_tx(txid: [UInt8]?, script_pubkey: [UInt8]) {

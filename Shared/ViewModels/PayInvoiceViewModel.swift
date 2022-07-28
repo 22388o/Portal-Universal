@@ -6,11 +6,7 @@
 //
 
 import Combine
-#if os(macOS)
-import LDKFramework_Mac
-#else
-import LDKFramework
-#endif
+import LightningDevKit
 import NIOConcurrencyHelpers
 
 class PayInvoiceViewModel: ObservableObject {

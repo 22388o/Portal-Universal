@@ -6,11 +6,7 @@
 //
 
 import Foundation
-#if os(macOS)
-import LDKFramework_Mac
-#else
-import LDKFramework
-#endif
+import LightningDevKit
 
 class OpenLightningChannelViewModel: ObservableObject {
     @Published var suggestedNodes: [LightningNode]

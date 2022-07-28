@@ -7,11 +7,7 @@
 
 import Foundation
 import BitcoinCore
-#if os(macOS)
-import LDKFramework_Mac
-#else
-import LDKFramework
-#endif
+import LightningDevKit
 
 class LightningChannelManager: ILightningChannelManager {
     private var constructor: ChannelManagerConstructor
@@ -36,6 +32,7 @@ class LightningChannelManager: ILightningChannelManager {
     var keysManager: KeysManager
     var channelManagerPersister: ExtendedChannelManagerPersister
     var dataService: ILightningDataService
+    private(set) var logger: LDKLogger
     
     init(lastBlock: LastBlockInfo?, dataService: ILightningDataService, notificationService: INotificationService) {
         self.dataService = dataService
@@ -48,7 +45,7 @@ class LightningChannelManager: ILightningChannelManager {
         let feeEstimator = LDKFeesEstimator()
         let persister = LDKChannelPersister(dataService: dataService)
         let broadcaster = LDKTestNetBroadcasterInterface()
-        let logger = LDKLogger()
+        logger = LDKLogger()
     
         let seed: [UInt8] = [UInt8](Data(base64Encoded: "13/12//////////////////////////////////11113")!)
         let timestampSeconds = UInt64(Date().timeIntervalSince1970)
@@ -109,7 +106,7 @@ class LightningChannelManager: ILightningChannelManager {
                     fatalError("genesisHash :/")
                 }
                 
-                let networkGraph = NetworkGraph(genesis_hash: genesisHash)
+                let networkGraph = NetworkGraph(genesis_hash: genesisHash, logger: logger)
                 
                 constructor = ChannelManagerConstructor(
                     network: network,
@@ -146,7 +143,7 @@ class LightningChannelManager: ILightningChannelManager {
                 fatalError("genesisHash :/")
             }
             
-            let networkGraph = NetworkGraph(genesis_hash: genesisHash)
+            let networkGraph = NetworkGraph(genesis_hash: genesisHash, logger: logger)
             
             constructor = ChannelManagerConstructor(
                 network: network,
@@ -175,7 +172,7 @@ class LightningChannelManager: ILightningChannelManager {
     func chainSyncCompleted() {
         let scoringParams = ProbabilisticScoringParameters()
         if let networkGraph = constructor.net_graph {
-            let probabalisticScorer = ProbabilisticScorer(params: scoringParams, network_graph: networkGraph)
+            let probabalisticScorer = ProbabilisticScorer(params: scoringParams, network_graph: networkGraph, logger: logger)
             let score = probabalisticScorer.as_Score()
             let multiThreadedScorer = MultiThreadedLockableScore(score: score)
             constructor.chain_sync_completed(persister: channelManagerPersister, scorer: multiThreadedScorer)
