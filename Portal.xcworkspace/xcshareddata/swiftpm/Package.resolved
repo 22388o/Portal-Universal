@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "ldk-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lightningdevkit/ldk-swift",
+      "state" : {
+        "revision" : "24c6fb4b9712c5cdbb3857c0143f800afa419b0f",
+        "version" : "0.0.109"
+      }
+    }
+  ],
+  "version" : 2
+}
