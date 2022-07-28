@@ -5,7 +5,7 @@
 //  Created by farid on 6/13/22.
 //
 
-import LDKFramework_Mac
+import LightningDevKit
 
 class LDKLogger: Logger {
     override func log(record: Record) {

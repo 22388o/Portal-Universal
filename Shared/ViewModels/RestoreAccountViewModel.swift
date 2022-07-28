@@ -34,7 +34,7 @@ final class RestoreAccountViewModel: ObservableObject {
     }
     
     var account: Account {
-        Account(id: UUID().uuidString, name: accountName, bip: mnemonicDereviation, type: .mnemonic(words: seed, salt: "salty_password"))
+        Account(id: UUID().uuidString, index: 0, name: accountName, bip: mnemonicDereviation, type: .mnemonic(words: seed, salt: "salty_password"))
     }
     
     private var mnemonicDereviation: MnemonicDerivation {

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LDKFramework_Mac
+import LightningDevKit
 
 class LightningViewViewModel: ObservableObject {
     @Published var payments: [LightningPayment] = []

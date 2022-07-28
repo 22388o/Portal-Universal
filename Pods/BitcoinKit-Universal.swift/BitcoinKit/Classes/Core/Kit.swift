@@ -20,7 +20,7 @@ public class Kit: AbstractKit {
         }
     }
 
-    public init(seed: Data, bip: Bip, walletId: String, syncMode: BitcoinCore.SyncMode = .api, networkType: NetworkType = .mainNet, confirmationsThreshold: Int = 6, logger: Logger?) throws {
+    public init(seed: Data, accountIndex: Int = 0, bip: Bip, walletId: String, syncMode: BitcoinCore.SyncMode = .api, networkType: NetworkType = .mainNet, confirmationsThreshold: Int = 6, logger: Logger?) throws {
         let network: INetwork
         let logger = logger ?? Logger(minLogLevel: .verbose)
 
@@ -79,6 +79,7 @@ public class Kit: AbstractKit {
                 .set(peerSize: 10)
                 .set(syncMode: syncMode)
                 .set(storage: storage)
+                .set(accountIndex: accountIndex)
                 .set(blockValidator: blockValidatorSet)
                 .add(plugin: hodler)
                 .build()

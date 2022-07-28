@@ -13,9 +13,11 @@ class InitialSyncer {
 
     private let logger: Logger?
     private let async: Bool
+    private var accountIndex: Int
 
-    init(storage: IStorage, blockDiscovery: IBlockDiscovery, publicKeyManager: IPublicKeyManager,
+    init(accountIndex: Int, storage: IStorage, blockDiscovery: IBlockDiscovery, publicKeyManager: IPublicKeyManager,
          async: Bool = true, logger: Logger? = nil) {
+        self.accountIndex = accountIndex
         self.storage = storage
         self.blockDiscovery = blockDiscovery
         self.publicKeyManager = publicKeyManager
@@ -72,7 +74,7 @@ class InitialSyncer {
 extension InitialSyncer: IInitialSyncer {
 
     func sync() {
-        sync(forAccount: 0)
+        sync(forAccount: accountIndex)
     }
 
     func terminate() {

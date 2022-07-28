@@ -5,7 +5,7 @@
 //  Created by farid on 6/13/22.
 //
 
-import LDKFramework_Mac
+import LightningDevKit
 
 class LDKChannelPersister: Persist {
     let dataService: ILightningDataService

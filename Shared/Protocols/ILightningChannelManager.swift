@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import LDKFramework_Mac
+import LightningDevKit
 
 protocol ILightningChannelManager {
     var payer: InvoicePayer? { get }

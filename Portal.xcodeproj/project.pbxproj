@@ -484,6 +484,8 @@
 		755EBC2F272194D400B56B89 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC2D272194D400B56B89 /* ReachabilityService.swift */; };
 		755EBC332721959200B56B89 /* IDBCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC322721959200B56B89 /* IDBCacheStorage.swift */; };
 		755EBC342721959200B56B89 /* IDBCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755EBC322721959200B56B89 /* IDBCacheStorage.swift */; };
+		756A31422892B4F7004978E2 /* LightningDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = 756A31412892B4F7004978E2 /* LightningDevKit */; };
+		756A31442892B93A004978E2 /* LightningDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = 756A31432892B93A004978E2 /* LightningDevKit */; };
 		756A66AF262441B500353635 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66AE262441B500353635 /* PortfolioView.swift */; };
 		756A66B0262441B500353635 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66AE262441B500353635 /* PortfolioView.swift */; };
 		756A66B62624443A00353635 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A66B52624443A00353635 /* PortfolioViewModel.swift */; };
@@ -516,8 +518,6 @@
 		756C66BC264038E900CD22B2 /* ManageAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756C66BA264038E900CD22B2 /* ManageAlertView.swift */; };
 		7574C34A2619DCE400299131 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateAccountView.swift */; };
 		7574C34B2619DCE400299131 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7574C3492619DCE400299131 /* CreateAccountView.swift */; };
-		75777C0F28479F8000866B02 /* LDKFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; };
-		75777C1028479F8000866B02 /* LDKFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 75777C0E28479F8000866B02 /* LDKFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		75777C142848E27700866B02 /* LightningRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75777C132848E27700866B02 /* LightningRootView.swift */; };
 		75777C152848E27700866B02 /* LightningRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75777C132848E27700866B02 /* LightningRootView.swift */; };
 		7581900F26E107B700E0691B /* MyOrdersRouteSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7581900E26E107B700E0691B /* MyOrdersRouteSwitch.swift */; };
@@ -731,20 +731,6 @@
 			remoteInfo = "Portal (macOS)";
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		75777C1128479F8000866B02 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				75777C1028479F8000866B02 /* LDKFramework.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08F4560F04D36CA71E281A41 /* Pods-UnitTestsIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTestsIOS.debug.xcconfig"; path = "Target Support Files/Pods-UnitTestsIOS/Pods-UnitTestsIOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1185,6 +1171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5943885CDFB1C0DCB277A5D6 /* Pods_Portal__iOS_.framework in Frameworks */,
+				756A31442892B93A004978E2 /* LightningDevKit in Frameworks */,
 				BF730E6C550AC2E80F0D1F2F /* Pods_Portal__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1193,7 +1180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75777C0F28479F8000866B02 /* LDKFramework.xcframework in Frameworks */,
+				756A31422892B4F7004978E2 /* LightningDevKit in Frameworks */,
 				38ADC71E533EB3177E55D088 /* Pods_Portal__macOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2153,6 +2140,9 @@
 			dependencies = (
 			);
 			name = "Portal (iOS)";
+			packageProductDependencies = (
+				756A31432892B93A004978E2 /* LightningDevKit */,
+			);
 			productName = "Portal (iOS)";
 			productReference = 755782CE26087904000E1686 /* Portal.app */;
 			productType = "com.apple.product-type.application";
@@ -2166,13 +2156,15 @@
 				755782D326087904000E1686 /* Frameworks */,
 				755782D426087904000E1686 /* Resources */,
 				10CEBEC6934F051D5ECB2109 /* [CP] Embed Pods Frameworks */,
-				75777C1128479F8000866B02 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Portal (macOS)";
+			packageProductDependencies = (
+				756A31412892B4F7004978E2 /* LightningDevKit */,
+			);
 			productName = "Portal (macOS)";
 			productReference = 755782D626087904000E1686 /* Portal.app */;
 			productType = "com.apple.product-type.application";
@@ -2235,6 +2227,9 @@
 				Base,
 			);
 			mainGroup = 755782BE26087903000E1686;
+			packageReferences = (
+				756A31402892B4F7004978E2 /* XCRemoteSwiftPackageReference "ldk-swift" */,
+			);
 			productRefGroup = 755782CF26087904000E1686 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -3476,7 +3471,7 @@
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3511,7 +3506,7 @@
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3706,6 +3701,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		756A31402892B4F7004978E2 /* XCRemoteSwiftPackageReference "ldk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lightningdevkit/ldk-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.109;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		756A31412892B4F7004978E2 /* LightningDevKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 756A31402892B4F7004978E2 /* XCRemoteSwiftPackageReference "ldk-swift" */;
+			productName = LightningDevKit;
+		};
+		756A31432892B93A004978E2 /* LightningDevKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 756A31402892B4F7004978E2 /* XCRemoteSwiftPackageReference "ldk-swift" */;
+			productName = LightningDevKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		755782C426087903000E1686 /* Portal.xcdatamodeld */ = {

@@ -9,6 +9,7 @@ import Foundation
 
 protocol IAccount {
     var id: String { get }
+    var index: Int { get }
     var name: String { get }
     var type: AccountType { get }
     var fiatCurrencyCode: String { get }

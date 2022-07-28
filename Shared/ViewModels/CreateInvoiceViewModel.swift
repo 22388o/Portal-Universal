@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 import Coinpaprika
-import LDKFramework_Mac
+import LightningDevKit
 
 class CreateInvoiceViewModel: ObservableObject {
     @Published var memo: String = ""

@@ -26,6 +26,7 @@ final class BitcoinAdapter: BitcoinBaseAdapter {
         
         bitcoinKit = try Kit(
             seed: seed,
+            accountIndex: wallet.account.index,
             bip: bip,
             walletId: wallet.account.id,
             syncMode: syncMode,

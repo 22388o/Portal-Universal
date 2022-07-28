@@ -46,7 +46,7 @@ class AccountStorage {
             _ = try store(salt, id: id, typeName: typeName, keyName: .salt)
         }
         
-        return AccountRecord(id: id, name: account.name, bip: account.mnemonicDereviation, context: accountStorage.context)
+        return AccountRecord(id: id, index: account.index, name: account.name, bip: account.mnemonicDereviation, context: accountStorage.context)
     }
 
     private func clearSecureStorage(account: Account) throws {

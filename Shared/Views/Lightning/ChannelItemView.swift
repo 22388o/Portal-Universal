@@ -8,7 +8,7 @@
 import SwiftUI
 
 import Combine
-import LDKFramework_Mac
+import LightningDevKit
 
 class ChannelItemViewModel: ObservableObject {
     let channel: LightningChannel
@@ -27,7 +27,8 @@ class ChannelItemViewModel: ObservableObject {
     
     func closeChannel() {
         if let channelID = channelID {
-            let result = manager.close_channel(channel_id: channelID)
+            //TODO: fix counterparty_node_id
+            let result = manager.close_channel(channel_id: channelID, counterparty_node_id: [])
             if result.isOk() {
                 print("Channel cosed")
                 channel.state = .closed

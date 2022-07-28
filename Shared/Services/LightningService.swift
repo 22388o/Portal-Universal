@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 import BitcoinCore
-import LDKFramework_Mac
+import LightningDevKit
 
 class LightningService: ILightningService {
     var dataService: ILightningDataService
@@ -147,7 +147,8 @@ class LightningService: ILightningService {
                 keys_manager: manager.keysManager.as_KeysInterface(),
                 network: LDKCurrency_BitcoinTestnet,
                 amt_msat: amount,
-                description: descr
+                description: descr,
+                invoice_expiry_delta_secs: 10000
             )
 
             if result.isOk(), let invoice = result.getValue() {
@@ -258,6 +259,7 @@ extension LightningService {
             let blockBinary = try await getBlockBinary(hash: block.headerHash.reversedHex)
             let blockBytes = blockBinary.bytes
             let blockHeight = UInt32(block.height)
+            guard blockHeight == bestBlockHeight + 1 else { break }
             channelManagerListener.block_connected(block: blockBytes, height: blockHeight)
             chainMonitorListener.block_connected(block: blockBytes, height: blockHeight)
         }

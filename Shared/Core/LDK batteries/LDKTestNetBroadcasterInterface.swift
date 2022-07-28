@@ -7,7 +7,7 @@
 
 import Foundation
 import Alamofire
-import LDKFramework_Mac
+import LightningDevKit
 
 class LDKTestNetBroadcasterInterface: BroadcasterInterface {
     private static let url = "https://blockstream.info/testnet/api/tx"
